@@ -11,14 +11,13 @@ const files = args.flatMap(a => fs.statSync(a).isDirectory()
   ? fs.readdirSync(a).filter(f => /^\d\d-.*\.md$/.test(f)).sort().map(f => path.join(a, f)) : [a]);
 const cfg = fs.readFileSync(path.join(here, 'mermaid-config.json'), 'utf8');
 const css = fs.readFileSync(path.join(here, 'mermaid.css'), 'utf8');
-const fix = fs.readFileSync(path.join(here, 'mermaid-fix.js'), 'utf8');
 const mermaidJs = fs.readFileSync(path.join(here, 'node_modules/mermaid/dist/mermaid.min.js'), 'utf8');
 const LIMITS = { maxW: 1040, maxH: 940, maxAspect: 3.2, minAspect: 0.4 };
 
 const browser = await chromium.launch();
 const page = await browser.newPage({ viewport: { width: 1200, height: 800 }, deviceScaleFactor: 2 });
 await page.setContent(`<html><head><style>${css}</style></head><body style="margin:0;background:#fff"><div id="w" class="mermaid" style="width:1100px;padding:16px"></div>
-<script>${mermaidJs}</script><script>${fix}</script><script>mermaid.initialize(Object.assign({startOnLoad:false,securityLevel:'loose'},${cfg}));</script></body></html>`);
+<script>${mermaidJs}</script><script>mermaid.initialize(Object.assign({startOnLoad:false,securityLevel:'loose'},${cfg}));</script></body></html>`);
 let warn = 0, total = 0;
 for (const f of files) {
   const src = fs.readFileSync(f, 'utf8');
@@ -31,7 +30,7 @@ for (const f of files) {
       d = await page.evaluate(async ([code, id]) => {
         const w = document.getElementById('w'); w.innerHTML = '';
         const { svg } = await mermaid.render('m' + id.replace(/[^a-z0-9]/gi, ''), code);
-        w.innerHTML = svg; const s = w.querySelector('svg'); fitMermaidSvg(s);
+        w.innerHTML = svg; const s = w.querySelector('svg');
         s.style.maxWidth = 'none'; s.style.width = s.viewBox.baseVal.width + 'px';
         const vb = s.viewBox.baseVal;
         const box = e => e.getBoundingClientRect();

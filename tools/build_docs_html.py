@@ -194,7 +194,6 @@ mermaid_src = open(MERMAID_JS, encoding='utf-8').read()
 TOOLS_DIR = os.path.dirname(os.path.abspath(__file__))
 mermaid_cfg = open(os.path.join(TOOLS_DIR, 'mermaid-config.json'), encoding='utf-8').read()
 mermaid_css = open(os.path.join(TOOLS_DIR, 'mermaid.css'), encoding='utf-8').read()
-mermaid_fix = open(os.path.join(TOOLS_DIR, 'mermaid-fix.js'), encoding='utf-8').read()
 
 
 n_docs = len([f for f in files if re.match(r'^\d\d-', f)])
@@ -306,7 +305,7 @@ nav.pn .next{margin-left:auto;text-align:right}
 
 JS = """
 mermaid.initialize(Object.assign({startOnLoad:false,securityLevel:'loose'}, MERMAID_CONFIG));
-mermaid.run({querySelector:'figure.fig .mermaid', postRenderCallback:function(id){ var s=document.getElementById(id); if(s) fitMermaidSvg(s); }});
+mermaid.run({querySelector:'figure.fig .mermaid'});
 // 宽表格套一层横向滚动容器，正文永不横向滚动
 document.querySelectorAll('main table').forEach(function(t){
   var w=document.createElement('div'); w.className='tw';
@@ -422,7 +421,6 @@ doc = f"""<!doctype html>
 <div id="zoom"><div class="wrap"><div class="box"></div></div><div class="cap"></div></div>
 <script>{mermaid_src}</script>
 <script>var MERMAID_CONFIG={mermaid_cfg};</script>
-<script>{mermaid_fix}</script>
 <script>{JS}</script>
 </body>
 </html>
