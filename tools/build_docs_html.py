@@ -271,12 +271,14 @@ figure.fig .mermaid svg{max-width:100%;height:auto}
 figure.fig figcaption{font-size:12.5px;color:var(--muted);margin-top:.5em;letter-spacing:.04em}
 figure.fig .mermaid:not([data-processed]){font:12px/1.5 monospace;text-align:left;color:var(--muted);white-space:pre;display:block}
 @media (min-width:1300px){figure.fig{margin-left:-90px;margin-right:-90px}}
-/* 图放大 */
-#zoom{position:fixed;inset:0;background:rgba(20,24,30,.78);display:none;z-index:50;overflow:auto;padding:36px;cursor:zoom-out}
+/* 图放大：遮罩里居中，滚轮缩放，放大超出视口后可滚动 */
+#zoom{position:fixed;inset:0;background:rgba(20,24,30,.8);display:none;z-index:50;overflow:auto;cursor:zoom-out}
 #zoom.on{display:block}
-#zoom .box{background:#fff;border-radius:10px;padding:24px;margin:0 auto;width:max-content;max-width:none;cursor:default}
-#zoom .box svg{max-width:none!important;height:auto}
-#zoom .cap{color:#cfd6e0;text-align:center;font-size:13px;margin-top:12px}
+#zoom .wrap{min-width:100%;min-height:100%;display:flex;align-items:center;justify-content:center;padding:40px 40px 64px}
+#zoom .box{background:#fff;border-radius:10px;padding:24px;cursor:grab;flex:none;user-select:none}
+#zoom .box:active{cursor:grabbing}
+#zoom .box svg{display:block;max-width:none!important}
+#zoom .cap{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;color:#e6eaf0;font-size:13px;pointer-events:none;background:rgba(20,24,30,.85);padding:6px 14px;border-radius:999px;white-space:nowrap}
 /* 上一篇 / 下一篇 */
 nav.pn{display:flex;justify-content:space-between;gap:16px;margin-top:3.5em;padding-top:1.2em;border-top:1px solid var(--line);font-size:14px}
 nav.pn a{border:0;color:var(--muted)}nav.pn a:hover{color:var(--accent)}
@@ -349,21 +351,48 @@ document.getElementById('filter').addEventListener('input',function(e){
     li.style.display = !q || li.firstChild.textContent.toLowerCase().indexOf(q)>=0 ? '' : 'none';
   });
 });
-// 图放大：点图在遮罩里按原始尺寸显示
-var zoom=document.getElementById('zoom'), zbox=zoom.querySelector('.box'), zcap=zoom.querySelector('.cap');
+// 图放大：点图在遮罩里居中显示；滚轮以指针为中心缩放；超出视口后可滚动
+var zoom=document.getElementById('zoom'), zwrap=zoom.querySelector('.wrap'), zbox=zoom.querySelector('.box'), zcap=zoom.querySelector('.cap');
+var zsvg=null, zw=0, zh=0, zk=1, zlabel='';
+function zapply(){
+  zsvg.setAttribute('width',Math.round(zw*zk)); zsvg.setAttribute('height',Math.round(zh*zk));
+  zcap.textContent=zlabel+' · '+Math.round(zk*100)+'%　滚轮缩放 · 拖动平移 · 点击空白处或按 Esc 关闭';
+}
 document.querySelectorAll('figure.fig .mermaid').forEach(function(m){
   m.addEventListener('click',function(){
     var svg=m.querySelector('svg'); if(!svg) return;
-    var c=svg.cloneNode(true); var vb=svg.viewBox.baseVal;
-    c.removeAttribute('style'); c.setAttribute('width',Math.max(vb.width,400)); c.setAttribute('height',vb.height);
-    zbox.innerHTML=''; zbox.appendChild(c);
-    var cap=m.parentNode.querySelector('figcaption'); zcap.textContent=cap?cap.textContent+'（点击空白处关闭）':'';
-    zoom.classList.add('on'); document.body.style.overflow='hidden';
+    var vb=svg.viewBox.baseVal; zw=Math.max(vb.width,200); zh=Math.max(vb.height,100);
+    zsvg=svg.cloneNode(true); zsvg.removeAttribute('style'); zsvg.setAttribute('preserveAspectRatio','xMidYMid meet');
+    zbox.innerHTML=''; zbox.appendChild(zsvg);
+    var cap=m.parentNode.querySelector('figcaption'); zlabel=cap?cap.textContent:'';
+    // 初始比例：整张图放进视口，小图放大到最多 1.6 倍，大图最多缩到 0.75 倍
+    var fit=Math.min((window.innerWidth-130)/zw,(window.innerHeight-170)/zh);
+    zk=Math.max(0.75,Math.min(1.6,fit));
+    zapply(); zoom.classList.add('on'); document.body.style.overflow='hidden';
+    zoom.scrollTop=0; zoom.scrollLeft=0;
   });
 });
 function zclose(){ zoom.classList.remove('on'); document.body.style.overflow=''; }
 zoom.addEventListener('click',function(e){ if(!zbox.contains(e.target)) zclose(); });
+zoom.addEventListener('wheel',function(e){
+  if(!zsvg) return; e.preventDefault();
+  var r=zbox.getBoundingClientRect();
+  // 指针在图内的相对位置（0..1），缩放后保持该点不动
+  var px=(e.clientX-r.left)/r.width, py=(e.clientY-r.top)/r.height;
+  var k0=zk; zk=Math.min(6,Math.max(0.3,zk*(e.deltaY<0?1.12:1/1.12)));
+  if(zk===k0) return;
+  var sl=zoom.scrollLeft, st=zoom.scrollTop;
+  zapply();
+  var r2=zbox.getBoundingClientRect();
+  var nx=r2.left+px*r2.width, ny=r2.top+py*r2.height;
+  zoom.scrollLeft=sl+(nx-e.clientX); zoom.scrollTop=st+(ny-e.clientY);
+},{passive:false});
 document.addEventListener('keydown',function(e){ if(e.key==='Escape') zclose(); });
+// 拖动平移（放大超出视口时）
+var zdrag=null;
+zbox.addEventListener('mousedown',function(e){ if(e.button!==0) return; zdrag={x:e.clientX,y:e.clientY,sl:zoom.scrollLeft,st:zoom.scrollTop,moved:false}; e.preventDefault(); });
+window.addEventListener('mousemove',function(e){ if(!zdrag) return; zoom.scrollLeft=zdrag.sl-(e.clientX-zdrag.x); zoom.scrollTop=zdrag.st-(e.clientY-zdrag.y); if(Math.abs(e.clientX-zdrag.x)+Math.abs(e.clientY-zdrag.y)>3) zdrag.moved=true; });
+window.addEventListener('mouseup',function(){ zdrag=null; });
 """
 
 doc = f"""<!doctype html>
@@ -388,7 +417,7 @@ doc = f"""<!doctype html>
 </main>
 </div>
 <button id="top" title="回到顶部">↑</button>
-<div id="zoom"><div class="box"></div><div class="cap"></div></div>
+<div id="zoom"><div class="wrap"><div class="box"></div></div><div class="cap"></div></div>
 <script>{mermaid_src}</script>
 <script>var MERMAID_CONFIG={mermaid_cfg};</script>
 <script>{JS}</script>
