@@ -35,7 +35,7 @@
     "sequenceNumberColor": "#ffffff"
   },
   "flowchart": { "useMaxWidth": true, "htmlLabels": true, "curve": "basis", "nodeSpacing": 36, "rankSpacing": 44, "padding": 10, "diagramPadding": 8, "wrappingWidth": 180 },
-  "sequence": { "useMaxWidth": true, "mirrorActors": false, "actorMargin": 40, "messageMargin": 28, "boxMargin": 8, "noteMargin": 8, "diagramMarginX": 8, "diagramMarginY": 8, "width": 130, "height": 44, "wrap": true, "wrapPadding": 8 },
+  "sequence": { "useMaxWidth": true, "mirrorActors": true, "actorMargin": 40, "messageMargin": 28, "boxMargin": 8, "noteMargin": 8, "diagramMarginX": 8, "diagramMarginY": 8, "width": 130, "height": 44, "wrap": true, "wrapPadding": 8 },
   "state": { "useMaxWidth": true, "nodeSpacing": 40, "rankSpacing": 44, "padding": 8 },
   "er": { "useMaxWidth": true, "fontSize": 13 }
 }

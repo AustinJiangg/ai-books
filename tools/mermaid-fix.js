@@ -1,5 +1,6 @@
-// mermaid 渲染后的修补：时序图关掉底部参与者后，最后一条消息与编号圆点会贴边被裁。
-// 这里按可见绘制元素的包围盒把 viewBox 向外扩（每边最多 40px，四周至少留 8px），只扩不缩。
+// mermaid 渲染后的修补：若时序图末条消息与编号圆点贴边（mirrorActors 关闭时会发生），
+// 按可见绘制元素的包围盒把 viewBox 向外扩（每边最多 40px，四周至少留 8px），只扩不缩。
+// 当前 mirrorActors 已开启，正常情况下本函数不会改动任何东西，作为保险保留。
 // 打包页与 figcheck 共用；参数是 <svg> 元素。
 function fitMermaidSvg(svg, pad) {
   pad = pad == null ? 8 : pad;
