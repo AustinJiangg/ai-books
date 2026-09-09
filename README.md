@@ -26,3 +26,10 @@ python3 tools/build_docs_html.py docs ../e2b-infra-docs/rollback/slides/node_mod
 ```
 
 当前版本、日期与修订记录见 [`docs/README.md`](docs/README.md) 顶部与「版本」节；打包脚本从那里读取版本号。
+
+发布：交付件不入库，放在 GitHub Releases。每个版本打同名 tag，把 `dist/e2b-book.html` 作为附件上传：
+
+```bash
+git tag -a vX.Y.Z -m "e2b 服务端基础设施技术手册 vX.Y.Z" && git push origin vX.Y.Z
+gh release create vX.Y.Z dist/e2b-book.html --title "vX.Y.Z · YYYY-MM-DD" --notes "改动摘要"
+```
