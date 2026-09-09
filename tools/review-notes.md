@@ -1,0 +1,89 @@
+# 编写者交付说明中的待办（供审校与后续篇目）
+- 06: ARM 补丁在 nbd/ 无改动 → 第 33 篇不需 ARM 差异小节；单机 nbds_max=512（自编译模块）vs 上游 4096 → 第 82 篇展开；第 30 篇补 Slice/ReadAt 零拷贝分工；第 33 篇补 Dispatch 缓冲取舍与多连接收益；第 73 篇需评估 recover 能否捕获 SIGBUS。
+- 04: hugepages 不是用户可设的模板选项，由 api sandbox_features.go HasHugePages()（FC ≥ 1.7）决定 → 第 32、14 篇核对；第 32 篇承接大页的差分放大代价；第 37 篇承接 KVM 日志破坏性读折回模式；第 03 篇不必再讲 memslot。
+- 02: 默认拒绝网段定义在 shared/pkg/sandbox-network/firewall.go（不在 orchestrator 包）→ 第 07、35 篇补路径；第 35 篇需覆盖 SO_ORIGINAL_DST、三端口分流、连接数上限 flag；第 28 篇补「为什么不用 jailer 及后果」；上游不用 jailer，靠 unshare -m + startScriptV2。
+- 03: e2b 只用 14/32 个 FC operation；createSnapshot 固定 Full、TrackDirtyPages false、loadSnapshot ResumeVM false；分叉 FC 三端点 /memory/mappings、/memory、/memory/dirty（rpc_interface.rs GetMemoryMappings/GetMemory/GetMemoryDirty）→ 第 70 篇核对 /memory/dirty 写保护来源；get_memory_dirty_*.go 是无 operationId 的残留生成文件 → 第 89 篇记一笔；第 37 篇核对恢复路径用 dirty、冷启动用 NoopMemory resident−empty。
+- 07: 第 35 篇补槽位复用与 conntrack 残留时序；第 82 篇收录 ip_forward 与 nf_conntrack_max 宿主前置条件；第 40 篇承接 192.0.2.1 上的 NFS/portmapper；guest IP 固定 169.254.0.21，DNS 固定 8.8.8.8。
+- 20: SANDBOX_STORAGE_BACKEND=memory 实际装配 populate_redis 影子写（三个 Storage 实现）→ 第 13、90 篇同步；第 91 篇收录键表；第 19 篇讲 Sync() 调用方；第 53 篇承接 catalog 读侧与自动 resume。
+- 18: 到期驱动在 api/internal/orchestrator/evictor/evict.go，状态机在 sandbox/states.go（大纲 lifecycle.go 有误）；pause 产物上传异步；第 20 篇补转移键/结果键布局；第 37 篇补 pauseMu 串行化与上传异步代价；第 39 篇补 kill 后台清理失败只落日志；第 71 篇覆盖 requestTimeout 60→300s。
+- 09: 多数 nomad job 已迁到 iac/modules/job-*/jobs/（只剩 api、redis、docker-reverse-proxy、template-manager、nomad-autoscaler、clean-nfs-cache 在 provider-gcp/nomad/jobs）→ 第 63、64 篇更新路径；api 发现用 Nomad API 不用 Consul → 第 21 篇；Consul 用途：机器级 DNS、Traefik 目录、storage_kv.go 网络槽位 CAS；第 64 篇讲 template-manager scaling + nomad-nodepool-apm 与 70 分钟 kill_timeout；第 63 篇讲 file_hash 脚本分发技术债；第 38 篇呼应 no_cgroups=true。
+- 15: 无请求速率限流，只有 16 MiB 请求体上限；api 有 gRPC 服务（5009）只暴露 ResumeSandbox 供 client-proxy 唤醒；第 16 篇承接 auth.CreateAuthenticationFunc；第 21 篇讲 clusters.GRPCClient 远端连接；第 77 篇覆盖三个 HTTP 超时放宽（5→60、10→300、75→300 s）。
+- 17: 第 19 篇覆盖 maxRetries=3、maxStartingInstancesPerNode=3、best-of-K 默认 R=4/K=3/Alpha=0.5；第 77 篇把 NewVersionInfo 越界保护讲成「否则创建路径 panic」。
+- 05: 上游 2026.09 脏页位图由 FC 的 GET /dirty-memory 提供（fc/client.go dirtyMemory()），memoryInfo 只被 NoopMemory 用 → 第 37 篇定稿依据；事件循环在 userfaultfd/userfaultfd.go，uffd.go 只做握手 → 第 31 篇；FC 主动 connect 到 orchestrator 的 socket。
+- 01: 上游无 helm/（ARM 新增）；packages 13 目录 12 模块；有效 Go 约 7.8 万行（shared 1.2 万）；上游 client-proxy 无 edge API 服务端（只 proxy + health），edge spec 只生成 client，使用者是 api clusters/discovery/remote.go → 第 53、56、21 篇。
+- 14: nomad job 路径在 iac/modules/job-*/jobs/ → 第 10、64 篇修正；第 90 篇按四渠道分层；第 45 篇展开 hashingVersion 与 build-provision-version；第 77 篇引用 §3.3 解释 v1.13.1 常量后果。
+- 08: envd 走 Connect over HTTP/1.1（ForceAttemptHTTP2 false）；proxy.proto 与 openapi-edge 只有客户端；dashboard-api 不在 make generate → 第 65 篇。
+- 16: 认证在独立 module packages/auth（api/internal/middleware 无 auth）；db 侧在 packages/db/pkg/auth；第 22 篇补构建并发非原子；第 58 篇补 team_limits 视图与 addons；第 86 篇收录无盐哈希 / 明文 admin token 比较 / GET /teams 无限增建 key（技术债，注意这是上游问题不是 ARM）。
+- 12: 域名是 <port>-<sandboxID>.<domain>（无 clientID；clientID 常量 6532622b）→ 第 53、55 篇；header 定址 E2b-Sandbox-Id/Port 仅 local 模式；上游已含 Checkpoint RPC → 第 87 篇说明；第 37 篇补 pause 上传窗口。
+- 11: 无沙箱表；状态枚举 running/pausing/killing/snapshotting；build 7 原始状态经触发器归 4 组；packages/shared/pkg/models 不存在，用 db/queries/models.go 与 db/pkg/types；第 13 篇补 team_limits 读路径。
+- 13: api 不打开对象存储；orchestrator 不 import db；SNAPSHOT_CACHE_DIR 是旧路径残留（pause diff 落 DEFAULT_CACHE_DIR）→ 第 34、37 篇核实；api.hcl TEMPLATE_BUCKET_NAME="skip" 残留 → 第 64 篇；第 61 篇补 sandbox.events.stream 按需投递。
+- 10: orchestrator 5008 上 cmux 复用 gRPC 与 /health；client-proxy 目标端口常量 5007；health 端口代码默认 3003、GCP 部署 3001 → 第 91 篇记两者；第 64 篇覆盖 system 类型 job。
+- 21: shared/pkg/clusters/discovery 上游只有 nomad.go；local.go 在 api/internal/clusters/discovery；远端集群走 edge /v1/service-discovery + service-instance-id 路由；第 77 篇收录 maxInstanceSyncCallTimeout 1 s → 120 s。
+- 23: 删除模板不删产物 → 第 22 篇同步；第 22 篇讲 register_build.go 的 tag / InvalidateUnstartedTemplateBuilds；status/status_group 双列。
+- 26: 第 37 篇承接 closeHook 触发 Close 时序；第 39 篇承接 doStop 无超时等待后果；exit 是 utils.ErrorOnce 不是通道。
+- 25: 无跨重启状态恢复；orchestrator.hcl 在 iac/modules/job-orchestrator/jobs/；第 71 篇给 MAX_STARTING_INSTANCES_PER_NODE 与三个超时常量对照表；第 64 篇展开 meta.orchestrator_job_version 换节点升级。
+- 31: 第 37 篇说明 Uffd 路径 Empty 为空位图对 diff 的影响；第 32 篇承接 Prefault 的 block.Prefetch 访问类型不置脏。
+- 27: ResumeSandbox 用 utils.Promise（errgroup 只在 fc.Process.Resume 内层）；第 71 篇接用其第 6 节超时表；第 84 篇补机型/内核/存储条件；第 19 篇呼应恢复请求节点亲和性。
+- 19: ListCachedBuilds/buildCache 只写不读（缓存亲和性未接入放置）；Score/CanFit 只用 vCPU；第 77 篇覆盖 200→10000、400→1200；第 76 篇覆盖 NodeDiscovery 抽象与 skipNomadSync。
+- 28: ARM 版 socket.Wait 用 context.Background() 覆盖传入 ctx，丢失取消传播 → 第 71 篇指出；第 38 篇承接 CgroupHandle 生命周期与 memory.peak TODO；ARM diff 还含 Smt true→false、TrackDirtyPages 删除、SOCKET_WAIT_TIMEOUT_SECONDS。
+- 29: diff 链在 pause 时被压平（ToDiffHeader → 新 header 直写祖先 build ID，读代价与代数无关，老代不可删）；六个对象非五个；header Version=3 与 metadata.json CurrentVersion=2 是两套；第 30、37 篇勿重复 header 布局与合并算法。
+- 24: 第 59 篇补 sandbox_metrics_gauge 7 天与 team_metrics_* 90 天 TTL；第 60 篇补 delta temporality 与 ExportPeriod 读写耦合。
+- 32: 第 72 篇补「WP 退化 + 预取 = 差分相乘放大」；第 42 篇明确 optimize 阶段不产层只写元数据；第 37 篇量化 2 MiB 脏页粒度放大。
+- 37: pauseMu 只覆盖 Get+Remove（第 18、12 篇说的「pauseMu 串行化快照」需核对修正）；端点正确路径是 GET /memory/dirty（37 篇原写法已改）；diffcreator.go 只有 20 行；第 29 篇补 NormalizeMappings 隐含要求。
+- 36: 两套 token（traffic / envd）；第 48 篇只细化 /init 避免重复；第 54 篇承接连接池与错误页；第 77 篇说明 envd init 超时 120 s 与 ENVD_TIMEOUT=60s 叠加导致重试退化为单次。
+- 38: ARM 补丁是「关闭宿主侧记账并在 v1 上跳过初始化」非兼容实现 → 第 73 篇措辞；第 19 篇写明 R 来自 flag；第 51 篇覆盖 envd createCgroupManager 权重 PTY 200 / socat 150 / user 50；host-stats-enabled 默认 IsDevelopment。
+- 39: 第 19 篇补 placement.go 对 Unknown 的处理会误排除健康节点；第 26 篇明确 Close() 在构建路径的直接调用点。
+- 43: ARM 补丁里 busybox_1.35_arm64 / busybox_1.36.1-2_arm64 是 3611 字节 HTML 占位（下载失败）；真实二进制由 e2b-infra.spec Source1 在 %prep 覆盖 → 第 74、80 篇必须说明；第 74 篇补 adduser -disabled-password → --disabled-password 修正与 commands/user.go。
+- 41: 主文件是 builder.go（大纲写 build.go）；第 45 篇讲中间层 build ID 回收；第 46 篇讲 api 侧 1 h 轮询超时与服务端不停止的落差；第 44 篇展开 create/resume 选择规则。
+- 33: 第 28 篇提 /dev/null 占位符号链接与 Resume() 不重设 drive；第 82 篇承接 nbds_max=512 与 udev nowatch。
+- 53: ARM edge.hcl / helm edge.yaml 保留上游不读取的 EDGE_PORT / EDGE_SECRET / SERVICE_DISCOVERY_* 等变量；ENVIRONMENT=dev 使 sandbox-auto-resume 默认开启 → 第 56、78、79 篇采纳；第 55 篇不重复权限校验，链 53 §6。
+- 34: 第 13 篇 §4.4「删 TTL 最早到期项」应限定为 ttlcache 最久未访问项；无引用计数。
+- 45: build-provision-version 无 LD key 时退回用 provision.sh 正文当版本串（离线部署恒如此）→ 第 77/86 篇；第 46 篇覆盖 InitLayerFileUpload 的 present 语义。
+- 48: 第 49 篇 ARM 小节错链「第 88 篇」应为第 74 篇 → 审校修正；hostname 不在 /init 里。
+- 40: 上游 VolumeService 用 <teamID>/<volumeID> 而 nfsproxy 用 <teamID>/<volumeName>（不一致）；第 11 篇补 volumes 表；第 39 篇提 Volume 挂载不参与健康检查。
+- 49: 收尾时已修 88→67/85 错链；第 51 篇承接 socats 档与 memory.high；第 48 篇写清 WithAuthorization 仅在 token 已设时生效。
+- 47: 第 66 篇引用其 §2 环境变量表；第 84 篇区分 resume-build 与 [ResumeSandbox] 埋点口径；第 91 篇收录路径表。
+- 50: 第 52 篇覆盖 SDK ENVD_OCTET_STREAM_UPLOAD(0.5.7) vs 上游 envd 0.5.3 只处理 multipart；/files 签名鉴权。
+- 44: 构建期沙箱入口是 layer/create_sandbox.go + sandbox.go（大纲 template_build.go 只负责上传）。
+- 51: 第 86 篇收录 healthCheckTimeout 60 s 但 timeoutGetMetrics 仍 100 ms 的不一致；第 73 篇提 guest cgroup v2 缺失时 envd 静默降级 noop。
+- 54: client-proxy 两个连接数指标名实对调（上游 bug）→ 第 60/86 篇收录（注意是上游问题）；第 53 篇 §7「上游连接失败 → 502 纯文本」需限定 DefaultToPortError 为假，PermissionDenied 直接 403。
+- 42: 第 74 篇覆盖 ARM provision.sh 去掉 fuse3/iptables/git/nfs-common 对 volumes/NFS 的后果（第 40 篇也可提）；provision.sh 仍含 bash 特性。
+- 52: envd 版本门槛在 api handlers/sandbox_create.go、orchestrator metrics/sandboxes.go、layer/create_sandbox.go（不在 flags.go / sandbox_features.go）→ 第 14 篇明确 flag vs 版本门槛分工；第 51 篇与 49999 案例互链。
+- 46: 服务端无构建并发上限；第 64 篇承接 scaling/kill_timeout；第 86 篇收录 ARM 删 kill_timeout 与 LocalArtifactsRegistry.Delete() 空实现。
+- 56: edge API 服务端为闭源；ARM edge job 跑的是 client-proxy 镜像、3001 无监听、livenessProbe /health/traffic 因裸 HandlerFunc 才能过；LOCAL_CLUSTER_ENDPOINT/TOKEN 两基线都不读 → 第 86、90 篇；第 78/79/80 篇引用「当前部署无 edge API 服务端」。
+- 61: webhook 注册与投递不在 infra 仓库；第 24 篇明确 analytics collector 与事件是两套；第 39 篇点明非预期退出不发事件。
+- 57: ARM 不部署 docker-reverse-proxy，Harbor + ARTIFACTS_REGISTRY_PROVIDER=Local 替代 → 第 79/80/81 篇；第 22 篇点明 pending 构建即镜像写入窗口。
+- 58: migrator 是 api.hcl prestart，advisory lock；api 编译期版本门（get-latest-migration.sh + ldflags）；第 80 篇收 db Dockerfile/Makefile 离线化。
+- 63: start-client.sh 注释「65K block size」但实际 mkfs.xfs -b 4096；第 65 篇覆盖 build-and-upload 具体产物。
+- 67: FC main.rs 改动是把 resize_fdtable() 注释掉（非「coredump 修复」措辞）→ 第 70 篇；smt true→false 对 x86 也生效 → 第 71 篇；第 86 篇加「补丁树直接编译得坏 busybox」「bin/orchestrator 编译产物入库」；第 85 篇专节讲 Makefile 从 Docker 交叉编译改宿主 go build、Dockerfile FROM ubuntu:24.04。
+- 64: deploy.sh / env.template 是 ARM 补丁新增（上游无）→ 第 79 篇讲 envsubst 渲染与条件块删除；第 63 篇说明 loki/clickhouse 节点池由 TF 变量指定；第 86 篇收录 TEMPLATE_BUCKET_NAME="skip" 与 40234 魔数（上游技术债）。
+- 65: 镜像只打 latest；VERSION 不进产物；第 58 篇呼应 EXPECTED_MIGRATION_TIMESTAMP；第 62 篇引用 pr-tests.yml 宿主准备清单。
+- 59: sandbox_events / sandbox_host_stats 仓库内只写不读；第 60 篇说明 create_schema:false 与 goose 分工；第 14 篇补 clickhouse-batcher-* 仅启动时求值。
+- 60: SandboxLogger.Metrics() 无调用点（第 24 篇加遗留说明）；第 59 篇补 metrics_sum Null 引擎与 gauge 双写代价。
+- 55: 第 53 篇补 orchestratorProxyPort=5007 常量与错误页分类；第 56 篇采纳 ParseSandboxCatalogCreateEvent 无调用者；第 20 篇 §5 指向 55 §7。
+- 72: 第 84 篇补 x86 对照 memfile 数据；宿主内核 6.6.0_515-uffd_copy_open_tree。
+- 62: 根 make test 在完整仓库跑不通（auth 无 Makefile 等）→ 第 65 篇；ARM 改了 .github/actions/host-init/init-client.sh 并被单机离线版复用为宿主初始化脚本 → 第 80/82 篇。
+- 68: aarch64 上 smt=true 会被 FC 拒绝（SmtNotSupported）→ 第 71 篇写明硬原因；track_dirty_pages 删除是空操作；arm64 uffd-wp 6.10 进主线；第 82 篇写「宿主必须 4 KiB granule」与 hugepages-2048kB 验证命令；第 70 篇确认 persist.rs uffd 注册模式。
+- 35: 用户配置网段策略在内核里只对非 TCP 生效（第 07 篇 §6.1 补一句）；第 86 篇（上游问题一节）收录 conntrack 残留、RemoveNetwork panic、Close 竞态、idx 0 泄漏。
+- 71: 架构分支取代了 if options.KvmClock（x86 侧 envd≥0.2.11 门槛失效）；[Pool Status] 日志 %d 占位符不会被替换；第 84 篇核对 parse_report.py 里 acquire wait / start envd / envd init request / read envd response 是否有样本（fbee6fcd1 未产生这些日志）；第 27 篇 §6 加一行 ARM socket.Wait 不受请求 ctx 约束。
+- 69: 交付的 vmlinux.bin.arm 不含 0001/0002 补丁（推论）；.openeuler 是 openEuler 24.03 gcc 编的 6.6.0+；第 67 篇 §4 图「fc-kernels 配置 → vmlinux.bin.arm」对 .openeuler 不成立需微调；第 87 篇说明 0002 与内核二进制脱节。
+- 66: 三份 .env.local 含无读取方条目；PERSISTENT_VOLUME_MOUNTS os.Stat 失败即退出 → 第 90 篇收录失效条目清单。
+- 75: MinIO 哨兵 errObjectNotExist 与 storage.ErrObjectNotExist 失配、重试不重置 dst、helm orchestrator.yaml 缺 MINIO_SECRET_KEY、Local provider 下 InitLayerFileUpload 必失败 → 第 86 篇；第 13 篇 §3.4 加一句 ARM 默认 MinioBucket。
+- 76: ORCHESTRATOR_TYPE 决定发现方式；maxInstanceSyncCallTimeout 120 s 被 5 s 轮次 ctx 压住实际不生效 → 第 77、86 篇；ARM 把 api.hcl ENVIRONMENT 硬编码 "dev"；k8s NotReady 节点长期 Unhealthy 滞留；第 78 篇给四个 label 打标清单。
+- 73: ARM 新增 iac/provider-gcp/nomad/jobs/orchestrator.hcl（上游只有 iac/modules 版）；run-nomad.sh 整脚本重写；第 38 篇 §8 补「真无 v2 宿主上空目录仍会被建出」；OUTLINE 38 的「cgroup v1 兼容」措辞需改。
+- 74: 第 86 篇收录 busybox 无 ELF 校验、DefaultPlatform 不进层 hash、docker run --platform linux/amd64 未参数化；busybox_1.36.1-2_arm64 是 musl 静态且悬空。
+- 70: 分叉 FC 脏页端点的正确路径是 GET /memory/dirty（swagger 与 operations_client.go PathPattern 均如此）；第 05、31、37 篇若写成 /dirty-memory 需改；第 86 篇收录 aarch64 seccomp 缺 pread64 与 resize_fdtable() 取舍。
+- 80: template-manager.hcl 硬编码 STORAGE_PROVIDER=Local 与 .env MinioBucket 并存 → 第 75 篇后果；第 82 篇：nbd 固化与 64 KiB 页内核上大页 512 MiB 问题；第 86 篇收录 /usr/bin 二进制不随 RPM 升级、daemon.json 硬编码 IP、SELinux 非持久关闭。
+- 84: fbee6fcd1 只有 enter + 11 条 cost，acquire wait / start envd / envd init request / read envd response 来自单机离线版随 RPM 分发的补丁（准入 cap 500 是单机补丁，30 是 fbee6fcd1）→ 第 71 篇注明；第 86 篇收录 netns-exec 默认开启不校验二进制、缺 x86 对照。
+- 82: 第 86 篇收录：大页写入路径两条线不一致（.github host-init 用 sysfs，dep/init-client.sh 用 /proc）、nf_conntrack_max 缺失、SELinux 重启回滚、nbd 模块内核升级静默失效。
+- 83: 第 86 篇登记全链路明文、COPY --chown 退化、覆盖层被 pip install -U 冲掉；README 2.20.0 vs usage.md 2.15.3 不一致；JS SDK/CLI 未适配。
+- 79: install-*.sh 仍从 releases.hashicorp.com 下载（多节点形态不离线）；第 86 篇收录 env.template 无效项、auth_soft_fail、三处渲染残留（edge.hcl ${redis_tls_ca_base64}、otel 单 $、init-client.sh 缺 FIRECRACKER_VERSION → /fc-versions/v/）；第 57 篇 §9 区分单机 4 job 与 iac 9 job。
+- 81: 控制流量不经 3002（SDK 直连 :3000；parseHost 拒绝 api.e2b.app），与 deploy-docs/07 §5.1 相左；DOCKERHUB_REMOTE_REPOSITORY_URL 未配则直连 docker.io 离线必失败；daemon.json IP 硬编码与 .env 不一致 → 第 86 篇。
+- 88: overlay 双义（block Overlay vs overlayfs）在 30/43/69 篇首次出现处点一句；edge/client-proxy 在 10、56 篇有混用需统一；第 62 篇「档位」与 tier 同名不同义需换词。
+- 86: LocalArtifactsRegistry.Delete() 空实现是上游代码（非 ARM）→ 第 46 篇补一句；86 篇 5431 字可接受。
+- 91: 第 22 篇补 TemplatesBuildCache（template:build:<buildID>）；E2B_FC_NETNS_EXEC_HELPER 不在 fbee6fcd1，只在单机 hcl 与 spec 二进制 → 第 80/86 篇；第 34 篇 ensureDirs 路径数复核（makePathsAbsolute 11 项）。
+- 78: 第 64 篇 §7 job 表 filestore-cleanup 应为 clean-nfs-cache（核对）；.env BUILD_NODE_POOL=api；orchestrator CLICKHOUSE 指 127.0.0.1 但 ClickHouse 不在 default 池。
+- review 06-09: 第 45 篇失效锚点 74-template-build-on-arm.md#4-openeuler-guest-provisionsh → 45 篇审校修；clean-nfs-cache job 名为 filestore-cleanup、池为 build。
+- 77: 第 36 篇 §6「只会发出一次请求」应改为「重试降到个位数（约六次），单次上限由 10 s 客户端超时决定」（第 33–36 审校者若已结束，终审时改）；第 76 篇补 NewLocalDiscovery typed-nil 判断永不成立。
+- 终审待办：第 86 篇小节号已变（§7 继承自上游 / §8 汇总表），全书指向 86 的锚点在审校结束后统一修；第 86 篇上游问题一节可补 clean-nfs-cache 计数器分支写反、GetTemplate 命中时 <uuid> 目录永不回收、StorageDiff.Init 首步失败不 SetError（34 篇发现）。
+- review 68-72: 第 86 篇缺 seccomp pread64 与 resize_fdtable 两条 ARM 条目（若 82-87 审校未补，终审补）；第 80/84 篇未提单机准入上限 500；fc-kernels-arm/configs 顶层两份 config 是残留（第 89 篇可记）。

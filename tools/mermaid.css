@@ -1,0 +1,15 @@
+/* 本书 mermaid 图的补充样式：打包页与 figcheck 共用，两处渲染一致 */
+.mermaid .edgeLabel .labelBkg, .mermaid .edgeLabel { background: #fff; }
+.mermaid .edgeLabel p { margin: 0; padding: 1px 4px; background: #fff; }
+.mermaid .node rect, .mermaid .node polygon, .mermaid .node circle, .mermaid .node path { stroke-width: 1px; }
+.mermaid .cluster rect { rx: 6px; ry: 6px; stroke-dasharray: 4 3; }
+.mermaid .cluster-label, .mermaid .cluster .label { font-weight: 600; }
+.mermaid .flowchart-link, .mermaid .transition, .mermaid path.path { stroke-width: 1.3px; }
+.mermaid .messageText, .mermaid .noteText, .mermaid .loopText { font-size: 13px !important; }
+.mermaid .actor { stroke-width: 1px; }
+.mermaid .stateGroup rect, .mermaid .statediagram-state rect { stroke-width: 1px; }
+/* mermaid 按自己量的宽度裁 foreignObject，中文字体实际略宽会被裁掉末字：让它溢出可见 */
+.mermaid foreignObject { overflow: visible; }
+.mermaid .edgeLabel .labelBkg { width: max-content !important; max-width: none !important; }
+.mermaid .edgeLabel p { white-space: nowrap; }
+.mermaid .nodeLabel p { margin: 0; }
