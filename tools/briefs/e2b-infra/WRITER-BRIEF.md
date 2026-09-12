@@ -6,8 +6,8 @@
 
 ## 你必须先读的三份文件
 
-1. `/home/austin/projects/e2b-repo/e2b-book/docs/STYLE.md` —— 体例、术语、口径、自检清单。**逐条遵守。**
-2. `/home/austin/projects/e2b-repo/e2b-book/docs/OUTLINE.md` —— 找到你这一篇的要点（讲什么 / 代码 / 图表），
+1. `/home/austin/projects/e2b-repo/e2b-book/e2b-infra/STYLE.md` —— 体例、术语、口径、自检清单。**逐条遵守。**
+2. `/home/austin/projects/e2b-repo/e2b-book/e2b-infra/OUTLINE.md` —— 找到你这一篇的要点（讲什么 / 代码 / 图表），
    并读一遍**前后相邻篇目**的要点，避免重复、便于交叉引用。
 3. 风格样例：`/home/austin/projects/e2b-repo/e2b-infra-docs/rollback/docs/07-dirty-page-tracking.md`
    （另一本手册的一篇；读它的写法，不要引用它的内容，除非你的篇目要点明确要求）。
@@ -38,7 +38,7 @@
 - 图：mermaid 内嵌，1–3 张，节点 ≤ 25，标签用 `A["..."]` 形式，标签里不要有未转义的括号 / 引号 / 竖线；
   目录与字节布局用 ```text。
 - 交叉引用只链接 OUTLINE 里存在的文件名：`[第 27 篇 · ResumeSandbox](27-resume-sandbox.md)`。
-  目标篇已经存在于 `docs/` 时可以加小节锚点（先读它的标题确认锚点）；不存在时只链文件。
+  目标篇已经存在于 `e2b-infra/` 时可以加小节锚点（先读它的标题确认锚点）；不存在时只链文件。
 - 上游篇目：若该机制在 ARM 适配版有变化，在小结之前加 `## N. ARM 适配版的差异`，两三句 + 链接到第十部分对应篇目。
   判断依据是 ARM 补丁的 diff（用上面的 git diff 命令查你涉及的文件）。
 - 术语按 STYLE.md 第三节；版本称谓只用「上游 2026.09」「ARM 适配版」「单机离线版」。
@@ -46,14 +46,14 @@
 
 ## 交付
 
-1. 把文档写到 `/home/austin/projects/e2b-repo/e2b-book/docs/<你的文件名>`。只写这一个文件，不改别的文件。
+1. 把文档写到 `/home/austin/projects/e2b-repo/e2b-book/e2b-infra/<你的文件名>`。只写这一个文件，不改别的文件。
 2. 写完后自检：
    ```bash
    cd /home/austin/projects/e2b-repo/e2b-book/tools
-   python3 mdlinks.py ../docs/<你的文件名>
-   node mdmermaid.mjs ../docs/<你的文件名>
+   python3 mdlinks.py ../e2b-infra/<你的文件名>
+   node mdmermaid.mjs ../e2b-infra/<你的文件名>
    ```
    MISSING-FILE 对尚未写的篇目是正常的；其它问题要修掉。
-3. 统计汉字数：`python3 -c "import re,sys;t=open(sys.argv[1],encoding='utf-8').read();t=re.sub(r'\x60\x60\x60.*?\x60\x60\x60','',t,flags=re.S);t=re.sub(r'^\|.*$','',t,flags=re.M);print(len(re.findall(r'[一-鿿]',t)))" ../docs/<你的文件名>`
+3. 统计汉字数：`python3 -c "import re,sys;t=open(sys.argv[1],encoding='utf-8').read();t=re.sub(r'\x60\x60\x60.*?\x60\x60\x60','',t,flags=re.S);t=re.sub(r'^\|.*$','',t,flags=re.M);print(len(re.findall(r'[一-鿿]',t)))" ../e2b-infra/<你的文件名>`
 4. 在最终回复里给出**交付说明**（不超过 300 字）：核心论断清单、标为推论的地方、发现的与大纲不符之处、
    建议其它篇目补充或修改之处、汉字数。

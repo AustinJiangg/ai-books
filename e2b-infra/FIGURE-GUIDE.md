@@ -74,9 +74,9 @@ mermaid 的状态图对带标签的转移排布很差，多条转移汇入同一
 
 ```bash
 cd /home/austin/projects/e2b-repo/e2b-book
-tools/figcheck.sh --png /tmp/figs docs/NN-xxx.md        # 每张图一行 PASS/WARN，并输出 PNG
-node tools/mdmermaid.mjs docs/NN-xxx.md                   # 语法
-python3 tools/mdlinks.py docs/NN-xxx.md                   # 链接与锚点（改了标题就要跑）
+tools/figcheck.sh --png /tmp/figs <书目录>/NN-xxx.md        # 每张图一行 PASS/WARN，并输出 PNG
+node tools/mdmermaid.mjs <书目录>/NN-xxx.md                   # 语法
+python3 tools/mdlinks.py <书目录>/NN-xxx.md                   # 链接与锚点（改了标题就要跑）
 ```
 
 验收标准：每张图 PASS；打开 PNG 看一遍：文字全部可读、无被裁的字、边不绕远路穿过别的节点、

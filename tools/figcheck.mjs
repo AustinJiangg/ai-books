@@ -1,5 +1,5 @@
 // 图检查：用真实 chromium + 本书的 mermaid 主题渲染 md 里的每张 mermaid 图，
-// 输出自然尺寸、重叠数、溢出数，并按 docs/FIGURE-GUIDE.md 的阈值给出 PASS / WARN。
+// 输出自然尺寸、重叠数、溢出数，并按各书 FIGURE-GUIDE.md 的阈值给出 PASS / WARN。
 // 用法: node figcheck.mjs [--png <目录>] <md 文件或目录>...
 // 环境: 若系统缺 libnss3 等，先 export LD_LIBRARY_PATH=<解开的 deb 库目录>（见 FIGURE-GUIDE）
 import fs from 'node:fs'; import path from 'node:path';

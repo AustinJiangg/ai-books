@@ -1,35 +1,53 @@
-# e2b-book —— e2b 服务端基础设施技术手册
+# e2b-book —— e2b 相关技术手册
 
-一本关于 **e2b 服务端基础设施**（[e2b-dev/infra](https://github.com/e2b-dev/infra)，tag `2026.09`）
-及其 **aarch64（鲲鹏 / openEuler）适配版**的教材式技术手册。
+这个仓库放 **e2b 相关的教材式技术手册**，每本书一个目录，各自独立编号、独立版本、独立打包件。
+工具链（检查、打包、mermaid 主题）共用，在 `tools/`。
+
+| 书 | 目录 | 讲什么 | 打包件 |
+|---|---|---|---|
+| e2b 服务端基础设施技术手册 | [`e2b-infra/`](e2b-infra/) | [e2b-dev/infra](https://github.com/e2b-dev/infra) tag `2026.09` 及其 aarch64（鲲鹏 / openEuler）适配版；入口 [`e2b-infra/README.md`](e2b-infra/README.md) | `dist/e2b-infra.html` |
+| Firecracker 技术手册 | [`firecracker/`](firecracker/) | 上游 Firecracker v1.12.1、e2b 定制版、ARM 适配版与 checkpoint / restore 扩展四层的代码讲解；入口 [`firecracker/README.md`](firecracker/README.md) | `dist/firecracker.html` |
+
+每本书的目录里固定有四个编写用文件：`README.md`（导读、目录、版本）、`OUTLINE.md`（编写计划与每篇要点）、
+`STYLE.md`（写作规约）、`FIGURE-GUIDE.md`（图的规约）。正文是 `NN-xxx.md`。
 
 | 路径 | 内容 |
 |---|---|
-| [`docs/`](docs/) | 正文，九十余篇；入口是 [`docs/README.md`](docs/README.md) |
-| [`docs/OUTLINE.md`](docs/OUTLINE.md) | 编写计划：篇目、每篇要点、代码基线、编写流程 |
-| [`docs/STYLE.md`](docs/STYLE.md) | 写作规约：口径、术语、体例、自检清单 |
-| [`docs/FIGURE-GUIDE.md`](docs/FIGURE-GUIDE.md) | 图的规约：尺寸阈值、各类图的画法、检查与验收 |
-| [`tools/`](tools/) | 链接 / 锚点检查（`mdlinks.py`）、mermaid 语法检查（`mdmermaid.mjs`）、图的渲染检查（`figcheck.sh`，真实 chromium）、单文件 HTML 打包（`build_docs_html.py`）、mermaid 主题（`mermaid-config.json` / `mermaid.css`）、编写 / 审校 / 图修订简报 |
-| `dist/`（不入库） | 打包产物 `e2b-book.html`：单文件、离线可读、mermaid 内联渲染、图可点击放大、按部分折叠的目录、跨篇链接改写为页内锚点 |
+| [`tools/`](tools/) | 链接 / 锚点检查（`mdlinks.py`）、mermaid 语法检查（`mdmermaid.mjs`）、图的渲染检查（`figcheck.sh`，真实 chromium）、单文件 HTML 打包（`build_docs_html.py`）、mermaid 主题（`mermaid-config.json` / `mermaid.css`） |
+| [`tools/briefs/`](tools/briefs/) | 给编写 / 审校 / 图修订子任务的简报，按书分目录；`FIGURE-FIXER-BRIEF.md` 各书共用 |
+| `dist/`（不入库） | 打包产物：单文件、离线可读、mermaid 内联渲染、图可点击放大、按部分折叠的目录、跨篇链接改写为页内锚点 |
 
-与本仓库其它文档的关系：
+与本仓库之外其它文档的关系：
 
-- checkpoint / restore（高频快速回滚）有独立的手册：[`../e2b-infra-docs/rollback/docs/`](../e2b-infra-docs/rollback/docs/)。
-  本书第 87 篇给概览与入口，不重复。
+- checkpoint / restore（高频快速回滚）在 orchestrator 一侧的设计与测试有独立的手册：
+  [`../e2b-infra-docs/rollback/docs/`](../e2b-infra-docs/rollback/docs/)。e2b 手册第 87 篇给概览与入口；
+  Firecracker 手册第十一部分讲 Firecracker 一侧的实现，与那本手册分工不重复。
 - 单机离线部署的**操作手册**是 [`../e2b-infra/single-node-offline-deploy.md`](../e2b-infra/single-node-offline-deploy.md)，
-  **逐脚本讲解**在 [`../e2b-infra/deploy-docs/`](../e2b-infra/deploy-docs/)。本书第 80–82 篇讲原理，操作步骤链接过去。
+  **逐脚本讲解**在 [`../e2b-infra/deploy-docs/`](../e2b-infra/deploy-docs/)。
 
-重新生成打包件（需要 `markdown-it-py` 与 rollback 手册 `slides/node_modules` 里的 mermaid）；改过图之后先跑 `tools/figcheck.sh docs` 确认全部 PASS：
+## 打包
 
-```bash
-python3 tools/build_docs_html.py docs ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/e2b-book.html
-```
-
-当前版本、日期与修订记录见 [`docs/README.md`](docs/README.md) 顶部与「版本」节；打包脚本从那里读取版本号。
-
-发布：交付件不入库，放在 GitHub Releases。每个版本打同名 tag，把 `dist/e2b-book.html` 作为附件上传：
+需要 `markdown-it-py` 与 rollback 手册 `slides/node_modules` 里的 mermaid。改过图之后先跑 `tools/figcheck.sh <书目录>` 确认全部 PASS：
 
 ```bash
-git tag -a vX.Y.Z -m "e2b 服务端基础设施技术手册 vX.Y.Z" && git push origin vX.Y.Z
-gh release create vX.Y.Z dist/e2b-book.html --title "vX.Y.Z · YYYY-MM-DD" --notes "改动摘要"
+python3 tools/build_docs_html.py e2b-infra ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/e2b-infra.html
+python3 tools/build_docs_html.py firecracker ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/firecracker.html
 ```
+
+书名、版本、日期与修订记录都在各书 `README.md` 顶部与「版本」节；打包脚本从那里读取。
+
+## 发布
+
+交付件不入库，放在 GitHub Releases。每本书独立发布：tag 与 Release 名带书的前缀，把该书的打包件作为附件上传：
+
+```bash
+git tag -a e2b-infra-vX.Y.Z -m "e2b 服务端基础设施技术手册 vX.Y.Z" && git push origin e2b-infra-vX.Y.Z
+gh release create e2b-infra-vX.Y.Z dist/e2b-infra.html --title "e2b-infra vX.Y.Z · YYYY-MM-DD" --notes "改动摘要"
+```
+
+```bash
+git tag -a firecracker-vX.Y.Z -m "Firecracker 技术手册 vX.Y.Z" && git push origin firecracker-vX.Y.Z
+gh release create firecracker-vX.Y.Z dist/firecracker.html --title "firecracker vX.Y.Z · YYYY-MM-DD" --notes "改动摘要"
+```
+
+早期的 `v0.1.5` 及之前的 tag / Release 属于 e2b 手册（当时仓库只有这一本书）。

@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""把 e2b-book/docs 整套文档打成一个自包含的单文件 HTML。
+"""把 e2b-book 下一本书的目录（如 e2b-infra/、firecracker/）打成一个自包含的单文件 HTML。
 
-用法: python3 build_docs_html.py <docs 目录> <mermaid.min.js> <输出 html>
+用法: python3 build_docs_html.py <书目录> <mermaid.min.js> <输出 html>
+书名取自 <书目录>/README.md 的一级标题；版本、日期、署名取自其下的信息行。
 
 产物特点：双击即看，无需任何工具；mermaid 内联渲染；三张 SVG 嵌进附录；
 所有跨文档链接与锚点改写成页内跳转，因此永远不会断。
@@ -18,12 +19,16 @@ from markdown_it import MarkdownIt
 DOCS_DIR, MERMAID_JS, OUT = sys.argv[1:4]
 
 
-# 文档版本、日期与署名：唯一来源是 docs/README.md 顶部的信息行「> **vX.Y.Z** · YYYY-MM-DD · 作者」
+# 书名、版本、日期与署名：唯一来源是 <书目录>/README.md 顶部的一级标题与信息行「> **vX.Y.Z** · YYYY-MM-DD · 作者」
 _readme_head = open(os.path.join(DOCS_DIR, 'README.md'), encoding='utf-8').read(2000)
 _m = re.search(r'^>\s*\*\*(v\d+\.\d+\.\d+)\*\*\s*·\s*(\d{4}-\d{2}-\d{2})\s*·\s*(.+?)\s*$', _readme_head, re.M)
 if not _m:
-    sys.exit('docs/README.md 顶部缺少「> **vX.Y.Z** · YYYY-MM-DD · 作者」信息行')
+    sys.exit('README.md 顶部缺少「> **vX.Y.Z** · YYYY-MM-DD · 作者」信息行')
 DOC_VERSION, DOC_DATE, DOC_AUTHOR = _m.groups()
+_t = re.search(r'^#\s+(.+?)\s*$', _readme_head, re.M)
+if not _t:
+    sys.exit('README.md 顶部缺少一级标题（书名）')
+BOOK_TITLE = _t.group(1)
 
 
 def slug(t):
@@ -69,7 +74,7 @@ md = MarkdownIt('commonmark').enable(['table', 'strikethrough'])
 files = collect()
 known = {f for f in files}
 
-# ── 部分结构：从 docs/README.md 的「### 第X部分」与其下表格里的文件名得到 文件 → 部分 ──
+# ── 部分结构：从 README.md 的「### 第X部分」与其下表格里的文件名得到 文件 → 部分 ──
 part_of, parts = {}, []
 readme = open(os.path.join(DOCS_DIR, 'README.md'), encoding='utf-8').read() if 'README.md' in files else ''
 cur = None
@@ -401,13 +406,13 @@ doc = f"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>e2b 服务端基础设施技术手册 {DOC_VERSION}</title>
+<title>{BOOK_TITLE} {DOC_VERSION}</title>
 <style>{CSS}</style>
 </head>
 <body>
 <div id="layout">
 <nav id="sidebar">
-  <h2>e2b 服务端基础设施技术手册</h2>
+  <h2>{BOOK_TITLE}</h2>
   <div class="sub">{DOC_VERSION} · {DOC_DATE} · {DOC_AUTHOR}<br>
   {n_docs} 篇 · 约 {total_chars/10000:.0f} 万字 · 单文件离线版</div>
   <input id="filter" type="search" placeholder="过滤篇目…" autocomplete="off">
