@@ -36,3 +36,41 @@
 - 23 → 40 / 19：设备 Persist 引用「地址精确、中断号沿用」；FDT `create_devices_node()` 按 addr 排序的理由。
 - 26 → 27：block 设备不用 `IoVecBuffer`（使用者只有 net、rng、vsock），27 篇避开 iovec 叙述。
 - 22：e2b orchestrator 不传 CPU 模板，鲲鹏上寄存器向量为空；V1N1 无机型检查。
+- 71 → 64 / 73：`VcpuEvent::RestoreState` 文档注释残留「flag 选择两条路线」但事件不带标志（技术债清单）；错误命名沿用（`UnexpectedVcpuResponse`、`SaveVcpuState`）73 篇错误表要一致；seccomp 缺规则后果是 SIGSYS → BadSyscall 进程退出（不是 Faulted）。
+- 70 ↔ 72：位图 / 文件偏移依赖「区域切分不变」，拓扑校验动机与 70 §3 互链。
+- 52 → 51：`/memory` 没有 Paused 检查（与 52 不同）；`get_memory_info()` 用跨区域连续 `global_page_idx`，而 `get_dirty_memory()` 按区域各自 div_ceil(64) 拼接，区域页数非 64 倍数时两张位图错位——51 篇要写明。
+- 52 → 55：a41d3fb 的 swagger 没有 `/memory/dirty`（后续提交 827b783 才补），55 篇确认并写。
+- 52 → 49：`HugePageConfig::None` 写死 4096 而非 sysconf；e2b orchestrator 把 `track_dirty_pages` 固定 false。
+- 53 → 39 / 55：8fc760f 没改 `examples/uffd/` 示例处理器，配上游示例 handler 判据会静默失效。53 → 57：直接引用 53 §6 三处 cfg 清单。
+- 73 → 69 / 76：swagger `SnapshotRollbackParams` 仍列 `vcpu_route`，而 `RollbackSnapshotParams` 带 deny_unknown_fields，带该字段会 400（文档债）；`timings.memory` 起点在取位图之前；`Devices` 错误类覆盖串口与 VMGenID。
+- 73 → 30：30 篇 §6 末句「第十一部分」应为「第十部分」（全书检查一遍「第十一部分」）。
+- 73 → 65 / 76：`InstanceInfo` 同时有 `dirty_tracking` 与 `state: Faulted`，76 总表收录。
+- 72：balloon / vsock 在回滚中被整体拒绝，不发 TRANSPORT_RESET（大纲有误）。
+- 61 → 56 / 78：config 差异实测：arm64 vs CI aarch64 只 21 行 / 13 个选项，x86_64 侧 88 行（大纲数字有误）；**v0.0.8 的 arm64 产物是 ELF vmlinux，Firecracker aarch64 只加载 PE，v0.0.9（7fa4f34）改 `make Image` 才可用**——56 篇若说 v0.0.8 arm64 内核可用要加限定，78 篇内核行记「部署用 v0.0.12，config 同 v0.0.8」。
+- 61 → 63：内核命令行分支在 `fc/process.go`（不是 kernel_args.go），仅 x86 追加 pci=off / i8042.* / clocksource；guest 串口是 8250（ns16550a），console=ttyS0 正确。
+- 66：绕开 kvm-ioctls 的真实原因是 `VmFd::enable_cap()` 带 cfg(x86_64/s390x/powerpc)，aarch64 没编译出来（大纲说法有误）。
+- 66 → 73 / 62：aarch64 vmm 过滤器里没有 KVM_ENABLE_CAP，HDBSS 启用发生在装过滤器之前（与 uffd 同类口径）。
+- 66 → 69 / 73：`create_snapshot` 拒绝 Faulted 走 `VmmActionError::NotSupported`。
+- 66 → 72：`validate_topology()` 对 balloon / vsock 双向拒绝；vhost-user 在校验阶段即被挡。
+- 66 → 67：sidecar 在 memfile `flush/sync_all` 之前写并单独 sync_all，顺序要点明。
+- 50：orchestrator 用 `process_vm_readv`（不是 /proc/pid/mem）；`InstanceInfo.memory_regions` 三处构造都是 None 且 swagger 无该属性，`GET /` 返回契约外 null 字段。
+- 51：`/memory` 不强制 Paused；`mincore_bitmap()` 与 `get_memory_info()` 内联逻辑重复（保守规则改一处要改两处，52 / 65 注意）。
+- 49–51 → 44：三个新端点共用 `get_api_requests.instance_info_count`，metrics 分不清来源。
+- 63 → 57 / 65：ARM orchestrator 基线（fbee6fcd1）`setMachineConfig()` 不发 `track_dirty_pages`、`loadSnapshot` 传 `EnableDiffSnapshots: false`；`FC_TRACK_DIRTY_PAGES=true` 属于 checkpoint 部署套的补丁，不在这一基线——57 / 65 口径统一。
+- 63 → 43：43 篇第 8 节补「cgroup 在 ARM 部署里也没有接手」（`CLONE_INTO_CGROUP` 被注释、cgroup v2 缺失降级为空实现）。
+- 62 → 73：四条 vCPU ioctl 的 val 与位域分解在 62 篇，73 直接引用。
+- 62：x86 表也没有 PIO 类系统调用，两表差异只在 ioctl 请求码（大纲说法有误）。
+- 69 → 70 / 71 / 73：阶段编号按 rollback.rs 注释 Phase 1–10（取位图=3，restore_dirty=4）；所有回滚错误 HTTP 都是 400；71 展开两种 vCPU 做法（不引数字代号）。
+- 69 → 76：swagger 与实现不一致：`vcpu_route` 残留、`/snapshot/save-dirty-bitmap` 缺失；总表以代码为准并标注。
+- 68 → 52：三接口对比表口径（huge_pages 粒度、区域拼接位号、pagemap + mincore）与 52 一致。
+- 67：`DirtyBitmapWithoutMemFile` 检查在写 vmstate 之后，失败留下孤立 vmstate；sidecar 失败则整轮作废（脏位图已清零）。
+- 68：`track_dirty_pages` 关闭时静默返回全 0 位图；`std::fs::write` 不 fsync。
+- 56 ↔ 61：56 篇把「v0.0.8 arm64 build.sh 产 ELF、FC aarch64 用 PE」标为推论；61 篇已核实（v0.0.9 7fa4f34 改 make Image）。审校时把 56 的推论改成事实并链 61。
+- 56：config 差异实测 x86 88 行 / arm64 21 行，overlayfs/ext4/xfs/cgroup 上游 CI config 本来就开；`docs/kernel-policy.md` 说 x86 需 CONFIG_PCI 与自带 config 不符。
+- 55：`test_shut_down.py` 删断言与 `tools/test.sh` 改动来自上游 main cherry-pick（dafee92a9），不是分叉的维护姿态；五个上游提交只改 tests/。
+- 54：新增 test_api.py 用例不覆盖无 memfile 的 create 与 /memory/dirty；e2b 实测 track_dirty_pages=false、Full。
+- 56 → 62：aarch64 两处不对称（seccomp 缺 pread64、config 缺 nftables/TUN/FUSE/landlock）口径统一。
+- 57 → 52 / 78：aarch64 上判据退化无错误码 / 日志 / metrics，只能比对两张位图发现；78 重放清单收 8fc760f61。
+- 58 → 62 / 63：命令行无 --seccomp-filter / --no-seccomp 故默认过滤器生效；`init-client.sh` 拷贝前 rm -f 避 ETXTBSY。
+- 59 → 24 / 72：x86 reboot 经 i8042 PIO、aarch64 经 PSCI SystemEvent 终点相同；FDT 设备节点按 MMIO 地址排序。
+- 59：两架构都支持 gdb（大纲把它列为差异有误）。
