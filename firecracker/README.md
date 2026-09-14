@@ -1,17 +1,17 @@
 # Firecracker 技术手册
 
-> **v0.1.0** · 2026-09-12 · 江路路（j30059180）
+> **v0.1.0** · 2026-09-14 · 江路路（j30059180）
 
 一本关于 **Firecracker**（[firecracker-microvm/firecracker](https://github.com/firecracker-microvm/firecracker)，tag `v1.12.1`）
-的教材式技术手册，并逐层讲解 **e2b 定制版**、**aarch64（鲲鹏 / openEuler）适配版**与本项目的
-**checkpoint / restore 扩展版**在它之上改了什么、为什么改、代价是什么。
+的教材式技术手册，并逐层讲解 **e2b 定制版**与本项目的 **aarch64（鲲鹏 / openEuler）适配版**（含 checkpoint / restore 扩展）
+在它之上改了什么、为什么改、代价是什么。也讲 guest 内核的配置，但不讲内核源码。
 
 Firecracker 是 e2b 沙箱的执行引擎：一个进程一台 microVM，KVM 之上的极简 VMM。e2b 需要它做两件上游没有的事 ——
 让宿主进程直接读 guest 内存、按页判断哪些内存值得导出；本项目又在 aarch64 上让它跑起来，并加了
 原地回滚与硬件脏页跟踪，使暂停的成本正比于改动量、恢复不必重建进程。全书先把上游讲透（进程与控制面、
 内存与 vCPU、设备、快照、安全），再按版本谱系一层层讲改动。
 
-未特别说明处，全书讲的都是**上游 v1.12.1**；三层改动分别集中在第九、第十、第十一部分。
+未特别说明处，全书讲的都是**上游 v1.12.1**；e2b 定制版与 ARM 适配版的改动分别集中在第九、第十部分。
 版本称谓与术语见 [`STYLE.md`](STYLE.md)，图的画法见 [`FIGURE-GUIDE.md`](FIGURE-GUIDE.md)，编写计划见 [`OUTLINE.md`](OUTLINE.md)。
 
 ---
@@ -23,11 +23,11 @@ Firecracker 是 e2b 沙箱的执行引擎：一个进程一台 microVM，KVM 之
 | 想先看个全貌 | **00 → 01** |
 | 不熟悉 KVM / virtio / Rust 系统编程 | **02 → 03 → 04 → 05**，然后 **07 → 11 → 12** |
 | 要接手 Firecracker 代码的工程师 | **07 → 12**，然后 **13 → 15 → 25 → 26 → 36 → 37 → 38**，再按部补全 |
-| 只关心快照与内存 | **13 → 14 → 36 → 37 → 38 → 39 → 40**，然后 **49 → 53** |
-| 做 aarch64 适配与鲲鹏部署 | **18 → 19 → 57 → 58 → 59 → 61 → 62** |
-| 做 checkpoint / restore 后续开发 | **14 → 37 → 40**，然后 **63 → 72** 全部 |
-| 要升级 Firecracker 版本 | **01 → 55 → 77**，再按 77 的重放清单读对应篇 |
-| 评审 / 决策者 | **00 → 49 → 63** |
+| 只关心快照与内存 | **13 → 14 → 36 → 37 → 38 → 39 → 40**，然后 **49 → 54** |
+| 做 aarch64 适配与鲲鹏部署 | **18 → 19**，然后 **57 → 63** |
+| 做 checkpoint / restore 后续开发 | **14 → 37 → 40 → 53 → 57**，然后 **64 → 73** 全部 |
+| 要升级 Firecracker 版本 | **01 → 55 → 78**，再按 78 的重放清单读对应篇 |
+| 评审 / 决策者 | **00 → 49 → 57 → 64** |
 
 ---
 
@@ -38,7 +38,7 @@ Firecracker 是 e2b 沙箱的执行引擎：一个进程一台 microVM，KVM 之
 | # | 文档 | 内容 |
 |---|---|---|
 | 00 | [`00-overview.md`](00-overview.md) | 全书导读与 Firecracker 总览 |
-| 01 | [`01-lineage-and-repo-map.md`](01-lineage-and-repo-map.md) | 四层版本谱系与仓库地图 |
+| 01 | [`01-lineage-and-repo-map.md`](01-lineage-and-repo-map.md) | 三层版本谱系与仓库地图 |
 
 ### 第一部分　预备知识
 
@@ -134,55 +134,51 @@ Firecracker 是 e2b 沙箱的执行引擎：一个进程一台 microVM，KVM 之
 | 49 | [`49-why-e2b-forked.md`](49-why-e2b-forked.md) | 为什么分叉：e2b 的内存管线要什么 |
 | 50 | [`50-memory-mappings-api.md`](50-memory-mappings-api.md) | /memory/mappings：把 guest 内存的宿主地址交出去 |
 | 51 | [`51-memory-resident-empty-api.md`](51-memory-resident-empty-api.md) | /memory：常驻页与零页位图 |
-| 52 | [`52-memory-dirty-api.md`](52-memory-dirty-api.md) | /memory/dirty：pagemap 与 uffd-wp 位的脏页判据 |
-| 53 | [`53-optional-memfile-snapshot.md`](53-optional-memfile-snapshot.md) | 可选 memfile 的快照与 e2b 的消费方式 |
-| 54 | [`54-seccomp-build-upload-changes.md`](54-seccomp-build-upload-changes.md) | seccomp、构建与发布脚本的改动 |
-| 55 | [`55-merged-upstream-fixes-and-afterlife.md`](55-merged-upstream-fixes-and-afterlife.md) | 合入的上游修复与分叉的后续 |
+| 52 | [`52-memory-dirty-api.md`](52-memory-dirty-api.md) | /memory/dirty：pagemap 与写保护位的脏页判据 |
+| 53 | [`53-uffd-write-protection.md`](53-uffd-write-protection.md) | uffd 写保护：让脏页判据成立的最后一环 |
+| 54 | [`54-optional-memfile-snapshot.md`](54-optional-memfile-snapshot.md) | 可选 memfile 的快照与 e2b 的暂停流程 |
+| 55 | [`55-seccomp-build-upload-and-upstream-fixes.md`](55-seccomp-build-upload-and-upstream-fixes.md) | seccomp、构建发布脚本与合入的上游修复 |
+| 56 | [`56-guest-kernel-requirements-and-e2b-configs.md`](56-guest-kernel-requirements-and-e2b-configs.md) | guest 内核：Firecracker 的要求与 e2b 的内核配置 |
 
 ### 第十部分　ARM 适配版
 
 | # | 文档 | 内容 |
 |---|---|---|
-| 56 | [`56-building-and-running-on-aarch64.md`](56-building-and-running-on-aarch64.md) | 在 aarch64 上构建与运行 |
-| 57 | [`57-aarch64-vs-x86-64-runtime-paths.md`](57-aarch64-vs-x86-64-runtime-paths.md) | aarch64 与 x86_64 运行路径的差异清单 |
-| 58 | [`58-kunpeng-openeuler-host.md`](58-kunpeng-openeuler-host.md) | 鲲鹏 950 与 openEuler 宿主环境 |
-| 59 | [`59-guest-kernel-fc-kernels.md`](59-guest-kernel-fc-kernels.md) | guest 内核：fc-kernels 与 arm64 配置 |
-| 60 | [`60-guest-kernel-patches.md`](60-guest-kernel-patches.md) | guest 内核补丁：balloon ACK 与 overlayfs 热切换 |
-| 61 | [`61-aarch64-seccomp-filter.md`](61-aarch64-seccomp-filter.md) | aarch64 的 seccomp 过滤器 |
-| 62 | [`62-integration-with-e2b-infra.md`](62-integration-with-e2b-infra.md) | 与 e2b infra 的对接：版本目录、内核参数与 RPM |
-
-### 第十一部分　checkpoint 扩展版
-
-| # | 文档 | 内容 |
-|---|---|---|
-| 63 | [`63-checkpoint-extension-overview.md`](63-checkpoint-extension-overview.md) | 扩展总览：目标、四个扩展点与分工 |
-| 64 | [`64-dirty-tracking-backend.md`](64-dirty-tracking-backend.md) | 脏页跟踪后端：KVM 写保护与 HDBSS |
-| 65 | [`65-hdbss.md`](65-hdbss.md) | HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力 |
-| 66 | [`66-dirty-bitmap-sidecar.md`](66-dirty-bitmap-sidecar.md) | dirty_bitmap_path：sidecar 与 FCDB 格式 |
-| 67 | [`67-save-dirty-bitmap-api.md`](67-save-dirty-bitmap-api.md) | PUT /snapshot/save-dirty-bitmap |
-| 68 | [`68-rollback-api-and-phases.md`](68-rollback-api-and-phases.md) | PUT /snapshot/rollback：阶段、参数与响应 |
-| 69 | [`69-rollback-memory.md`](69-rollback-memory.md) | 回滚的内存写回 |
-| 70 | [`70-rollback-vcpu-and-gic.md`](70-rollback-vcpu-and-gic.md) | 回滚的 vCPU 与 GIC |
-| 71 | [`71-rollback-devices.md`](71-rollback-devices.md) | 回滚的设备状态 |
-| 72 | [`72-failure-model-faulted-and-seccomp.md`](72-failure-model-faulted-and-seccomp.md) | 失败模型、Faulted 状态与 seccomp 白名单 |
+| 57 | [`57-which-fork-commit-and-uffd-wp.md`](57-which-fork-commit-and-uffd-wp.md) | 迁入的版本：54a1c1a 与被放弃的 uffd 写保护 |
+| 58 | [`58-building-and-running-on-aarch64.md`](58-building-and-running-on-aarch64.md) | 在 aarch64 上构建与运行 |
+| 59 | [`59-aarch64-vs-x86-64-runtime-paths.md`](59-aarch64-vs-x86-64-runtime-paths.md) | aarch64 与 x86_64 运行路径的差异清单 |
+| 60 | [`60-kunpeng-openeuler-host.md`](60-kunpeng-openeuler-host.md) | 鲲鹏 950 与 openEuler 宿主环境 |
+| 61 | [`61-guest-kernel-on-arm.md`](61-guest-kernel-on-arm.md) | ARM 上的 guest 内核：arm64 配置与部署中的内核文件 |
+| 62 | [`62-aarch64-seccomp-filter.md`](62-aarch64-seccomp-filter.md) | aarch64 的 seccomp 过滤器 |
+| 63 | [`63-integration-with-e2b-infra.md`](63-integration-with-e2b-infra.md) | 与 e2b infra 的对接：版本目录、内核参数与 RPM |
+| 64 | [`64-checkpoint-extension-overview.md`](64-checkpoint-extension-overview.md) | checkpoint / restore 扩展总览：目标、四个扩展点与分工 |
+| 65 | [`65-dirty-tracking-backend.md`](65-dirty-tracking-backend.md) | 脏页跟踪后端：KVM 写保护与 HDBSS |
+| 66 | [`66-hdbss.md`](66-hdbss.md) | HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力 |
+| 67 | [`67-dirty-bitmap-sidecar.md`](67-dirty-bitmap-sidecar.md) | dirty_bitmap_path：sidecar 与 FCDB 格式 |
+| 68 | [`68-save-dirty-bitmap-api.md`](68-save-dirty-bitmap-api.md) | PUT /snapshot/save-dirty-bitmap |
+| 69 | [`69-rollback-api-and-phases.md`](69-rollback-api-and-phases.md) | PUT /snapshot/rollback：阶段、参数与响应 |
+| 70 | [`70-rollback-memory.md`](70-rollback-memory.md) | 回滚的内存写回 |
+| 71 | [`71-rollback-vcpu-and-gic.md`](71-rollback-vcpu-and-gic.md) | 回滚的 vCPU 与 GIC |
+| 72 | [`72-rollback-devices.md`](72-rollback-devices.md) | 回滚的设备状态 |
+| 73 | [`73-failure-model-faulted-and-seccomp.md`](73-failure-model-faulted-and-seccomp.md) | 失败模型、Faulted 状态与 seccomp 白名单 |
 
 ### 附录
 
 | # | 文档 | 内容 |
 |---|---|---|
-| 73 | [`73-glossary.md`](73-glossary.md) | 术语表 |
-| 74 | [`74-code-map.md`](74-code-map.md) | 代码地图：crate、模块与篇目 |
-| 75 | [`75-api-reference.md`](75-api-reference.md) | API 端点总表 |
-| 76 | [`76-config-cli-env-metrics-reference.md`](76-config-cli-env-metrics-reference.md) | 配置项、命令行参数、环境变量与 metrics 总表 |
-| 77 | [`77-layer-diff-tables.md`](77-layer-diff-tables.md) | 四层差异总表（文件级） |
-| 78 | [`78-reading-upstream-code.md`](78-reading-upstream-code.md) | 阅读上游代码的方法与常见问题 |
+| 74 | [`74-glossary.md`](74-glossary.md) | 术语表 |
+| 75 | [`75-code-map.md`](75-code-map.md) | 代码地图：crate、模块与篇目 |
+| 76 | [`76-api-reference.md`](76-api-reference.md) | API 端点总表 |
+| 77 | [`77-config-cli-env-metrics-reference.md`](77-config-cli-env-metrics-reference.md) | 配置项、命令行参数、环境变量与 metrics 总表 |
+| 78 | [`78-layer-diff-tables.md`](78-layer-diff-tables.md) | 三层差异总表（文件级） |
+| 79 | [`79-reading-upstream-code.md`](79-reading-upstream-code.md) | 阅读上游代码的方法与常见问题 |
 
 ---
 
 ## 相关手册
 
 - [e2b 服务端基础设施技术手册](../e2b-infra/README.md)：Firecracker 的调用方（orchestrator）怎么用它；第 03、28、31、37、70 篇与本书关系最密切。
-- [checkpoint / restore 手册](../../e2b-infra-docs/rollback/docs/README.md)：本书第十一部分所讲扩展的设计动机、orchestrator 侧实现、测试与性能。
+- [checkpoint / restore 手册](../../e2b-infra-docs/rollback/docs/README.md)：本书第十部分 checkpoint / restore 扩展的设计动机、orchestrator 侧实现、测试与性能。
 
 ---
 
@@ -190,7 +186,7 @@ Firecracker 是 e2b 沙箱的执行引擎：一个进程一台 microVM，KVM 之
 
 | 版本 | 日期 | 说明 |
 |---|---|---|
-| v0.1.0 | 2026-09-12 | 初版：79 篇（00–78） |
+| v0.1.0 | 2026-09-14 | 初版：80 篇（00–79） |
 
 修订规则：每次改动默认修订号加一（最后一位），日期精确到日；正文有实质改动才升次版本号（v0.2.0）。
 版本与日期只在本文件顶部的信息行维护一处，打包脚本从这里读取。

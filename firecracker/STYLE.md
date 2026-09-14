@@ -12,7 +12,7 @@
 
 一本关于 **Firecracker** 的教材：这个 VMM（virtual machine monitor）由哪些部件构成、每个部件怎么工作、
 为什么这样设计、每个决定的代价是什么；e2b 为了自己的内存管线在它上面改了什么；
-把它搬到 aarch64（鲲鹏 / openEuler）时改了什么；本项目为了 checkpoint / restore 又扩展了什么。
+把它搬到 aarch64（鲲鹏 / openEuler）并为 checkpoint / restore 扩展时又改了什么。
 
 对标的质量：**可以出版的计算机系统教材**，读者是美国顶级大学计算机专业的本科高年级与研究生。
 他们懂操作系统、体系结构与系统编程的基本概念，但不一定接触过 KVM、virtio、Rust 系统编程或 Firecracker。
@@ -33,27 +33,29 @@
 
 ## 二、版本与称谓口径
 
-全书涉及**四层**代码基线，一层叠一层。称谓固定，不得混用：
+全书涉及**三层**代码基线，一层叠一层。称谓固定，不得混用：
 
 | 称谓 | 指什么 | 代码位置（编写时用） |
 |---|---|---|
 | **上游 v1.12.1** | firecracker-microvm/firecracker 在 tag `v1.12.1` 的代码（commit `d990331f7`） | `tmp/e2b-book-src/fc-upstream/` |
-| **e2b 定制版** | e2b-dev/firecracker 分支 `firecracker-v1.12-direct-mem` 的 commit `54a1c1a`：在上游 v1.12.1 之上的 26 个提交，加了内存查询 API、可选 memfile 的快照、构建脚本，并合入几处上游 v1.12 分支的修复 | `tmp/e2b-book-src/fc-e2b/`；差异：`git -C tmp/e2b-book-src/fc-e2b diff v1.12.1 54a1c1a -- <path>` |
-| **ARM 适配版** | 把 e2b 定制版搬进 KASandbox 仓库并在 aarch64 / openEuler 上构建运行的形态（KASandbox commit `b8e85c3` 的 `firecracker/` 目录）；Firecracker 源码改动很小，实质内容是 aarch64 代码路径、aarch64 构建、以及 fc-kernels 的 arm64 guest 内核 | `tmp/e2b-book-src/kasandbox-arm/firecracker/`、`fc-kernels-arm/`；差异：`git -C KASandbox diff 9e880db b8e85c3 -- firecracker` |
-| **checkpoint 扩展版** | 在 ARM 适配版之上为 checkpoint / restore 加的扩展（KASandbox_0904 分支 `deltabox` 的 commit `56c8ce3`）：HDBSS 脏页跟踪、脏位图 sidecar、`PUT /snapshot/rollback`、`PUT /snapshot/save-dirty-bitmap` | `tmp/e2b-book-src/kasandbox-ckpt/firecracker/`；差异：`git -C KASandbox_0904 diff b8e85c3 56c8ce3 -- firecracker` |
+| **e2b 定制版** | e2b-dev/firecracker 分支 `firecracker-v1.12-direct-mem` 的 commit `a41d3fb`（e2b infra 2026.09 钉的默认版本 `v1.12.1_a41d3fb`）：在上游 v1.12.1 之上的 28 个提交，加了内存查询 API、uffd 写保护、可选 memfile 的快照、构建脚本，并合入几处上游 v1.12 分支的修复；加上 e2b-dev/fc-kernels release `v0.0.8` 的 guest 内核配置 | `tmp/e2b-book-src/fc-e2b/`；差异：`git -C tmp/e2b-book-src/fc-e2b diff v1.12.1 a41d3fb -- <path>` |
+| **ARM 适配版** | KASandbox 仓库 `firecracker/` 目录在分支 `jll` commit `3863c76` 的形态：迁入 e2b 分叉的 `54a1c1a`（比 a41d3fb 少 uffd 写保护那个提交），加 aarch64 构建修复与 HDBSS 使能，再加本项目为 checkpoint / restore 做的扩展（HDBSS 硬化、脏位图 sidecar、`PUT /snapshot/rollback`、`PUT /snapshot/save-dirty-bitmap`）。部署在鲲鹏上的 `firecracker.arm` 就是它。guest 内核用 e2b-dev/fc-kernels 的 arm64 官方构建，没有改动 | `tmp/e2b-book-src/kasandbox-jll/firecracker/`；checkpoint 扩展之前的中间状态：`tmp/e2b-book-src/kasandbox-arm/firecracker/`（`b8e85c3`）；差异：`git -C KASandbox diff 9e880db b8e85c3 -- firecracker`、`git -C KASandbox diff b8e85c3 3863c76 -- firecracker` |
+
+书里提到 ARM 适配版内部的两段时，写「ARM 适配版的构建与运行部分」「ARM 适配版的 checkpoint / restore 扩展」；不要造第四个称谓。
 
 四条纪律：
 
-1. **未特别说明处，全书讲的都是上游 v1.12.1。** 三层改动分别集中在第九、第十、第十一部分。
+1. **未特别说明处，全书讲的都是上游 v1.12.1。** 两层改动分别集中在第九、第十部分。
    上游各篇若某个机制在后面某一层有变化，在该篇小结之前加一个小节，名字固定为
    「**## N. 后续各层的差异**」，两三句话 + 指向对应部分的链接，不展开。没有差异就不加这一节。
 2. 描述改动时，**写「上游的假设在这里不成立」「为了 X 放弃了 Y」，不写「上游的缺陷」「某版本做得不对」**。
    凡是明显的技术债（例如注释掉的代码路径、环境变量做开关），如实指出并说明后果，语气中性。
-3. **不用内部代号**：不写 M1 / M2 / v3、jll / deltabox 分支、某某同事、「路线 A」。
+3. **不用内部代号**：不写 M1 / M2 / v3、jll / jll-xfs / deltabox 分支、某某同事、「路线 A」。
    不写「我们决定」「后来改成」这类过程叙事，除非那个过程本身是要讲的知识点
    （例如回滚时 vCPU 为什么选 reinit 而不是只写寄存器：这是设计取舍，要讲；但讲成「两种做法的比较」，不讲成「我们试了两次」）。
-4. **Firecracker 一侧与 orchestrator 一侧分工**：本书讲 Firecracker 进程内发生的事。orchestrator 怎么调用
-   这些 API、差分树、磁盘分层、测试与性能数据，在 e2b 手册与 checkpoint / restore 手册里；需要时链接，不复述。
+   XFS + reflink 路线全书只在第 63、68 篇各提一句。
+4. **Firecracker 一侧与 orchestrator 一侧分工**：本书讲 Firecracker 进程内发生的事，外加 guest 内核的配置（不讲内核源码）。
+   orchestrator 怎么调用这些 API、差分树、磁盘分层、测试与性能数据，在 e2b 手册与 checkpoint / restore 手册里；需要时链接，不复述。
 
 与另外两本手册的关系：
 
@@ -66,9 +68,8 @@
 - 上游代码：写成 `src/vmm/src/vstate/vm.rs` 这样的仓库相对路径（相对于 firecracker 仓库根，
   KASandbox 里就是相对于 `firecracker/` 目录），必要时加函数名：`vm.rs` 的 `snapshot_memory_to_file()`。
   **不写绝对路径，不写行号**（行号随版本漂移；函数名不会）。
-- 各层的改动：同样用仓库相对路径，并说明「e2b 定制版在此处加了 …」「checkpoint 扩展版在此处改为 …」。
-- guest 内核：`fc-kernels` 仓库相对路径：`configs/arm64/6.1.158.config`、`patches/6.1.158/0002-….patch`；
-  内核源码写 `fs/overlayfs/file.c` 这样的内核树相对路径。
+- 各层的改动：同样用仓库相对路径，并说明「e2b 定制版在此处加了 …」「ARM 适配版在此处改为 …」。
+- guest 内核：`fc-kernels` 仓库相对路径：`configs/arm64/6.1.158.config`、`build.sh`。本书不讲内核源码。
 - 引用代码片段只截取说明问题的部分；超过 30 行改用文字描述 + 位置指引。
   片段中允许省略号 `…` 与删减，但不得改写语义。
 - Rust 代码里的类型与函数：`Vmm`、`VmmAction::CreateSnapshot`、`GuestMemoryExtension::dump_dirty()`。
@@ -101,7 +102,7 @@
 | 状态文件 | vmstate（snapshot file） | `snapshot_path` 指向的文件 |
 | 全量 / 差分快照 | Full / Diff snapshot | |
 | 暂停 / 恢复 | pause / resume | `PATCH /vm` |
-| 原地回滚 | in-place rollback | checkpoint 扩展版的 `PUT /snapshot/rollback` |
+| 原地回滚 | in-place rollback | ARM 适配版的 `PUT /snapshot/rollback` |
 | 设备 | device | virtio 设备与 legacy 设备的统称 |
 | 队列 | virtqueue | virtio 语境，首次出现后可用 queue |
 | 描述符链 | descriptor chain | |
@@ -214,7 +215,7 @@ tap、vsock、balloon、ACPI、PVH、CPUID、MSR、PSCI、SVE、openEuler、鲲�
 - [ ] 正文 3000–5000 汉字
 - [ ] 每个行为论断都能对应到代码位置或标注了「推论」
 - [ ] 代码路径都是仓库相对路径，函数名与代码一致（读过代码，不是凭印象）
-- [ ] 术语与第三节一致；版本称谓与第二节一致（上游 v1.12.1 / e2b 定制版 / ARM 适配版 / checkpoint 扩展版）
+- [ ] 术语与第三节一致；版本称谓与第二节一致（上游 v1.12.1 / e2b 定制版 / ARM 适配版）
 - [ ] mermaid 代码块语法合法（用 `tools/mdmermaid.mjs` 检查），节点标签无未转义字符
 - [ ] 每张图在 `tools/figcheck.sh` 下 PASS（见 FIGURE-GUIDE.md）
 - [ ] 所有交叉链接指向 OUTLINE 中存在的文件名（用 `tools/mdlinks.py` 检查）

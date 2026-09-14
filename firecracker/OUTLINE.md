@@ -16,20 +16,19 @@
 | 三 | 内存与 vCPU | 13–19 | 工程师；全书核心之一 |
 | 四 | CPU 模板 | 20–22 | 工程师 |
 | 五 | 设备 | 23–35 | 工程师 |
-| 六 | 快照 | 36–41 | 工程师；全书核心之二，后三部分都建立在它上面 |
+| 六 | 快照 | 36–41 | 工程师；全书核心之二，后两部分都建立在它上面 |
 | 七 | 安全与可观测 | 42–45 | 工程师、运维 |
 | 八 | 工程 | 46–48 | 维护者 |
-| 九 | e2b 定制版 | 49–55 | 本项目所有参与者 |
-| 十 | ARM 适配版 | 56–62 | 本项目所有参与者 |
-| 十一 | checkpoint 扩展版 | 63–72 | 本项目所有参与者 |
-| 附录 | 术语表、代码地图、API / 配置总表、差异总表 | 73–78 | 查阅 |
+| 九 | e2b 定制版 | 49–56 | 本项目所有参与者 |
+| 十 | ARM 适配版 | 57–73 | 本项目所有参与者 |
+| 附录 | 术语表、代码地图、API / 配置总表、差异总表 | 74–79 | 查阅 |
 
 篇幅分配的依据：上游 v1.12.1 约 9.7 万行 Rust（不含测试；vmm 7.9 万，其中 devices 2.9 万、arch 1.1 万、
 cpu_config 0.6 万、dumbo 0.7 万；firecracker 主 crate 0.6 万、jailer 0.3 万、acpi-tables 0.3 万、
-cpu-template-helper 0.3 万、其余工具 0.3 万）。e2b 定制版在其上改了 17 个源码文件、约 +665 行；
-ARM 适配版对 Firecracker 源码只改了两个文件、十几行，但 aarch64 的代码路径、构建与 guest 内核都是它的内容；
-checkpoint 扩展版约 +1600 行（`rollback.rs` 656 行新文件，`vstate/memory.rs` +276、`vstate/vm.rs` +139）。
-按代码量三层改动合计不到上游的 3%，本书给它们约三成篇幅（第九至十一部分共 24 篇），
+cpu-template-helper 0.3 万、其余工具 0.3 万）。e2b 定制版在其上改了 18 个源码文件、约 +696 行，外加 guest 内核配置；
+ARM 适配版对 Firecracker 源码的改动约 +1660 行（其中 checkpoint / restore 扩展约 +1600：`rollback.rs` 656 行新文件，
+`vstate/memory.rs` +276、`vstate/vm.rs` +139），内核零改动。
+按代码量两层改动合计不到上游的 3%，本书给它们约三成篇幅（第九、第十部分共 25 篇），
 因为这些改动是本项目的工作，读者要拿它们继续开发。
 
 状态图例：`○` 未写　`◐` 草稿　`●` 完成　`◎` 已审校
@@ -41,18 +40,20 @@ checkpoint 扩展版约 +1600 行（`rollback.rs` 656 行新文件，`vstate/mem
 | 基线 | 位置 | 说明 |
 |---|---|---|
 | 上游 v1.12.1 | `tmp/e2b-book-src/fc-upstream/` | firecracker-microvm/firecracker tag `v1.12.1`（commit `d990331f7`），git worktree |
-| e2b 定制版 | `tmp/e2b-book-src/fc-e2b/` | e2b-dev/firecracker 分支 `firecracker-v1.12-direct-mem` 的 `54a1c1a`（上游 v1.12.1 之后 26 个提交）；`git -C tmp/e2b-book-src/fc-e2b diff v1.12.1 54a1c1a` 即完整差异；`git log v1.12.1..54a1c1a` 看提交 |
-| ARM 适配版 | `tmp/e2b-book-src/kasandbox-arm/firecracker/` | KASandbox commit `b8e85c3`；相对 e2b 定制版的差异：`git -C KASandbox diff 9e880db b8e85c3 -- firecracker`（`scripts/build.sh` 与 `src/firecracker/src/main.rs`）|
-| ARM 适配版（guest 内核） | `fc-kernels-arm/` | e2b-dev/fc-kernels 的 fork；`configs/arm64/`、`patches/6.1.158/`、`build.sh`、`README_CN.md` |
-| checkpoint 扩展版 | `tmp/e2b-book-src/kasandbox-ckpt/firecracker/` | KASandbox_0904 分支 `deltabox` 的 `56c8ce3`（两个提交：HDBSS 使能；原地回滚与位图 sidecar）；差异：`git -C KASandbox_0904 diff b8e85c3 56c8ce3 -- firecracker` |
+| e2b 定制版 | `tmp/e2b-book-src/fc-e2b/` | e2b-dev/firecracker 分支 `firecracker-v1.12-direct-mem` 的 `a41d3fb`（上游 v1.12.1 之后 28 个提交）。这是 e2b infra 2026.09 钉的默认版本 `v1.12.1_a41d3fb`（`packages/shared/pkg/feature-flags/flags.go`）。差异：`git -C tmp/e2b-book-src/fc-e2b diff v1.12.1 a41d3fb`；提交：`git -C tmp/e2b-book-src/fc-e2b log v1.12.1..a41d3fb`。该 clone 带 `upstream` 远端与全部 tag |
+| e2b 定制版（guest 内核） | GitHub e2b-dev/fc-kernels，release `v0.0.8`（commit `b8cea06`，2026-02-10，infra 2026.09 之前的最后一个 release）；本机没有 clone，用 `gh api` / `gh release` 查，需要文件时下到 `tmp/e2b-book-src/fc-kernels/`（编写者自己拉，只读） | 只有 config 与构建 / 发布脚本，没有内核源码补丁 |
+| ARM 适配版 | `tmp/e2b-book-src/kasandbox-jll/firecracker/` | KASandbox 分支 `jll` 的 `3863c76`：迁入 e2b 分叉的 `54a1c1a`（比 a41d3fb 少两个提交，见第 57 篇）+ 同事的 ARM 构建修复与 HDBSS 使能 + 本项目的 checkpoint / restore 扩展。**部署在鲲鹏上的 `firecracker.arm` 就是从它构建的**（e2b-infra 提交 8266156 说明）。中间状态 `tmp/e2b-book-src/kasandbox-arm/firecracker/`（`b8e85c3`，checkpoint 扩展之前）用来把「ARM 构建修复」与「checkpoint 扩展」分开看。差异：`git -C KASandbox diff 9e880db b8e85c3 -- firecracker`（ARM 构建修复）、`git -C KASandbox diff b8e85c3 3863c76 -- firecracker`（HDBSS + checkpoint 扩展）；e2b 分叉两个版本之间：`git -C tmp/e2b-book-src/fc-e2b diff 54a1c1a a41d3fb` |
+| ARM 适配版（guest 内核） | 无源码改动。部署用的 `e2b-infra/vmlinux.bin.arm` 是 e2b-dev/fc-kernels release `v0.0.12`（2026-04-10 构建的 6.1.158 arm64），与 v0.0.8 的 config 相同 | 第 61 篇讲部署里的内核文件布局 |
 | e2b infra（调用方） | `tmp/e2b-book-src/upstream/`、`tmp/e2b-book-src/arm/` | 只在需要说明「谁调用这个 API」时看：`packages/orchestrator/internal/sandbox/fc/`、`packages/shared/pkg/fc/firecracker.yml` |
+| 单机离线版 | `e2b-infra/` | `e2b-infra.spec`、`e2b-deploy/dep/init-client.sh`（内核与 firecracker 的目录布局） |
 | 上游文档 | `tmp/e2b-book-src/fc-upstream/docs/` | `design.md`、`snapshotting/`、`cpu_templates/`、`mmds/`、`jailer.md`、`seccomp.md` 等。是参考，不是依据：以代码为准 |
 
 所有路径相对于 `/home/austin/projects/e2b-repo/`。firecracker 仓库内的路径（正文里引用的）相对于仓库根，
-KASandbox 系列里就是相对于 `firecracker/` 目录。
+KASandbox 里就是相对于 `firecracker/` 目录。
 
-**不要**读 `KASandbox/`、`KASandbox_0904/`、`infra-arm/` 的工作树（它们含有其它开发内容），
+**不要**读 `KASandbox/`、`KASandbox_0904/`、`infra-arm/` 的工作树，不要读 `fc-kernels-arm/`（那是另一套方案的内核仓库，与本书无关），
 也不要读 `/home/austin/projects/firecracker-1.12.1/`（无 git 信息的解包副本）与 `kvcache-ai/firecracker-aenv`（另一个项目）。
+KASandbox 的 `jll-xfs` 分支是 XFS + reflink 路线，Firecracker 侧只少一个 `save-dirty-bitmap` 端点，本书只在第 68 篇提一句。
 
 ---
 
@@ -67,25 +68,26 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
 | 00 | `00-overview.md` | 全书导读与 Firecracker 总览 | ○ |
-| 01 | `01-lineage-and-repo-map.md` | 四层版本谱系与仓库地图 | ○ |
+| 01 | `01-lineage-and-repo-map.md` | 三层版本谱系与仓库地图 | ○ |
 
 **00 · 全书导读与 Firecracker 总览**（最后写，全书完成后）
 一篇读完全貌，给评审、决策者与第一天到岗的新人。5000 字上限。
 - Firecracker 是什么：一个进程一台 microVM，KVM 之上的极简 VMM；砍掉了什么、留下了什么
 - 一台 microVM 的生命周期：配置（API）→ 构建（builder）→ 运行（vCPU 线程 + 事件循环）→ 暂停 / 快照 / 恢复 → 退出
 - 三条主线：控制面（API → VmmAction → 控制器）、数据面（virtio 设备与队列）、状态面（快照与恢复）
-- 四层版本的关系：上游做了什么、e2b 为什么改、ARM 上改了什么、checkpoint 又扩展了什么；每层各一句话
+- 三层版本的关系：上游做了什么、e2b 为什么改、ARM 适配版改了什么与扩展了什么；每层各一句话
 - 分读者的阅读路径（与 README 一致）
-- 图：一张进程内结构图（线程、总线、设备、KVM fd）；一张四层谱系图
+- 图：一张进程内结构图（线程、总线、设备、KVM fd）；一张三层谱系图
 
-**01 · 四层版本谱系与仓库地图**
-- 四层的提交谱系：上游 `v1.12.1` → e2b `firecracker-v1.12-direct-mem@54a1c1a`（26 个提交，含合入的上游 v1.12 分支修复）→ KASandbox `b8e85c3`（迁移 + ARM 构建修复）→ `deltabox@56c8ce3`（两个提交）
-- 每层改了多少：文件数 / 行数表（数据来自 `git diff --stat`）；改在哪些模块
-- e2b-dev/firecracker 的其它分支（v1.10 / v1.13 / v1.14 的 direct-mem 分支）只提一句，本书不讲
+**01 · 三层版本谱系与仓库地图**
+- 三层的提交谱系：上游 `v1.12.1` → e2b `firecracker-v1.12-direct-mem@a41d3fb`（28 个提交，含合入的上游 v1.12 分支修复；infra 2026.09 钉的 `v1.12.1_a41d3fb`）→ KASandbox `firecracker/`（迁入 `54a1c1a`，比 a41d3fb 少两个提交）+ ARM 构建修复 + HDBSS + checkpoint / restore 扩展（`3863c76`，部署的 `firecracker.arm`）
+- 每层改了多少：文件数 / 行数表（数据来自 `git diff --stat`，命令见本文件第二节）；改在哪些模块
+- guest 内核也放进谱系：e2b-dev/fc-kernels v0.0.8（配置，无补丁）→ ARM 部署用 v0.0.12 官方 arm64 构建（无改动）
+- e2b-dev/firecracker 的其它分支（v1.10 / v1.13 / v1.14 的 direct-mem 分支、arm64-uffd-fix）只提一句，第 53、55、57 篇用到时再展开
 - 仓库目录结构：`src/*` 各 crate 一句话职责与行数（表）；`resources/`（seccomp 过滤器、guest 配置）、`tests/`、`tools/`、`docs/`
-- e2b infra 怎么消费 Firecracker：二进制放 `/fc-versions/<版本名>/firecracker`，版本名 `v<版本>_<hash>`；ARM 单机版里叫 `v1.13.1`（只点到，第 62 篇展开）
-- 代码：`Cargo.toml`（workspace members）、`src/*/Cargo.toml`、`git log` 输出、`scripts/build.sh`
-- 图：四层谱系图（flowchart，4 个节点 + 每层改动摘要）；crate 依赖图
+- e2b infra 怎么消费 Firecracker：二进制放 `/fc-versions/<版本名>/firecracker`，版本名 `v<版本>_<hash>`；ARM 单机版里叫 `v1.13.1`（只点到，第 63 篇展开）
+- 代码：`Cargo.toml`（workspace members）、`src/*/Cargo.toml`、`git log` 输出、`scripts/build.sh`、`tmp/e2b-book-src/upstream/packages/shared/pkg/feature-flags/flags.go`
+- 图：三层谱系图（flowchart，节点是提交，边标改动摘要）；crate 依赖图
 
 ### 第一部分　预备知识
 
@@ -110,10 +112,10 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 
 **03 · 本书用到的 KVM API**
 - `/dev/kvm` → VM fd → vCPU fd 三级；`KVM_CREATE_VM`、`KVM_CREATE_VCPU`、`KVM_RUN`、`KVM_SET_USER_MEMORY_REGION`
-- 内存槽位（memslot）：GPA ↔ HVA 映射；`KVM_MEM_LOG_DIRTY_PAGES` 与 `KVM_GET_DIRTY_LOG`（读一次即清零：这个语义是第 14、67 篇的关键）
+- 内存槽位（memslot）：GPA ↔ HVA 映射；`KVM_MEM_LOG_DIRTY_PAGES` 与 `KVM_GET_DIRTY_LOG`（读一次即清零：这个语义是第 14、68 篇的关键）
 - 中断投递：irqfd、ioeventfd、`KVM_IRQ_LINE`；x86 的 irqchip、aarch64 的 GIC 设备（`KVM_CREATE_DEVICE`）
 - vCPU 状态：`KVM_GET/SET_REGS`、`SREGS`、`FPU`、`XSAVE`、`MSRS`（x86）；`KVM_ARM_VCPU_INIT`、`KVM_GET/SET_ONE_REG`（aarch64）；`KVM_GET/SET_MP_STATE`
-- 能力查询与使能：`KVM_CHECK_EXTENSION`、`KVM_ENABLE_CAP`（第 65 篇 HDBSS 用它）
+- 能力查询与使能：`KVM_CHECK_EXTENSION`、`KVM_ENABLE_CAP`（第 66 篇 HDBSS 用它）
 - Rust 侧封装：`kvm-ioctls` / `kvm-bindings` crate 的对应方法；Firecracker 自己的封装在 `src/vmm/src/vstate/kvm.rs`
 - 代码：`src/vmm/src/vstate/kvm.rs`、`src/vmm/src/vstate/vm.rs`（只看 ioctl 调用处）、`src/vmm/src/arch/*/kvm.rs`
 - 图：三级 fd 与 ioctl 归属表；memslot 映射示意（flowchart）
@@ -157,9 +159,9 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 
 **07 · 进程启动：从参数到运行**
 - `main()` → `main_exec()`：panic hook、参数解析、日志 / metrics 初始化、`--describe-snapshot` 短路
-- 进程级加固：`enable_ssbd_mitigation()`（aarch64）、`resize_fdtable()`（为什么要预扩 fd 表：快照恢复性能；ARM 适配版把它注释掉了 —— 第 56 篇讲原因）、seccomp 过滤器加载（`--seccomp-filter` 自定义 / 默认内嵌 / `--no-seccomp`）
+- 进程级加固：`enable_ssbd_mitigation()`（aarch64）、`resize_fdtable()`（为什么要预扩 fd 表：快照恢复性能；ARM 适配版把它注释掉了 —— 第 58 篇讲原因）、seccomp 过滤器加载（`--seccomp-filter` 自定义 / 默认内嵌 / `--no-seccomp`）
 - 两条路：`run_with_api()`（API 线程 + VMM 线程）与 `run_without_api()`（`--no-api` + `--config-file`，单线程）
-- `InstanceInfo`：id、state、vmm_version、app_name；e2b 定制版加了 `memory_regions`，checkpoint 扩展版加了 `dirty_tracking`（点到）
+- `InstanceInfo`：id、state、vmm_version、app_name；e2b 定制版加了 `memory_regions`，ARM 适配版加了 `dirty_tracking`（点到）
 - 退出码 `FcExitCode`：每个值的含义
 - 代码：`src/firecracker/src/main.rs`、`src/firecracker/src/api_server_adapter.rs` 的 `run_with_api()`、`src/firecracker/src/seccomp.rs`、`src/vmm/src/lib.rs` 的 `FcExitCode`
 - 图：启动时序（sequenceDiagram：main、API 线程、VMM 线程、vCPU 线程）；退出码表
@@ -168,7 +170,7 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 - `micro_http`：为什么自己写一个 HTTP/1.1 子集（无依赖、可 seccomp、可控内存）；`HttpServer`、`ServerRequest`、请求体大小上限
 - `ApiServer`：接收请求 → `ParsedRequest::try_from()` 路由（方法 + 路径段 + 可选 body）→ `VmmAction` → 经通道送 VMM 线程 → 等响应 → HTTP 响应
 - `parsed_request.rs`：路径到解析函数的映射表；`RequestAction::Sync`；错误到 HTTP 状态码的映射（400 / 404 / 405 / 500）
-- `request/*.rs`：每个端点的解析器一览（表：路径、方法、解析函数、产生的 VmmAction）；e2b 定制版加的 `request/memory.rs` 与 checkpoint 扩展版加的 `snapshot` 子路径在各自部分讲
+- `request/*.rs`：每个端点的解析器一览（表：路径、方法、解析函数、产生的 VmmAction）；e2b 定制版加的 `request/memory.rs` 与 ARM 适配版加的 `snapshot` 子路径在各自部分讲
 - 同步语义：一次只处理一个请求，请求在 VMM 线程上串行执行；这决定了 API 调用的时延就是 VMM 动作的时延
 - swagger 文件 `src/firecracker/swagger/firecracker.yaml` 是契约；e2b infra 从它生成客户端
 - 代码：`src/firecracker/src/api_server/mod.rs`、`parsed_request.rs`、`request/`、`src/firecracker/src/api_server_adapter.rs`
@@ -247,7 +249,7 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 - `Vcpu::new()` / `start_threaded()`：每个 vCPU 一个 OS 线程，线程内先装 seccomp 再进 `run()`
 - 状态机（`utils/sm.rs` 的 `StateMachine`）：`running` → `paused` → `exited`；事件 `VcpuEvent`（Pause / Resume / SaveState / DumpCpuConfig / Exit…）与响应 `VcpuResponse`；`VcpuHandle` 的通道与 kick 信号（`register_kick_signal_handler`，用 `SIGRTMIN` 打断 `KVM_RUN`，确认信号号）
 - `run_emulation()` 与 `handle_kvm_exit()`：`MmioRead` / `MmioWrite` 走 MMIO 总线、`IoIn` / `IoOut`（x86）走 PIO 总线、`Hlt` / `Shutdown` / `SystemEvent`（aarch64 PSCI 关机 / 重启）、`Debug`（gdb）、`FailEntry` / `InternalError`；`VcpuEmulation` 的分类
-- `SaveState` 在 paused 状态下执行 `KvmVcpu::save_state()`；checkpoint 扩展版加了 `RestoreState`（点到）
+- `SaveState` 在 paused 状态下执行 `KvmVcpu::save_state()`；ARM 适配版加了 `RestoreState`（点到）
 - 退出：`exit_evt` 通知 VMM 线程；`FcExitCode` 的来源
 - 代码：`src/vmm/src/vstate/vcpu.rs`（全文）、`src/vmm/src/utils/sm.rs`
 - 图：vCPU 状态机（flowchart，编号边 + 表）；KVM exit 分类表
@@ -273,7 +275,7 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 **18 · aarch64 vCPU：KVM_ARM_VCPU_INIT、寄存器与 PSCI**
 - `KvmVcpu`（aarch64）：`KVM_ARM_PREFERRED_TARGET` → `KVM_ARM_VCPU_INIT`（特性位：PSCI 0.2、power off 非主核、SVE 等，确认）→ `KVM_ARM_VCPU_FINALIZE`（SVE）；`configure()` 设置 PC / X0（FDT 地址）/ PSTATE
 - `regs.rs`：`Aarch64RegisterVec` 与寄存器 ID 编码（`KVM_REG_ARM64 | size | class | index`）；`get_registers` / `set_registers`；`MPIDR_EL1` 与 `construct_kvm_mpidrs()`（GIC 需要）
-- `save_state()` / `restore_state()`：`KVM_GET_REG_LIST` 得到全部寄存器再逐个 `GET_ONE_REG`；`mp_state`；恢复顺序；`KVM_ARM_VCPU_INIT` 在恢复路径里也要调（这是第 70 篇「回滚为什么要 reinit」的伏笔）
+- `save_state()` / `restore_state()`：`KVM_GET_REG_LIST` 得到全部寄存器再逐个 `GET_ONE_REG`；`mp_state`；恢复顺序；`KVM_ARM_VCPU_INIT` 在恢复路径里也要调（这是第 71 篇「回滚为什么要 reinit」的伏笔）
 - `cache_info.rs`：从宿主 sysfs 读缓存拓扑写进 FDT
 - PSCI：guest 关机 / 重启经 `KVM_EXIT_SYSTEM_EVENT`
 - 代码：`src/vmm/src/arch/aarch64/vcpu.rs`、`regs.rs`、`cache_info.rs`、`kvm.rs`
@@ -283,7 +285,7 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 - `layout.rs`：DRAM 起点、MMIO 区、FDT 位置（内存末尾？确认）、IRQ 基数
 - `fdt.rs`：生成设备树的每个节点（cpus、memory、chosen、gic、timer、psci、virtio_mmio 设备、串口、RTC、vmgenid、缓存）；`create_fdt()` 的输入是设备管理器里的 `MMIODeviceInfo`
 - GIC：`gic/mod.rs` 选择 v3 或 v2（`KVM_CREATE_DEVICE`）；`GICDevice` trait；寄存器保存 / 恢复（`dist_regs` / `redist_regs` / `icc_regs`，`KVM_DEV_ARM_VGIC_GRP_*` 属性）；快照里的 `GicState`；`KVM_DEV_ARM_VGIC_SAVE_PENDING_TABLES`
-- `ArchVm`（aarch64）：`setup_irqchip()` 在 vCPU 创建之后（注释解释了顺序）；`VmState` 只有 GIC；checkpoint 扩展版在这里加了 `enable_hdbss()`（点到）
+- `ArchVm`（aarch64）：`setup_irqchip()` 在 vCPU 创建之后（注释解释了顺序）；`VmState` 只有 GIC；ARM 适配版在这里加了 `enable_hdbss()`（点到）
 - 与 x86 的对照表：没有 ACPI（v1.12.1 是否已有 aarch64 ACPI，确认）、没有 PIT / irqchip、没有 i8042、有 RTC
 - 代码：`src/vmm/src/arch/aarch64/mod.rs`、`layout.rs`、`fdt.rs`、`gic/`、`vm.rs`
 - 图：GPA 布局（```text）；FDT 节点树（```text）；GIC 状态保存流程
@@ -317,7 +319,7 @@ KASandbox 系列里就是相对于 `firecracker/` 目录。
 **22 · aarch64 模板与 cpu-template-helper**
 - aarch64 的 `CpuConfiguration` 就是寄存器向量；`V1N1` 静态模板（Neoverse V1 伪装成 N1：改哪些 ID 寄存器）；`custom_cpu_template.rs`（aarch64）：`reg_modifiers`、允许修改的寄存器范围（`ID_AA64*`）
 - 鲲鹏上有没有可用的静态模板：没有（V1N1 针对 Graviton3）；本项目不用模板（确认 e2b infra 传的 `cpu_template`）
-- `cpu-template-helper` 工具：`template dump` / `strip` / `verify`、`fingerprint dump` / `compare`；它怎么起一台 microVM 来读配置（`build_microvm_from_config`）；e2b 定制版与 checkpoint 扩展版为它补的 `InstanceInfo` 字段（点到）
+- `cpu-template-helper` 工具：`template dump` / `strip` / `verify`、`fingerprint dump` / `compare`；它怎么起一台 microVM 来读配置（`build_microvm_from_config`）；e2b 定制版与 ARM 适配版为它补的 `InstanceInfo` 字段（点到）
 - 代码：`src/vmm/src/cpu_config/aarch64/`、`src/cpu-template-helper/src/`、`docs/cpu_templates/cpu-template-helper.md`
 - 图：helper 子命令表；V1N1 修改的寄存器表
 
@@ -410,7 +412,7 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 **30 · virtio-net：tap、收发路径与 offload**
 - 配置：`iface_id`、`host_dev_name`、`guest_mac`、`rx_rate_limiter` / `tx_rate_limiter`；tap 设备打开与 `TUNSETIFF` / `TUNSETOFFLOAD` / vnet header（`tap.rs`）
 - TX 路径：guest 写 TX 队列 → kick → `process_tx()` → 从描述符链读帧 → `write` 到 tap；MMDS 拦截点（目标 IP 是 MMDS 地址就交给 dumbo，第 31 / 32 篇）
-- RX 路径：tap 可读 → `process_rx()` → `RxBuffers`（用 `IoVecBufferMut` 预解析 RX 描述符链：`parse_rx_descriptors()`、`rx_buffer.parsed_descriptors` / `used_descriptors` / `used_bytes`）→ `readv` 到 guest 内存 → `add_used`；`rx_deferred_frame` 的处理；这一段是第 71 篇「回滚要重建 RX 缓存」的伏笔
+- RX 路径：tap 可读 → `process_rx()` → `RxBuffers`（用 `IoVecBufferMut` 预解析 RX 描述符链：`parse_rx_descriptors()`、`rx_buffer.parsed_descriptors` / `used_descriptors` / `used_bytes`）→ `readv` 到 guest 内存 → `add_used`；`rx_deferred_frame` 的处理；这一段是第 72 篇「回滚要重建 RX 缓存」的伏笔
 - offload：`VIRTIO_NET_F_GUEST_CSUM` / `TSO` / `UFO` 等特性与 tap offload 的对应；`mtu`
 - rate limiter 的介入：eventfd 定时器、`RateLimiter::consume()`；`PATCH /network-interfaces/{id}`
 - metrics
@@ -458,7 +460,7 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 **35 · entropy、vmgenid 与速率限制器**
 - entropy（virtio-rng）：`rng/device.rs` 用 `aws-lc-rs` 生成随机数填 guest 缓冲；rate limiter；为什么快照恢复后需要它（`docs/snapshotting/random-for-clones.md`）
-- vmgenid：ACPI（x86）/ FDT（aarch64）设备，16 字节 generation id 写在 guest 内存，快照恢复时 `notify_guest()`（中断）让 guest 重新播种；checkpoint 扩展版加的 `refresh_generation()`（点到）
+- vmgenid：ACPI（x86）/ FDT（aarch64）设备，16 字节 generation id 写在 guest 内存，快照恢复时 `notify_guest()`（中断）让 guest 重新播种；ARM 适配版加的 `refresh_generation()`（点到）
 - rate limiter：`TokenBucket`（size、one_time_burst、refill_time）、`RateLimiter`（bandwidth + ops 两个桶）、`consume()` / `manual_replenish()`、timerfd 驱动的阻塞 / 解除；快照里的 `RateLimiterState`
 - 代码：`src/vmm/src/devices/virtio/rng/`、`src/vmm/src/devices/acpi/vmgenid.rs`、`src/vmm/src/rate_limiter/`
 - 图：令牌桶示意（flowchart 或 ```text）；三个设备的配置表
@@ -519,7 +521,7 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 - `VirtioDeviceState`（`devices/virtio/persist.rs`）：`avail_features` / `acked_features` / `queues`（`QueueState`）/ `interrupt_status` / `activated`
 - 逐设备：net（`NetState` 含 `RxBufferState`、tap 重开）、block（`VirtioBlockState` 含文件重开、`FileEngineTypeState`）、vsock（`VsockState`，恢复后发 TRANSPORT_RESET）、balloon、rng、rate limiter（`RateLimiterState`）、mmds（`MmdsState`）、legacy 与 vmgenid 的处理
 - 恢复后与恢复前的差异清单：哪些运行时状态不保存（例如正在飞行的 io_uring 请求 —— `drain` 保证为空）
-- 这一篇是第 71 篇「回滚的设备状态」的基础
+- 这一篇是第 72 篇「回滚的设备状态」的基础
 - 代码：`src/vmm/src/snapshot/persist.rs`、`src/vmm/src/device_manager/persist.rs`、`src/vmm/src/devices/virtio/persist.rs`、各设备的 `persist.rs`
 - 图：DeviceStates 结构图；保存 / 恢复 flowchart
 
@@ -545,7 +547,7 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 - `seccompiler` crate：JSON → BPF（`compile_from_json`）；`seccompiler-bin` 工具；构建时 `build.rs` 把编译好的 BPF 内嵌进二进制（`src/firecracker/build.rs`，确认）
 - 安装时机：VMM 线程在进入事件循环前、API 线程启动时、每个 vCPU 线程在 `run()` 开头；`--seccomp-filter` / `--no-seccomp`；违规时 SIGSYS → `signal_handler.rs` 记录 metrics 后退出
 - 怎么读一张过滤器表：以 vmm 线程的 `ioctl` 条件（KVM ioctl 白名单）为例
-- 三层改动都碰过这个文件（e2b 加 `mincore` / `pread64`，checkpoint 加 vcpu ioctl 白名单 —— 第 54、61、72 篇）
+- 三层改动都碰过这个文件（e2b 加 `mincore` / `pread64`，checkpoint 加 vcpu ioctl 白名单 —— 第 55、62、73 篇）
 - 代码：`resources/seccomp/`、`src/seccompiler/src/`、`src/firecracker/src/seccomp.rs`、`src/vmm/src/seccomp.rs`、`docs/seccomp.md`、`docs/seccompiler.md`
 - 图：编译与安装流程 flowchart；三线程过滤器规模表
 
@@ -560,7 +562,7 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 - `logger/logging.rs`：`Logger`（`log` crate 后端）、级别、`--log-path` / `--level` / `--show-level` / `--show-log-origin`、模块过滤（确认）
 - `logger/metrics.rs`：`METRICS` 全局结构（每个子系统一个结构体：`api_server`、`block`、`net`、`vcpu`、`vmm`、`latencies_us`、`seccomp`…）、`IncMetric` / `StoreMetric` / `SharedIncMetric` 的实现（原子计数 + 上次 flush 值）、`FlushMetrics` 动作与定时 flush、JSON 输出格式
 - 每设备 metrics（`block/virtio/metrics.rs`、`net/metrics.rs` 按设备 id 分组）
-- `latencies_us`：`vmm_pause_vm`、`vmm_resume_vm`、`vmm_full_create_snapshot`、`vmm_diff_create_snapshot`、`vmm_load_snapshot` 等 —— e2b 与 checkpoint 扩展版都靠这些看时延
+- `latencies_us`：`vmm_pause_vm`、`vmm_resume_vm`、`vmm_full_create_snapshot`、`vmm_diff_create_snapshot`、`vmm_load_snapshot` 等 —— e2b 与 ARM 适配版都靠这些看时延
 - 代码：`src/vmm/src/logger/`、`src/firecracker/src/metrics.rs`、`docs/logger.md`、`docs/metrics.md`
 - 图：metrics 结构树（```text）；关键 latencies 表
 
@@ -581,7 +583,7 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 **46 · 代码组织、依赖与构建**
 - workspace 成员与 `default-members`（jailer 为什么不在默认里：musl 静态链接）；每个 crate 的职责与依赖方向
-- `vmm` crate 的模块树（与本书篇目的映射：附录第 74 篇给全表，这里给主干）
+- `vmm` crate 的模块树（与本书篇目的映射：附录第 75 篇给全表，这里给主干）
 - 构建目标 `x86_64-unknown-linux-musl` / `aarch64-unknown-linux-musl`；`rust-toolchain.toml`；`profile.release`（lto、panic=abort）
 - 生成代码（`bindgen`）的管理；`deny.toml`（cargo-deny）；`.buildkite` / GitHub Actions（只概述）
 - 代码：`Cargo.toml`、`src/*/Cargo.toml`、`tools/devtool`、`tools/bindgen.sh`
@@ -607,8 +609,8 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 ### 第九部分　e2b 定制版
 
-这一部分讲 e2b-dev/firecracker 分支 `firecracker-v1.12-direct-mem` 相对上游 v1.12.1 的全部改动。
-每篇都要回答：上游为什么没有、e2b 为什么需要、改在哪、谁调用、代价。
+这一部分讲 e2b-dev/firecracker 分支 `firecracker-v1.12-direct-mem` 的 `a41d3fb` 相对上游 v1.12.1 的全部改动，
+以及 e2b 为 Firecracker 准备的 guest 内核配置。每篇都要回答：上游为什么没有、e2b 为什么需要、改在哪、谁调用、代价。
 调用方的代码在 `tmp/e2b-book-src/upstream/packages/orchestrator/internal/sandbox/fc/`（只读，不讲）。
 
 | # | 文件 | 标题 | 状态 |
@@ -616,18 +618,20 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 | 49 | `49-why-e2b-forked.md` | 为什么分叉：e2b 的内存管线要什么 | ○ |
 | 50 | `50-memory-mappings-api.md` | /memory/mappings：把 guest 内存的宿主地址交出去 | ○ |
 | 51 | `51-memory-resident-empty-api.md` | /memory：常驻页与零页位图 | ○ |
-| 52 | `52-memory-dirty-api.md` | /memory/dirty：pagemap 与 uffd-wp 位的脏页判据 | ○ |
-| 53 | `53-optional-memfile-snapshot.md` | 可选 memfile 的快照与 e2b 的消费方式 | ○ |
-| 54 | `54-seccomp-build-upload-changes.md` | seccomp、构建与发布脚本的改动 | ○ |
-| 55 | `55-merged-upstream-fixes-and-afterlife.md` | 合入的上游修复与分叉的后续 | ○ |
+| 52 | `52-memory-dirty-api.md` | /memory/dirty：pagemap 与写保护位的脏页判据 | ○ |
+| 53 | `53-uffd-write-protection.md` | uffd 写保护：让脏页判据成立的最后一环 | ○ |
+| 54 | `54-optional-memfile-snapshot.md` | 可选 memfile 的快照与 e2b 的暂停流程 | ○ |
+| 55 | `55-seccomp-build-upload-and-upstream-fixes.md` | seccomp、构建发布脚本与合入的上游修复 | ○ |
+| 56 | `56-guest-kernel-requirements-and-e2b-configs.md` | guest 内核：Firecracker 的要求与 e2b 的内核配置 | ○ |
 
 **49 · 为什么分叉：e2b 的内存管线要什么**
-- e2b 的循环：模板快照 → uffd 恢复 → 运行 → 暂停成新快照（只讲到能理解需求的程度，链接 e2b 手册第 12、37 篇）
-- 上游 create snapshot 的三个不合适：Diff 快照必须落盘成稀疏文件、脏页判据只有 KVM 日志（uffd-wp 写保护下的页 KVM 不知道？以代码为准写清楚）、宿主进程拿不到 guest 内存的 HVA 因此无法跨进程直读
-- e2b 的方案：三个只读端点 + 可选 memfile：orchestrator 通过 `/proc/<pid>/mem` 直读 guest 内存，自己决定哪些页要导出（resident、非零、dirty 三张位图的交集）
-- 26 个提交的分组：功能提交（`03e506146` 暴露映射 + 可选 memfile、`54a1c1ad3` dirty memory API）、修修补补（编译错误、spec 字段、版本）、合入上游 v1.12 分支、CI 与脚本
+- e2b 的循环：模板快照 → uffd 恢复 → 运行 → 暂停成新快照（只讲到能理解需求的程度，延伸阅读链接 e2b 手册第 12、37 篇）
+- 上游 create snapshot 的三个不合适：Diff 快照必须落盘成稀疏文件、脏页判据只有 KVM 日志、宿主进程拿不到 guest 内存的 HVA 因此无法跨进程直读
+- e2b 的方案：三个只读端点 + 可选 memfile + uffd 写保护：orchestrator 通过 `/proc/<pid>/mem` 直读 guest 内存，自己决定哪些页要导出（resident、非零、dirty 三张位图的交集）
+- 28 个提交的分组：功能提交（`03e506146` 暴露映射 + 可选 memfile、`54a1c1ad3` dirty memory API、`8fc760f61` uffd 写保护）、修修补补（编译错误、spec 字段、版本）、合入上游 v1.12 分支、CI 与脚本；分组表
+- 版本名 `v1.12.1_a41d3fb` 怎么来的（`scripts/build.sh`）、infra 2026.09 在哪里钉它（`flags.go` 的 `DefaultFirecackerV1_12Version`），以及同一文件里的 `v1.10.1_30cbb07` 是什么（`firecracker-v1.10-direct-mem` 分支，本书不讲）
 - 改动清单表（文件、+/- 行、所属篇）
-- 代码：`git -C tmp/e2b-book-src/fc-e2b log --stat v1.12.1..54a1c1a`、`docs/`（e2b 没改文档）
+- 代码：`git -C tmp/e2b-book-src/fc-e2b log --stat v1.12.1..a41d3fb`、`tmp/e2b-book-src/upstream/packages/shared/pkg/feature-flags/flags.go`
 - 图：e2b 内存管线中 Firecracker 的位置（flowchart）；改动分布表
 
 **50 · /memory/mappings：把 guest 内存的宿主地址交出去**
@@ -648,17 +652,27 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 - 代码：`src/vmm/src/vstate/vm.rs` 的 `get_memory_info` / `mincore_bitmap`、`src/vmm/src/vmm_config/instance_info.rs` 的 `MemoryResponse`
 - 图：位图计算 flowchart；`unsafe` 块里的边界处理说明表
 
-**52 · /memory/dirty：pagemap 与 uffd-wp 位的脏页判据**
+**52 · /memory/dirty：pagemap 与写保护位的脏页判据**
 - `utils/pagemap.rs`：读 `/proc/self/pagemap`，每页 8 字节：bit 63 present、bit 57 「write-protected」（uffd-wp）；`is_page_dirty = present && !wp`
 - `Vmm::get_dirty_memory()`：先 `mincore` 过滤常驻页，再逐页 `pread` pagemap；只允许 Paused（`OperationNotSupportedWhileRunning`）
-- 判据的含义：e2b 在 uffd 恢复时对页做了写保护，guest 第一次写触发 WP 缺页、handler 解除保护 —— 所以「present 且不再 WP」= 被写过；这个判据依赖 orchestrator 的 uffd handler 行为（链接 e2b 手册第 31、37 篇）；与 KVM 脏页日志的对比表（谁维护、粒度、清零语义、开销）
+- 判据的含义：页被 uffd 写保护，guest 第一次写时内核（异步模式）清掉写保护位 —— 所以「present 且不再 WP」= 被写过；写保护是谁、何时加上的：第 53 篇
+- 与 KVM 脏页日志的对比表（谁维护、粒度、清零语义、开销）
 - 代价：每页一次 `pread`，8 GiB 内存 200 万次系统调用的量级（只说数量级，不给测量数）；`info!` 打印耗时
-- seccomp：`pread64` 进白名单（x86 表里；aarch64 表在 ARM 适配版才补 —— 第 61 篇）
-- checkpoint 扩展版为什么不用这个判据而引入 HDBSS（点到第 64 篇）
+- seccomp：`pread64` 进白名单（x86 表里；aarch64 表在 ARM 适配版才补 —— 第 62 篇）
+- ARM 适配版为什么另引入 HDBSS（点到第 65 篇）
 - 代码：`src/vmm/src/utils/pagemap.rs`、`src/vmm/src/lib.rs` 的 `get_dirty_memory`、`src/vmm/src/rpc_interface.rs` 的 `get_dirty_memory_info`
 - 图：pagemap 条目位布局（```text）；三种脏页判据对比表
 
-**53 · 可选 memfile 的快照与 e2b 的消费方式**
+**53 · uffd 写保护：让脏页判据成立的最后一环**
+- 提交 `8fc760f61`：`userfaultfd` crate 换成 e2b 分叉（分支 `feat_write_protection`，特性 `linux5_7` / `linux5_13` / `linux6_7`）；`guest_memory_from_uffd()` 请求 `EVENT_REMOVE | MISSING_HUGETLBFS | WP_ASYNC`、以 `MISSING | WRITE_PROTECT` 注册每个区域、大页时立刻 `write_protect()` 整个区域；匿名内存为什么不能在这里加保护（首次缺页会清掉 WP 位，要由 uffd handler 在 `UFFDIO_COPY` 时带 WP 模式 —— 这是 orchestrator 侧的事，一句话链接 e2b 手册第 31 篇）
+- 同步与异步写保护的区别（内核文档）；异步模式要求宿主内核 6.7+；这就是 e2b 生产环境的内核前提
+- 这个提交与第 52 篇判据的关系：没有它，pagemap 的 WP 位永远是 0，`/memory/dirty` 会把所有常驻页都算成脏
+- 分叉自己的另一个分支 `firecracker-v1.12-direct-mem-arm64-uffd-fix`（`136ef0e01`）：把三处写保护代码用 `cfg(target_arch = "x86_64")` 关掉，因为 arm64 内核没有 uffd 写保护（`UFFD_FEATURE_WP_ASYNC`、`UFFDIO_REGISTER_MODE_WP`、`UFFDIO_WRITEPROTECT`）；这是第 57 篇的伏笔，这里只点到
+- `lib.rs` 里那段 TODO 注释：有了 WP 事件其实可以不读 pagemap —— 说明设计还在演进
+- 代码：`git -C tmp/e2b-book-src/fc-e2b show 8fc760f61`、`src/vmm/src/persist.rs` 的 `guest_memory_from_uffd`、`src/vmm/Cargo.toml`；对照 `git show 136ef0e01`
+- 图：注册 / 写保护 / 首次写 / 读 pagemap 的时序（sequenceDiagram：Firecracker、内核、handler、orchestrator）；特性与内核版本要求表
+
+**54 · 可选 memfile 的快照与 e2b 的暂停流程**
 - `CreateSnapshotParams.mem_file_path` 改为 `Option`；swagger 去掉 required；`create_snapshot()` 里只有给了路径才 `snapshot_memory_to_file()`
 - 没有 memfile 的 create 还做什么：写 vmstate、队列重新标脏；Diff 类型此时是否还读 KVM 日志（确认：`snapshot_memory_to_file` 不调用则 `get_dirty_bitmap` 也不调用，KVM 日志不清零 —— 这个副作用要写清）
 - e2b 的完整暂停流程（从 Firecracker 视角）：`PATCH /vm Paused` → `GET /memory/mappings` → `GET /memory` → `GET /memory/dirty` → `PUT /snapshot/create`（无 memfile）→ orchestrator 直读页 → 杀进程；时序图
@@ -667,141 +681,142 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 - 代码：`src/vmm/src/vmm_config/snapshot.rs`、`src/vmm/src/persist.rs`、`tests/integration_tests/functional/test_api.py`、e2b infra 的 `fc/memory.go`（只看调用顺序）
 - 图：e2b 暂停时序（sequenceDiagram，≤6 参与者）；参数对比表
 
-**54 · seccomp、构建与发布脚本的改动**
+**55 · seccomp、构建发布脚本与合入的上游修复**
 - seccomp：x86 表加 `mincore` + `pread64`、aarch64 表只加 `mincore`（为什么不对称：分叉只在 x86 上跑）；格式整理
 - `scripts/build.sh`：版本名 `v<swagger 版本>_<7 位 hash>`、`tools/devtool -y build --release`、产物路径写死 x86_64；`scripts/upload.sh`：`gsutil` 传到 `<project>-fc-versions` 桶与 public builds；`Makefile`；`.tool-versions`
-- `tools/test.sh` 限制测试集、`test_shut_down.py` 去掉线程数断言、CI runner 改动：说明分叉的维护姿态（够用即可）
-- e2b infra 侧怎么消费这个版本名（`FirecrackerVersionsDir`、`fc-versions` 桶）—— 一句话
-- 代码：`resources/seccomp/*.json`（diff）、`scripts/`、`Makefile`、`tools/test.sh`、`.github/`（若有）
-- 图：构建 → 上传 → 节点拉取的流程图
+- `tools/test.sh` 限制测试集、`test_shut_down.py` 去掉线程数断言、CI runner 改动、删掉 dependency changes 检查：说明分叉的维护姿态（够用即可）
+- 来自上游 v1.12 分支的提交：`fix: update AMD host cpu features checks`、`fix: add MSR_TSC_RATE to the MSR_EXCEPTION_LIST`、`chore: Add ibpb_exit_to_user as host only feature`、Spectre 检查 URL、`test_reboot` 断言；各自修了什么、对 aarch64 是否有影响；怎么确认某个提交是上游的（`git log upstream/firecracker-v1.12`）
+- 分叉的后续：a41d3fb 之后的三个提交（swagger 文档、kvmclock 修复 `210cbac`）、`firecracker-v1.13` / `firecracker-v1.14-direct-mem` 分支；对本项目的含义：升级时要重放的改动清单（第 78 篇差异总表的用法）
+- e2b infra 侧怎么消费版本名（`FirecrackerVersionsDir`、`fc-versions` 桶）—— 一句话
+- 代码：`resources/seccomp/*.json`（diff）、`scripts/`、`Makefile`、`tools/test.sh`、`git -C tmp/e2b-book-src/fc-e2b log --format='%h %an %s' v1.12.1..a41d3fb`
+- 图：构建 → 上传 → 节点拉取的流程图；提交来源分类表
 
-**55 · 合入的上游修复与分叉的后续**
-- 分叉里来自上游 v1.12 分支的提交：`fix: update AMD host cpu features checks`、`fix: add MSR_TSC_RATE to the MSR_EXCEPTION_LIST`、`chore: Add ibpb_exit_to_user as host only feature`、Spectre 检查 URL、`test_reboot` 断言；各自修了什么、对本项目是否有影响（aarch64 上大多无关）
-- `Merge branch 'firecracker-v1.12'`：怎么确认某个提交是上游的（`git log upstream/firecracker-v1.12`）
-- 分叉的后续：e2b-dev/firecracker 的 `firecracker-v1.13`、`firecracker-v1.14-direct-mem` 等分支、`kvmclock` 修复（分支头 `210cbac`）；分叉归档 / 上游是否吸收了类似功能（`docs/`、CHANGELOG 里找 `memory` 相关端点，如实报告有无）
-- 对本项目的含义：升级 Firecracker 时要重放的改动清单（第 77 篇差异总表的用法）
-- 代码：`git -C tmp/e2b-book-src/fc-e2b log --format='%h %an %s' v1.12.1..54a1c1a`、`git -C tmp/e2b-book-src/fc-e2b log upstream/firecracker-v1.12 --oneline | head`（fetch 过 upstream 远端，tag 与分支都在）
-- 图：提交来源分类表；分支关系图
+**56 · guest 内核：Firecracker 的要求与 e2b 的内核配置**
+- Firecracker 对 guest 内核的要求：`docs/rootfs-and-kernel-setup.md`、`docs/kernel-policy.md`；上游自带的 CI config `resources/guest_configs/microvm-kernel-ci-{x86_64,aarch64}-6.1.config` 与 `resources/rebuild.sh`；必需项（virtio-mmio、serial、PVH / EFI stub、ACPI 或 FDT、initrd、`virtio_mmio.device=` 命令行）
+- e2b-dev/fc-kernels 仓库（release `v0.0.8`，infra 2026.09 对应）：`kernel_versions.txt`（6.1.102、6.1.158）、`configs/{x86_64,arm64}/<版本>.config`、`build.sh`（从 kernel.org 取源码、`make vmlinux`、产物命名）、`Makefile`、GitHub Actions 发布到 release 与 GCS
+- e2b 的 x86_64 config 相对 Firecracker CI config 的差异（约 64 行，按类归纳：overlayfs / ext4 / xfs、cgroup / namespace、landlock、nfs v3、wireguard、网络 / 调度选项）；arm64 config 相对 aarch64 CI config 的差异（约 41 行）
+- 没有源码补丁：这一层的「定制」只有配置；后来（v0.0.8 之后）加的 balloon wait-ACK 补丁不在 2026.09 范围，只提一句
+- e2b infra 怎么选内核：`DefaultKernelVersion = "vmlinux-6.1.158"`（`packages/api/internal/cfg/model.go`）、`/fc-kernels/<版本>/vmlinux.bin`、内核命令行由 orchestrator 拼（`fc/kernel_args.go`，一句话，第 63 篇展开）
+- 本篇不讲内核源码
+- 代码：`tmp/e2b-book-src/fc-upstream/resources/guest_configs/`、`docs/rootfs-and-kernel-setup.md`、e2b-dev/fc-kernels `v0.0.8`（`gh release view v0.0.8 -R e2b-dev/fc-kernels`；文件用 `gh api repos/e2b-dev/fc-kernels/contents/<path>?ref=b8cea06` 或 clone 到 `tmp/e2b-book-src/fc-kernels/` 后 checkout `b8cea06`）
+- 图：构建与发布流程 flowchart；config 差异分类表
 
 ### 第十部分　ARM 适配版
 
-Firecracker 源码在这一层只改了两处；这一部分的实质是「上游的 aarch64 代码路径在鲲鹏 / openEuler 上怎么跑起来」，
-以及 guest 内核。每篇都要区分「上游本来就支持 aarch64 的部分」与「本项目做的部分」。
+这一部分讲 KASandbox `firecracker/` 目录（`jll` 分支 `3863c76`）相对 e2b 定制版的全部内容，分两段：
+前 7 篇是「让它在鲲鹏 / openEuler 上跑起来」（迁入的版本与放弃的写保护、构建、aarch64 代码路径、宿主环境、内核、seccomp、与 infra 对接），
+后 10 篇是本项目为 checkpoint / restore 加的扩展（HDBSS 脏页跟踪、脏位图 sidecar、save-dirty-bitmap、原地回滚）。
+每篇都要区分「上游本来就支持 aarch64 的部分」「同事做的部分」与「本项目做的部分」，但按 STYLE 不写人名。
+设计动机、orchestrator 侧的账本 / 差分树 / 磁盘分层、测试与性能在 checkpoint / restore 手册里，只在延伸阅读里链接。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 56 | `56-building-and-running-on-aarch64.md` | 在 aarch64 上构建与运行 | ○ |
-| 57 | `57-aarch64-vs-x86-64-runtime-paths.md` | aarch64 与 x86_64 运行路径的差异清单 | ○ |
-| 58 | `58-kunpeng-openeuler-host.md` | 鲲鹏 950 与 openEuler 宿主环境 | ○ |
-| 59 | `59-guest-kernel-fc-kernels.md` | guest 内核：fc-kernels 与 arm64 配置 | ○ |
-| 60 | `60-guest-kernel-patches.md` | guest 内核补丁：balloon ACK 与 overlayfs 热切换 | ○ |
-| 61 | `61-aarch64-seccomp-filter.md` | aarch64 的 seccomp 过滤器 | ○ |
-| 62 | `62-integration-with-e2b-infra.md` | 与 e2b infra 的对接：版本目录、内核参数与 RPM | ○ |
+| 57 | `57-which-fork-commit-and-uffd-wp.md` | 迁入的版本：54a1c1a 与被放弃的 uffd 写保护 | ○ |
+| 58 | `58-building-and-running-on-aarch64.md` | 在 aarch64 上构建与运行 | ○ |
+| 59 | `59-aarch64-vs-x86-64-runtime-paths.md` | aarch64 与 x86_64 运行路径的差异清单 | ○ |
+| 60 | `60-kunpeng-openeuler-host.md` | 鲲鹏 950 与 openEuler 宿主环境 | ○ |
+| 61 | `61-guest-kernel-on-arm.md` | ARM 上的 guest 内核：arm64 配置与部署中的内核文件 | ○ |
+| 62 | `62-aarch64-seccomp-filter.md` | aarch64 的 seccomp 过滤器 | ○ |
+| 63 | `63-integration-with-e2b-infra.md` | 与 e2b infra 的对接：版本目录、内核参数与 RPM | ○ |
+| 64 | `64-checkpoint-extension-overview.md` | checkpoint / restore 扩展总览：目标、四个扩展点与分工 | ○ |
+| 65 | `65-dirty-tracking-backend.md` | 脏页跟踪后端：KVM 写保护与 HDBSS | ○ |
+| 66 | `66-hdbss.md` | HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力 | ○ |
+| 67 | `67-dirty-bitmap-sidecar.md` | dirty_bitmap_path：sidecar 与 FCDB 格式 | ○ |
+| 68 | `68-save-dirty-bitmap-api.md` | PUT /snapshot/save-dirty-bitmap | ○ |
+| 69 | `69-rollback-api-and-phases.md` | PUT /snapshot/rollback：阶段、参数与响应 | ○ |
+| 70 | `70-rollback-memory.md` | 回滚的内存写回 | ○ |
+| 71 | `71-rollback-vcpu-and-gic.md` | 回滚的 vCPU 与 GIC | ○ |
+| 72 | `72-rollback-devices.md` | 回滚的设备状态 | ○ |
+| 73 | `73-failure-model-faulted-and-seccomp.md` | 失败模型、Faulted 状态与 seccomp 白名单 | ○ |
 
-**56 · 在 aarch64 上构建与运行**
-- 迁移：KASandbox 把 e2b 分叉 `54a1c1a` 整目录放进 `firecracker/`（没有 git 历史，怎么核对它就是 `54a1c1a`：`diff -r` 结果只差三个测试用二进制）
-- `scripts/build.sh` 的改动：按 `uname -m` 选 target 目录；devtool 容器在 aarch64 上的可用性（`fcuvm` 镜像有 arm64 版？确认 `tools/devtool` 怎么选镜像）
-- `main.rs` 的改动：`resize_fdtable()` 整段注释掉 —— 它做什么（把 fd 表预扩到 rlimit 上限，减少恢复时的 fd 表扩容）、在 openEuler 24.03 上为什么 coredump（推论要标明；提交信息只说 coredump in 2403）、后果（快照恢复时 fd 表按需增长，性能影响的量级）
-- 构建产物 `firecracker.arm` 进 e2b-infra 的 RPM（点到第 62 篇）
+**57 · 迁入的版本：54a1c1a 与被放弃的 uffd 写保护**
+- KASandbox 把 e2b 分叉整目录放进 `firecracker/`（没有 git 历史）；怎么核对它是哪个提交：与 `54a1c1a` 的树 `diff -r` 只差三个测试用二进制
+- 54a1c1a 与 infra 2026.09 钉的 a41d3fb 差两个提交：`8fc760f61` uffd 写保护（第 53 篇）与一个 CI 文件；源码上只差写保护那一处
+- 为什么 arm64 上不能带写保护：arm64 内核没有 `UFFD_FEATURE_WP_ASYNC` / `UFFDIO_REGISTER_MODE_WP` / `UFFDIO_WRITEPROTECT`，`guest_memory_from_uffd()` 的 `require_features` 或 `register_with_mode` 会失败，快照恢复直接报错；e2b 自己的 `firecracker-v1.12-direct-mem-arm64-uffd-fix` 分支（`136ef0e01`）用 `cfg(x86_64)` 关掉三处，作为对照；ARM 适配版选 54a1c1a 是等价的做法（推论：迁入时是否有意为之，标推论）
+- 后果：aarch64 上 `/memory/dirty` 的 pagemap 判据失去写保护位的支撑（present 且 WP 位恒为 0 → 所有常驻页都算脏）；orchestrator 侧的 ARM 补丁怎么应对（`FC_TRACK_DIRTY_PAGES=true` 与 KVM 日志路线，一句话链接 e2b 手册第 37 篇）；这也是后面引入 HDBSS 的动机之一（第 65 篇）
+- `Cargo.lock` / `userfaultfd` 依赖回到上游 crate 的含义
+- 代码：`git -C tmp/e2b-book-src/fc-e2b diff 54a1c1a a41d3fb`、`git -C tmp/e2b-book-src/fc-e2b show 136ef0e01`、`tmp/e2b-book-src/kasandbox-arm/firecracker/src/vmm/src/persist.rs`
+- 图：三个版本（54a1c1a / a41d3fb / arm64-uffd-fix）在写保护上的差异表；uffd 注册流程对照 flowchart
+
+**58 · 在 aarch64 上构建与运行**
+- `scripts/build.sh` 的改动：按 `uname -m` 选 target 目录；devtool 容器在 aarch64 上的可用性（`fcuvm` 镜像有 arm64 版？确认 `tools/devtool` 怎么选镜像）；无容器时用本机 cargo + `aarch64-unknown-linux-musl` 的条件
+- `main.rs` 的改动：`resize_fdtable()` 整段注释掉 —— 它做什么（把 fd 表预扩到 rlimit 上限，减少恢复时的 fd 表扩容）、在 openEuler 24.03 上为什么 coredump（提交信息只说 coredump in 2403；原因标推论）、后果（快照恢复时 fd 表按需增长，性能影响的量级）
+- 构建产物 `firecracker.arm` 怎么进 e2b-infra 的 RPM（`Source8`）、装到 `/fc-versions/v1.13.1/`（点到第 63 篇）
 - 跑起来需要的宿主条件：`/dev/kvm`、GICv3、内核版本、页大小（4 KiB 内核 vs 64 KiB 内核对 Firecracker 的影响：`host_page_size()` 的使用处）
-- 代码：`git -C KASandbox diff 9e880db b8e85c3 -- firecracker`、`tools/devtool`（镜像选择）、`src/firecracker/src/main.rs`
+- 代码：`git -C KASandbox diff 9e880db b8e85c3 -- firecracker`、`tools/devtool`（镜像选择）、`src/firecracker/src/main.rs`、`e2b-infra/e2b-infra.spec`
 - 图：构建流程（aarch64 版）；改动表
 
-**57 · aarch64 与 x86_64 运行路径的差异清单**
-- 以「一台 microVM 的生命周期」为线索，逐阶段列出两架构走的不同代码：内存布局、vCPU 创建与配置、引导（FDT vs boot params / ACPI）、中断（GIC vs irqchip / PIT / IOAPIC）、legacy 设备（RTC vs i8042 / PIO 串口）、vmgenid 的接入方式、`KVM_EXIT_SYSTEM_EVENT` vs `Hlt` / `Shutdown`、快照里的 `VmState` 内容、CPU 模板、gdb 支持、seccomp 表
+**59 · aarch64 与 x86_64 运行路径的差异清单**
+- 以「一台 microVM 的生命周期」为线索，逐阶段列出两架构走的不同代码：内存布局、vCPU 创建与配置、引导（FDT vs boot params / ACPI）、中断（GIC vs irqchip / PIT / IOAPIC）、legacy 设备（RTC vs i8042 / PIO 串口）、vmgenid 的接入方式、`KVM_EXIT_SYSTEM_EVENT` vs `Hlt` / `Shutdown`、快照里的 `VmState` 内容、CPU 模板、gdb 支持、seccomp 表、uffd 写保护（第 57 篇）
 - 每项给代码位置（`#[cfg(target_arch = …)]` 的分叉点）
 - 上游对 aarch64 的功能限制清单（从 `docs/` 与 CHANGELOG 里找：不支持的特性）
 - 这一篇是给读完第三部分的读者做「aarch64 索引」用的，可以多用表
 - 代码：`grep -rn 'target_arch' src/vmm/src`、第三部分各篇引用的文件
 - 图：生命周期各阶段两架构对照表（主体）；`cfg` 分叉点分布图
 
-**58 · 鲲鹏 950 与 openEuler 宿主环境**
-- 宿主：鲲鹏 950（ARMv9？确认代际）、openEuler 24.03、内核 6.6.0-515（HDBSS 支持的内核 —— 点到第 65 篇）；KVM 相关能力：`KVM_CAP_ARM_*`、GICv3 / ITS、SVE、`KVM_CAP_ARM_HW_DIRTY_STATE_TRACK`（502，非主线）
+**60 · 鲲鹏 950 与 openEuler 宿主环境**
+- 宿主：鲲鹏 950（架构代际，确认）、openEuler 24.03、内核 6.6.0-515（HDBSS 支持的内核 —— 点到第 66 篇）；KVM 相关能力：`KVM_CAP_ARM_*`、GICv3 / ITS、SVE、`KVM_CAP_ARM_HW_DIRTY_STATE_TRACK`（502，非主线）
 - Firecracker 在这台机器上的检查项：`KvmVcpu` 的 `KVM_ARM_PREFERRED_TARGET`、`cache_info.rs` 读 sysfs 的路径是否存在、`enable_ssbd_mitigation()` 的 prctl 在此内核的行为
-- 页大小：openEuler 内核默认页大小与 HugeTLB；Firecracker 的 `host_page_size()` 与 `HugePageConfig`
+- 页大小：openEuler 内核默认页大小与 HugeTLB；Firecracker 的 `host_page_size()` 与 `HugePageConfig`；uffd 在 arm64 上可用的部分（MISSING 模式、`MISSING_HUGETLBFS`）与不可用的部分（写保护）
 - 与 x86 云主机的对照：没有 ACPI 表这一套的影响、没有 CPU 模板可用
-- 相关文档：仓库根的 `HDBSS_KUNPENG950_KERNEL_6.6.0_515.md`、`kunpeng950-hdbss-incremental-snapshot.md`（只作为背景，以代码与内核文档为准；其中的性能数字不引用）
+- 相关文档：仓库根的 `HDBSS_KUNPENG950_KERNEL_6.6.0_515.md`（只作为背景，以代码与内核文档为准；其中的性能数字不引用）
 - 代码：`src/vmm/src/arch/aarch64/`（能力检查处）、`src/vmm/src/arch/aarch64/kvm.rs`
 - 图：宿主软硬件栈图；能力检查表
 
-**59 · guest 内核：fc-kernels 与 arm64 配置**
-- fc-kernels 仓库：`kernel_versions.txt`（6.1.102、6.1.158）、`configs/{x86_64,arm64}/<版本>.config`、`patches/<版本>/`、`build.sh`（从 kernel.org 取源码、打补丁、`make vmlinux`；arm64 产物是 `Image`/PE 格式？读 `build.sh` 与提交 `7fa4f34` 确认）、`Makefile`、产物命名 `vmlinux-<版本>-<arch>.bin` 与 GCS 路径
-- arm64 config 相对 x86_64 config 的差异（`diff` 后按类归纳：架构选项、virtio、PSCI、GIC、串口 `SERIAL_AMBA_PL011`、RTC、overlayfs / ext4 / xfs、cgroup / namespace、landlock、nfs v3、wireguard）
-- Firecracker 对 guest 内核的要求（`docs/rootfs-and-kernel-setup.md`、`resources/guest_configs/microvm-kernel-ci-aarch64-6.1.config`）与 fc-kernels 配置的对照
-- e2b infra 怎么选内核：`DefaultKernelVersion`、`/fc-kernels/<版本>/vmlinux.bin`（一句话）
-- 代码：`fc-kernels-arm/build.sh`、`configs/`、`kernel_versions.txt`、`README.md`、`README_CN.md`
-- 图：构建流程 flowchart；config 差异分类表
+**61 · ARM 上的 guest 内核：arm64 配置与部署中的内核文件**
+- 回顾第 56 篇：fc-kernels 的 arm64 支持是 e2b 自己加的（`b8cea06`，v0.0.8）；本项目对内核**零改动**
+- arm64 config 相对 x86_64 config 的差异按类归纳（架构选项、PSCI、GIC、串口 `SERIAL_AMBA_PL011`、RTC PL031、virtio、文件系统、cgroup / namespace）；产物是 PE 格式的 `Image` 还是 ELF `vmlinux`（读 `build.sh` 与提交 `7fa4f34` 确认；Firecracker aarch64 的 `load_kernel()` 要什么格式）
+- 部署里的内核文件：`e2b-infra/vmlinux.bin.arm` 是 fc-kernels release `v0.0.12`（2026-04-10 构建，`strings` 里的 `Linux version 6.1.158 … aarch64-linux-gnu-gcc`）；v0.0.8 → v0.0.12 只改了脚本、config 未动；`init-client.sh` 把它铺到 `/fc-kernels/vmlinux-6.1.158/` 与 `/fc-kernels/vmlinux-6.1.102/`（兼容旧模板）；RPM 里另有一个 openEuler 6.6.0 变体只提一句「存在、备用、本书不讲」
+- 内核命令行在 aarch64 上的差异（`fc/kernel_args.go` 是否按架构分支，确认；`console=ttyS0` vs `ttyAMA0`）
+- 本篇不讲内核源码
+- 代码：e2b-dev/fc-kernels `v0.0.8` / `v0.0.12`（`gh release view`）、`e2b-infra/e2b-infra.spec`、`e2b-infra/e2b-deploy/dep/init-client.sh`、`tmp/e2b-book-src/arm/packages/orchestrator/internal/sandbox/fc/kernel_args.go`
+- 图：内核文件从 release 到 `/fc-kernels/` 的流向（flowchart）；arm64 与 x86_64 config 差异分类表
 
-**60 · guest 内核补丁：balloon ACK 与 overlayfs 热切换**
-- `0001-virtio_balloon-Support-wait-on-ACK-for-hinting.patch`：上游（fc-kernels）来的：free page hinting 等设备 ACK 再归还；它配合 Firecracker balloon 的哪个特性位（读补丁与 `balloon/device.rs`，确认 v1.12.1 是否消费该特性；不消费就如实写「为将来准备」）
-- `0002-overlayfs-hot-switch-checkpoint.patch`（1214 行，本项目所加）：改了 `fs/overlayfs/` 的什么：ioctl 接口（`demo/src/ovl_ioctl.c` 是用法）、「热切换 upper 层」的语义、按 inode 的代际（generation）与读侧惰性刷新（补丁注释里的 lazy read refresh）；它服务于 checkpoint / restore 的哪一环（rootfs 分层切换）；是否被当前部署使用（到 `e2b-infra`、`infra-arm` 里 grep ioctl 号确认，如实写明）
-- `configs/arm64/6.1.158.config` 为它改的 40 行
-- `demo/`：`run_in_vm.sh`、ftrace 分析脚本 —— 说明验证方法，不引用数据
-- 与 Firecracker 的边界：这些是 guest 内核的事，Firecracker 不感知
-- 代码：`fc-kernels-arm/patches/6.1.158/`、`demo/`、`README_CN.md`
-- 图：overlayfs 层切换示意（flowchart 或 ```text）；补丁改动的文件表
-
-**61 · aarch64 的 seccomp 过滤器**
-- `resources/seccomp/aarch64-unknown-linux-musl.json` 与 x86 表的结构差异（没有 `ioctl` 的 PIO 相关、有 GIC 的 `KVM_DEV_*` ioctl 等）
-- e2b 定制版只给 aarch64 加了 `mincore`；ARM 适配版本身没改；checkpoint 扩展版补了 `pread64` 与四个 vcpu ioctl（`KVM_SET_ONE_REG`、`KVM_SET_MP_STATE`、`KVM_ARM_VCPU_INIT`、`KVM_ARM_VCPU_FINALIZE`）（第 72 篇细讲）；「放行 vmm 线程的 pread64」这条修复的来龙去脉：`/memory/dirty` 在 aarch64 上会触发 SIGSYS
+**62 · aarch64 的 seccomp 过滤器**
+- `resources/seccomp/aarch64-unknown-linux-musl.json` 与 x86 表的结构差异（没有 PIO 相关、有 GIC 的 `KVM_DEV_*` ioctl 等）
+- e2b 定制版只给 aarch64 加了 `mincore`；ARM 适配版补了 `pread64` 与四个 vcpu ioctl（`KVM_SET_ONE_REG`、`KVM_SET_MP_STATE`、`KVM_ARM_VCPU_INIT`、`KVM_ARM_VCPU_FINALIZE`）（第 73 篇细讲）；「放行 vmm 线程的 pread64」的来龙去脉：`/memory/dirty` 在 aarch64 上第一次调用就 SIGSYS（`FcExitCode::BadSyscall`），而 ARM 单机版建模板必走这条路
 - 怎么验证一张过滤器表：`seccompiler-bin` 编译、`--seccomp-filter` 加载、跑一遍 API 看 `seccomp.num_faults` metrics 与 `dmesg`
 - 怎么加一条规则：格式、`args` 条件写法、注释规范
-- 代码：`resources/seccomp/aarch64-unknown-linux-musl.json`（三层 diff）、`src/vmm/src/signal_handler.rs`
-- 图：三层对该文件的改动表；规则条目格式（```json）
+- 代码：`resources/seccomp/aarch64-unknown-linux-musl.json`（两层 diff）、`src/vmm/src/signal_handler.rs`、e2b-infra 提交 `8266156` 的说明
+- 图：各层对该文件的改动表；规则条目格式（```json）
 
-**62 · 与 e2b infra 的对接：版本目录、内核参数与 RPM**
+**63 · 与 e2b infra 的对接：版本目录、内核参数与 RPM**
 - orchestrator 怎么起 Firecracker：`fc/process.go`（命令行：`--api-sock`、seccomp？、netns 里 `ip netns exec`）、`fc/config.go`（`/fc-versions/<版本>/firecracker`、`/fc-kernels/<版本>/vmlinux.bin`）、`fc/kernel_args.go`（内核命令行：console、reboot、panic、pci=off、`virtio_mmio` 参数由 Firecracker 加）、`fc/client.go`（用哪些 API）、`fc/mmds.go`
 - ARM 单机版：`e2b-infra.spec` 的 `Source8: firecracker.arm` → `/opt/e2b-infra/bin/firecracker` → `init-client.sh` 拷进 `/fc-versions/v1.13.1/`；「源码 1.12.1 装成 v1.13.1」的原因（e2b 手册第 70 篇已讲，这里只回顾 + 链接）
 - 版本名怎么进数据库 / 模板（`FirecrackerVersion` 字段）
-- Firecracker 侧看到的完整 API 调用序列（创建 / 恢复 / 暂停）：作为第九、十一部分的调用背景
-- 代码：`tmp/e2b-book-src/arm/packages/orchestrator/internal/sandbox/fc/`、`e2b-infra/e2b-infra.spec`、`e2b-infra/e2b-deploy/`（找 `fc-versions`）
+- Firecracker 侧看到的完整 API 调用序列（创建 / 恢复 / 暂停 / checkpoint）：作为第九部分与后面 10 篇的调用背景
+- XFS + reflink 路线（KASandbox `jll-xfs`、e2b-infra `xfs-reflink` 分支）：Firecracker 侧只少 `save-dirty-bitmap` 端点，其余相同，一句话
+- 代码：`tmp/e2b-book-src/arm/packages/orchestrator/internal/sandbox/fc/`、`e2b-infra/e2b-infra.spec`、`e2b-infra/e2b-deploy/dep/init-client.sh`
 - 图：文件与目录布局（```text）；调用序列表
 
-### 第十一部分　checkpoint 扩展版
-
-讲 Firecracker 一侧的实现。设计动机、orchestrator 侧的账本 / 差分树 / 磁盘分层、测试与性能在 checkpoint / restore 手册里，
-本部分只在延伸阅读里链接。每篇要回答：加了什么、为什么这样加、与上游原有机制的关系、失败时怎样。
-
-| # | 文件 | 标题 | 状态 |
-|---|---|---|---|
-| 63 | `63-checkpoint-extension-overview.md` | 扩展总览：目标、四个扩展点与分工 | ○ |
-| 64 | `64-dirty-tracking-backend.md` | 脏页跟踪后端：KVM 写保护与 HDBSS | ○ |
-| 65 | `65-hdbss.md` | HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力 | ○ |
-| 66 | `66-dirty-bitmap-sidecar.md` | dirty_bitmap_path：sidecar 与 FCDB 格式 | ○ |
-| 67 | `67-save-dirty-bitmap-api.md` | PUT /snapshot/save-dirty-bitmap | ○ |
-| 68 | `68-rollback-api-and-phases.md` | PUT /snapshot/rollback：阶段、参数与响应 | ○ |
-| 69 | `69-rollback-memory.md` | 回滚的内存写回 | ○ |
-| 70 | `70-rollback-vcpu-and-gic.md` | 回滚的 vCPU 与 GIC | ○ |
-| 71 | `71-rollback-devices.md` | 回滚的设备状态 | ○ |
-| 72 | `72-failure-model-faulted-and-seccomp.md` | 失败模型、Faulted 状态与 seccomp 白名单 | ○ |
-
-**63 · 扩展总览：目标、四个扩展点与分工**
+**64 · checkpoint / restore 扩展总览：目标、四个扩展点与分工**
 - 目标：高频 checkpoint 与快速 restore —— 暂停的成本正比于脏页、恢复不重建进程；上游「杀进程 + 从快照重建」的成本构成（进程 / KVM / vCPU / GIC / 设备重建 + 工作集回填）—— `rollback.rs` 文件头的注释是很好的起点，但用自己的话讲
 - 四个扩展点：（1）脏页跟踪后端可选 HDBSS；（2）`create` 时可写脏位图 sidecar；（3）`PUT /snapshot/save-dirty-bitmap`；（4）`PUT /snapshot/rollback` 原地回滚；外加 `Faulted` 状态与 `dirty_tracking` 能力上报
-- 两个提交的边界：`680cf6480`（HDBSS）与 `56c8ce317`（回滚 + sidecar）；改动清单表（文件、行数、篇）
+- 提交分组（`git -C KASandbox log b8e85c3..3863c76 -- firecracker`）：HDBSS 使能与硬化、sidecar 与 seccomp、回滚主体、RX 缓存修复、诊断日志、vCPU 路线收敛、seccomp pread64；改动清单表（文件、行数、篇）
 - 与 e2b 定制版三个只读端点的关系：仍然保留，orchestrator 在哪种模式用哪套（只点到，链接 checkpoint 手册第 09 篇）
 - 与 orchestrator 的分工：Firecracker 提供原语，账本 / 差分树 / 回滚决策在 orchestrator
-- 代码：`git -C KASandbox_0904 diff --stat b8e85c3 56c8ce3 -- firecracker`、`src/vmm/src/rollback.rs` 文件头
+- 代码：`git -C KASandbox diff --stat b8e85c3 3863c76 -- firecracker`、`src/vmm/src/rollback.rs` 文件头
 - 图：四个扩展点在快照生命周期中的位置（flowchart）；改动表
 
-**64 · 脏页跟踪后端：KVM 写保护与 HDBSS**
+**65 · 脏页跟踪后端：KVM 写保护与 HDBSS**
 - `DirtyTrackingBackend` {Off, KvmWriteProtect, Hdbss} 与 `VmCommon.dirty_tracking`；`as_str()` 用于能力上报（`InstanceInfo.dirty_tracking`，`GET /` 可见）
 - `Vm::setup_dirty_tracking()`：只有 `track_dirty_pages` 打开（区域带位图）才「armed」；aarch64 上尝试 `enable_hdbss(order)`，失败则回退 KVM 写保护，`FC_HDBSS_REQUIRED` 时失败即报 `HdbssRequired`；x86 固定 KVM 写保护；环境变量 `FC_HDBSS_ORDER`（默认 1）—— 为什么用环境变量而不是 API 字段（如实说明这是权宜，代价是不可观测、不可按 VM 配置）
 - 调用点：`build_microvm_for_boot()` 与 `build_microvm_from_snapshot()` 在 `register_memory_regions` 之后
 - 与上游 `KVM_MEM_LOG_DIRTY_PAGES` 的关系：HDBSS 是同一份 KVM 脏页日志的另一种硬件采集方式，`get_dirty_bitmap()` 的调用方式不变（加了一行耗时日志）
+- 与第 57 篇的关系：aarch64 没有 uffd 写保护，pagemap 判据不可用，所以脏页判据回到 KVM 日志一侧，HDBSS 让这一侧的开销可接受
 - 代码：`src/vmm/src/vstate/vm.rs`（`DirtyTrackingBackend`、`setup_dirty_tracking`、`dirty_tracking`）、`src/vmm/src/arch/aarch64/vm.rs` 的 `enable_hdbss`、`src/vmm/src/builder.rs`、`src/vmm/src/lib.rs` 的 `instance_info()`
 - 图：后端选择 flowchart；三种后端对比表
 
-**65 · HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力**
-- 硬件机制：ARMv9 FEAT_HDBSS（hardware dirty state tracking，硬件把脏页 PTE 地址追加到一个缓冲区，满了触发异常）；与传统「写保护 + 缺页」的区别：不再每页一次 VM exit
+**66 · HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力**
+- 硬件机制：ARM FEAT_HDBSS（hardware dirty state tracking，硬件把脏页 PTE 地址追加到一个缓冲区，满了触发异常）；与传统「写保护 + 缺页」的区别：不再每页一次 VM exit
 - KVM 侧：`KVM_CAP_ARM_HW_DIRTY_STATE_TRACK`（值 502，openEuler 6.6.0-515 内核的非主线补丁）、`KVM_ENABLE_CAP` 的 `args[0]` = 缓冲区 order；`enable_hdbss()` 直接 `libc::ioctl` 而不经 `kvm-ioctls`（为什么：binding 里没有）；`KVM_ENABLE_CAP` 的 ioctl 号常量 `0x4068_AEA3` 怎么来的
 - 语义边界：使能后 `KVM_GET_DIRTY_LOG` 返回的仍是同一个位图接口；精度 / 延迟 / 缓冲区溢出时的行为（以内核文档 / 仓库根的 HDBSS 文档为准，标注推论）
 - 内核前提与探测：能力号不存在时 `ioctl` 返回 EINVAL → 回退
 - 代价：只在鲲鹏 950 + 特定内核可用；`order` 的取舍
-- 代码：`src/vmm/src/arch/aarch64/vm.rs` 的 `enable_hdbss`、仓库根 `HDBSS_KUNPENG950_KERNEL_6.6.0_515.md`（背景）、fc-kernels 无关（这是宿主内核）
+- 代码：`src/vmm/src/arch/aarch64/vm.rs` 的 `enable_hdbss`、仓库根 `HDBSS_KUNPENG950_KERNEL_6.6.0_515.md`（背景）
 - 图：写保护路径 vs HDBSS 路径对比（flowchart 两列）；ioctl 参数表
 
-**66 · dirty_bitmap_path：sidecar 与 FCDB 格式**
+**67 · dirty_bitmap_path：sidecar 与 FCDB 格式**
 - `CreateSnapshotParams.dirty_bitmap_path`（可选；给了它必须也给 `mem_file_path`，否则 `DirtyBitmapWithoutMemFile`）
 - `dump_dirty()` 改为返回合并后的扁平位图（KVM ∥ 用户态，按扁平页序）；Full 快照的位图是全 1（末字截断）；`snapshot_memory_to_file()` 多了 `dirty_bitmap_path` 参数，写完 memfile 后写 sidecar 并 fsync
 - FCDB 格式：magic `FCDB`、version 1、page_size u64、num_pages u64、位图字（小端）；`serialize_dirty_bitmap()` / `deserialize_dirty_bitmap()` 及其校验（长度、版本、magic）
@@ -810,43 +825,44 @@ Firecracker 源码在这一层只改了两处；这一部分的实质是「上�
 - 代码：`src/vmm/src/vmm_config/snapshot.rs`、`src/vmm/src/vstate/memory.rs`（`dump_dirty`、`serialize_dirty_bitmap`、`deserialize_dirty_bitmap`）、`src/vmm/src/vstate/vm.rs` 的 `snapshot_memory_to_file`、`src/vmm/src/persist.rs`
 - 图：FCDB 字节布局（```text）；create 流程中 sidecar 的位置 flowchart
 
-**67 · PUT /snapshot/save-dirty-bitmap**
+**68 · PUT /snapshot/save-dirty-bitmap**
 - 用途：不导出内存、只把「自上次快照 / 回滚以来的脏页」写成 FCDB —— 给 orchestrator 做累计脏位图 / 决策用
 - `rollback::save_dirty_bitmap()`：要求 Paused；`get_dirty_bitmap()` 读 KVM 日志（读即清零）→ 折叠进用户态位图（`userspace_bitmap_flat()` / 区域位图 `mark_dirty`，确认实现）→ 序列化写文件；「KVM 的读是破坏性的，所以先折叠进用户态位图」这个不变量
 - 与 `create`（sidecar）的区别：不 reset、不导出、不动 KVM 之外的状态
 - API：`SaveDirtyBitmapParams { path }`、`VmmAction::SaveDirtyBitmap`、Preboot 不允许
 - 代价与陷阱：连续两次调用第二次看到什么；与 `create` 交错时位图的归属
+- XFS 路线没有这个端点（一句话：那条路线用 reflink 拿差分，不需要累计位图 —— 以 checkpoint 手册第 18 篇为准，只链接）
 - 代码：`src/vmm/src/rollback.rs` 的 `save_dirty_bitmap` / `userspace_bitmap_flat`、`src/vmm/src/rpc_interface.rs` 的 `save_dirty_bitmap`、`src/firecracker/src/api_server/request/snapshot.rs`
 - 图：位图流向 flowchart（KVM 日志 → 用户态位图 → 文件）；调用序列表
 
-**68 · PUT /snapshot/rollback：阶段、参数与响应**
+**69 · PUT /snapshot/rollback：阶段、参数与响应**
 - `RollbackSnapshotParams { snapshot_path, mem_file_path, revert_bitmap_path?, resume_vm }`；`RollbackResponse { restored_pages, restored_bytes, timings_us: {validate, quiesce, memory, vcpus, gic, devices, total} }`
-- `rollback_snapshot()` 的阶段顺序（读代码列全，大致是：校验状态与参数 → 读 vmstate → `validate_topology` → 决定 revert 位图（给了文件就用文件，否则用当前脏页位图？确认）→ `quiesce_devices` → 内存写回 → vCPU → GIC → 设备状态 → 清位图 → 计时）；每阶段一段，细节放 69–71 篇
+- `rollback_snapshot()` 的阶段顺序（读代码列全，大致是：校验状态与参数 → 读 vmstate → `validate_topology` → 决定 revert 位图（给了文件就用文件，否则用当前脏页位图？确认）→ `quiesce_devices` → 内存写回 → vCPU → GIC → 设备状态 → 清位图 → 计时）；每阶段一段，细节放 70–72 篇
 - 执行环境：VMM 线程、VM Paused、世界静止；`RuntimeApiController::rollback_snapshot()` 的包装（`resume_vm`、metrics 复用 `vmm_pause_vm`？确认并如实指出、失败时置 Faulted）
 - 与 `load` 的对比表：重建什么 / 不重建什么、成本正比于什么
 - 代码：`src/vmm/src/rollback.rs` 的 `rollback_snapshot`、`src/vmm/src/rpc_interface.rs`、`src/vmm/src/vmm_config/snapshot.rs`
 - 图：阶段 flowchart（编号 + 表）；load vs rollback 对比表
 
-**69 · 回滚的内存写回**
+**70 · 回滚的内存写回**
 - 输入：目标快照的 memfile（Full 或已合并）+ revert 位图（哪些页要从文件写回）
 - `GuestMemoryExtension::restore_dirty()`：按扁平位图逐区域找连续脏页段、`seek` + `read_exact_volatile` 到 guest 内存的 `VolatileSlice`；返回页数 / 字节数
 - revert 位图从哪来：`revert_bitmap_path`（FCDB）或当前 KVM ∥ 用户态位图（含义：把自目标快照以来脏的页全部写回）；两者的正确性前提（orchestrator 必须保证位图覆盖了所有偏离页 —— 这是契约，链接 checkpoint 手册）
 - 写回后的位图处理：`reset_dirty_bitmap()` / `reset_dirty()`（回滚点成为新的脏页基线）
-- 与 uffd 后备内存的交互：写回是 VMM 进程写匿名页 → 不会触发 uffd MISSING？如果页从未被填充呢（读代码 / 标推论）
+- 与 uffd 后备内存的交互：写回是 VMM 进程写匿名页 → 是否触发 uffd MISSING、页从未被填充时怎样（读代码 / 标推论）
 - 代价：写回量 = 位图里的页数；大页时的粒度
 - 代码：`src/vmm/src/vstate/memory.rs` 的 `restore_dirty`、`src/vmm/src/rollback.rs` 的内存阶段
 - 图：位图 → 段 → 写回 flowchart；测试用例里的例子（```text）
 
-**70 · 回滚的 vCPU 与 GIC**
+**71 · 回滚的 vCPU 与 GIC**
 - 上游只有「新进程里恢复 vCPU」；回滚要在**已有** vCPU fd 上写回状态：`VcpuEvent::RestoreState(Arc<VcpuState>)` → paused 状态机分支 → `KvmVcpu::restore_state_in_place()` → `restore_state()`；`VcpuResponse::RestoredState`；`Vmm::restore_vcpu_states_in_place()` 的收发与错误映射
-- aarch64 的关键：`restore_state()` 里包含 `KVM_ARM_VCPU_INIT`（架构定义的复位）+ `FINALIZE` + 全部 `SET_ONE_REG` + `MP_STATE`；为什么「只写寄存器」不够（内核侧的 vCPU 状态 —— 定时器、PMU、SVE 上下文、pending 异常 —— 只写寄存器覆盖不到；代码注释提到 G1 gate 的比较结果：讲成设计取舍，不引用具体数字）
+- aarch64 的关键：`restore_state()` 里包含 `KVM_ARM_VCPU_INIT`（架构定义的复位）+ `FINALIZE` + 全部 `SET_ONE_REG` + `MP_STATE`；为什么「只写寄存器」不够（内核侧的 vCPU 状态 —— 定时器、PMU、SVE 上下文、pending 异常 —— 只写寄存器覆盖不到；讲成两种做法的设计取舍，不引用具体数字、不写过程叙事）
 - x86 的 `restore_state_in_place()` 只是转发（本项目不在 x86 跑，如实说明未验证）
-- GIC：`restore_gic_state`（确认 rollback.rs 里 GIC 阶段调的是 `vm.restore_state()` 还是单独的 GIC 恢复），`KVM_DEV_ARM_VGIC_GRP_*` 在运行中的 GIC 上重设；`construct_kvm_mpidrs`
-- seccomp：vcpu 线程新增四个 ioctl 白名单（第 72 篇）
+- GIC：rollback.rs 里 GIC 阶段调的是什么（确认），`KVM_DEV_ARM_VGIC_GRP_*` 在运行中的 GIC 上重设；`construct_kvm_mpidrs`
+- seccomp：vcpu 线程新增四个 ioctl 白名单（第 73 篇）
 - 代码：`src/vmm/src/vstate/vcpu.rs`（`RestoreState` 分支）、`src/vmm/src/arch/aarch64/vcpu.rs`、`src/vmm/src/lib.rs` 的 `restore_vcpu_states_in_place`、`src/vmm/src/rollback.rs` 的 vCPU / GIC 阶段
 - 图：vCPU 回滚时序（sequenceDiagram：VMM 线程、vCPU 线程、KVM）；两种 vCPU 恢复路线对比表
 
-**71 · 回滚的设备状态**
+**72 · 回滚的设备状态**
 - 前提：设备对象不重建，只把逻辑状态写回。`validate_topology()`：目标快照的 `DeviceStates` 与当前设备管理器的设备数量、类型、id、顺序必须一致，否则拒绝（为什么：地址、IRQ、fd 都绑定在现有对象上）
 - `quiesce_devices()`：让设备停在安全点（io_uring drain？rate limiter？读代码列全）
 - `apply_device_states()` / `apply_one_device()`：按类型分派 —— `MmioTransport::apply_state()`（transport 寄存器）、`VirtioDeviceState` 写回（队列索引、特性、中断状态；用各 `*State::virtio_state()` 访问器）、block / rng / balloon / vsock 的处理差异；vhost-user 块设备不支持（`virtio_state()` 返回 `None`）
@@ -856,7 +872,7 @@ Firecracker 源码在这一层只改了两处；这一部分的实质是「上�
 - 代码：`src/vmm/src/rollback.rs`（`validate_topology`、`quiesce_devices`、`apply_device_states`、`apply_one_device`、`apply_net_rx_cache`、`log_queue_diagnostics`）、`src/vmm/src/devices/virtio/persist.rs` 的 `apply_state`、`net/device.rs` 的 `rollback_rx_buffers`、各 `persist.rs` 的访问器、`devices/acpi/vmgenid.rs` 的 `refresh_generation`
 - 图：设备状态写回 flowchart（按类型分列）；RX 缓存重建前后（```text）
 
-**72 · 失败模型、Faulted 状态与 seccomp 白名单**
+**73 · 失败模型、Faulted 状态与 seccomp 白名单**
 - `RollbackError` 枚举与 `faults_vm()`：内存写回之前的错误（校验、位图、文件）无副作用，VM 仍 Paused 可 resume；从内存写回开始的错误让 VM 处于「两个时刻的混合」→ 置 `VmState::Faulted`
 - `Faulted` 的传播：`resume_vm()` / `pause_vm()` 返回 `VmFaulted`，`create_snapshot` 拒绝，`GET /` 可见；orchestrator 的预期动作（杀进程重建 —— 链接 checkpoint 手册第 14 篇）
 - 计时与回报：`RollbackTimings` 各阶段 μs、`restored_pages` / `restored_bytes`；日志行
@@ -870,48 +886,48 @@ Firecracker 源码在这一层只改了两处；这一部分的实质是「上�
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 73 | `73-glossary.md` | 术语表 | ○ |
-| 74 | `74-code-map.md` | 代码地图：crate、模块与篇目 | ○ |
-| 75 | `75-api-reference.md` | API 端点总表 | ○ |
-| 76 | `76-config-cli-env-metrics-reference.md` | 配置项、命令行参数、环境变量与 metrics 总表 | ○ |
-| 77 | `77-layer-diff-tables.md` | 四层差异总表（文件级） | ○ |
-| 78 | `78-reading-upstream-code.md` | 阅读上游代码的方法与常见问题 | ○ |
+| 74 | `74-glossary.md` | 术语表 | ○ |
+| 75 | `75-code-map.md` | 代码地图：crate、模块与篇目 | ○ |
+| 76 | `76-api-reference.md` | API 端点总表 | ○ |
+| 77 | `77-config-cli-env-metrics-reference.md` | 配置项、命令行参数、环境变量与 metrics 总表 | ○ |
+| 78 | `78-layer-diff-tables.md` | 三层差异总表（文件级） | ○ |
+| 79 | `79-reading-upstream-code.md` | 阅读上游代码的方法与常见问题 | ○ |
 
-**73 · 术语表**
+**74 · 术语表**
 - STYLE.md 第三节的全部术语 + 正文中出现的其它术语，每条：中文、英文、一句话定义、首次出现的篇
 - 按字母序（英文）排列；不少于 80 条
 - 无图
 
-**74 · 代码地图：crate、模块与篇目**
+**75 · 代码地图：crate、模块与篇目**
 - 每个 crate → 模块 → 文件 → 讲它的篇目；`vmm` crate 按目录树展开（```text）
-- 四层改动涉及的文件单独标注（e2b / ARM / ckpt 三列打勾）
+- 两层改动涉及的文件单独标注（e2b / ARM 两列打勾）
 - 无 mermaid，用表与 ```text
 
-**75 · API 端点总表**
-- 上游 v1.12.1 全部端点（方法、路径、Preboot / Runtime 允许、对应 `VmmAction`、篇）+ e2b 定制版三个 GET + checkpoint 扩展版两个 PUT；`PUT /snapshot/create` 的参数变化按层标注
+**76 · API 端点总表**
+- 上游 v1.12.1 全部端点（方法、路径、Preboot / Runtime 允许、对应 `VmmAction`、篇）+ e2b 定制版三个 GET + ARM 适配版两个 PUT；`PUT /snapshot/create` 的参数变化按层标注
 - 每个端点的请求 / 响应 JSON 骨架（从 swagger 抄要点，不全抄）
 - 表为主
 
-**76 · 配置项、命令行参数、环境变量与 metrics 总表**
+**77 · 配置项、命令行参数、环境变量与 metrics 总表**
 - 命令行参数表（第 6 篇的完整版）；`machine-config` 等配置项全表；环境变量（`FC_HDBSS_ORDER`、`FC_HDBSS_REQUIRED`、`RUST_BACKTRACE`…）；`latencies_us` 与关键 metrics 表；退出码表
 - 表为主
 
-**77 · 四层差异总表（文件级）**
-- 三张 `git diff --stat` 表（上游 → e2b、e2b → ARM、ARM → ckpt），每行：文件、+/-、改动摘要一句、篇；升级 Firecracker 时的重放清单（按依赖顺序）
+**78 · 三层差异总表（文件级）**
+- 两张 `git diff --stat` 表（上游 → e2b a41d3fb、e2b 54a1c1a → ARM 3863c76）加一张「54a1c1a 与 a41d3fb 之差」的小表，每行：文件、+/-、改动摘要一句、篇；内核一行（fc-kernels v0.0.8：config 差异、无补丁）；升级 Firecracker 时的重放清单（按依赖顺序）
 - 表为主
 
-**78 · 阅读上游代码的方法与常见问题**
+**79 · 阅读上游代码的方法与常见问题**
 - 怎么从一个 API 路径追到执行代码（`parsed_request.rs` → `VmmAction` → 控制器 → `Vmm` 方法）；怎么从一个 `cfg(target_arch)` 找到另一架构的对应实现；怎么找一个设备的四个文件（device / event_handler / persist / metrics）；怎么用 `git log -S` 追一个常量的来历；怎么读 seccomp 表；怎么在没有 devtool 的机器上跑单元测试
-- 常见问题：为什么 `create` 之后要重新标脏队列页、为什么 aarch64 恢复 vCPU 要 reinit、为什么 API 是同步的、`track_dirty_pages` 关闭时 Diff 快照会怎样…（每条给出篇目链接，不重复正文）
+- 常见问题：为什么 `create` 之后要重新标脏队列页、为什么 aarch64 恢复 vCPU 要 reinit、为什么 API 是同步的、`track_dirty_pages` 关闭时 Diff 快照会怎样、为什么 ARM 上没有 uffd 写保护…（每条给出篇目链接，不重复正文）
 - 无图或一张 flowchart
 
 ---
 
 ## 四、编写流程
 
-1. **规划**（本文件）：由主编（Fable）完成。
+1. **规划**（本文件）：由主编（Fable）完成，用户过目后才开写。
 2. **编写**：每篇由一个 opus 子任务独立完成，输入是 `tools/briefs/firecracker/WRITER-BRIEF.md` + 本文件中该篇的要点；
-   一个子任务负责 3–4 篇相邻篇目；一波最多 10 个子任务并行。顺序：第一至八部分（上游）→ 第九至十一部分 → 附录 → 00。
+   一个子任务负责 3–4 篇相邻篇目；一波最多 10 个子任务并行。顺序：第一至八部分（上游）→ 第九、第十部分 → 附录 → 00。
 3. **审校**：每 8–10 篇一个审校子任务（`tools/briefs/firecracker/REVIEWER-BRIEF.md`），抽查代码论断、统一术语、修链接。
 4. **图**：`tools/figcheck.sh firecracker` 全 PASS；WARN 的图按 `tools/briefs/FIGURE-FIXER-BRIEF.md` 返工。
 5. **验收**：主编逐部抽读，跑 `tools/mdlinks.py firecracker`、`tools/mdmermaid.mjs firecracker/*.md`、`tools/figcheck.sh firecracker`，
