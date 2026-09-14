@@ -23,7 +23,7 @@
 | 十 | ARM 适配版 | 57–73 | 本项目所有参与者 |
 | 附录 | 术语表、代码地图、API / 配置总表、差异总表 | 74–79 | 查阅 |
 
-篇幅分配的依据：上游 v1.12.1 约 9.7 万行 Rust（不含测试；vmm 7.9 万，其中 devices 2.9 万、arch 1.1 万、
+篇幅分配的依据：上游 v1.12.1 约 9.4 万行 Rust（不含测试与内联测试模块，第 01 篇实测；vmm 约 7.7 万，其中 devices 2.9 万、arch 1.1 万、
 cpu_config 0.6 万、dumbo 0.7 万；firecracker 主 crate 0.6 万、jailer 0.3 万、acpi-tables 0.3 万、
 cpu-template-helper 0.3 万、其余工具 0.3 万）。e2b 定制版在其上改了 18 个源码文件、约 +696 行，外加 guest 内核配置；
 ARM 适配版对 Firecracker 源码的改动约 +1660 行（其中 checkpoint / restore 扩展约 +1600：`rollback.rs` 656 行新文件，

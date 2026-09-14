@@ -74,3 +74,5 @@
 - 58 → 62 / 63：命令行无 --seccomp-filter / --no-seccomp 故默认过滤器生效；`init-client.sh` 拷贝前 rm -f 避 ETXTBSY。
 - 59 → 24 / 72：x86 reboot 经 i8042 PIO、aarch64 经 PSCI SystemEvent 终点相同；FDT 设备节点按 MMIO 地址排序。
 - 59：两架构都支持 gdb（大纲把它列为差异有误）。
+- 00 / 01：上游行数口径统一为 9.4 万行（第 01 篇实测）；78 篇 ARM 侧文件数 28、+1679/−36。
+- 77 → 44：`signals.sigpipe` 是七个信号计数里唯一累加型；`vmm.panic_count` 是 store 型。77 → 48：退出码 152/153 插在信号码中间是「退出码属对外契约、不重排」的实例。
