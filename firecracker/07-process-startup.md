@@ -5,8 +5,8 @@
 > 本篇沿着 `main_exec()` 逐段走一遍，重点在几件**只能在这里做、做完就不可逆**的进程级设置。
 >
 > **读者**：系统工程师、运维。
-> **预备**：[第 5 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)、
-> [第 6 篇 · 构建、运行与调试环境](06-build-run-debug.md)。
+> **预备**：[第 05 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)、
+> [第 06 篇 · 构建、运行与调试环境](06-build-run-debug.md)。
 > **代码**：`src/firecracker/src/main.rs`、`src/firecracker/src/api_server_adapter.rs`、
 > `src/firecracker/src/seccomp.rs`、`src/firecracker/src/metrics.rs`、
 > `src/vmm/src/signal_handler.rs`、`src/vmm/src/lib.rs`
@@ -26,7 +26,7 @@
 ## 1. 问题：启动阶段是唯一能设全局状态的窗口
 
 Firecracker 的运行期是被两层东西锁住的：seccomp 过滤器限制了进程能发的系统调用，
-vCPU 线程与事件循环一旦跑起来就不再接受"重新配置进程"这类操作。
+vCPU 线程与事件循环一旦跑起来就不再接受「重新配置进程」这类操作。
 凡是涉及整个进程的设置 —— 日志目的地、信号处理、文件描述符表的大小、系统调用白名单 ——
 都只有在这两层锁上之前才能做。启动路径因此不是一串可有可无的准备工作，而是一段有严格顺序约束的代码。
 
@@ -44,7 +44,7 @@ vCPU 线程与事件循环一旦跑起来就不再接受"重新配置进程"这�
 ## 2. 先让失败可见
 
 `main_exec()` 的第一句是 `LOGGER.init()`。此时还没有解析参数，日志只能落到默认目的地，
-但这保证了"参数解析失败"本身也有日志。紧接着调用一次 `host_page_size()`
+但这保证了「参数解析失败」本身也有日志。紧接着调用一次 `host_page_size()`
 （`src/vmm/src/arch/mod.rs`），这个函数第一次被调用时把宿主页大小缓存进静态变量，
 之后全进程的内存计算都读这份缓存，不再走系统调用 —— 把它放在最前面，是为了让缓存的写入发生在多线程出现之前。
 
@@ -116,7 +116,7 @@ vCPU 线程与事件循环一旦跑起来就不再接受"重新配置进程"这�
 接下来的一段是纯粹的构造：`InstanceInfo` 结构由四个字段组成 —— `id`（来自 `--id`）、
 `state`（固定为 `VmState::NotStarted`）、`vmm_version`（编译期的 `CARGO_PKG_VERSION`）、
 `app_name`（常量 `"Firecracker"`）。这个结构会被一路传进 `VmResources` 与 `Vmm`，
-是 `GET /` 返回的内容，也是控制器判断当前处于哪个阶段的依据（[第 9 篇 · rpc_interface](09-rpc-interface.md)）。
+是 `GET /` 返回的内容，也是控制器判断当前处于哪个阶段的依据（[第 09 篇 · rpc_interface](09-rpc-interface.md)）。
 
 `--metrics-path` 给出时调用 `init_metrics()`，把指标的落盘目标定下来。
 注意这与 `PUT /metrics` 是同一套配置，只是入口不同。
@@ -130,7 +130,7 @@ seccomp 过滤器在这里**加载但不装载**。`SeccompConfig::from_args()`�
 多了报 `ThreadCategories`，少了报 `MissingThreadCategory`。
 
 三份过滤器分别在各自的线程上装载，时机都不在 `main_exec()`：
-API 线程的那份在线程函数里由 `ApiServer::run()` 装（见[第 8 篇 · API server](08-api-server.md)），
+API 线程的那份在线程函数里由 `ApiServer::run()` 装（见[第 08 篇 · API server](08-api-server.md)），
 vCPU 与 VMM 的两份由 builder 在建机末尾装（[第 11 篇 · builder](11-builder.md)）。
 这个分离的代价是建机全过程不受过滤器保护，收益是白名单里不必包含只在建机阶段用到的系统调用。
 过滤器本身的内容见[第 42 篇 · seccomp](42-seccomp.md)。
@@ -277,7 +277,7 @@ ARM 适配版把 `main_exec()` 里调用 `resize_fdtable()` 的整段代码注�
 - `register_signal_handlers()` 只覆盖八个信号，`SIGTERM` 与 `SIGINT` 走内核默认行为，
   因此外部 kill 不会留下 metrics，有序停机必须走 API 或 guest 自身。
 - `resize_fdtable()` 用 `dup2` 加 `close` 逼内核一次性扩表，避免恢复快照时在大量描述符上重分配；
-  它的两档错误处理体现了"性能损失可以忍，描述符泄漏不能忍"的取舍。
+  它的两档错误处理体现了「性能损失可以忍，描述符泄漏不能忍」的取舍。
 - seccomp 在 `main_exec()` 里只加载不装载，三份过滤器按线程分发，各自在自己的线程上装。
 - 无 API 路径是单线程的最小形态；有 API 路径建立 VMM 线程与 `fc_api` 线程的双线程结构，
   两者用一对 mpsc 通道加一个 eventfd 连接。
@@ -285,12 +285,14 @@ ARM 适配版把 `main_exec()` 里调用 `resize_fdtable()` 的整段代码注�
 - 退出码分两类来路：信号类由处理器直接写出，其余由 `From<MainError>` 映射，
   两条停机路径透传内层的 `FcExitCode`；`GenericError` 覆盖面宽，定位仍要靠日志。
 
+---
+
 ## 延伸阅读 / 下一篇
 
-- [第 8 篇 · API server](08-api-server.md)：`fc_api` 线程起来之后做什么。
-- [第 9 篇 · rpc_interface](09-rpc-interface.md)：preboot 循环里的控制器。
+- [第 08 篇 · API server](08-api-server.md)：`fc_api` 线程起来之后做什么。
+- [第 09 篇 · rpc_interface](09-rpc-interface.md)：preboot 循环里的控制器。
 - [第 11 篇 · builder](11-builder.md)：`build_microvm_from_json()` 内部的建机流水线。
 - [第 12 篇 · Vmm、事件循环与退出路径](12-vmm-event-loop-and-exit.md)：`shutdown_exit_code` 是怎么被填上的。
 - [第 42 篇 · seccomp](42-seccomp.md)：三份过滤器的内容与生成方式。
 - [第 43 篇 · jailer](43-jailer.md)：谁在 Firecracker 之前设置 `RLIMIT_NOFILE` 与 cgroup。
-- 下一篇：[第 8 篇 · API server：Unix socket 上的 HTTP 与请求解析](08-api-server.md)。
+- 下一篇：[第 08 篇 · API server：Unix socket 上的 HTTP 与请求解析](08-api-server.md)。

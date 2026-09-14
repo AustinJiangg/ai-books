@@ -78,6 +78,12 @@ microVM 仍然是 `Paused`，可以照常 resume、可以再试一次回滚、�
 这三处的错误都归进它。这不是分类不精确，而是这三处与设备写回一样都在提交点之后，
 分得再细也不会改变处置方式。
 
+`Vcpu` 这一类的错误文本要打个折扣看。vCPU 阶段的失败由 `Vmm::restore_vcpu_states_in_place()`
+（`src/vmm/src/lib.rs`）转出来，而它沿用的是上游保存路径的枚举：应答个数对不上报
+`UnexpectedVcpuResponse`（此时一个应答都还没收），vCPU 线程报错包成
+`MicrovmStateError::SaveVcpuState`（此时做的是恢复）。行为不受影响，但日志里的错误名与实际动作对不上，
+排查时以阶段为准而不是以名字为准（[第 71 篇 §2](71-rollback-vcpu-and-gic.md#2-事件走到-vcpu-线程)）。
+
 `RevertBitmap` 值得单独说一句。位图文件与当前 microVM 不匹配（页大小不同，
 或者描述的页数与 guest 内存的页数不同）被当成参数错误而不是内部错误，
 因为它几乎总是调用方把另一台 microVM 的位图递了进来。
@@ -189,6 +195,13 @@ HTTP 层面这些错误是一视同仁的。`convert_to_response()`
 | `ioctl` 请求码 `0x4004ae99`（`KVM_SET_MP_STATE`） | vcpu | 写回 vCPU 的 mp state | vCPU 阶段最后一步失败 |
 | `pread64` | vmm | 定位读 `/proc/self/pagemap` | `GET /memory/dirty` 第一次调用即失败 |
 
+四条 vcpu 规则缺任何一条，后果都不是一次可以处理的 `Err`：seccomp 违规在 Firecracker 里是 `SIGSYS`，
+`signal_handler.rs` 的处理函数记一次 `seccomp.num_faults`、刷 metrics，然后以退出码 148
+（`FcExitCode::BadSyscall`）结束进程。而 vCPU 阶段在提交点之后，
+所以缺规则的表现是「进程直接消失」而不是「microVM 置 `Faulted`」——
+对调用方是两种不同的事件。四条请求码的位域分解（方向、大小、`0xAE` 族号、序号）在
+[第 62 篇](62-aarch64-seccomp-filter.md)。
+
 前四条的顺序不是随意排的，它正好是 aarch64 `KvmVcpu::restore_state()` 的执行顺序
 （`src/vmm/src/arch/aarch64/vcpu.rs`）：先 `init_vcpu()`，
 再单独写 `KVM_REG_ARM64_SVE_VLS`，再 `finalize_vcpu()`，
@@ -215,6 +228,12 @@ e2b 定制版给 x86_64 表加过 `pread64` 与 `mincore`，给 aarch64 表只�
 反向的约束同样存在，第 72 篇讲过一例：`memfd_create` 不在 vmm 表里，
 所以回滚时重建 net 的 RX 缓存只能就地擦干净复用，不能新建一个 `RxBuffers`。
 过滤器一旦划定，它就不只是一道检查，而是实现可以走哪条路的硬约束。
+
+还有一处靠时序而不是靠规则成立：aarch64 的 vmm 表里没有 `KVM_ENABLE_CAP`，
+而启用硬件脏页跟踪正是用这个 ioctl（[第 66 篇](66-hdbss.md)）。它不需要规则，
+是因为使能发生在过滤器装上之前 —— 与 userfaultfd 的创建与注册同一类口径
+（[第 39 篇](39-uffd-backend.md)）。代价是这类能力一旦要改成运行期可调，
+就得同时改过滤器表。
 
 ---
 
@@ -301,4 +320,4 @@ e2b 定制版给 x86_64 表加过 `pread64` 与 `mincore`，给 aarch64 表只�
 - [第 69 篇 · PUT /snapshot/rollback](69-rollback-api-and-phases.md)：各阶段的顺序与参数。
 - [第 72 篇 · 回滚的设备状态](72-rollback-devices.md)：`Devices` 这一类错误覆盖的那些步骤。
 - [第 44 篇 · 日志与 metrics](44-logging-and-metrics.md#6-latencies_us)：被复用的那个指标在上游的含义。
-- checkpoint / restore 手册 `../../e2b-infra-docs/rollback/docs/14-failure-semantics.md`：调用方侧的失败语义与退路。
+- [checkpoint / restore 手册第 14 篇](../../e2b-infra-docs/rollback/docs/14-failure-semantics.md)：调用方侧的失败语义与退路。

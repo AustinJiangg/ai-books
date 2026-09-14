@@ -275,6 +275,11 @@ jailer 决定这些系统调用能触及哪些对象。** 两者都不完备，�
 但两层的实际部署都**不使用 jailer**：Firecracker 进程由 orchestrator 直接用
 `ip netns exec <namespace> firecracker --api-sock …` 拉起，网络隔离由预先建好的网络 namespace 提供，
 文件系统边界与 cgroup 限额则由部署侧的其它机制承担或者不承担。
+
+cgroup 这一项在 ARM 部署里也没有人接手。orchestrator 一侧有一个 cgroup v2 管理器，
+但把 Firecracker 进程原子放进 cgroup 的那段代码（`CLONE_INTO_CGROUP`）在进程启动路径上是注释掉的，
+传下去的是「没有 cgroup fd」这个哨兵值；管理器的初始化在宿主没挂 cgroup v2 时也只打一条日志就返回。
+于是 jailer 原本提供的 CPU 与内存限额在这套部署里既不由 jailer 提供，也不由 orchestrator 提供。
 这条选择的后果与替代方案见[第 63 篇 · 与 e2b infra 的对接](63-integration-with-e2b-infra.md)。
 
 ---
@@ -295,6 +300,7 @@ jailer 决定这些系统调用能触及哪些对象。** 两者都不完备，�
 - `--daemonize` 用双重 fork，`--new-pid-ns` 用 `clone(CLONE_NEWPID)`；两种情况下 Firecracker 的 PID
   都与 jailer 的初始 PID 不同，统一从 jail 根目录的 `firecracker.pid` 读取。
 - jailer 不准备资源、不清理、不绑核、不降自身权限、不监督子进程，这些都是调用方的责任。
+- 两层部署都不用 jailer；网络隔离改由预建的网络 namespace 提供，cgroup 限额则两边都没有接手。
 
 ---
 

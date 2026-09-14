@@ -167,6 +167,12 @@ Firecracker 的 `--seccomp-filter` 参数收的是**已经编译好的二进制*
 根本不在白名单里，它们必须发生在装过滤器之前。装上过滤器，等于宣布进程从「配置阶段」进入了「运行阶段」，
 而且这个转换不可逆（seccomp 过滤器只能叠加，不能卸载）。
 
+从快照恢复的那条路径把这个前提暴露得最清楚：三张表里**没有 `userfaultfd` 这个系统调用，也没有任何 `UFFDIO_*` 的 `ioctl` 请求码**。
+能这样写，是因为 uffd 的创建、`UFFDIO_REGISTER` 与把 fd 交给外部 handler 全部发生在
+`build_microvm_from_snapshot()` 里、装 `vmm` 过滤器之前；装完过滤器之后，Firecracker
+这一侧不再碰这个 fd，缺页由外部 handler 的进程处理（[第 39 篇 §2](39-uffd-backend.md#2-握手一次性交出去的两样东西)）。
+代价是这条路径一旦要在运行期重新注册 uffd，就必须同步改表。
+
 `Vcpu::run()` 与 `ApiServer::run()` 在装载失败时直接 panic，注释里给的理由是：
 不装过滤器地跑下去不是一个可接受的降级，要跳过过滤请显式用 `--no-seccomp`。
 
@@ -306,5 +312,6 @@ ARM 适配版在 aarch64 的表上补齐了 `pread64`，并且为原地回滚往
 - [第 43 篇 · jailer：chroot、cgroup 与 namespace](43-jailer.md)：另一半隔离，以及两者的分工。
 - [第 44 篇 · 日志与 metrics](44-logging-and-metrics.md)：`seccomp.num_faults` 与退出码的观测面。
 - [第 15 篇 · vCPU 线程与状态机](15-vcpu-threads-and-state-machine.md)：过滤器装载点所在的那个函数的上下文。
+- [第 39 篇 · userfaultfd 后端与缺页处理](39-uffd-backend.md)：为什么白名单里不需要出现 uffd 相关的调用。
 - [第 47 篇 · 测试体系](47-testing.md)：`tests/integration_tests/security/test_seccomp.py` 怎么验证过滤器生效。
 - 上游文档 `docs/seccomp.md`、`docs/seccompiler.md`。

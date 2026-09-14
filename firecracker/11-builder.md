@@ -196,8 +196,11 @@ aarch64 上这一步是空的：设备信息留在 `id_to_dev_info` 里，
 （`fdt::create_fdt()` 的输入之一就是 `mmio_device_manager.get_device_info()`，
 [第 19 篇](19-aarch64-platform.md)）。
 
-vmgenid 不走这条路：它是 ACPI 设备，由 `attach_vmgenid_device()` 交给 `ACPIDeviceManager`
-（[第 35 篇](35-entropy-vmgenid-rate-limiter.md)）。
+vmgenid 不走这条路：`attach_vmgenid_device()` 把它交给 `ACPIDeviceManager`。
+这个管理器两个架构都有（`src/vmm/src/device_manager/acpi.rs` 里没有 `cfg(target_arch)`），
+区别在 guest 怎么看到它：x86_64 上经 ACPI 表，aarch64 上由 `fdt.rs` 的
+`create_vmgenid_node()` 写一个 `compatible = "microsoft,vmgenid"` 的 FDT 节点
+（[第 19 篇](19-aarch64-platform.md)、[第 35 篇](35-entropy-vmgenid-rate-limiter.md)）。
 
 ---
 
@@ -248,14 +251,14 @@ VMM 线程自己的 seccomp 过滤器在 `start_vcpus()` 之后才装，代码�
 它监听 vCPU 退出事件。这一步之后函数返回，`build_and_boot_microvm()` 调 `resume_vm()`，
 guest 开始执行。
 
----
-
 这条流水线上任何一步失败，`build_microvm_for_boot()` 都直接返回 `StartMicrovmError`
 的某个变体，不做回滚。已经建好的东西随着函数的局部变量被丢弃：`Vmm` 析构时关闭
 VM fd 与 vCPU fd，KVM 侧的对象随之释放；已经挂上事件管理器的设备则保留着一个 `Arc`，
 直到事件管理器本身被丢弃。进程没有被杀掉，控制器仍然停在 Preboot 阶段，
 调用方可以改配置再发一次 `InstanceStart` —— 这也是[第 9 篇 §3.4](09-rpc-interface.md#34-fatal_error哪些失败不能原地重试)
 里冷启动失败不算致命错误的原因。
+
+---
 
 ## 8. 与快照恢复路径的对照
 
@@ -276,7 +279,7 @@ ARM 适配版在 `src/vmm/src/builder.rs` 的两条路径里各加了一行
 `vmm.vm.setup_dirty_tracking()`，紧跟在 `register_memory_regions()` 之后，
 用于在内存区域注册完成后打开脏页跟踪后端。见
 [第 65 篇 · 脏页跟踪后端](65-dirty-tracking-backend.md)。
-e2b 定制版与 ARM 适配版不改这个文件。
+e2b 定制版不改这个文件。
 
 ---
 

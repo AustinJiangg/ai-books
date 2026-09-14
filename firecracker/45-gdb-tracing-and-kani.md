@@ -205,7 +205,8 @@ flowchart TB
     C -->|"PUT logger 级别 Trace"| D["trace 日志"]
 ```
 
-图中的自环表示 `strip` 把源码改回原样，这是编译期过滤的做法：先全部删掉，
+反过来，`clippy-tracing --action strip` 把 B 改回 A，也就是把源码还原成不带插桩的形态。
+缩小观察范围就靠这条回路：先全部删掉，
 再只给关心的目录加回插桩，然后编译。与之相对的是运行时过滤 —— 插桩全留着，
 靠 `PUT /logger` 的 `level` 与 `module` 字段筛选输出。两者的差别在于成本落在哪里：
 运行时过滤省掉了格式化与写入，但每个函数仍要进出那把全局锁并判断一次条件；
@@ -238,7 +239,7 @@ Kani 是针对 Rust 的模型检查器：它不执行代码，而是把函数翻
 | `src/vmm/src/devices/virtio/iovec.rs` | 2 | 描述符链到 iovec 的转换涉及裸指针 |
 | `src/vmm/src/arch/x86_64/mod.rs`、`aarch64/mod.rs` | 各 1 | 内存布局划分的边界条件 |
 
-`src/clippy-tracing/src/main.rs` 里还有一个，与 VMM 无关。
+`src/clippy-tracing` 自己没有证明，它只是在识别函数属性时认得 `#[kani::proof]` 这个标记。
 
 ### 4.2 一个证明长什么样
 

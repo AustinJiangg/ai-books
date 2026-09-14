@@ -5,7 +5,7 @@
 > 以及十几个外部 crate 各自承担了哪一块。读完这一篇，后面各篇引用的类型名与函数名应当不再陌生。
 >
 > **读者**：熟悉 C 或 C++ 系统编程、但没读过 Rust 项目的读者。
-> **预备**：[第 3 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、[第 4 篇 · virtio 与 virtio-mmio 基础](04-virtio-and-mmio-primer.md)。
+> **预备**：[第 03 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、[第 04 篇 · virtio 与 virtio-mmio 基础](04-virtio-and-mmio-primer.md)。
 > **代码**：`Cargo.toml`、`rust-toolchain.toml`、`src/vmm/Cargo.toml`、`src/vmm/src/vstate/memory.rs`、
 > `src/vmm/src/arch/mod.rs`、`src/vmm/src/seccomp.rs`、`src/firecracker/build.rs`、`tools/bindgen.sh`
 
@@ -45,19 +45,21 @@ guest 是不可信的，它给的地址、长度、索引都可能是恶意构�
 
 仓库根的 `Cargo.toml` 声明了一个 cargo workspace，成员是 `src/*`。十二个成员分三类。
 
-| crate | 行数量级 | 职责 |
+| crate | 行数 | 职责 |
 |---|---|---|
-| `vmm` | 7.9 万 | 全部 VMM 逻辑：KVM 封装、内存、vCPU、设备、快照、控制面。以库的形式存在 |
-| `firecracker` | 5700 | 可执行文件：参数解析、API server、把 `vmm` 串起来 |
-| `jailer` | 3100 | 独立可执行文件，chroot / cgroup / namespace |
-| `seccompiler` | 600 | JSON 策略编译成 BPF；既是库也是 `seccompiler-bin` |
-| `acpi-tables` | 2700 | x86_64 的 ACPI 表构造 |
-| `utils` | 1400 | 命令行参数解析、时间、校验；被多个 crate 共用 |
-| `cpu-template-helper` | 2700 | CPU 模板的采集与比对工具 |
+| `vmm` | 77 285 | 全部 VMM 逻辑：KVM 封装、内存、vCPU、设备、快照、控制面。以库的形式存在 |
+| `firecracker` | 4 920 | 可执行文件：参数解析、API server、把 `vmm` 串起来 |
+| `jailer` | 3 133 | 独立可执行文件，chroot / cgroup / namespace |
+| `acpi-tables` | 2 704 | x86_64 的 ACPI 表构造 |
+| `cpu-template-helper` | 2 674 | CPU 模板的采集与比对工具 |
+| `utils` | 1 411 | 命令行参数解析、时间、校验；被多个 crate 共用 |
 | `snapshot-editor` | 650 | 快照文件的离线编辑 |
-| `rebase-snap` | 330 | 把差分内存文件合并回基底 |
-| `log-instrument` / `log-instrument-macros` | 250 | 可选的函数进出日志插桩 |
-| `clippy-tracing` | 930 | 给源码批量加 / 去插桩属性的开发工具 |
+| `seccompiler` | 599 | JSON 策略编译成 BPF；既是库也是 `seccompiler-bin` |
+| `clippy-tracing` | 445 | 给源码批量加 / 去插桩属性的开发工具 |
+| `rebase-snap` | 329 | 把差分内存文件合并回基底 |
+| `log-instrument` / `log-instrument-macros` | 94 | 可选的函数进出日志插桩 |
+
+行数口径与[第 01 篇 §3](01-lineage-and-repo-map.md#3-仓库地图十二个-crate)一致：各 crate `src/` 下全部 `.rs` 文件的行数，含文件内的单元测试模块。
 
 这张图是内部 crate 的依赖方向，箭头表示「依赖」。
 
@@ -96,7 +98,7 @@ CPU 模板类型，不必重新定义一套；快照格式改了，这两个工�
 **`jailer` 不在默认构建目标里。** 根 `Cargo.toml` 的 `default-members` 列举了除 `jailer` 与 `vmm` 之外的成员。
 原因写在注释里：`cargo build` 默认走 gnu target，而 jailer 必须静态链接才能在 chroot 之后工作。
 正式构建走 `tools/release.sh`，它显式指定 `--target <arch>-unknown-linux-musl --workspace`，
-这时 jailer 才会被编出来（详见[第 6 篇 · 构建、运行与调试环境](06-build-run-debug.md)）。
+这时 jailer 才会被编出来（详见[第 06 篇 · 构建、运行与调试环境](06-build-run-debug.md)）。
 
 `rust-toolchain.toml` 把工具链钉在 1.85.0，并预装两个 musl target。文件里的注释说明了为什么要钉：
 CI 会跨两个版本做 A/B 对比，如果工具链漂移，新引入的系统调用可能没进 seccomp 白名单，
@@ -144,7 +146,7 @@ Firecracker 支持 x86_64 与 aarch64，两者的 vCPU 寄存器、引导协议�
 同一组 lints 里还有几条值得一提：`cast_possible_truncation`、`cast_possible_wrap`、`cast_sign_loss` 三条
 把 C 里随手就写的整数转换变成警告，所以代码里到处是 `u64_to_usize()` 这类显式转换辅助函数；
 `exit = "warn"` 禁止在库代码里直接调 `std::process::exit`，退出必须走 `FcExitCode` 一路返回到 `main`
-（见[第 7 篇 · 进程启动](07-process-startup.md)）。`[profile.release]` 里 `panic = "abort"`：
+（见[第 07 篇 · 进程启动](07-process-startup.md)）。`[profile.release]` 里 `panic = "abort"`：
 release 构建不做栈展开，任何 panic 直接终止进程，这也是 `main.rs` 要先装 panic hook 的原因。
 
 ---
@@ -173,7 +175,7 @@ pub enum MemoryError {
 这个写法不只是整洁问题。控制面的错误最终会被 `src/firecracker/src/api_server/parsed_request.rs` 的
 `convert_to_response()` 用 `vmm_action_error.to_string()` 取出来，塞进 HTTP 响应体的 `fault_message` 字段。
 也就是说，**这些文档注释就是 API 的错误文案**，调用方看到的字符串直接来自枚举变体上的那行注释。
-改动这行注释等于改动对外行为，这一点在[第 8 篇 · API server](08-api-server.md) 还会用到。
+改动这行注释等于改动对外行为，这一点在[第 08 篇 · API server](08-api-server.md) 还会用到。
 
 ### 5.2 扩展 trait：给外部类型加方法
 
@@ -212,7 +214,7 @@ Firecracker 是多线程的：API 线程、VMM 线程、每个 vCPU 一个线程
 
 二是 `std::sync::mpsc` 通道。API 线程与 VMM 线程之间就是两条通道加一个 eventfd：
 请求从 `to_vmm` 发出、`from_api` 收下，响应从 `to_api` 发回、`from_vmm` 收下，eventfd 用来把 VMM 线程从 epoll 里叫醒。
-这条路径是第 8 篇的主题。
+这条路径是第 08 篇的主题。
 
 值得注意的是代码对锁失败的态度：`vmm.lock().unwrap()`、`.expect("Poisoned lock")` 到处都是。
 一把锁被 poison 说明持锁线程 panic 过，此时进程状态已不可信，选择是立刻死掉而不是尝试恢复。
@@ -265,7 +267,7 @@ Firecracker 是多线程的：API 线程、VMM 线程、每个 vCPU 一个线程
 代价是日志与 metrics 不受模块边界约束，读代码时无法从函数签名看出它会不会写日志。
 `METRICS` 的结构、`latencies_us` 的分段计时与 flush 时机在[第 44 篇 · 日志与 metrics](44-logging-and-metrics.md) 讲。
 命令行参数不用第三方库，用的是自带的 `utils::arg_parser`：几十行的 `Argument` 链式声明，
-支持 `takes_value`、`default_value`、`requires`、`forbids` 四种约束，实际参数表见[第 6 篇](06-build-run-debug.md)。
+支持 `takes_value`、`default_value`、`requires`、`forbids` 四种约束，实际参数表见[第 06 篇](06-build-run-debug.md)。
 
 **`bincode` 同时用在两个地方。** 一处是快照：`src/vmm/src/snapshot/mod.rs` 里的 `BINCODE_CONFIG`
 选了定长整数、小端、并加了 10 MiB 的反序列化上限，目的是防止一个构造过的 vmstate 文件让进程分配巨量内存。
@@ -296,7 +298,16 @@ Firecracker 是多线程的：API 线程、VMM 线程、每个 vCPU 一个线程
 
 ---
 
-## 8. 小结
+## 8. 后续各层的差异
+
+本篇讲到的两处抽象在后面的层里被继续扩写。`GuestMemoryExtension`（`src/vmm/src/vstate/memory.rs`）
+在 ARM 适配版的 checkpoint / restore 扩展里多出内存写回与位图 sidecar 读写的方法，
+是那一层改动最大的单个文件（[第 70 篇](70-rollback-memory.md)、[第 67 篇](67-dirty-bitmap-sidecar.md)）；
+`Persist` 的各个实现则要回答「把 `State` 写回一台正在跑的设备会怎样」这个上游没问过的问题
+（[第 72 篇](72-rollback-devices.md)）。crate 列表本身两层都没有增删，
+e2b 定制版只动了 `Cargo.lock` 里由构建脚本带入的条目。
+
+## 9. 小结
 
 - 仓库是一个十二成员的 cargo workspace，逻辑全在 `vmm` 库 crate 里，`firecracker` 只是外壳；
   `jailer` 因为必须静态链接而被排除在 `default-members` 之外。
@@ -314,7 +325,7 @@ Firecracker 是多线程的：API 线程、VMM 线程、每个 vCPU 一个线程
 
 ## 延伸阅读 / 下一篇
 
-- 下一篇：[第 6 篇 · 构建、运行与调试环境](06-build-run-debug.md) —— 把这些 crate 真正编成二进制并跑起来。
+- 下一篇：[第 06 篇 · 构建、运行与调试环境](06-build-run-debug.md) —— 把这些 crate 真正编成二进制并跑起来。
 - [第 46 篇 · 代码组织、依赖与构建](46-code-organization-and-build.md) 从维护者角度重讲模块划分与构建目标。
 - [第 75 篇 · 代码地图：crate、模块与篇目](75-code-map.md) 给出文件到篇目的完整对照。
 - 内存抽象的实际用法见[第 13 篇 · guest 内存](13-guest-memory.md)；事件循环与订阅者见[第 12 篇 · Vmm、事件循环与退出路径](12-vmm-event-loop-and-exit.md)。

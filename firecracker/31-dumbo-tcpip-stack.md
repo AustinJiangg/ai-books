@@ -29,7 +29,7 @@ MMDS 要做的事很小：guest 用普通 HTTP 客户端访问一个 link-local 
 而这条通路要靠宿主侧的防火墙规则去约束 —— 一个部署层的配置错误会直接变成隔离失效。
 
 dumbo 把这条路整个取消：目的地址是 MMDS 的帧在 virtio-net 设备的发送路径上就被截下来，
-根本不写进 tap（拦截点见[第 32 篇](32-mmds.md)）。代价是 Firecracker 进程里必须自带
+根本不写进 tap（拦截点见[第 30 篇 §2.1](30-virtio-net.md#21-mmds-的拦截点)）。代价是 Firecracker 进程里必须自带
 ARP、IPv4、TCP 与 HTTP 的最小实现，并且这些代码直接面对不可信的 guest 输入。
 上游把这个取舍写在模块文档里：正因为 dumbo 处理的流量永远不会离开这台 microVM，
 它才可以做出下面这一系列简化。
@@ -190,6 +190,8 @@ flowchart TB
 `next_segment_status()` 给上层一个三态答复 —— 立刻有得发、要等到某个时刻、没有可发的；
 `MmdsNetworkStack::write_next_frame()` 据此决定要不要为这次 RX 机会生成一个回包。
 上层每次只拿到一个帧，是因为调用方（virtio-net 的接收路径）每次只有一个可写的 guest 缓冲区。
+这条「先 `RST` 队列、再活跃集、一次一帧」的发送优先级，在
+[第 32 篇 §4](32-mmds.md#4-一次请求走过的路) 里是从请求往返的角度看同一件事。
 
 连接表、活跃集与超时点三者必须同步维护，`check_next_segment_status()` 与 `find_next_timeout()`
 这两个辅助函数就是为此存在：任何一次收发之后，若被改动的连接正是那个「最近超时」的连接，

@@ -1,6 +1,6 @@
 # 25 · virtio 设备模型与 MMIO 传输层
 
-> virtio 的六个设备在 Firecracker 里共用一套接口：一个 trait 定义设备要交出什么，
+> virtio 的五类设备在 Firecracker 里共用一套接口：一个 trait 定义设备要交出什么，
 > 一个传输层把 guest 的寄存器读写翻译成对这个 trait 的调用。本篇讲这条翻译链的每一环，
 > 讲设备是在哪一刻、由谁「激活」的，以及通知与中断这两个方向各自绕开了什么。
 >
@@ -22,9 +22,11 @@
 
 ---
 
-## 1. 问题：一套寄存器接口，六种设备
+## 1. 问题：一套寄存器接口，五类设备
 
-block、net、vsock、balloon、rng 这几个设备在数据面上毫无共同点：一个读写文件，一个收发以太网帧，
+v1.12.1 有五种 virtio 设备类型（`src/vmm/src/devices/virtio/mod.rs` 的 `TYPE_NET` / `TYPE_BLOCK` /
+`TYPE_RNG` / `TYPE_BALLOON`，与 `vsock/mod.rs` 的 `TYPE_VSOCK`），其中块设备还有两套后端实现
+（[第 27 篇](27-virtio-block.md)与[第 29 篇](29-vhost-user-block.md)）。它们在数据面上毫无共同点：一个读写文件，一个收发以太网帧，
 一个维护连接状态机，一个调 `madvise`，一个生成随机数。但它们在 guest 眼里必须长得一样 ——
 virtio 规范规定了一套设备无关的发现与配置流程：读魔数、读设备类型、协商特性位、建队列、置 `DRIVER_OK`。
 Linux 的 `virtio_mmio` 驱动只实现这一套流程，具体设备的驱动（`virtio_blk`、`virtio_net`）挂在它上面，
@@ -54,7 +56,9 @@ trait 的方法可以分成四组。
 `has_feature()` 就建立在这个不变量上，设备代码里到处用它决定走哪条数据面分支。
 
 **队列。** `queues()` / `queues_mut()` 返回 `&[Queue]`，`queue_events()` 返回与之等长的一组 eventfd。
-队列的数量与顺序是设备类型定死的（block 一个，net 三个：RX、TX、加上可选的控制队列），
+队列的数量与顺序是设备类型定死的，写在各自 `mod.rs` 的 `*_NUM_QUEUES` 常量里：
+block 一个，net 两个（RX 与 TX，`NET_NUM_QUEUES = 2`；v1.12.1 不实现 virtio-net 的控制队列），
+vsock 与 balloon 各三个，rng 一个。
 传输层只按 `queue_select` 这个寄存器的值去索引，索引越界就静默返回默认值（`with_queue()` 的 `d` 参数）。
 `Queue` 本身的内部结构在[第 26 篇](26-virtqueue-implementation.md)讲。
 
@@ -205,7 +209,7 @@ sequenceDiagram
 这是 virtio 数据面最重要的一处优化：每次提交 I/O 省掉一次 VM exit 加一次调度往返。
 
 代价是 0x50 这个寄存器在 `MmioTransport::bus_write()` 的 `match` 里根本没有分支。
-如果 guest 往它写了一个没有对应队列的值（比如三队列设备写了 5），datamatch 不命中，
+如果 guest 往它写了一个没有对应队列的值（比如两队列的 net 设备写了 5），datamatch 不命中，
 这次写就穿透到 MMIO 总线，落到 `_ =>` 分支打一条「unknown virtio mmio register write」。
 这是一个可以从日志里看出来的驱动 bug 信号。
 
@@ -310,7 +314,7 @@ ARM 适配版在 `src/vmm/src/devices/virtio/persist.rs` 里给 `MmioTransport` 
 设备引用、guest 内存与中断连线都保持不变。上游只有 `Persist::restore()`，它总是造一个新对象，
 这在原地回滚的场景下不适用。详见[第 72 篇 · 回滚的设备状态](72-rollback-devices.md)。
 
-e2b 定制版与 ARM 适配版没有改动本篇涉及的文件。
+e2b 定制版没有改动本篇涉及的任何文件；ARM 适配版除上面这个新增方法外也没有改动别的。
 
 ---
 
@@ -333,6 +337,8 @@ e2b 定制版与 ARM 适配版没有改动本篇涉及的文件。
 - v1.12.1 的所有设备都没有实现 `reset()`，所以对已激活设备的复位请求只会把它置成 `FAILED`。
 - 快照保存传输层的五个寄存器与设备的通用 virtio 状态；`irq_evt` 不保存，
   漏掉的通知靠恢复后的 `kick_devices()` 补。
+
+---
 
 ## 延伸阅读 / 下一篇
 

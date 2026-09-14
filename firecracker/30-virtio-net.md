@@ -73,11 +73,11 @@ flowchart LR
     end
     subgraph RXC["② RX　tap 发起"]
         direction TB
-        R1["tap 可读<br/>resume_rx"] --> R2{"缓存容量够"}
-        R2 -->|"不够"| R3["parse_rx_descriptors<br/>补进新链"]
+        R1["tap 可读 resume_rx"] --> R2{"缓存容量够"}
+        R2 -->|"不够"| R3["parse_rx_descriptors"]
         R3 --> R2
         R2 -->|"够"| R4["readv 写进 guest 内存"]
-        R4 --> R5["mark_used<br/>写 used 元素"]
+        R4 --> R5["mark_used 写元素"]
         R5 --> R6{"限速令牌够"}
         R6 -->|"够"| R7["finish_frame<br/>推进 used 索引"]
         R6 -->|"不够"| R8["悬置<br/>used_bytes 保留"]
@@ -263,7 +263,7 @@ v1.12.1 已经把它并进了 `used_bytes` 这个计数，不再有单独的标�
 
 ---
 
-## 5. 事件循环里的六个源
+## 5. 事件循环里的事件源
 
 `net/event_handler.rs` 注册的事件源比其它设备多。激活前只有 `PROCESS_ACTIVATE`；
 激活后注销它，换上五个：
@@ -336,7 +336,7 @@ ARM 适配版给 net 设备加了 `rollback_rx_buffers()`（`src/vmm/src/devices
 而 VMM 线程的 seccomp 过滤器里没有 `memfd_create` 规则），再走与恢复路径相同的
 「回退 `next_avail` 加重解析」。同时把 `RxBufferState` 的三个字段与 `NetState` 的访问器
 开放到 crate 内可见。详见[第 72 篇 · 回滚的设备状态](72-rollback-devices.md)。
-e2b 定制版与 ARM 适配版没有改动本篇涉及的文件。
+e2b 定制版没有改动本篇涉及的文件。
 
 ---
 

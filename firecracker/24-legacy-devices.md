@@ -174,6 +174,10 @@ RTC 节点**不**带 interrupt 属性，代码注释说明了原因：这个设�
 从 `vcpus_exit_evt` 克隆来的 —— 也就是说 i8042 的复位命令与 vCPU 线程主动退出走的是同一个出口，
 VMM 线程的事件循环醒来后按同一条路径关机。这个复用把「guest 请求重启」与「guest 执行了导致退出的指令」
 归并成一件事：Firecracker 不重启 VM，只退出进程，重启由外面的编排器完成。
+退出码也随之确定：`Vmm::process()` 收到这个 eventfd 后逐个查询 vCPU 的退出状态，
+没有任何 vCPU 报错就以 `FcExitCode::Ok` 调 `stop()`，所以 guest 里一次正常的 `reboot`
+在宿主侧看到的是 Firecracker 进程以退出码 0 结束，与 guest 正常关机无法区分
+（[第 12 篇](12-vmm-event-loop-and-exit.md)）。
 
 另一半功能是注入按键。`trigger_ctrl_alt_del()` 把 CTRL、ALT、DEL 三个扫描码（其中 DEL 是双字节扩展码）
 推进缓冲区，每推一个就试着写 `kbd_interrupt_evt`（GSI 1）。它由 `Vmm::send_ctrl_alt_del()` 调用，
@@ -261,6 +265,8 @@ guest 驱动在初始化时置位，之后 FIFO 收到字节设备才会拉中�
   而不是 VM 重启。
 - 快照只保存 aarch64 legacy 设备的 MMIO 地址与 IRQ，不保存任何内部寄存器状态；
   `emulate_serial_init()` 手工补回串口的 RDA 中断使能位，其余状态的丢失是已知且未修的。
+
+---
 
 ## 延伸阅读 / 下一篇
 

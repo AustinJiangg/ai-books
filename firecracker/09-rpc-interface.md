@@ -5,7 +5,7 @@
 > 每段配一个控制器，两者对同一个动作集合给出不同的答案。
 >
 > **读者**：系统工程师。
-> **预备**：[第 7 篇 · 进程启动](07-process-startup.md)、[第 8 篇 · API server](08-api-server.md)。
+> **预备**：[第 07 篇 · 进程启动](07-process-startup.md)、[第 08 篇 · API server](08-api-server.md)。
 > **代码**：`src/vmm/src/rpc_interface.rs`、`src/vmm/src/vmm_config/instance_info.rs`、
 > `src/firecracker/src/api_server_adapter.rs`、`src/vmm/src/lib.rs`
 
@@ -268,7 +268,7 @@ vCPU 停下只保证 guest 不再产生新请求，已经在飞行中的 I/O 仍
 `OperationNotSupportedPostBoot`、`OperationNotSupportedPreBoot`、`NotSupported(String)`、
 以及 MMDS 的 `MmdsLimitExceeded`。这四个之外的错误都来自更下层，
 控制器只负责把它们装进信封。错误到 HTTP 状态码的映射在 API server 那一侧
-（[第 8 篇](08-api-server.md)）。
+（[第 08 篇](08-api-server.md)）。
 
 `ApiRequest` 与 `ApiResponse` 都是 `Box` 包起来的：动作枚举里最大的变体带着完整的
 `CustomCpuTemplate`，不装箱会让通道里每条消息都按最大变体的尺寸拷贝。
@@ -284,10 +284,11 @@ e2b 定制版在 `src/vmm/src/rpc_interface.rs` 加了三个只在 Runtime 阶�
 [第 50 篇](50-memory-mappings-api.md)、[第 51 篇](51-memory-resident-empty-api.md)、
 [第 52 篇](52-memory-dirty-api.md)。
 
-ARM 适配版在同一文件加了 `RollbackSnapshot` 与 `SaveDirtyBitmap` 两个 Runtime 动作，
+ARM 适配版的改动全部来自它的 checkpoint / restore 扩展，构建与运行那一段不碰这个文件。
+扩展在同一文件加了 `RollbackSnapshot` 与 `SaveDirtyBitmap` 两个 Runtime 动作，
 给 `VmState` 加了第四个值 `Faulted`，并在 `create_snapshot()` 开头拒绝对 Faulted 的 VM 创建快照。
 见[第 69 篇](69-rollback-api-and-phases.md)、[第 68 篇](68-save-dirty-bitmap-api.md)、
-[第 73 篇](73-failure-model-faulted-and-seccomp.md)。ARM 适配版不改这个文件。
+[第 73 篇](73-failure-model-faulted-and-seccomp.md)。
 
 ---
 
@@ -308,9 +309,11 @@ ARM 适配版在同一文件加了 `RollbackSnapshot` 与 `SaveDirtyBitmap` 两�
 - `CreateSnapshot` 只在控制器里检查 Diff 与 `track_dirty_pages` 的搭配；
   「必须 Paused」这个前提由 vCPU 状态机以 `NotAllowed` 响应强制。
 
+---
+
 ## 延伸阅读 / 下一篇
 
-- [第 8 篇 · API server](08-api-server.md)：HTTP 请求怎么变成 `VmmAction`，错误怎么变成状态码。
+- [第 08 篇 · API server](08-api-server.md)：HTTP 请求怎么变成 `VmmAction`，错误怎么变成状态码。
 - [第 10 篇 · 资源模型：VmResources 与 vmm_config](10-vm-resources-and-config.md)：Preboot 动作写进去的那个对象。
 - [第 15 篇 · vCPU 线程与状态机](15-vcpu-threads-and-state-machine.md)：`VcpuEvent` 与 `NotAllowed` 的来源。
 - [第 37 篇 · 创建快照](37-snapshot-create.md)：`create_snapshot()` 之后发生的事。

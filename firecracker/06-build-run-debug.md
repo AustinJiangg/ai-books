@@ -4,7 +4,7 @@
 > 出问题时手上有哪些观测手段。后面各篇讲机制时会假设读者能自己起一台 microVM 复现。
 >
 > **读者**：所有读者。
-> **预备**：[第 5 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)。
+> **预备**：[第 05 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)。
 > **代码**：`tools/devtool`、`tools/release.sh`、`src/firecracker/build.rs`、
 > `src/firecracker/src/main.rs`、`src/vmm/src/logger/logging.rs`、`resources/rebuild.sh`
 
@@ -27,7 +27,7 @@ Firecracker 的二进制要在别人的机器上跑，而且经常是在 chroot�
 那里没有动态链接器、没有 libc、没有任何共享库。所以产物必须**静态链接**，
 链接的是 musl 而不是 glibc —— glibc 的静态链接在 NSS、locale 等处有已知问题。
 
-还有一个约束来自 seccomp。进程允许哪些系统调用，是编译期决定的（[第 5 篇 §2](05-rust-and-crates-primer.md#2-workspace-与十二个-crate)）：
+还有一个约束来自 seccomp。进程允许哪些系统调用，是编译期决定的（[第 05 篇 §2](05-rust-and-crates-primer.md#2-workspace-与十二个-crate)）：
 `build.rs` 把 JSON 策略编成 BPF 内嵌进二进制。如果编译用的工具链变了，
 标准库内部换用了一个新的系统调用，而白名单里没有它，进程会在运行时被自己的过滤器杀掉。
 所以 `rust-toolchain.toml` 把工具链钉死在 1.85.0，而不是「用你机器上那个」。
@@ -119,7 +119,7 @@ cargo build --release --target x86_64-unknown-linux-musl --workspace --bins
 
 产物落在同样的 `target/` 布局下（路径前缀取决于是否设了 `CARGO_TARGET_DIR`）。
 这样编出来的二进制与容器里编的在功能上一致，差别在两处：
-一是 `generated/` 下的绑定已经提交入库，不随本机内核头文件变化（[第 5 篇 §7](05-rust-and-crates-primer.md#7-生成代码generated-与-bindgen)），
+一是 `generated/` 下的绑定已经提交入库，不随本机内核头文件变化（[第 05 篇 §7](05-rust-and-crates-primer.md#7-生成代码generated-与-bindgen)），
 所以本机头文件版本不影响产物；二是集成测试依赖容器里预装的 pytest 环境与 CI 产物，
 本机跑得起 `cargo test`，跑不起 `devtool test`。
 
@@ -175,7 +175,7 @@ curl -X PUT --unix-socket /tmp/firecracker.socket \
 ```
 
 前两个请求只是在进程内存里填结构体，什么都没发生；第三个请求才真正创建 VM、加载内核、起 vCPU 线程。
-配置与启动分成两个阶段这件事贯穿全书，[第 9 篇 · rpc_interface](09-rpc-interface.md) 讲这条分界线的含义。
+配置与启动分成两个阶段这件事贯穿全书，[第 09 篇 · rpc_interface](09-rpc-interface.md) 讲这条分界线的含义。
 
 要让 guest 能上网，还需要在启动前多发一个请求。Firecracker 自己不建网络设备，
 它要求宿主上已经存在一个 tap 设备，然后把这个 tap 挂成 guest 的一块网卡：
@@ -233,7 +233,7 @@ curl -X PUT --unix-socket /tmp/firecracker.socket \
 socket 也不建。进程构建完 microVM 就进事件循环，直到 guest 关机。
 这是密度最高、攻击面最小的跑法，代价是启动之后不能暂停、不能做快照、不能改任何配置。
 两条路的代码分叉点在 `src/firecracker/src/main.rs` 末尾：`run_with_api()` 与 `run_without_api()`，
-[第 7 篇](07-process-startup.md) 展开。
+[第 07 篇](07-process-startup.md) 展开。
 
 ---
 
@@ -315,7 +315,7 @@ PCI 支持是后续版本的事。
 定位 panic 位置要靠日志里 `PanicHookInfo` 打出来的文件与行号，或者用 core dump。
 
 正常退出则走 `FcExitCode`。它是 `main()` 的返回值，编排系统靠它区分「guest 正常关机」
-与「被 seccomp 杀掉」「收到 SIGBUS」这类情况。取值表在[第 7 篇 §6](07-process-startup.md#6-退出码)。
+与「被 seccomp 杀掉」「收到 SIGBUS」这类情况。取值表在[第 07 篇 §6](07-process-startup.md#6-退出码)。
 
 ### 5.4 两个可选特性
 
@@ -361,7 +361,7 @@ ARM 适配版对这个脚本只做了一处改动：产物路径里的目标三�
 
 ## 延伸阅读 / 下一篇
 
-- 下一篇：[第 7 篇 · 进程启动：从参数到运行](07-process-startup.md) —— 这些参数在进程里被怎么处理。
+- 下一篇：[第 07 篇 · 进程启动：从参数到运行](07-process-startup.md) —— 这些参数在进程里被怎么处理。
 - [第 47 篇 · 测试体系：单元、集成与性能](47-testing.md) 讲 `devtool test` 背后的 pytest 框架。
 - [第 43 篇 · jailer](43-jailer.md) 讲生产环境里真正的启动方式。
 - [第 77 篇 · 配置项、命令行参数、环境变量与 metrics 总表](77-config-cli-env-metrics-reference.md) 是本篇参数表的完整版。

@@ -99,7 +99,7 @@ flowchart TB
 举一个能对上号的例子。`ID_AA64PFR0_EL1` 的编码参数是 `op0=3, op1=0, CRn=0, CRm=4, op2=0`，
 `regs.rs` 的 `arm64_sys_reg!` 宏把它们按 KVM 的移位规则拼起来，得到 `0x603000000013c020` ——
 这正是 `tests/data/custom_cpu_templates/V1N1.json` 里第一个条目的 `addr`。
-`0x60` 是架构标识，`0x3` 是 size（$2^3 = 8$ 字节），`0x0013` 是系统寄存器类。
+`0x60` 是架构标识，`0x3` 是 size，即 `2^3 = 8` 字节，`0x0013` 是系统寄存器类。
 
 宽度信息不是装饰，它有两处用途。
 

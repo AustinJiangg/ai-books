@@ -76,7 +76,9 @@ flowchart LR
 
 **规模。** 快照里的 `vcpu_states` 数量必须等于 `vmm.vcpus_handles` 的长度；
 快照 `vm_info.mem_size_mib` 换算出的字节数必须等于当前各内存区长度之和。
-这两项对不上，后面的 vCPU 与内存阶段都无从下手。
+这两项对不上，后面的 vCPU 与内存阶段都无从下手 —— 内存那一侧还有一层理由：
+回滚位图与内存文件偏移都建立在「区域按顺序平铺」之上，区域切分一变，位号就不再指向同一页
+（[第 70 篇 §3](70-rollback-memory.md#3-位图的坐标系扁平页序)）。
 
 **不受支持的设备类型。** 快照里只要带 balloon 或 vsock 的状态就拒绝，
 当前 microVM 里只要存在这两类设备也拒绝。代码只做拒绝，没有写明理由。
@@ -158,7 +160,7 @@ Firecracker 只做配置与传输层转发（[第 29 篇](29-vhost-user-block.md
 一个都不动（[第 25 篇 §3](25-virtio-device-model-and-transport.md#3-mmiotransport寄存器到-trait-调用的翻译)）。
 
 **队列。** 这里复用上游的 `VirtioDeviceState::build_queues_checked()`：
-传入**当前的** guest 内存、设备类型号、该设备编译期确定的队列数、第一条队列的 `max_size`，
+传入**当前的** guest 内存、设备类型号、活设备当前的队列条数、活设备第一条队列的 `max_size`，
 拿回一组按快照重建的 `Queue` 对象，再逐个覆盖 `device.queues_mut()` 里的活队列。
 用当前 guest 内存是安全的，因为内存写回已经在前一阶段完成，
 环的内容与快照里的索引属于同一个时刻。上游那四道校验（类型、特性子集、队列数、
@@ -283,9 +285,11 @@ net 设备再追加 RX 缓存的三个计数。这些值全部从（已经回退
 读法与设备自己读的完全相同。
 
 它有两个调用点：一个在设备写回之后，一个在 `Vmm::pause_vm()` 的开头
-（`src/vmm/src/lib.rs`）。选 pause 作为第二个点的理由是它是唯一一个「世界已经停住、
-但状态还没有被改动」的合法观察窗口 —— 挂死的 microVM 被暂停时，
-这行日志留下的就是它卡住时的生产与消费位置。
+（`src/vmm/src/lib.rs`，紧跟在 `Faulted` 检查之后、给 vCPU 发 `Pause` 事件之前）。
+选 pause 作为第二个点的理由是它是运行期唯一一个由 VMM 线程主动经过、
+而状态还没有被任何回退动作改动过的观察窗口 —— 挂死的 microVM 被暂停时，
+这行日志留下的就是它卡住时的生产与消费位置。代价是此刻 vCPU 尚未停下，
+读到的索引是「即将被暂停的那一刻」的值，可能与随后真正暂停时相差一两个位置。
 
 代价要如实记：每次 pause 都要读一遍所有活跃队列的环索引并格式化字符串，
 设备多、checkpoint 频繁时这是一笔固定开销，而且它加在 pause 的耗时里，
@@ -319,4 +323,4 @@ net 设备再追加 RX 缓存的三个计数。这些值全部从（已经回退
 - [第 23 篇 · 设备总线与 MMIO 设备管理器](23-bus-and-mmio-device-manager.md)：本篇用到的三个遍历接口与 `kick_devices()`。
 - [第 69 篇 · PUT /snapshot/rollback](69-rollback-api-and-phases.md)：设备阶段在整条流程中的位置与计时字段。
 - [下一篇：第 73 篇 · 失败模型、Faulted 状态与 seccomp 白名单](73-failure-model-faulted-and-seccomp.md)：设备阶段出错之后 microVM 变成什么。
-- checkpoint / restore 手册 `../../e2b-infra-docs/rollback/docs/14-failure-semantics.md`：orchestrator 侧对回滚失败的处置。
+- [checkpoint / restore 手册第 14 篇](../../e2b-infra-docs/rollback/docs/14-failure-semantics.md)：orchestrator 侧对回滚失败的处置。

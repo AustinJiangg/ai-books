@@ -3,10 +3,10 @@
 > Firecracker 的控制面是一个 Unix 域套接字上的 HTTP/1.1 子集。这一层做的事很少：
 > 把请求翻译成一个 `VmmAction`，交给 VMM 线程，等一个结果，翻译回 HTTP。
 > 它刻意不做的事更值得看 —— 不并发、不排队、不重试、不做业务判断。
-> 本篇讲这层翻译怎么实现，以及"一次只处理一个请求"这个决定带来的后果。
+> 本篇讲这层翻译怎么实现，以及「一次只处理一个请求」这个决定带来的后果。
 >
 > **读者**：系统工程师、写调用方的后端工程师。
-> **预备**：[第 7 篇 · 进程启动](07-process-startup.md#5-两条路)。
+> **预备**：[第 07 篇 · 进程启动](07-process-startup.md#5-两条路)。
 > **代码**：`src/firecracker/src/api_server/mod.rs`、`src/firecracker/src/api_server/parsed_request.rs`、
 > `src/firecracker/src/api_server/request/`、`src/firecracker/src/api_server_adapter.rs`、
 > `src/firecracker/swagger/firecracker.yaml`
@@ -28,7 +28,7 @@
 控制面要能被脚本、SDK 和编排进程调用，HTTP 是最省事的选择：有现成客户端、有 OpenAPI 工具链、
 调试时一条 `curl` 就够。但把一个通用 HTTP 框架链接进 Firecracker 有三重代价。
 
-第一重是依赖。通用框架带来几十个传递依赖，而 Firecracker 的攻击面控制建立在"能审计全部代码"上。
+第一重是依赖。通用框架带来几十个传递依赖，而 Firecracker 的攻击面控制建立在「能审计全部代码」上。
 第二重是系统调用。VMM 的 seccomp 白名单必须覆盖进程实际用到的每个系统调用；
 框架内部的线程池、定时器、DNS 解析都会把白名单撑大，而白名单每宽一格，逃逸后的可利用面就大一格。
 第三重是内存。异步框架的缓冲策略难以给出确定上界，而一台 microVM 的宿主内存开销是要被计入售价的。
@@ -57,7 +57,7 @@
 `fc_api` 线程的全部逻辑在 `ApiServer::run()`（`src/firecracker/src/api_server/mod.rs`）里。
 它按顺序做四件事。
 
-先设 payload 上限，再装 seccomp 过滤器。装载失败直接 `panic!`，消息里提示"要跳过过滤就用 `--no-seccomp`" ——
+先设 payload 上限，再装 seccomp 过滤器。装载失败直接 `panic!`，消息里提示「要跳过过滤就用 `--no-seccomp`」 ——
 这是一个刻意的选择：宁可进程起不来，也不要在操作员以为有防护时其实没有。
 然后 `start_server()` 把监听套接字注册进 epoll，随后调用 `ProcessTimeReporter`
 把 `--start-time-us` 等参数换算成启动耗时指标。
@@ -86,16 +86,16 @@
 它先把 URI 的绝对路径去掉开头的 `/` 再按 `/` 切成迭代器 `path_tokens`，取出第一段作为 `path`，
 然后对 `(method, path, body)` 这个三元组做一次 `match`。需要第二段路径的端点
 （`/balloon/statistics`、`/drives/{id}`、`/snapshot/create`）在分支体内再调一次 `path_tokens.next()`
-把它作为参数传给解析函数。因此"第二段路径"的合法性由各个解析函数自己负责，
+把它作为参数传给解析函数。因此「第二段路径」的合法性由各个解析函数自己负责，
 比如 `parse_put_snapshot()` 只认 `create` 与 `load`，别的返回 `InvalidPathMethod`。
 
 三元组里带上 body 的存在与否，是为了把两类错误分开：
-`(Method::Get, _, Some(_))` 这条分支捕获"GET 带了 body"，
-`(Method::Put, _, None)` 与 `(Method::Patch, _, None)` 捕获"空的 PUT / PATCH"，
+`(Method::Get, _, Some(_))` 这条分支捕获「GET 带了 body」，
+`(Method::Put, _, None)` 与 `(Method::Patch, _, None)` 捕获「空的 PUT / PATCH」，
 它们都走 `method_to_error()`，给出一条说明性的错误消息。
 所有三元组都不匹配时落到最后一条 `(method, unknown_uri, _)`，产生 `InvalidPathMethod`。
 
-下表是 v1.12.1 的全部端点。第三列的动作在[第 9 篇 · rpc_interface](09-rpc-interface.md)展开。
+下表是 v1.12.1 的全部端点。第三列的动作在[第 09 篇 · rpc_interface](09-rpc-interface.md)展开。
 
 | 方法与路径 | 解析函数 | 产生的 `VmmAction` |
 |---|---|---|
@@ -139,7 +139,7 @@
 在响应里加一个 `Deprecation: true` 头。调用方因此有两条独立渠道发现自己在用旧字段。
 
 失败路径上也会累加指标：几乎每个解析函数的 serde 错误分支都 `inc()` 一个 `*_fails` 计数器，
-所以"某个端点的请求格式错了多少次"可以直接从 metrics 里读，不必翻日志。
+所以「某个端点的请求格式错了多少次」可以直接从 metrics 里读，不必翻日志。
 
 ---
 
@@ -190,7 +190,7 @@ sequenceDiagram
 `Pause` 尤其特殊：VMM 线程处理完 `Pause` 后不返回事件管理器，而是转入一个只收 API 请求的阻塞循环
 （`api_server_adapter.rs` 的 `ApiServerAdapter::process()`），直到收到 `Resume`。
 此时 API 仍然可用，但设备模拟与 metrics 定时刷写一并冻结，细节见
-[第 9 篇 §6](09-rpc-interface.md#6-三个状态与两处-paused)。
+[第 09 篇 §6](09-rpc-interface.md#6-三个状态与两处-paused)。
 
 **通道断开等于进程完蛋。** 四处 `expect` 说明这一点：送不出去、写不了 eventfd、
 VMM 端断开、响应通道关闭，任何一个都直接 panic。对端消失意味着 VMM 线程已经没了，
@@ -219,7 +219,7 @@ VMM 端断开、响应通道关闭，任何一个都直接 panic。对端消失�
 
 所以从调用方角度看，Firecracker 的状态码集合是 `{200, 204, 400, 413}`，
 再加上 micro_http 可能产生的 `{100, 500}`。**400 承载了绝大部分语义**，
-区分"路径写错了"和"当前状态不允许这个动作"只能靠读 `fault_message`。
+区分「路径写错了」和「当前状态不允许这个动作」只能靠读 `fault_message`。
 代价是调用方无法按状态码分类重试，收益是服务端不必维护一套错误到状态码的映射表。
 
 ---
@@ -258,7 +258,7 @@ ARM 适配版在 `parse_put_snapshot()` 里加了 `rollback` 与 `save-dirty-bit
 - Firecracker 自带 HTTP 实现，是为了把依赖数量、seccomp 白名单宽度与内存占用压到可审计的规模；
   代价是这个实现只支持 GET / PUT / PATCH、单线程 epoll、十个并发连接与一个硬性 body 上限。
 - 路由是对 `(方法, 第一段路径, body 是否存在)` 三元组的一次 `match`；
-  第二段路径由各解析函数自行校验，因此"子路径非法"的错误消息风格不完全统一。
+  第二段路径由各解析函数自行校验，因此「子路径非法」的错误消息风格不完全统一。
 - 每个解析函数只做三件事：累加指标、serde 反序列化、包成 `VmmAction`；
   额外工作只有三类 —— 路径与 body 的 id 一致性、架构差异、弃用标记。
 - 弃用通过两条渠道通知：warn 日志加响应头 `Deprecation: true`，同时累加一个专门的指标。
@@ -270,12 +270,14 @@ ARM 适配版在 `parse_put_snapshot()` 里加了 `rollback` 与 `save-dirty-bit
   路径不存在与方法不支持都表现为 400，调用方必须读 `fault_message` 才能区分原因。
 - swagger 文件是唯一的对外契约，但不参与编译；加端点时不同步更新它，调用方的生成客户端就看不到新端点。
 
+---
+
 ## 延伸阅读 / 下一篇
 
-- [第 7 篇 · 进程启动](07-process-startup.md)：`fc_api` 线程是怎么起来的，套接字在哪里绑定。
-- [第 9 篇 · rpc_interface](09-rpc-interface.md)：`VmmAction` 送到 VMM 线程之后由谁执行。
+- [第 07 篇 · 进程启动](07-process-startup.md)：`fc_api` 线程是怎么起来的，套接字在哪里绑定。
+- [第 09 篇 · rpc_interface](09-rpc-interface.md)：`VmmAction` 送到 VMM 线程之后由谁执行。
 - [第 12 篇 · Vmm、事件循环与退出路径](12-vmm-event-loop-and-exit.md)：API 事件在事件管理器里的位置。
 - [第 32 篇 · MMDS](32-mmds.md)：MMDS 自己那个 HTTP 服务与本篇这个的区别。
 - [第 44 篇 · 日志与 metrics](44-logging-and-metrics.md)：本篇提到的各类 API 指标。
 - [第 76 篇 · API 总表](76-api-reference.md)：三层合并后的端点全表。
-- 下一篇：[第 9 篇 · rpc_interface：Preboot 与 Runtime 两个控制器](09-rpc-interface.md)。
+- 下一篇：[第 09 篇 · rpc_interface：Preboot 与 Runtime 两个控制器](09-rpc-interface.md)。

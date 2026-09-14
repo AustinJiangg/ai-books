@@ -168,20 +168,20 @@ flowchart TB
     GM["GuestMemoryMmap<br/>按 GPA 查找区域"]
     R0["GuestRegionMmap 0<br/>GPA 起点 0"]
     R1["GuestRegionMmap 1<br/>GPA 起点 4 GiB"]
-    M0["MmapRegion 0<br/>HVA 与长度"]
-    M1["MmapRegion 1<br/>HVA 与长度"]
+    MR0["MmapRegion 0<br/>HVA 与长度"]
+    MR1["MmapRegion 1<br/>HVA 与长度"]
     B0["AtomicBitmap 0"]
     B1["AtomicBitmap 1"]
     S0["KVM memslot 0"]
     S1["KVM memslot 1"]
     GM --> R0
     GM --> R1
-    R0 --> M0
-    R1 --> M1
-    M0 --> B0
-    M1 --> B1
-    M0 --> S0
-    M1 --> S1
+    R0 --> MR0
+    R1 --> MR1
+    MR0 --> B0
+    MR1 --> B1
+    MR0 --> S0
+    MR1 --> S1
 ```
 
 `MmapRegion` 是 `vm-memory` crate 的类型，持有 `mmap` 的返回地址、长度、可选的 `FileOffset`，
@@ -271,7 +271,10 @@ e2b 定制版在 `src/vmm/src/vstate/vm.rs` 上加了两组只读查询：`guest
 
 ARM 适配版在 `src/vmm/src/vstate/memory.rs` 上加了 `dump_dirty()` 的逆操作 `restore_dirty()`
 与一套扁平位图的序列化格式，用于原地回滚，见[第 67 篇](67-dirty-bitmap-sidecar.md)与[第 70 篇](70-rollback-memory.md)。
-ARM 适配版没有改动本篇涉及的文件。
+它还在 `src/vmm/src/vstate/vm.rs` 上加了 `setup_dirty_tracking()` 与 `DirtyTrackingBackend`：
+内存区域注册完之后选一种脏页跟踪后端，鲲鹏上优先用 HDBSS，不可用则退回 KVM 写保护，
+见[第 65 篇](65-dirty-tracking-backend.md)与[第 66 篇](66-hdbss.md)。
+本篇讲的区域切分、后备方式与 memslot 注册本身，两层都没有改。
 
 ---
 

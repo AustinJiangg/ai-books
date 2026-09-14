@@ -156,7 +156,7 @@ flowchart LR
 
 | 维度 | `create` 的 sidecar | `save-dirty-bitmap` | e2b 的 `GET /memory/dirty` |
 |---|---|---|---|
-| 判据 | KVM 日志 ∪ 用户态位图 | 同左 | `/proc/self/pagemap` 的软脏位 + `mincore` |
+| 判据 | KVM 日志 ∪ 用户态位图 | 同左 | `mincore` 预过滤后读 `/proc/self/pagemap`：present 且 uffd 写保护位已清 |
 | 是否导出内存 | 是 | 否 | 否 |
 | 是否清零 | 是（成功后） | 否 | 否 |
 | 粒度 | 宿主页 | 宿主页 | `machine-config` 的页大小 |

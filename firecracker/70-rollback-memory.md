@@ -220,7 +220,7 @@ e2b 的沙箱是从快照恢复起来的，内存后端是 userfaultfd：guest �
 - 位图必须覆盖全部偏离页；漏一页的后果是 guest 内存里留下一处静默的不一致，没有任何机制能事后发现它。
 - 区域切分必须没变。位图与文件偏移都建立在「区域按顺序平铺」之上，
   这也是回滚拒绝内存大小不同的快照的原因。
-- balloon 设备被回滚整体拒绝（见拓扑校验）。它会通过 `madvise` 把页还给宿主，
+- balloon 设备被回滚整体拒绝（[第 72 篇 §2](72-rollback-devices.md#2-拓扑校验把写回限制在能写回的形状上)）。它会通过 `madvise` 把页还给宿主，
   使「内存文件里有内容、映射里没有页」成为常态，与这里的写回模型不相容。
 
 ## 9. 小结
@@ -245,4 +245,4 @@ e2b 的沙箱是从快照恢复起来的，内存后端是 userfaultfd：guest �
 - [第 68 篇 · PUT /snapshot/save-dirty-bitmap](68-save-dirty-bitmap-api.md)：不导出内存、只取位图的那个端点。
 - [第 14 篇 · 脏页跟踪](14-dirty-page-tracking.md)与[第 37 篇 · 创建快照](37-snapshot-create.md)：本篇复用的两张位图与成批写手法。
 - [第 65 篇 · 脏页跟踪后端](65-dirty-tracking-backend.md)：位图从哪一种硬件机制来。
-- checkpoint / restore 手册里调用方一侧的账本与差分链合并：`../../e2b-infra-docs/rollback/docs/09-firecracker-api-contract.md`。
+- [checkpoint / restore 手册第 09 篇](../../e2b-infra-docs/rollback/docs/09-firecracker-api-contract.md) —— 调用方一侧的账本与差分链合并。

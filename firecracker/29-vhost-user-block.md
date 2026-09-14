@@ -251,7 +251,8 @@ metrics 方面，`vhost_user_metrics.rs` 按 drive id 分表，记的是 `activa
 ARM 适配版的原地回滚明确把 vhost-user 块设备排除在外：
 `src/vmm/src/devices/virtio/block/persist.rs` 里给 `BlockState` 加了一个取 virtio 侧状态的辅助方法，
 对 `VhostUser` 变体返回 `None`，注释说明理由是它的状态在后端进程里，原地写回够不着。
-详见[第 72 篇 · 回滚的设备状态](72-rollback-devices.md)。e2b 定制版与 ARM 适配版没有改动本篇涉及的文件。
+详见[第 72 篇 · 回滚的设备状态](72-rollback-devices.md)。
+e2b 定制版没有改动本篇涉及的任何文件，`vhost_user.rs` 与 `block/vhost_user/` 两层都是上游原样。
 
 ---
 
@@ -265,6 +266,8 @@ ARM 适配版的原地回滚明确把 vhost-user 块设备排除在外：
 - 只要有一个 vhost-user 块设备，整台 microVM 的 guest 内存就改用 memfd 加共享映射，缺页代价随之上升；memfd 一直保持打开，procfs 的可见性是一条需要在部署层缓解的技术债。
 - 限速与宿主 page cache 一并失去，前者在配置层就被堵死，后者要由后端自己补。
 - 快照不支持。v1.12.1 的实际行为是跳过该设备并打一条警告，而不是文档所说的失败 —— 产出的快照会静默丢失一个设备。
+
+---
 
 ## 延伸阅读 / 下一篇
 

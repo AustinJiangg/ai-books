@@ -98,6 +98,12 @@ e2b 定制版的做法是在控制面上新开三个只读端点，把上游藏�
 三张位图都按同一套页序编码：所有区域首尾相接拼成一条扁平的页序列，
 第 n 位对应第 n 页，每 64 位打包成一个 `u64`。`GET /memory/mappings` 给出的 `offset` 用的是同一条序列的字节偏移，
 因此调用方拿到位图之后不需要额外信息就能把位号换算成地址。
+这里的「页」是 `machine_config.huge_pages` 这个**配置值**换算出来的粒度，不是宿主页：
+`HugePageConfig::page_size()`（`src/vmm/src/vmm_config/machine_config.rs`）在 `None` 这一支直接返回常量 4096，
+不查 `sysconf(_SC_PAGESIZE)`，所以位图粒度与宿主真实页大小是两个量（[第 50 篇 §2.2](50-memory-mappings-api.md#22-page_size-描述的是配置不是区域)）。
+另外要先记住一条调用方事实：orchestrator 在 `PUT /machine-config` 里把 `track_dirty_pages` 固定填 `false`
+（`packages/orchestrator/internal/sandbox/fc/client.go`），所以上游那两份脏页记录在 e2b 的 microVM 里压根没有被建立起来，
+三个新端点不是「多一种选择」，而是唯一的信息来源。
 
 `GET /memory/dirty` 的判据依赖一个前提：guest 内存必须被 userfaultfd 写保护过，
 否则 `/proc/self/pagemap` 里的写保护位恒为零，所有常驻页都会被算成脏。
@@ -143,15 +149,16 @@ flowchart LR
 
 | 类别 | 提交数 | 代表提交 | 内容 |
 |---|---|---|---|
-| 功能 | 3 | `03e506146`、`0bb99c51d`、`54a1c1ad3`、`8fc760f61` | 暴露映射与可选 memfile、`GET /memory`、`GET /memory/dirty`、uffd 写保护 |
-| 修补 | 8 | `eff49ed1e`、`5cfd4e39f`、`523dc12c9`、`8769de7cf` | 编译错误、swagger 必填字段、参数与类型修正、版本号 |
+| 功能 | 4 | `03e506146`、`0bb99c51d`、`54a1c1ad3`、`8fc760f61` | 暴露映射与可选 memfile、`GET /memory`、`GET /memory/dirty`、uffd 写保护 |
+| 修补 | 5 | `eff49ed1e`、`5cfd4e39f`、`523dc12c9`、`8769de7cf`、`178223a0e` | 编译错误、swagger 必填字段、参数与类型修正、版本号 |
 | 上游回合 | 5 | `85ebde70e`、`21dc66d1a`、`13ffca99b`、`7f528b416`、`dbc555204` | 宿主 CPU 特性检查、MSR 例外表、测试 URL 与断言 |
-| 构建与 CI | 12 | `55b6479f2`、`1133bd6cd`、`f1510d5b1`、`a41d3fb53` | 构建 / 上传脚本、GitHub Actions runner、测试集裁剪 |
+| 构建、脚本与 CI | 12 | `55b6479f2`、`1133bd6cd`、`f1510d5b1`、`a41d3fb53` | 构建 / 上传脚本、GitHub Actions runner、测试集裁剪 |
+| 合并提交 | 2 | `412995637`、`63ed77027` | 合入上游 `firecracker-v1.12` 与自身远端 |
 
-功能那一行的提交数写 3 而列了四个哈希，是因为 `03e506146` 与 `0bb99c51d` 属于同一件事的两步：
+功能那四个提交里，`03e506146` 与 `0bb99c51d` 属于同一件事的两步：
 前者加 `GuestMemoryRegionMapping` 与 `Vm::guest_memory_mappings()` 并把 `mem_file_path` 改成 `Option`，
 后者把这份区域表从 `GET /` 的响应里挪到独立的 `GET /memory/mappings`，同时补上 `GET /memory`、
-seccomp 条目与 pytest 用例。四个功能提交合计约 989 行改动，占全部增量的九成以上。
+seccomp 条目与 pytest 用例。四个功能提交合计 989 行新增，占全部增量的九成以上。
 
 「上游回合」这一类需要一句解释。这五个提交的作者是 Firecracker 上游的维护者，
 它们是通过把上游维护分支 `firecracker-v1.12` 合进分叉带进来的（合并提交 `412995637`），

@@ -1,9 +1,9 @@
 # 02 · microVM 与 Firecracker 的设计取舍
 
-> Firecracker 的代码之所以只有十万行，不是因为它写得比别的 VMM 精简，而是因为它砍掉了一整类功能。
+> Firecracker 的代码之所以不到十万行，不是因为它写得比别的 VMM 精简，而是因为它砍掉了一整类功能。
 > 本篇讲它砍掉了什么、为此换到了什么、又为此付出了什么，以及这些取舍如何决定了后面各篇的结构。
 >
-> **读者**：所有读者。　**预备**：[第 1 篇 · 四层版本谱系与仓库地图](01-lineage-and-repo-map.md)。
+> **读者**：所有读者。　**预备**：[第 01 篇 · 三层版本谱系与仓库地图](01-lineage-and-repo-map.md)。
 > **代码**：`src/vmm/src/lib.rs`、`src/vmm/src/builder.rs`、`src/firecracker/src/main.rs`、
 > `src/vmm/src/device_manager/`、`src/jailer/src/env.rs`、`docs/design.md`
 
@@ -130,7 +130,7 @@ flowchart TB
 ```
 
 图里的三级 fd 是 KVM 接口的基本形状：进程打开 `/dev/kvm` 得到一个总的句柄，
-由它创建 VM fd，再由 VM fd 创建每个 vCPU fd。第 3 篇讲这三级各自能做什么。
+由它创建 VM fd，再由 VM fd 创建每个 vCPU fd。第 03 篇讲这三级各自能做什么。
 
 线程分工的一个直接后果值得记住：**所有 API 动作都在 VMM 线程上串行执行**。
 API 线程只是收发 HTTP，真正的工作要等 VMM 线程处理完手上的事件才轮到。
@@ -162,7 +162,7 @@ guest 看不到也碰不到 VMM 进程的地址空间。
 `KVM_RUN` 之前自己装上 `vcpu` 过滤器），然后作为「恢复 vCPU 之前的最后一步」给 VMM 线程装上 `vmm` 过滤器。
 也就是说，任何 guest 代码开始执行时，能碰到它的每一个线程都已经被限制过了。
 这一层的代价是：任何新增的系统调用都必须同时改过滤器，否则运行时被 SIGSYS 杀掉。
-后面三层改动里每一层都改过 seccomp 过滤器，原因就在这里。
+后面两层改动都动过 seccomp 过滤器，原因就在这里。
 
 第三道防线是 jailer，一个独立的二进制（`src/jailer/`）。它在 Firecracker 之前运行，
 用高权限准备好环境 —— 建 chroot 目录（`src/jailer/src/env.rs` 里把路径拼成
@@ -201,7 +201,10 @@ Firecracker 的快照机制正好给了前半截：把一台暂停的 microVM �
 后半截 Firecracker 没有给。上游的快照接口是「把内存写成一个文件」，
 而 e2b 需要的是「告诉我哪些页脏了、它们在宿主地址空间的哪里」，好由自己的内存管线按块处理。
 第九部分讲的那组只读 API 就是补这个缺口。
-ARM 适配版和 ARM 适配版则分别处理「换一个架构」和「反方向恢复到同一进程里」两个问题。
+ARM 适配版要处理的则是另外两个问题：把这一整套搬到 aarch64 上，以及把「恢复」反过来做 ——
+不新建一个进程从文件重建，而是让一台正在跑的 microVM 退回自己过去的某个时刻。
+这两件事都建立在本篇讲的取舍之上：设备种类固定，才可能逐个设备回答「状态怎么写回去」；
+内存是进程自己的一段 `mmap`，宿主侧才可能不经 guest 就把偏离的页覆盖回来。
 
 ## 7. 小结
 
@@ -218,11 +221,13 @@ ARM 适配版和 ARM 适配版则分别处理「换一个架构」和「反方�
 - 代价是一份明确的约束清单：内核外置、设备固定、后端外置、API 串行、生产环境需要额外的编排与加固。
 - 极小的机器模型是快照机制可行的前提，也是 e2b 选择 Firecracker 的直接原因。
 
+---
+
 ## 延伸阅读 / 下一篇
 
-- [第 3 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)：下一篇，讲三级 fd 与本书要用到的 ioctl。
-- [第 4 篇 · virtio 与 virtio-mmio 基础](04-virtio-and-mmio-primer.md)：设备契约与传输层。
+- [第 03 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)：下一篇，讲三级 fd 与本书要用到的 ioctl。
+- [第 04 篇 · virtio 与 virtio-mmio 基础](04-virtio-and-mmio-primer.md)：设备契约与传输层。
 - [第 11 篇 · builder：从配置到运行中的 microVM](11-builder.md)：本篇第 2.3 节挂设备顺序的完整版。
 - [第 42 篇 · seccomp](42-seccomp.md)、[第 43 篇 · jailer](43-jailer.md)：两道防线的细节。
 - [第 49 篇 · 为什么分叉：e2b 的内存管线要什么](49-why-e2b-forked.md)：第 6 节的展开。
-- e2b 侧为什么选 microVM 而不是容器，见 [e2b 手册第 2 篇](../e2b-infra/02-why-sandbox.md)。
+- e2b 侧为什么选 microVM 而不是容器，见 [e2b 手册第 02 篇](../e2b-infra/02-why-sandbox.md)。

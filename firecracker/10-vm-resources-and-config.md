@@ -236,6 +236,20 @@ MAC 冲突这些错误在 `PUT` 请求的响应里就能看到，而不是拖到
 `cpu_config`、`logger`、`metrics` —— 前者因为自定义模板不做回显，后两者是进程级设置，
 不属于这台 microVM 的配置。
 
+处理这个动作时，`PrebootApiController::handle_preboot_request()` 会先打一条 warn，
+说「若这台 microVM 是从快照恢复的，boot-source、machine-config.smt 与
+machine-config.cpu_template 都会是空的」。对着恢复路径的代码看，这句话比实际情况宽：
+`build_microvm_from_snapshot()`（`src/vmm/src/persist.rs`）拿 `microvm_state.vm_info`
+调了一次 `update_machine_config()`，`smt`、`mem_size_mib`、`huge_pages`、`cpu_template`
+都填了回去，只有 `boot_source.config` 没有写回 —— 快照里存了它，恢复路径没有用它。
+真正会失真的是 CPU 模板，而 warn 没有提：`VmInfo::cpu_template` 的类型是
+`StaticCpuTemplate`，`From<&Option<CpuTemplateType>>` 把 `CpuTemplateType::Custom`
+映射成 `StaticCpuTemplate::None`（`src/vmm/src/cpu_config/templates.rs`），
+于是快照走一趟回来，自定义模板变成了「没有模板」。
+另外这条 warn 只在预启动控制器里；恢复完成后控制器已经切成 `RuntimeApiController`
+（[第 9 篇 §5](09-rpc-interface.md#5-切换只发生一次)），它处理同一个动作时不打日志，
+所以真正从快照恢复的实例反而看不到这句提示。
+
 快照恢复路径需要反方向填充：设备是从快照里重建的，但 `VmResources` 仍然要持有它们的引用，
 否则运行期的查询与更新找不到设备。`update_from_restored_device()` 承担这件事，
 输入是一个 `SharedDeviceType` 枚举，按类型分别塞进对应的 builder
@@ -273,7 +287,12 @@ e2b 定制版把 `src/vmm/src/vmm_config/snapshot.rs` 里 `CreateSnapshotParams`
 ARM 适配版在同一文件加了 `RollbackSnapshotParams`、`SaveDirtyBitmapParams`、
 `RollbackResponse` 与 `dirty_bitmap_path` 字段，见
 [第 67 篇](67-dirty-bitmap-sidecar.md)、[第 69 篇](69-rollback-api-and-phases.md)。
-`resources.rs` 与其余 `vmm_config` 模块在三层改动中都没有被修改。
+`vmm_config/instance_info.rs` 两层都改了，但改的是实例信息与内存查询响应结构，不是配置模型：
+e2b 定制版给 `InstanceInfo` 加了 `memory_regions` 并新增三个响应结构
+（[第 50 篇](50-memory-mappings-api.md)、[第 51 篇](51-memory-resident-empty-api.md)、
+[第 52 篇](52-memory-dirty-api.md)），ARM 适配版又加了 `dirty_tracking` 字段与
+`VmState::Faulted`（[第 65 篇](65-dirty-tracking-backend.md)、[第 73 篇](73-failure-model-faulted-and-seccomp.md)）。
+`resources.rs` 与其余 `vmm_config` 模块两层都没有动过。
 
 ---
 
@@ -294,6 +313,8 @@ ARM 适配版在同一文件加了 `RollbackSnapshotParams`、`SaveDirtyBitmapPa
 - `--config-file` 与逐个 API 调用共用同一套校验函数，`from_json()` 的调用顺序被跨字段约束决定。
 - `allocate_guest_memory()` 只在配置了 vhost-user 块设备时用 memfd，
   因为共享映射的缺页开销高于匿名私有映射。
+- `GET /vm/config` 那条关于快照恢复的 warn 比实际情况宽，且只挂在预启动控制器上；
+  恢复后真正失真的是自定义 CPU 模板退化成 `StaticCpuTemplate::None`。
 
 ## 延伸阅读 / 下一篇
 

@@ -4,7 +4,7 @@
 > 但每个设备真正要存什么、恢复时哪些东西必须重新向内核申请、哪些运行时状态干脆不存，各不相同。
 > 本篇把这一层拆开：共通的骨架、逐设备的差异，以及恢复出来的设备与原来那个的差距。
 >
-> **读者**：系统工程师。　**预备**：[第 25 篇 · virtio 设备模型与传输层](25-virtio-device-model-and-transport.md)、
+> **读者**：系统工程师。　**预备**：[第 25 篇 · virtio 设备模型与 MMIO 传输层](25-virtio-device-model-and-transport.md)、
 > [第 36 篇 · 快照总览](36-snapshot-overview-and-format.md)、[第 37 篇 · 创建快照](37-snapshot-create.md)。
 > **代码**：`src/vmm/src/snapshot/persist.rs`、`src/vmm/src/device_manager/persist.rs`、
 > `src/vmm/src/devices/virtio/persist.rs`、各设备目录下的 `persist.rs`
@@ -83,7 +83,7 @@ vsock、balloon、entropy 各自最多一个。
 | `device_info` | `MMIODeviceInfo`：MMIO 起始地址、长度、IRQ 号 |
 
 为什么不做成同构列表？因为 bincode 是紧密编码，没有类型标签
-（[第 36 篇](36-snapshot-overview-and-format.md)）。一个 `Vec<Box<dyn 某种设备状态>>`
+（[第 36 篇 §2](36-snapshot-overview-and-format.md#2-vmstate-文件的布局)）。一个 `Vec<Box<dyn 某种设备状态>>`
 在反序列化时无法判断下一段字节该按哪个类型解码。按类型分字段把这个判断挪到了编译期：
 读到第几个字段就按第几个类型解码。代价是每加一种设备就要改 `DeviceStates` 的定义，
 而这个改动必然抬高快照格式的主版本号。
@@ -111,7 +111,7 @@ vhost-user 的块设备在这里被跳过并打一条 warn：它还不支持快�
 
 有两个设备在 `save()` 之前有副作用 —— block 的 `prepare_save()` 与 vsock 的
 `send_transport_reset_event()`。它们都会改动 guest 内存与队列，
-因此必须发生在内存文件写出之前，理由在[第 37 篇](37-snapshot-create.md)讲过，这里不重复。
+因此必须发生在内存文件写出之前，理由在[第 37 篇 §3](37-snapshot-create.md#3-save_state收集的顺序)讲过，这里不重复。
 
 一个实现细节值得知道：`for_each_device()` 遍历的 `id_to_dev_info` 是一个 `HashMap`，
 遍历顺序不稳定。所以同一台 microVM 连续存两次，`block_devices` 里两个块设备的先后可能不同。
@@ -168,6 +168,7 @@ MMDS 的版本必须在 net 之前落定，因为 net 设备恢复时要拿 MMDS
 4. 把设备作为订阅者加进事件管理器。
 
 第 2、3 两步是这一层的核心：**地址与中断号从快照里读，但与 KVM 的绑定关系必须重新建立**。
+设备管理器一侧的同一件事在[第 23 篇 §7](23-bus-and-mmio-device-manager.md#7-恢复地址精确匹配中断号不重放)讲过。
 ioeventfd 与 irqfd 是内核对象，活不过进程；新进程里必须用新的 eventfd 重新登记一遍，
 只有登记时用的地址、数据值与 IRQ 号来自快照，guest 才看不出换过进程。
 `register_mmio_virtio()` 无条件注册所有队列的 ioeventfd，不看设备有没有激活。
@@ -277,8 +278,8 @@ e2b 定制版没有改动本篇涉及的任何文件。ARM 适配版的 checkpoi
 
 ## 延伸阅读 / 下一篇
 
-- [第 25 篇 · virtio 设备模型与传输层](25-virtio-device-model-and-transport.md)：`MmioTransport` 五个寄存器的含义。
+- [第 25 篇 §3](25-virtio-device-model-and-transport.md#3-mmiotransport寄存器到-trait-调用的翻译)：`MmioTransport` 五个寄存器的含义。
 - [第 37 篇 · 创建快照](37-snapshot-create.md)：保存设备状态的两处副作用为什么必须在写内存文件之前。
-- [第 38 篇 · 加载快照](38-snapshot-load.md)：设备重建在整条恢复流程里的位置。
+- [第 38 篇 §5](38-snapshot-load.md#5-设备是怎么重建的)：设备重建在整条恢复流程里的位置。
 - [下一篇：第 41 篇 · snapshot-editor、rebase-snap 与兼容性](41-snapshot-tools-and-compat.md)。
 - [第 72 篇 · 回滚的设备状态](72-rollback-devices.md)：不重建对象、只写回状态的那条路径。

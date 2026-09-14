@@ -24,7 +24,7 @@
 
 ## 1. Diff 内存文件是一张补丁
 
-回顾[第 37 篇](37-snapshot-create.md)：Diff 快照的内存文件是按脏页写出来的。
+回顾[第 37 篇 §6](37-snapshot-create.md#6-dump_dirty逐页判定与成批写)：Diff 快照的内存文件是按脏页写出来的。
 `dump_dirty()` 逐页判断，脏页写出去，干净页用 `seek` 跳过去，最后 `set_len()`
 把文件长度补齐到 guest 内存的完整大小。产物是一个稀疏文件：长度等于全量，
 但只有脏页那些位置真正占了磁盘块，其余位置是洞。
@@ -89,7 +89,7 @@ flowchart TB
 如果文件系统把一个本该是洞的位置当作数据报告出来（例如内存文件被复制到一个不保留稀疏性的
 文件系统上，洞被物化成了零块），`seek_data()` 会把它当成数据段，
 `sendfile64` 会把一片零覆盖到基线的有效内容上。结果是一个损坏的内存文件，
-而且没有任何一步会报错 —— 内存文件没有校验和（[第 36 篇](36-snapshot-overview-and-format.md)）。
+而且没有任何一步会报错 —— 内存文件没有校验和（[第 36 篇 §2](36-snapshot-overview-and-format.md#2-vmstate-文件的布局)）。
 所以搬运 Diff 内存文件必须用保留稀疏性的方式。
 
 **前提二：guest 真的把某页写成了全零时，那一页必须是数据而不是洞。**
@@ -177,7 +177,7 @@ GIC 的状态在 `vm_state` 里按具体版本序列化，恢复时版本对不�
 除了上面四个维度，还有几处具体的坑，它们都不属于「快照格式」而属于「快照引用的外部世界」：
 
 - **按名字引用的资源**：tap 接口名、块设备文件路径、vsock 的 Unix socket 路径。
-  这三样都以字符串存在快照里（[第 40 篇](40-device-persist.md)），
+  这三样都以字符串存在快照里（[第 40 篇 §6](40-device-persist.md#6-逐设备的差异)），
   目标机器上必须存在同名的资源且权限正确。tap 名可以在加载时用 `network_overrides` 覆盖，
   另外两样不行。
 - **时钟**：x86_64 上如果保存时某个 vCPU 的 `MSR_IA32_TSC_DEADLINE` 是 0，
@@ -219,10 +219,11 @@ ARM 适配版在内存文件之外多写一个位图 sidecar，记录这次导�
 
 ## 延伸阅读 / 下一篇
 
-- [第 36 篇 · 快照总览](36-snapshot-overview-and-format.md)：魔数、版本字段与 CRC 的布局。
-- [第 37 篇 · 创建快照](37-snapshot-create.md)：稀疏内存文件是怎么写出来的。
+- [第 36 篇 §2](36-snapshot-overview-and-format.md#2-vmstate-文件的布局)：魔数、版本字段与 CRC 的布局。
+- [第 37 篇 §6](37-snapshot-create.md#6-dump_dirty逐页判定与成批写)：稀疏内存文件是怎么写出来的。
 - [第 20 篇 · CPU 模板](20-cpu-templates.md)：把暴露给 guest 的特性集合钉死，让跨机型恢复可控。
 - [下一篇：第 42 篇 · seccomp](42-seccomp.md)。
 - 上游文档 `docs/snapshotting/versioning.md`、`docs/snapshotting/snapshot-editor.md`。
 - e2b 不用 `rebase-snap`：它在 orchestrator 里按自己的映射表做同样的叠加，
-  见 [e2b 手册第 30 篇](../e2b-infra/30-block-layer.md)。
+  见 [e2b 手册第 37 篇](../e2b-infra/37-pause-and-snapshot.md)（映射表怎么合并）与
+  [e2b 手册第 30 篇](../e2b-infra/30-block-layer.md)（合并后的多代 diff 怎么按块读）。

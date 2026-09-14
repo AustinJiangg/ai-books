@@ -334,7 +334,7 @@ net 的 `L` 取 `NET_QUEUE_MAX_SIZE`，即 256。
 
 `uses_notif_suppression` 在这里从 `acked_features` 里重新推导：
 `(acked_features & (1 << VIRTIO_RING_F_EVENT_IDX)) != 0`，为真就对每个队列调
-`enable_notif_suppression()`。也就是说它是派生状态，不是独立状态,
+`enable_notif_suppression()`。也就是说它是派生状态，不是独立状态，
 存进快照反而多一个可能与 `acked_features` 不一致的字段。
 
 还有一件事在队列之外：创建快照时要把三块队列结构重新标脏

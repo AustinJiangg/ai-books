@@ -162,7 +162,9 @@ IPv4 走 `detour_ipv4()`：解析 IP 包时**跳过校验和验证**（代码注
 `rx_accepted_unusual` 后丢弃。
 
 回注在接收方向。`Net::read_from_mmds_or_tap()` 先问 `MmdsNetworkStack::write_next_frame()`：
-有待发的 ARP 回复或 TCP 段就写进 RX 缓冲，没有才去读 tap。
+有待发的 ARP 回复或 TCP 段就写进 RX 缓冲，没有才去读 tap。每次只拿一个帧，
+而底下按「先清 `RST` 队列、再遍历活跃连接」的固定优先级挑出这一帧
+（[第 31 篇 §5](31-dumbo-tcpip-stack.md#5-tcpipv4handler多条连接的调度)）。
 `process_rx_for_mmds` 这个标志处理的是一种边界情况：TX 处理时若某帧被 MMDS 吃掉且 RX 缓冲里还没有数据，
 就在 TX 处理结束后主动跑一次 RX，把回包尽快投出去，不必等 tap 那边有动静。
 
@@ -263,11 +265,9 @@ MAC 地址、IPv4 地址、TCP 端口。它挂在网卡状态里（`src/vmm/src/
 快照前签发的 token 在恢复后全部失效。guest 里长期持有 token 的进程要能处理 401 并重新取 token。
 另外到期时刻用的是单调时钟，而单调时钟在恢复后不与快照前连续，这使得旧 token 的到期判断也失去意义（推论）。
 
-e2b 的调用方正是按这个模型工作的：`packages/orchestrator/internal/sandbox/fc/client.go`
-在配置网卡之后立刻发一次 `PUT /mmds/config`，版本固定 `V2`，网卡列表就是那一块 tap；
-而元数据的写入（`setMmds()`）发生在**加载快照并 resume 之后**，内容是
-`packages/orchestrator/internal/sandbox/fc/mmds.go` 的 `MmdsMetadata`：沙箱 ID、模板 ID、
-日志收集端点、访问令牌散列。guest 内的 agent 从 MMDS 读到它们才知道自己服务于哪个沙箱。
+e2b 的调用方正是按这个模型工作的：它在配置网卡时把 MMDS 绑上去并固定用 V2，
+而元数据的写入发生在加载快照并 resume 之后，内容是沙箱 ID、模板 ID、日志收集端点与访问令牌散列 ——
+guest 内的 agent 从 MMDS 读到它们才知道自己服务于哪个沙箱。
 
 ---
 
@@ -307,3 +307,4 @@ dumbo 返回的 `RecvEvent` 递增 —— 注意 `NewConnectionReplacing` 会同
 - 下一篇：[第 33 篇 · vsock](33-vsock.md)，另一条 guest 与宿主之间的通道，
   它不借用网卡，而是有自己的 virtio 设备与连接复用器。
 - 上游文档 `docs/mmds/mmds-user-guide.md` 与 `docs/mmds/mmds-design.md` 可作为参考，以代码为准。
+- [e2b 手册第 28 篇](../e2b-infra/28-firecracker-process-management.md) —— 调用方在什么时刻绑定 MMDS、写入哪些元数据。

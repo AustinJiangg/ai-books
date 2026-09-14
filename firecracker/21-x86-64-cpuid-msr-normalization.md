@@ -237,7 +237,7 @@ MSR 没有 CPUID 那样的树，只有几张地址清单，分工容易混。
 它存在的直接原因就是第 3.2 节那步：归一化清空了 leaf 0xA，于是 KVM 的 PMU 相关 MSR
 （`MSR_ARCH_PERFMON_*`、`MSR_CORE_PERF_*`）虽然出现在 `KVM_GET_MSR_INDEX_LIST` 里，
 `KVM_GET_MSRS` 却会失败。`get_msrs_to_dump()` 用它把这些地址剔掉，
-供 `cpu-template-helper` 的 dump 使用（见[第 22 篇 §4](22-aarch64-templates-and-helper.md)）。
+供 `cpu-template-helper` 的 dump 使用（见[第 22 篇 §5](22-aarch64-templates-and-helper.md#5-cpu-template-helper一个会真的开机的工具)）。
 
 **恢复顺序**：`DEFERRED_MSRS` 只有一项 `MSR_IA32_TSC_DEADLINE`，
 必须在 `MSR_IA32_TSC` 之后恢复 —— KVM 在写 TSC_DEADLINE 时会读当前 TSC 来判断要不要装定时器，
@@ -261,7 +261,7 @@ Firecracker 这边只留一条日志。这条日志是排查「恢复后 guest �
 
 ## 7. 后续各层的差异
 
-归一化与静态模板的源码在 e2b 定制版、ARM 适配版与 ARM 适配版里都未改动。
+归一化与静态模板的源码在 e2b 定制版与 ARM 适配版里都未改动。
 e2b 定制版合入了上游 v1.12 分支上两处与 CPU 特性相关的测试基线修订
 （AMD 宿主机侧特性集合的调整、把 `MSR_TSC_RATE` 列入比对例外），影响的是集成测试而不是运行时行为，
 见[第 55 篇 · 合入的上游修复](55-seccomp-build-upload-and-upstream-fixes.md)。

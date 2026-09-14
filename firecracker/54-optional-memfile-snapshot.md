@@ -46,7 +46,7 @@ KVM 日志不区分「从未存在」与「存在且干净」——它只回答�
 
 e2b 的做法是把内存导出这一步整个拿走：Firecracker 只负责产出状态文件，
 并通过三个只读端点把「内存在宿主进程里的位置」和「哪些页值得导出」告诉 orchestrator，
-由 orchestrator 通过 `/proc/<pid>/mem` 直读。本篇讲的是这条路径上 Firecracker 一侧的最后一块：
+由 orchestrator 用 `process_vm_readv(2)` 跨进程直读。本篇讲的是这条路径上 Firecracker 一侧的最后一块：
 让 `create` 可以不写内存文件。
 
 ---
@@ -172,7 +172,7 @@ sequenceDiagram
     vmm->>vmm: 写 vmstate 文件并刷盘
     orch->>api: GET /memory/mappings
     orch->>api: GET /memory 或 GET /memory/dirty
-    orch->>mem: 经 proc pid mem 直读选中的页
+    orch->>mem: process_vm_readv 直读选中的页
     orch->>api: 关闭或恢复该实例
 ```
 
@@ -190,7 +190,7 @@ sequenceDiagram
 这是把「一次原子的 create」拆成两步之后，顺序约束从 Firecracker 内部转移到了调用方身上的第一处。
 
 **读内存必须在进程还活着的时候。** guest 内存是这个进程的匿名映射或 hugetlbfs 映射，
-`/proc/<pid>/mem` 只在进程存在期间有效。所以 orchestrator 的清理动作必须排在最后，
+`process_vm_readv(2)` 只在目标进程存在期间有效。所以 orchestrator 的清理动作必须排在最后，
 这与上游「产物是文件，进程死了文件还在」的形态完全不同。
 
 `GET /memory` 与 `GET /memory/dirty` 在流程里是二选一：前者给 resident 与 empty 两张位图，
@@ -256,7 +256,7 @@ e2b 的窗口里是一次状态文件写、若干次位图计算（`mincore` 与
 - 不给路径时，收集状态、写 vmstate 并刷盘、队列重新标脏这三步照旧，只有 `snapshot_memory_to_file()` 被跳过。
 - 保存设备状态会写 guest 内存（vsock 重置事件、block 排空刷盘），所以调用方必须在 `create` 返回之后才去读内存。
 - 跳过内存导出也跳过了唯一清脏位图的地方：`Diff` 加不带 memfile 的组合会让 KVM 脏页日志跨越多次快照累积，产物偏大但不漏；e2b 用 `Full` 且关掉 `track_dirty_pages`，不走这条组合。
-- 暂停流程的顺序是 `PATCH /vm` → 不带 memfile 的 `create` → 查映射 → 查位图 → 直读页面 → 收尾，三处顺序约束都落在调用方身上，Firecracker 不强制。
+- 暂停流程的顺序是 `PATCH /vm` → 不带 memfile 的 `create` → 查映射 → 查位图 → `process_vm_readv` 直读页面 → 收尾，三处顺序约束都落在调用方身上，Firecracker 不强制。
 - 放弃的是「状态与内存出自同一次原子操作」这条保证；换来的是内存不必经过文件系统往返一次。
 - a41d3fb 的 swagger 没有 `/memory/dirty` 的定义，新增的集成测试也没有覆盖不带 memfile 的 `create`。
 

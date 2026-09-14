@@ -102,7 +102,7 @@ SIGSYS（seccomp 拒绝）、SIGSEGV、SIGBUS 的处理函数必须能把指标�
 `SharedIncMetric` 为什么要存两个值，在 `Serialize` 的实现里才看得出来：
 序列化时读出当前值，**输出的是当前值减去上次刷出时的值**，写成功之后把当前值存进第二个槽。
 换句话说，**每次刷出的都是这一个周期内的增量，而且序列化这个动作本身就是重置。**
-源码的注释用感叹号强调了它的后果：任何一次打印 metrics 都会重置计数。
+源码的注释把这个后果单独标了出来：任何一次刷出 metrics 都会重置计数。
 
 这个设计换来的是：刷出的那个线程不需要对每个计数器再做一次写操作去清零，
 也就不需要与所有记录方做同步；而且写出失败时数据不会丢 —— 因为第二个槽只在写成功后才更新，
@@ -113,7 +113,9 @@ SIGSYS（seccomp 拒绝）、SIGSEGV、SIGBUS 的处理函数必须能把指标�
 注释给的理由是 `SharedIncMetric` 的序列化「读—写」两步不是原子的，
 而信号处理函数可能在任意线程上与一次正常的 `METRICS.write()` 并发；
 致命信号的取值只有 0 和 1，用 store 型就没有这个竞态。
-`SIGPIPE` 是个例外，它不致命（处理函数只记一笔就返回，让 `EPIPE` 由调用方处理），所以仍是 inc 型。
+`SIGPIPE` 是七个信号计数里唯一的例外，它不致命（处理函数只记一笔就返回，让 `EPIPE` 由调用方处理），所以是 inc 型，
+也是这七个里唯一会累加的。同一条理由也用在 `vmm.panic_count` 上：它是 store 型，panic 路径也要写 metrics，
+所以取值只区分「发生过」与「没发生过」，不统计次数。
 
 第三种形态是 `LatencyAggregateMetrics`：三个字段 `min_us`、`max_us`、`sum_us`。
 配套的 `LatencyMetricsRecorder` 在构造时取一次单调时钟，在 `Drop` 里算出差值并更新这三个值。
@@ -181,6 +183,10 @@ flowchart TB
 `MutEventSubscriber`，注册到 VMM 线程的事件循环里，靠一个周期性 `TimerFd` 驱动，
 周期常量 `WRITE_METRICS_PERIOD_MS` 是 60 000。`start()` 除了武装定时器还会**立刻刷一次**，
 注释说明这是为了尽早把进程启动时延写出来。写失败时给 `logger.missed_metrics_count` 加一并打一条错误日志。
+
+还有一条与暂停有关的性质：VMM 线程处理完 `Pause` 之后不返回事件管理器，而是停在一个只等 `Resume` 的内层循环里，
+所以**暂停期间这条周期路径不工作**，timerfd 累积的超时要等 resume 之后才被一次性消化
+（[第 12 篇 §5](12-vmm-event-loop-and-exit.md#5-定时与指标)）。暂停中的 microVM 想要一份新数据，只能走下面第二条路径。
 
 第二条是显式请求：`PUT /actions` 的 `action_type` 为 `FlushMetrics`，
 落到 `src/vmm/src/rpc_interface.rs` 的 `flush_metrics()`，直接调 `METRICS.write()`。
@@ -255,7 +261,14 @@ store 型便宜、够用于低频事件；aggregate 型多三个原子量，用�
 ## 8. 后续各层的差异
 
 `src/vmm/src/logger/` 与 `src/firecracker/src/metrics.rs` 在 e2b 定制版与 ARM 适配版中都没有改动，
-两层也没有新增 metrics 字段。ARM 适配版的原地回滚复用了 `latencies_us.vmm_pause_vm`
+两层也没有新增 metrics 字段。两层各有一处因此产生的语义混用。
+
+e2b 定制版新增的三个内存查询端点在 `src/firecracker/src/api_server/request/memory.rs` 里
+统一累加 `get_api_requests.instance_info_count` —— 这个计数器原本只属于 `GET /`。
+于是四个端点共用一个计数，从 metrics 上分不清请求打的是哪一个
+（[第 50 篇](50-memory-mappings-api.md)、[第 51 篇](51-memory-resident-empty-api.md)、[第 52 篇](52-memory-dirty-api.md)）。
+
+ARM 适配版的原地回滚复用了 `latencies_us.vmm_pause_vm`
 来记录一次回滚的耗时，没有为它新开字段 —— 后果是这个字段在开启回滚的部署里混了两种语义，
 读数时要结合日志里的动作名区分。见
 [第 69 篇 · PUT /snapshot/rollback：阶段、参数与响应](69-rollback-api-and-phases.md)。
@@ -275,6 +288,7 @@ store 型便宜、够用于低频事件；aggregate 型多三个原子量，用�
 - metrics 树顶层按子系统分，设备类用 `serde flatten` 提到顶层，并且每类设备同时有分组条目与聚合条目。
 - 三条写出路径：60 秒周期的 timerfd、`FlushMetrics` 动作（启动后才可用）、以及退出前的信号处理函数。
 - 没配 `--metrics-path` 时 `METRICS.write()` 返回 `Ok(false)`，不报错；这是一个安静的失败模式。
+- 暂停期间事件循环停在内层循环里，周期刷写随之冻结；这时要拿数据只能发 `FlushMetrics`。
 - `latencies_us` 的十个字段是 API 级与 VMM 级两两成对，差值即控制面开销；
   它们是 store 型，一个刷出周期内多次操作只留最后一次。
 

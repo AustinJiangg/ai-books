@@ -179,7 +179,7 @@ sidecar、加一个只读数不导出内存的端点、以及原地回滚 `PUT /
 
 ## 5. 怎么读这本书
 
-全书八十篇分十部分加附录。未特别说明处，正文讲的都是上游 v1.12.1；
+全书八十篇，分第〇到第十共十一个部分，另有附录。未特别说明处，正文讲的都是上游 v1.12.1；
 上游各篇如果某个机制在后面某层有变化，在小结之前会有一节「后续各层的差异」指出去。
 下面的路径与 [`README.md`](README.md) 的表一致。
 
@@ -190,8 +190,8 @@ sidecar、加一个只读数不导出内存的端点、以及原地回滚 `PUT /
 - **要接手 Firecracker 代码的工程师**：第 07 与 12 篇先建立骨架，
   然后按第 13、15、25、26、36、37、38 篇把内存、vCPU、virtio 与快照四条线各走一遍，再按部补全。
 - **只关心快照与内存**：[第 13 篇](13-guest-memory.md)、[第 14 篇](14-dirty-page-tracking.md)
-  打底，第 36 至 40 篇是主体，然后读 [第 49 篇](49-why-e2b-forked.md) 与
-  [第 54 篇](54-optional-memfile-snapshot.md) 看 e2b 改了哪里。
+  打底，第 36 至 40 篇是主体，然后第 49 至 54 篇看 e2b 定制版改了哪里，
+  其中 [第 49 篇](49-why-e2b-forked.md) 讲动机、[第 54 篇](54-optional-memfile-snapshot.md) 讲暂停流程。
 - **做 aarch64 适配与鲲鹏部署**：先读 [第 18 篇](18-aarch64-vcpu.md) 与
   [第 19 篇](19-aarch64-platform.md) 这两篇上游的 aarch64 实现，
   再从 [第 57 篇](57-which-fork-commit-and-uffd-wp.md) 顺读到 [第 63 篇](63-integration-with-e2b-infra.md)。

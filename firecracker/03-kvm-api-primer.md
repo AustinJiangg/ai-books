@@ -3,7 +3,7 @@
 > KVM 把「运行一台虚拟机」这件事变成了对三个文件描述符做 ioctl。本篇只讲 Firecracker 实际用到的那部分接口，
 > 并指出每个接口在代码里的调用位置，后面各篇会反复回到这里。
 >
-> **读者**：没有写过 KVM 程序的读者。　**预备**：[第 2 篇 · microVM 与 Firecracker 的设计取舍](02-microvm-design-tradeoffs.md)。
+> **读者**：没有写过 KVM 程序的读者。　**预备**：[第 02 篇 · microVM 与 Firecracker 的设计取舍](02-microvm-design-tradeoffs.md)。
 > **代码**：`src/vmm/src/vstate/kvm.rs`、`src/vmm/src/vstate/vm.rs`、`src/vmm/src/vstate/vcpu.rs`、
 > `src/vmm/src/arch/x86_64/kvm.rs`、`src/vmm/src/arch/x86_64/vm.rs`、`src/vmm/src/arch/aarch64/kvm.rs`、
 > `src/vmm/src/arch/aarch64/vm.rs`
@@ -257,11 +257,13 @@ ARM 适配版在 aarch64 上用 `KVM_ENABLE_CAP` 开启鲲鹏的硬件脏页跟�
 - x86_64 的 vCPU 状态由一组具名 ioctl 取出，顺序会影响取到的内容；
   aarch64 用 `KVM_GET_REG_LIST` 加逐个 `GET_ONE_REG`，且恢复路径也必须调 `KVM_ARM_VCPU_INIT`。
 
+---
+
 ## 延伸阅读 / 下一篇
 
-- [第 4 篇 · virtio 与 virtio-mmio 基础](04-virtio-and-mmio-primer.md)：下一篇，讲 ioeventfd 另一端的设备契约。
+- [第 04 篇 · virtio 与 virtio-mmio 基础](04-virtio-and-mmio-primer.md)：下一篇，讲 ioeventfd 另一端的设备契约。
 - [第 13 篇 · guest 内存：GuestMemoryMmap、区域与 memslot](13-guest-memory.md)：本篇第 2 节的完整版。
 - [第 14 篇 · 脏页跟踪：KVM 日志与用户态位图](14-dirty-page-tracking.md)：本篇第 3 节的完整版。
 - [第 15 篇 · vCPU 线程与状态机](15-vcpu-threads-and-state-machine.md)：`KVM_RUN` 外面那层状态机。
 - [第 16 篇 · x86_64 vCPU](16-x86-64-vcpu.md)、[第 18 篇 · aarch64 vCPU](18-aarch64-vcpu.md)：两套寄存器接口的细节。
-- e2b 侧对 KVM 内存虚拟化的背景介绍，见 [e2b 手册第 4 篇](../e2b-infra/04-kvm-and-memory-virtualization.md)。
+- e2b 侧对 KVM 内存虚拟化的背景介绍，见 [e2b 手册第 04 篇](../e2b-infra/04-kvm-and-memory-virtualization.md)。

@@ -267,7 +267,7 @@ flowchart TB
 另有约 6 800 行是设备无关的公共部分 —— `queue.rs`（1 721）、`iovec.rs`（1 075）、`mmio.rs`（987）、
 `vhost_user.rs`（969）、`iov_deque.rs`（535）、`persist.rs`（479）、`device.rs`（314）。
 这部分是 virtio 的传输层与队列实现，也就是第 25、26 篇的内容；读任何一个具体设备之前都要先读它，
-本书第 4 篇先把 virtio 的概念讲清楚。
+本书第 04 篇先把 virtio 的概念讲清楚。
 
 `vstate/` 只有两千多行却是全书核心之一：`kvm.rs`、`vm.rs`、`vcpu.rs`、`memory.rs` 四个文件，
 分别对应 `/dev/kvm`、VM fd、vCPU fd 与 guest 内存四件东西。后两层的改动几乎都落在这里。
