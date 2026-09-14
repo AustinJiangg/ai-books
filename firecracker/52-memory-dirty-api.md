@@ -74,13 +74,14 @@ vCPU 还在跑的时候，每读完一页 guest 就可能又写脏一批，返�
 `/memory`（第 51 篇）没有这道检查，两个端点在这一点上口径不同。
 
 错误经 `ParsedRequest::convert_to_response()` 统一落到 400 Bad Request —— 除 MMDS 的 413 之外，
-所有 `VmmActionError` 都是 400（[第 8 篇](08-api-server.md)）。所以调用方从状态码上区分不出
+所有 `VmmActionError` 都是 400（[第 08 篇](08-api-server.md)）。所以调用方从状态码上区分不出
 「时机不对」和「参数不对」，只能读 `fault_message` 里的文本。
 
 一个与大纲不同的事实：在 `a41d3fb` 上，`src/firecracker/swagger/firecracker.yaml` 里有
 `/memory/mappings` 和 `/memory`，**没有** `/memory/dirty`。这个端点在这个版本上是未进 OpenAPI 描述的；
-调用方用的 Go 客户端里却有 `GetDirtyMemory` 操作，说明 spec 的补充发生在这个版本之后
-（分叉在 `a41d3fb` 之后还有 swagger 文档提交，见[第 55 篇](55-seccomp-build-upload-and-upstream-fixes.md)）。
+调用方用的 Go 客户端里却有 `GetDirtyMemory` 操作，说明 spec 的补充发生在这个版本之后 ——
+分叉在 `a41d3fb` 之后的提交 `827b7839e`（`doc(swagger): add /memory/dirty endpoint definition`）才补上这段定义
+（见[第 55 篇 §7](55-seccomp-build-upload-and-upstream-fixes.md#7-分叉之后升级要重放什么)）。
 后果是：按 `a41d3fb` 的 spec 生成客户端会缺这个端点。
 
 ---
@@ -224,9 +225,14 @@ guest 内存上没有任何 uffd 写保护，bit 57 恒为 0，端点会把全�
 补齐这一条是 ARM 适配版的事（[第 62 篇](62-aarch64-seccomp-filter.md)）。
 
 **这条路在 aarch64 上走不通。** 不只是过滤器的问题：ARM 的宿主内核不提供 userfaultfd 写保护，
-判据赖以成立的那一位不会被任何人置上。ARM 适配版因此换了后端，
-用鲲鹏 950 的硬件脏页跟踪 HDBSS（hardware dirty bit state structure）重新实现「哪些页被写过」，
-见[第 65 篇](65-dirty-tracking-backend.md)与[第 66 篇](66-hdbss.md)。
+判据赖以成立的那一位不会被任何人置上。补齐 `pread64` 之后端点能正常返回，
+返回的却是「全部常驻页都是脏页」—— **这次退化在运行期完全不可观测**：
+没有专门的错误码（端点返回 200），没有日志（只有那一行耗时 `info!`），
+也没有任何 metrics 计数器区分「判据成立」与「判据失效」，
+唯一能发现它的办法是把 `/memory/dirty` 与 `/memory` 的两张位图比一比，看脏页集合是不是恰好等于常驻集合。
+ARM 适配版因此换了后端，用鲲鹏 950 的硬件脏页跟踪 HDBSS（hardware dirty bit state structure）
+重新实现「哪些页被写过」，见[第 57 篇](57-which-fork-commit-and-uffd-wp.md)、
+[第 65 篇](65-dirty-tracking-backend.md)与[第 66 篇](66-hdbss.md)。
 
 最后一处该记下的是 `lib.rs` 里那段 TODO 注释：如果处理器已经通过写保护事件跟踪了脏页，
 这一整段 pagemap 扫描可以省掉。它说明 pagemap 只是当前这版的实现手段，判据本身
@@ -245,7 +251,7 @@ guest 内存上没有任何 uffd 写保护，bit 57 恒为 0，端点会把全�
 - `a41d3fb` 的 swagger 里没有这个路径，按该版本 spec 生成的客户端会缺这个端点。
 - 与上游 v1.13.0 的 `mincore` 近似相比，两者共用常驻判断，但 e2b 用写保护位把只读过的页筛掉，换来更小的导出量。
 - 代价是每个常驻页一次 `pread`；条目本可批量读取，现有实现逐条读。
-- 失效条件有四个：不走 uffd 后端、宿主开着 swap、宿主内核低于 6.7、在 aarch64 上运行。
+- 失效条件有四个：不走 uffd 后端、宿主开着 swap、宿主内核低于 6.7、在 aarch64 上运行；四者都不报错，只是判据静默退化成「常驻即脏」。
 - 判据不清除任何状态，因此表达的是「自恢复以来」，一台 microVM 只支持一轮导出。
 
 ---

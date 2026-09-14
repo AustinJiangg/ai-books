@@ -4,7 +4,7 @@
 > balloon 设备提供的办法是：让 guest 内核自己去申请一批页，把页号交给宿主，宿主随即把这些页的物理后备撤掉。
 > 本篇讲这个「协作式回收」的契约、三个队列各自的协议、`madvise` 在恢复场景下为什么不够用，
 > 以及为什么这条路径与大页、与快照都存在冲突。
-
+>
 > **读者**：系统工程师。　**预备**：[第 13 篇 · guest 内存](13-guest-memory.md)、
 > [第 25 篇 · virtio 设备模型与 MMIO 传输层](25-virtio-device-model-and-transport.md)、
 > [第 26 篇 · virtqueue 实现](26-virtqueue-implementation.md)。

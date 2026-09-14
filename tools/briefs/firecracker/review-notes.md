@@ -76,3 +76,11 @@
 - 59：两架构都支持 gdb（大纲把它列为差异有误）。
 - 00 / 01：上游行数口径统一为 9.4 万行（第 01 篇实测）；78 篇 ARM 侧文件数 28、+1679/−36。
 - 77 → 44：`signals.sigpipe` 是七个信号计数里唯一累加型；`vmm.panic_count` 是 store 型。77 → 48：退出码 152/153 插在信号码中间是「退出码属对外契约、不重排」的实例。
+- 收尾：全书篇号写法统一为两位数（「第 3 篇」→「第 03 篇」），审校全部完成后 sed 一次。
+- 46 → 01 锚点：#1-三层是一条线不是一棵树、#2-每层改了多少、#3-仓库地图十二个-crate、#4-vmm-内部十六个目录与八个顶层文件、#5-源码之外的四个目录、#6-e2b-infra-怎么消费这个二进制。
+- 收尾：75 篇「六种设备」→ 与 25 篇统一为「五类设备类型 + 块设备两套后端」；36 / 38 / 76 与 29 口径一致（vhost-user 快照是 warn 跳过，不是不能建快照）；63 篇承接「PATCH /drives 换盘调用方须保证静止」；72 篇与 23/25/26/27/29 的「复用 for_each_virtio_device + build_queues_checked + apply_state + kick_devices，vhost-user 校验阶段被挡」措辞一致。
+- 工具：mdlinks.py 单文件模式跨篇锚点会误报，按整目录跑。
+- 收尾（30–39 组）：72 篇口径「`rollback_rx_buffers()` 就地清空 IovDeque 不重建（seccomp 无 memfd_create）」；62 / 73 篇 seccomp 数字对齐「vmm 过滤器 KVM ioctl x86_64 四条、aarch64 三条」；41 篇延伸阅读链 e2b 手册 30 → 核对是否 31 / 37 更合适。
+- 收尾（57–66 组）：`FC_TRACK_DIRTY_PAGES=true` 不在 fbee6fcd1 基线，属 checkpoint 部署补丁套——52、78 不要写成 ARM 基线自带；78 篇收录「判据退化不可观测」「8fc760f61 重放」「v1.14.0 dma-coherent」三条；64 篇阶段编号已按 Phase 1–10 统一。
+- 更正：`tools/test.sh` 的 `${BUILDKITE:-false}` 改动出自分叉自己的 8a5491a0c，不是上游 cherry-pick；dafee92a9 只对应 test_shut_down.py。
+- 收尾（49–56 组）：68 篇三接口对比表与 52 口径一致；44 承接「三个端点共用 instance_info_count」；61 写明「部署用 v0.0.12，config 同 v0.0.8」；62 补 aarch64 表 pread64 + 四条 vCPU ioctl（已由 57–66 组做）。

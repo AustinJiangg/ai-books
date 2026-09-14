@@ -196,8 +196,8 @@ gdb 的内存读写切分这类与 guest 地址空间对齐相关的地方。
 这几处都是按运行期取到的值算的，没有写死 4 KiB。
 
 arm64 内核的基页大小是编译期选项，可以是 4 KiB、16 KiB 或 64 KiB。
-推论：目标宿主机跑的是 4 KiB 基页的内核——调研记录里把脏页缓冲区的阶数 1 对应到 8 KiB，
-正好是两个 4 KiB 页。这一点对[第 51 篇](51-memory-resident-empty-api.md)与[第 52 篇](52-memory-dirty-api.md)讲的那两个按页统计的端点有直接影响：
+推论：目标宿主机跑的是 4 KiB 基页的内核——`src/vmm/src/vstate/vm.rs` 的
+`setup_dirty_tracking()` 在注释里把脏页缓冲区的阶数 1 记成 8 KiB，正好是两个 4 KiB 页。这一点对[第 51 篇](51-memory-resident-empty-api.md)与[第 52 篇](52-memory-dirty-api.md)讲的那两个按页统计的端点有直接影响：
 宿主页越大，`mincore` 与 pagemap 的粒度就越粗，位图的精度越低。
 
 ### 4.2 huge pages

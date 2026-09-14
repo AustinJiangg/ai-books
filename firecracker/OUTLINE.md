@@ -33,6 +33,8 @@ ARM 适配版对 Firecracker 源码的改动约 +1660 行（其中 checkpoint / 
 
 状态图例：`○` 未写　`◐` 草稿　`●` 完成　`◎` 已审校
 
+> **2026-09-15：80 篇（00–79）全部完成并审校。**
+
 ---
 
 ## 二、代码基线与阅读位置
@@ -67,8 +69,8 @@ KASandbox 的 `jll-xfs` 分支是 XFS + reflink 路线，Firecracker 侧只少�
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 00 | `00-overview.md` | 全书导读与 Firecracker 总览 | ○ |
-| 01 | `01-lineage-and-repo-map.md` | 三层版本谱系与仓库地图 | ○ |
+| 00 | `00-overview.md` | 全书导读与 Firecracker 总览 | ◎ |
+| 01 | `01-lineage-and-repo-map.md` | 三层版本谱系与仓库地图 | ◎ |
 
 **00 · 全书导读与 Firecracker 总览**（最后写，全书完成后）
 一篇读完全貌，给评审、决策者与第一天到岗的新人。5000 字上限。
@@ -96,11 +98,11 @@ KASandbox 的 `jll-xfs` 分支是 XFS + reflink 路线，Firecracker 侧只少�
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 02 | `02-microvm-design-tradeoffs.md` | microVM 与 Firecracker 的设计取舍 | ○ |
-| 03 | `03-kvm-api-primer.md` | 本书用到的 KVM API | ○ |
-| 04 | `04-virtio-and-mmio-primer.md` | virtio 与 virtio-mmio 基础 | ○ |
-| 05 | `05-rust-and-crates-primer.md` | 本书用到的 Rust 与依赖 crate | ○ |
-| 06 | `06-build-run-debug.md` | 构建、运行与调试环境 | ○ |
+| 02 | `02-microvm-design-tradeoffs.md` | microVM 与 Firecracker 的设计取舍 | ◎ |
+| 03 | `03-kvm-api-primer.md` | 本书用到的 KVM API | ◎ |
+| 04 | `04-virtio-and-mmio-primer.md` | virtio 与 virtio-mmio 基础 | ◎ |
+| 05 | `05-rust-and-crates-primer.md` | 本书用到的 Rust 与依赖 crate | ◎ |
+| 06 | `06-build-run-debug.md` | 构建、运行与调试环境 | ◎ |
 
 **02 · microVM 与 Firecracker 的设计取舍**
 - 问题：多租户、不可信负载、秒级启动、高密度；传统 VMM（QEMU）的代价在哪
@@ -150,12 +152,12 @@ KASandbox 的 `jll-xfs` 分支是 XFS + reflink 路线，Firecracker 侧只少�
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 07 | `07-process-startup.md` | 进程启动：从参数到运行 | ○ |
-| 08 | `08-api-server.md` | API server：Unix socket 上的 HTTP 与请求解析 | ○ |
-| 09 | `09-rpc-interface.md` | rpc_interface：Preboot 与 Runtime 两个控制器 | ○ |
-| 10 | `10-vm-resources-and-config.md` | 资源模型：VmResources 与 vmm_config | ○ |
-| 11 | `11-builder.md` | builder：从配置到运行中的 microVM | ○ |
-| 12 | `12-vmm-event-loop-and-exit.md` | Vmm、事件循环与退出路径 | ○ |
+| 07 | `07-process-startup.md` | 进程启动：从参数到运行 | ◎ |
+| 08 | `08-api-server.md` | API server：Unix socket 上的 HTTP 与请求解析 | ◎ |
+| 09 | `09-rpc-interface.md` | rpc_interface：Preboot 与 Runtime 两个控制器 | ◎ |
+| 10 | `10-vm-resources-and-config.md` | 资源模型：VmResources 与 vmm_config | ◎ |
+| 11 | `11-builder.md` | builder：从配置到运行中的 microVM | ◎ |
+| 12 | `12-vmm-event-loop-and-exit.md` | Vmm、事件循环与退出路径 | ◎ |
 
 **07 · 进程启动：从参数到运行**
 - `main()` → `main_exec()`：panic hook、参数解析、日志 / metrics 初始化、`--describe-snapshot` 短路
@@ -217,13 +219,13 @@ KASandbox 的 `jll-xfs` 分支是 XFS + reflink 路线，Firecracker 侧只少�
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 13 | `13-guest-memory.md` | guest 内存：GuestMemoryMmap、区域与 memslot | ○ |
-| 14 | `14-dirty-page-tracking.md` | 脏页跟踪：KVM 日志与用户态位图 | ○ |
-| 15 | `15-vcpu-threads-and-state-machine.md` | vCPU 线程与状态机 | ○ |
-| 16 | `16-x86-64-vcpu.md` | x86_64 vCPU：寄存器、CPUID、MSR 与引导协议 | ○ |
-| 17 | `17-x86-64-platform.md` | x86_64 平台：内存布局、ACPI、mptable 与时钟 | ○ |
-| 18 | `18-aarch64-vcpu.md` | aarch64 vCPU：KVM_ARM_VCPU_INIT、寄存器与 PSCI | ○ |
-| 19 | `19-aarch64-platform.md` | aarch64 平台：内存布局、FDT 与 GIC | ○ |
+| 13 | `13-guest-memory.md` | guest 内存：GuestMemoryMmap、区域与 memslot | ◎ |
+| 14 | `14-dirty-page-tracking.md` | 脏页跟踪：KVM 日志与用户态位图 | ◎ |
+| 15 | `15-vcpu-threads-and-state-machine.md` | vCPU 线程与状态机 | ◎ |
+| 16 | `16-x86-64-vcpu.md` | x86_64 vCPU：寄存器、CPUID、MSR 与引导协议 | ◎ |
+| 17 | `17-x86-64-platform.md` | x86_64 平台：内存布局、ACPI、mptable 与时钟 | ◎ |
+| 18 | `18-aarch64-vcpu.md` | aarch64 vCPU：KVM_ARM_VCPU_INIT、寄存器与 PSCI | ◎ |
+| 19 | `19-aarch64-platform.md` | aarch64 平台：内存布局、FDT 与 GIC | ◎ |
 
 **13 · guest 内存：GuestMemoryMmap、区域与 memslot**
 - `arch_memory_regions()`：x86 的 32 位 MMIO 空洞把内存分成两段；aarch64 从 `DRAM_MEM_START`（0x8000_0000）单段
@@ -294,9 +296,9 @@ KASandbox 的 `jll-xfs` 分支是 XFS + reflink 路线，Firecracker 侧只少�
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 20 | `20-cpu-templates.md` | CPU 模板机制：静态、自定义与序列化 | ○ |
-| 21 | `21-x86-64-cpuid-msr-normalization.md` | x86_64 CPUID 与 MSR 归一化 | ○ |
-| 22 | `22-aarch64-templates-and-helper.md` | aarch64 模板与 cpu-template-helper | ○ |
+| 20 | `20-cpu-templates.md` | CPU 模板机制：静态、自定义与序列化 | ◎ |
+| 21 | `21-x86-64-cpuid-msr-normalization.md` | x86_64 CPUID 与 MSR 归一化 | ◎ |
+| 22 | `22-aarch64-templates-and-helper.md` | aarch64 模板与 cpu-template-helper | ◎ |
 
 **20 · CPU 模板机制：静态、自定义与序列化**
 - 问题：快照要在不同宿主间迁移，guest 看到的 CPU 特性必须稳定；模板就是「对 guest 撒谎的清单」
@@ -330,19 +332,19 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 23 | `23-bus-and-mmio-device-manager.md` | 设备总线与 MMIO 设备管理器 | ○ |
-| 24 | `24-legacy-devices.md` | legacy 设备：串口、i8042、RTC 与 boot timer | ○ |
-| 25 | `25-virtio-device-model-and-transport.md` | virtio 设备模型与 MMIO 传输层 | ○ |
-| 26 | `26-virtqueue-implementation.md` | virtqueue 实现：queue.rs、iovec 与 iov_deque | ○ |
-| 27 | `27-virtio-block.md` | virtio-block：请求解析与 I/O 引擎 | ○ |
-| 28 | `28-io-uring-engine.md` | io_uring 引擎 | ○ |
-| 29 | `29-vhost-user-block.md` | vhost-user 块设备 | ○ |
-| 30 | `30-virtio-net.md` | virtio-net：tap、收发路径与 offload | ○ |
-| 31 | `31-dumbo-tcpip-stack.md` | dumbo：内建 TCP/IP 栈 | ○ |
-| 32 | `32-mmds.md` | MMDS：元数据服务与 token | ○ |
-| 33 | `33-vsock.md` | vsock：设备、连接状态机与 unix muxer | ○ |
-| 34 | `34-balloon.md` | balloon：气球、统计与 free page 汇报 | ○ |
-| 35 | `35-entropy-vmgenid-rate-limiter.md` | entropy、vmgenid 与速率限制器 | ○ |
+| 23 | `23-bus-and-mmio-device-manager.md` | 设备总线与 MMIO 设备管理器 | ◎ |
+| 24 | `24-legacy-devices.md` | legacy 设备：串口、i8042、RTC 与 boot timer | ◎ |
+| 25 | `25-virtio-device-model-and-transport.md` | virtio 设备模型与 MMIO 传输层 | ◎ |
+| 26 | `26-virtqueue-implementation.md` | virtqueue 实现：queue.rs、iovec 与 iov_deque | ◎ |
+| 27 | `27-virtio-block.md` | virtio-block：请求解析与 I/O 引擎 | ◎ |
+| 28 | `28-io-uring-engine.md` | io_uring 引擎 | ◎ |
+| 29 | `29-vhost-user-block.md` | vhost-user 块设备 | ◎ |
+| 30 | `30-virtio-net.md` | virtio-net：tap、收发路径与 offload | ◎ |
+| 31 | `31-dumbo-tcpip-stack.md` | dumbo：内建 TCP/IP 栈 | ◎ |
+| 32 | `32-mmds.md` | MMDS：元数据服务与 token | ◎ |
+| 33 | `33-vsock.md` | vsock：设备、连接状态机与 unix muxer | ◎ |
+| 34 | `34-balloon.md` | balloon：气球、统计与 free page 汇报 | ◎ |
+| 35 | `35-entropy-vmgenid-rate-limiter.md` | entropy、vmgenid 与速率限制器 | ◎ |
 
 **23 · 设备总线与 MMIO 设备管理器**
 - `Bus`（`devices/bus.rs`）：地址区间 → 设备的有序表；`read` / `write` 分发；`BusDevice` 枚举（v1.12.1 是枚举还是 trait object，确认）
@@ -469,12 +471,12 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 36 | `36-snapshot-overview-and-format.md` | 快照总览：文件、版本与 MicrovmState | ○ |
-| 37 | `37-snapshot-create.md` | 创建快照：save_state、内存导出与 Diff | ○ |
-| 38 | `38-snapshot-load.md` | 加载快照：restore、内存后端与设备重建 | ○ |
-| 39 | `39-uffd-backend.md` | userfaultfd 后端与缺页处理 | ○ |
-| 40 | `40-device-persist.md` | 设备状态的 Persist：逐设备的保存与恢复 | ○ |
-| 41 | `41-snapshot-tools-and-compat.md` | snapshot-editor、rebase-snap 与兼容性 | ○ |
+| 36 | `36-snapshot-overview-and-format.md` | 快照总览：文件、版本与 MicrovmState | ◎ |
+| 37 | `37-snapshot-create.md` | 创建快照：save_state、内存导出与 Diff | ◎ |
+| 38 | `38-snapshot-load.md` | 加载快照：restore、内存后端与设备重建 | ◎ |
+| 39 | `39-uffd-backend.md` | userfaultfd 后端与缺页处理 | ◎ |
+| 40 | `40-device-persist.md` | 设备状态的 Persist：逐设备的保存与恢复 | ◎ |
+| 41 | `41-snapshot-tools-and-compat.md` | snapshot-editor、rebase-snap 与兼容性 | ◎ |
 
 **36 · 快照总览：文件、版本与 MicrovmState**
 - 两个文件：vmstate（`snapshot_path`）与 memfile（`mem_file_path`）；Full / Diff；`track_dirty_pages` 的前提
@@ -537,10 +539,10 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 42 | `42-seccomp.md` | seccomp：seccompiler、过滤器与安装时机 | ○ |
-| 43 | `43-jailer.md` | jailer：chroot、cgroup 与 namespace | ○ |
-| 44 | `44-logging-and-metrics.md` | 日志与 metrics | ○ |
-| 45 | `45-gdb-tracing-and-kani.md` | GDB 调试、tracing 与形式化验证 | ○ |
+| 42 | `42-seccomp.md` | seccomp：seccompiler、过滤器与安装时机 | ◎ |
+| 43 | `43-jailer.md` | jailer：chroot、cgroup 与 namespace | ◎ |
+| 44 | `44-logging-and-metrics.md` | 日志与 metrics | ◎ |
+| 45 | `45-gdb-tracing-and-kani.md` | GDB 调试、tracing 与形式化验证 | ◎ |
 
 **42 · seccomp：seccompiler、过滤器与安装时机**
 - 过滤器源文件：`resources/seccomp/<target>.json`：按线程（`vmm`、`api`、`vcpu`）分三张表，每条 `syscall` + 可选 `args` 条件 + `comment`；`unimplemented.json`
@@ -577,9 +579,9 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 46 | `46-code-organization-and-build.md` | 代码组织、依赖与构建 | ○ |
-| 47 | `47-testing.md` | 测试体系：单元、集成与性能 | ○ |
-| 48 | `48-release-and-compat-policy.md` | 发布策略、版本与兼容承诺 | ○ |
+| 46 | `46-code-organization-and-build.md` | 代码组织、依赖与构建 | ◎ |
+| 47 | `47-testing.md` | 测试体系：单元、集成与性能 | ◎ |
+| 48 | `48-release-and-compat-policy.md` | 发布策略、版本与兼容承诺 | ◎ |
 
 **46 · 代码组织、依赖与构建**
 - workspace 成员与 `default-members`（jailer 为什么不在默认里：musl 静态链接）；每个 crate 的职责与依赖方向
@@ -615,14 +617,14 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 49 | `49-why-e2b-forked.md` | 为什么分叉：e2b 的内存管线要什么 | ○ |
-| 50 | `50-memory-mappings-api.md` | /memory/mappings：把 guest 内存的宿主地址交出去 | ○ |
-| 51 | `51-memory-resident-empty-api.md` | /memory：常驻页与零页位图 | ○ |
-| 52 | `52-memory-dirty-api.md` | /memory/dirty：pagemap 与写保护位的脏页判据 | ○ |
-| 53 | `53-uffd-write-protection.md` | uffd 写保护：让脏页判据成立的最后一环 | ○ |
-| 54 | `54-optional-memfile-snapshot.md` | 可选 memfile 的快照与 e2b 的暂停流程 | ○ |
-| 55 | `55-seccomp-build-upload-and-upstream-fixes.md` | seccomp、构建发布脚本与合入的上游修复 | ○ |
-| 56 | `56-guest-kernel-requirements-and-e2b-configs.md` | guest 内核：Firecracker 的要求与 e2b 的内核配置 | ○ |
+| 49 | `49-why-e2b-forked.md` | 为什么分叉：e2b 的内存管线要什么 | ◎ |
+| 50 | `50-memory-mappings-api.md` | /memory/mappings：把 guest 内存的宿主地址交出去 | ◎ |
+| 51 | `51-memory-resident-empty-api.md` | /memory：常驻页与零页位图 | ◎ |
+| 52 | `52-memory-dirty-api.md` | /memory/dirty：pagemap 与写保护位的脏页判据 | ◎ |
+| 53 | `53-uffd-write-protection.md` | uffd 写保护：让脏页判据成立的最后一环 | ◎ |
+| 54 | `54-optional-memfile-snapshot.md` | 可选 memfile 的快照与 e2b 的暂停流程 | ◎ |
+| 55 | `55-seccomp-build-upload-and-upstream-fixes.md` | seccomp、构建发布脚本与合入的上游修复 | ◎ |
+| 56 | `56-guest-kernel-requirements-and-e2b-configs.md` | guest 内核：Firecracker 的要求与 e2b 的内核配置 | ◎ |
 
 **49 · 为什么分叉：e2b 的内存管线要什么**
 - e2b 的循环：模板快照 → uffd 恢复 → 运行 → 暂停成新快照（只讲到能理解需求的程度，延伸阅读链接 e2b 手册第 12、37 篇）
@@ -711,23 +713,23 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 57 | `57-which-fork-commit-and-uffd-wp.md` | 迁入的版本：54a1c1a 与被放弃的 uffd 写保护 | ○ |
-| 58 | `58-building-and-running-on-aarch64.md` | 在 aarch64 上构建与运行 | ○ |
-| 59 | `59-aarch64-vs-x86-64-runtime-paths.md` | aarch64 与 x86_64 运行路径的差异清单 | ○ |
-| 60 | `60-kunpeng-openeuler-host.md` | 鲲鹏 950 与 openEuler 宿主环境 | ○ |
-| 61 | `61-guest-kernel-on-arm.md` | ARM 上的 guest 内核：arm64 配置与部署中的内核文件 | ○ |
-| 62 | `62-aarch64-seccomp-filter.md` | aarch64 的 seccomp 过滤器 | ○ |
-| 63 | `63-integration-with-e2b-infra.md` | 与 e2b infra 的对接：版本目录、内核参数与 RPM | ○ |
-| 64 | `64-checkpoint-extension-overview.md` | checkpoint / restore 扩展总览：目标、四个扩展点与分工 | ○ |
-| 65 | `65-dirty-tracking-backend.md` | 脏页跟踪后端：KVM 写保护与 HDBSS | ○ |
-| 66 | `66-hdbss.md` | HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力 | ○ |
-| 67 | `67-dirty-bitmap-sidecar.md` | dirty_bitmap_path：sidecar 与 FCDB 格式 | ○ |
-| 68 | `68-save-dirty-bitmap-api.md` | PUT /snapshot/save-dirty-bitmap | ○ |
-| 69 | `69-rollback-api-and-phases.md` | PUT /snapshot/rollback：阶段、参数与响应 | ○ |
-| 70 | `70-rollback-memory.md` | 回滚的内存写回 | ○ |
-| 71 | `71-rollback-vcpu-and-gic.md` | 回滚的 vCPU 与 GIC | ○ |
-| 72 | `72-rollback-devices.md` | 回滚的设备状态 | ○ |
-| 73 | `73-failure-model-faulted-and-seccomp.md` | 失败模型、Faulted 状态与 seccomp 白名单 | ○ |
+| 57 | `57-which-fork-commit-and-uffd-wp.md` | 迁入的版本：54a1c1a 与被放弃的 uffd 写保护 | ◎ |
+| 58 | `58-building-and-running-on-aarch64.md` | 在 aarch64 上构建与运行 | ◎ |
+| 59 | `59-aarch64-vs-x86-64-runtime-paths.md` | aarch64 与 x86_64 运行路径的差异清单 | ◎ |
+| 60 | `60-kunpeng-openeuler-host.md` | 鲲鹏 950 与 openEuler 宿主环境 | ◎ |
+| 61 | `61-guest-kernel-on-arm.md` | ARM 上的 guest 内核：arm64 配置与部署中的内核文件 | ◎ |
+| 62 | `62-aarch64-seccomp-filter.md` | aarch64 的 seccomp 过滤器 | ◎ |
+| 63 | `63-integration-with-e2b-infra.md` | 与 e2b infra 的对接：版本目录、内核参数与 RPM | ◎ |
+| 64 | `64-checkpoint-extension-overview.md` | checkpoint / restore 扩展总览：目标、四个扩展点与分工 | ◎ |
+| 65 | `65-dirty-tracking-backend.md` | 脏页跟踪后端：KVM 写保护与 HDBSS | ◎ |
+| 66 | `66-hdbss.md` | HDBSS：鲲鹏硬件脏页跟踪与 KVM 能力 | ◎ |
+| 67 | `67-dirty-bitmap-sidecar.md` | dirty_bitmap_path：sidecar 与 FCDB 格式 | ◎ |
+| 68 | `68-save-dirty-bitmap-api.md` | PUT /snapshot/save-dirty-bitmap | ◎ |
+| 69 | `69-rollback-api-and-phases.md` | PUT /snapshot/rollback：阶段、参数与响应 | ◎ |
+| 70 | `70-rollback-memory.md` | 回滚的内存写回 | ◎ |
+| 71 | `71-rollback-vcpu-and-gic.md` | 回滚的 vCPU 与 GIC | ◎ |
+| 72 | `72-rollback-devices.md` | 回滚的设备状态 | ◎ |
+| 73 | `73-failure-model-faulted-and-seccomp.md` | 失败模型、Faulted 状态与 seccomp 白名单 | ◎ |
 
 **57 · 迁入的版本：54a1c1a 与被放弃的 uffd 写保护**
 - KASandbox 把 e2b 分叉整目录放进 `firecracker/`（没有 git 历史）；怎么核对它是哪个提交：与 `54a1c1a` 的树 `diff -r` 只差三个测试用二进制
@@ -886,12 +888,12 @@ metrics、状态保存（只点到，第 40 篇统一讲）。
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 74 | `74-glossary.md` | 术语表 | ○ |
-| 75 | `75-code-map.md` | 代码地图：crate、模块与篇目 | ○ |
-| 76 | `76-api-reference.md` | API 端点总表 | ○ |
-| 77 | `77-config-cli-env-metrics-reference.md` | 配置项、命令行参数、环境变量与 metrics 总表 | ○ |
-| 78 | `78-layer-diff-tables.md` | 三层差异总表（文件级） | ○ |
-| 79 | `79-reading-upstream-code.md` | 阅读上游代码的方法与常见问题 | ○ |
+| 74 | `74-glossary.md` | 术语表 | ◎ |
+| 75 | `75-code-map.md` | 代码地图：crate、模块与篇目 | ◎ |
+| 76 | `76-api-reference.md` | API 端点总表 | ◎ |
+| 77 | `77-config-cli-env-metrics-reference.md` | 配置项、命令行参数、环境变量与 metrics 总表 | ◎ |
+| 78 | `78-layer-diff-tables.md` | 三层差异总表（文件级） | ◎ |
+| 79 | `79-reading-upstream-code.md` | 阅读上游代码的方法与常见问题 | ◎ |
 
 **74 · 术语表**
 - STYLE.md 第三节的全部术语 + 正文中出现的其它术语，每条：中文、英文、一句话定义、首次出现的篇

@@ -102,6 +102,14 @@ swagger 文件（`src/firecracker/swagger/firecracker.yaml`）在这套流程里
 `tests/integration_tests/style/test_swagger.py` 在 CI 里校验它是合法的 OpenAPI 规格。
 三道检查合起来的意思是：改了 API 却没改 swagger，发布流程会停下来。
 
+对外契约不只在 HTTP 上，进程退出码也是一条。`src/vmm/src/lib.rs` 的 `FcExitCode` 把信号类退出码
+排成 148 到 157 的一段，但 `SIGXCPU` 是 154 —— 中间的 152 与 153 被 `BadConfiguration`
+与 `ArgParsing` 占着，这两个枚举项在源码里写在 `SIGILL = 157` 之后。
+也就是说这两个值是后来插进信号码区间的，而枚举的书写顺序没有被整理成数值顺序。
+整理它会改变已经发出去的退出码含义，而外部管理进程正按这些数字判断 Firecracker 是怎么死的
+（各值的含义见[第 77 篇](77-config-cli-env-metrics-reference.md)）。
+这是「一旦对外，就不重排」这条原则在 HTTP 之外的一个实例。
+
 这套规则的收益是客户端可以按小版本号放心升级：
 按 X.Y.Z 写的客户端，在所有 X.V.W（V ≥ Y）的二进制上都应当工作。
 代价则落在维护者身上 —— 每一个为了避免破坏而保留的旧端点、旧字段名、旧 URI，
@@ -273,6 +281,7 @@ e2b 加了 `/memory` 与 `/memory/mappings`，ARM 适配版又加了 `/snapshot/
 - 内核支持政策约束的是被验证过的组合；本项目的宿主环境不在上游验证矩阵内。
 - 发布流程里只有两处需要人判断，其余都是脚本，且每一步都带校验；CHANGELOG 的格式由 CI 强制。
 - 两层定制都不改版本号，靠提交哈希标识；代价是版本号不再能标识 API 面。
+- 对外契约一旦发出就不重排：`FcExitCode` 里 152 / 153 插在信号码中间、书写顺序与数值不一致，就是这条原则的痕迹。
 
 ---
 
@@ -284,4 +293,4 @@ e2b 加了 `/memory` 与 `/memory/mappings`，ARM 适配版又加了 `/snapshot/
 - [第 78 篇 · 三层差异总表](78-layer-diff-tables.md) 给出两层定制的文件级清单。
 - 上游文档 `docs/RELEASE_POLICY.md`、`docs/kernel-policy.md`、`docs/api-change-runbook.md`、
   `docs/snapshotting/versioning.md` 是本篇的原始依据。
-- 编排层怎么按版本字符串选二进制、怎么滚动升级，在 [e2b 手册](../e2b-infra/37-pause-and-snapshot.md) 一线。
+- 编排层怎么按版本字符串选二进制、怎么滚动升级，见 [e2b 手册第 28 篇](../e2b-infra/28-firecracker-process-management.md)。

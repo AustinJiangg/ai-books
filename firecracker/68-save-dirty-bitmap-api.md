@@ -6,7 +6,7 @@
 > 本篇讲 ARM 适配版怎么用一个端点解决这个矛盾，以及那条让「看一眼」变得安全的不变量。
 >
 > **读者**：系统工程师、调用方的开发者。　**预备**：[第 14 篇 · 脏页跟踪](14-dirty-page-tracking.md)、
-> [第 67 篇 · dirty_bitmap_path](67-dirty-bitmap-sidecar.md)、[第 9 篇 · rpc_interface](09-rpc-interface.md)。
+> [第 67 篇 · dirty_bitmap_path](67-dirty-bitmap-sidecar.md)、[第 09 篇 · rpc_interface](09-rpc-interface.md)。
 > **代码**：`src/vmm/src/rollback.rs`、`src/vmm/src/rpc_interface.rs`、
 > `src/firecracker/src/api_server/request/snapshot.rs`、`src/vmm/src/vmm_config/snapshot.rs`
 

@@ -5,7 +5,7 @@
 > 本篇讲这个对象的结构、每个字段的校验规则，以及「配置」与「已构造的设备」之间那条并不清晰的界线。
 >
 > **读者**：系统工程师。
-> **预备**：[第 9 篇 · rpc_interface](09-rpc-interface.md#3-prebootapicontroller把请求累积成一份配置)。
+> **预备**：[第 09 篇 · rpc_interface](09-rpc-interface.md#3-prebootapicontroller把请求累积成一份配置)。
 > **代码**：`src/vmm/src/resources.rs`、`src/vmm/src/vmm_config/`（`machine_config.rs`、
 > `boot_source.rs`、`drive.rs`、`net.rs`、`vsock.rs`、`balloon.rs`、`entropy.rs`、`mmds.rs`、`mod.rs`）
 
@@ -62,7 +62,7 @@ flowchart TB
 设备 builder 持有的是 `Arc<Mutex<设备>>`，已经是可以工作的对象。
 进程级那三项来自命令行而不是 API：`mmds_size_limit` 来自 `--mmds-size-limit`，
 `boot_timer` 来自 `--boot-timer`，由 `build_microvm_from_requests()` 在构造控制器之前写入
-（[第 7 篇 · 进程启动](07-process-startup.md)）。
+（[第 07 篇 · 进程启动](07-process-startup.md)）。
 
 `mmds` 是 `Option<Arc<Mutex<Mmds>>>`，注释说明了为什么按需初始化：不用就不占那块内存。
 `mmds_or_default()` 与 `locked_mmds_or_default()` 是唯二的访问入口，它们负责在第一次访问时建好。
@@ -128,7 +128,7 @@ PUT 的请求体反序列化成 `MachineConfig`，再经 `From<MachineConfig> fo
 `reboot=k` 让 guest 重启变成关机，`pci=off`、`i8042.noaux` 等是为了省掉 guest 的探测时间。
 
 `builder` 是 `Option` 的理由写在字段注释里：从快照恢复的 microVM 不需要它 ——
-内核已经在 guest 内存里了，不必再打开一次内核文件。这也是[第 9 篇](09-rpc-interface.md)
+内核已经在 guest 内存里了，不必再打开一次内核文件。这也是[第 09 篇](09-rpc-interface.md)
 里 `boot_path` 标志要拦住 `LoadSnapshot` 的原因之一。
 
 ---
@@ -247,7 +247,7 @@ machine-config.cpu_template 都会是空的」。对着恢复路径的代码看�
 映射成 `StaticCpuTemplate::None`（`src/vmm/src/cpu_config/templates.rs`），
 于是快照走一趟回来，自定义模板变成了「没有模板」。
 另外这条 warn 只在预启动控制器里；恢复完成后控制器已经切成 `RuntimeApiController`
-（[第 9 篇 §5](09-rpc-interface.md#5-切换只发生一次)），它处理同一个动作时不打日志，
+（[第 09 篇 §5](09-rpc-interface.md#5-切换只发生一次)），它处理同一个动作时不打日志，
 所以真正从快照恢复的实例反而看不到这句提示。
 
 快照恢复路径需要反方向填充：设备是从快照里重建的，但 `VmResources` 仍然要持有它们的引用，
@@ -318,9 +318,9 @@ e2b 定制版给 `InstanceInfo` 加了 `memory_regions` 并新增三个响应结
 
 ## 延伸阅读 / 下一篇
 
-- [第 9 篇 · rpc_interface](09-rpc-interface.md)：谁在往 `VmResources` 里写。
+- [第 09 篇 · rpc_interface](09-rpc-interface.md)：谁在往 `VmResources` 里写。
 - [第 11 篇 · builder](11-builder.md)：这些配置与设备怎么变成一台运行中的 microVM。
 - [第 13 篇 · guest 内存](13-guest-memory.md)：`allocate_guest_memory()` 之后的事。
 - [第 20 篇 · CPU 模板机制](20-cpu-templates.md)：静态与自定义模板的完整语义。
-- [第 6 篇 · 构建、运行与调试环境](06-build-run-debug.md)：`--config-file` 的完整示例。
+- [第 06 篇 · 构建、运行与调试环境](06-build-run-debug.md)：`--config-file` 的完整示例。
 - 下一篇：[第 11 篇 · builder：从配置到运行中的 microVM](11-builder.md)。

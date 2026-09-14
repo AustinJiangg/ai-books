@@ -5,7 +5,7 @@
 > 本篇讲上游 v1.12.1 的 guest 内存是怎么建起来的，以及每种后备方式换来了什么、放弃了什么。
 >
 > **读者**：系统工程师。
-> **预备**：[第 3 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、[第 10 篇 · 资源模型](10-vm-resources-and-config.md)。
+> **预备**：[第 03 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、[第 10 篇 · 资源模型](10-vm-resources-and-config.md)。
 > **代码**：`src/vmm/src/vstate/memory.rs`、`src/vmm/src/vstate/vm.rs`、
 > `src/vmm/src/arch/x86_64/mod.rs`、`src/vmm/src/arch/aarch64/mod.rs`、`src/vmm/src/resources.rs`
 

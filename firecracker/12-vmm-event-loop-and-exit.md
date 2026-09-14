@@ -6,7 +6,7 @@
 > 到进程退出码的固定路径。
 >
 > **读者**：系统工程师、运维。
-> **预备**：[第 7 篇 · 进程启动](07-process-startup.md#5-两条路)、
+> **预备**：[第 07 篇 · 进程启动](07-process-startup.md#5-两条路)、
 > [第 11 篇 · builder](11-builder.md)。
 > **代码**：`src/vmm/src/lib.rs`、`src/vmm/src/vstate/vcpu.rs`、
 > `src/vmm/src/device_manager/mmio.rs`、`src/vmm/src/devices/legacy/i8042.rs`、
@@ -195,7 +195,7 @@ Firecracker 不实现重启；重启语义由编排层通过「结束这个进�
 
 填上之后，外层循环的下一轮检查就会看到它：`Some(FcExitCode::Ok)` 跳出返回成功，
 `Some(其它)` 包成 `ApiServerError::MicroVMStoppedWithError` 或 `RunWithoutApiError::Shutdown`
-一路透传到 `main()`（[第 7 篇 §6](07-process-startup.md#6-退出码)）。
+一路透传到 `main()`（[第 07 篇 §6](07-process-startup.md#6-退出码)）。
 
 `Drop for Vmm` 里还会再调一次 `stop()`。这不是冗余：`Vmm` 有可能在还没注册进事件管理器时就被 drop
 （例如快照恢复中途失败），那时没有人替它 join vCPU 线程，
@@ -206,7 +206,7 @@ Firecracker 不实现重启；重启语义由编排层通过「结束这个进�
 ### 4.4 不走这条路的退出
 
 有两类退出完全绕开上面这条链。一是信号：`SIGBUS`、`SIGSEGV`、`SIGSYS` 等的处理器
-写完日志与 metrics 后直接 `libc::_exit()`（[第 7 篇 §3](07-process-startup.md#3-三件不可逆的进程级设置)），
+写完日志与 metrics 后直接 `libc::_exit()`（[第 07 篇 §3](07-process-startup.md#3-三件不可逆的进程级设置)），
 vCPU 线程不会被 join，设备不会被拆，guest 内存不会被刷盘。
 二是 `SIGTERM` 与 `SIGINT`：Firecracker 不为它们注册处理器，进程走内核默认行为终止，
 **连 metrics 都不会落盘**。
@@ -268,7 +268,7 @@ ARM 适配版在 `VmState` 上加了 `Faulted`，并在 `pause_vm()` 与 `resume
 ## 延伸阅读 / 下一篇
 
 - [第 11 篇 · builder](11-builder.md)：订阅者是在哪几步被挂上去的。
-- [第 9 篇 · rpc_interface](09-rpc-interface.md)：`Pause` 之后那个阻塞循环的控制器侧。
+- [第 09 篇 · rpc_interface](09-rpc-interface.md)：`Pause` 之后那个阻塞循环的控制器侧。
 - [第 15 篇 · vCPU 线程与状态机](15-vcpu-threads-and-state-machine.md)：`Vcpu::exit()` 之前的状态迁移。
 - [第 24 篇 · legacy 设备](24-legacy-devices.md)：i8042 与串口的寄存器语义。
 - [第 44 篇 · 日志与 metrics](44-logging-and-metrics.md)：指标的字段与落盘格式。

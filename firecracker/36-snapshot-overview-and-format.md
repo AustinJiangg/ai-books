@@ -4,7 +4,7 @@
 > vmstate 文件的字节布局长什么样、`MicrovmState` 这棵结构树由谁填、以及格式版本为什么与 Firecracker 版本分开编号。
 > 创建与加载的具体步骤在后两篇，本篇只建立共同的词汇与边界。
 >
-> **读者**：系统工程师。　**预备**：[第 9 篇 · rpc_interface](09-rpc-interface.md)、
+> **读者**：系统工程师。　**预备**：[第 09 篇 · rpc_interface](09-rpc-interface.md)、
 > [第 13 篇 · guest 内存](13-guest-memory.md)。　**代码**：`src/vmm/src/snapshot/mod.rs`、
 > `src/vmm/src/snapshot/crc.rs`、`src/vmm/src/snapshot/persist.rs`、`src/vmm/src/persist.rs`、
 > `src/vmm/src/vmm_config/snapshot.rs`
@@ -129,6 +129,11 @@ flowchart LR
 内容只有一项 `kvm_cap_modifiers`，即 CPU 模板额外要求启用的那些 KVM 能力。恢复时
 `build_microvm_from_snapshot()` 把它传给 `create_vmm_and_vcpus()`，让新建的 KVM 实例
 按同一组能力配置出来。真正的 vCPU 与中断控制器寄存器在 `vcpu_states` 与 `vm_state` 里。
+
+**`acpi_dev_state` 不是 x86_64 专有的。** 这个字段没有任何 `#[cfg]`，两个架构的 `MicrovmState` 都有它，
+装的是 `ACPIDeviceManagerState`，而 v1.12.1 里这个管理器只管 vmgenid 一个设备。
+名字里的 ACPI 只反映 x86_64 上描述该设备的方式；aarch64 上同一个设备经 FDT 节点描述，状态照样存在这里
+（见[第 35 篇 §3](35-entropy-vmgenid-rate-limiter.md#3-vmgenid16-字节状态与一条中断线)）。
 
 **`vm_info` 不是 KVM 状态，是重建时要用的配置。** 它由 `From<&VmResources>` 从当前配置拷出来，
 装的是内存大小、smt、静态 CPU 模板、引导源配置与大页配置。加载时 `restore_from_snapshot()`

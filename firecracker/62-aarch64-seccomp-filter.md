@@ -209,6 +209,20 @@ seccomp 只能比较寄存器里的标量，不能解引用指针去看路径字
 它本来就在 aarch64 的 `vmm` 表里（快照保存与恢复 GIC 状态时就要用），
 而 GIC 阶段跑在 vmm 线程上。
 
+### 4.3 一条没有出现在表里的 `ioctl`
+
+第十部分还加了一处 KVM 调用，却没有在这张表里留下任何痕迹：启用硬件脏页跟踪用的
+`KVM_ENABLE_CAP`（[第 66 篇](66-hdbss.md)）。查遍三张 aarch64 表都找不到它，
+而这不是遗漏：这次 ioctl 发生在**构建期**，排在 VMM 线程装过滤器那一步之前，
+过滤器还没生效，自然不需要放行。
+
+这与 uffd 的创建和注册发生在装过滤器之前是同一种口径（[第 39 篇](39-uffd-backend.md)），
+也解释了为什么 aarch64 的 `vmm` 表里既没有 `userfaultfd` 也没有 `UFFDIO_*`。
+代价是这条性质只存在于代码的调用顺序里，没有任何机制守着它：
+把启用动作挪到运行期、或者将来加一个「运行期重新协商能力」的端点，
+第一次调用就会以 SIGSYS 结束进程，而不是返回一个错误。
+这类隐含依赖值得在改动构建顺序时专门检查一遍。
+
 ---
 
 ## 5. 一条规则怎么写
@@ -291,6 +305,8 @@ KVM_SET_ONE_REG = _IOW(KVMIO, 0xac, struct kvm_one_reg) = 0x4010_aeac = 10748351
 - ARM 适配版还往 `vcpu` 表加了 `KVM_ARM_VCPU_INIT`、`KVM_ARM_VCPU_FINALIZE`、
   `KVM_SET_ONE_REG`、`KVM_SET_MP_STATE` 四条，因为原地回滚要在运行中的 vCPU 上写状态；
   GIC 用的 `KVM_SET_DEVICE_ATTR` 本来就在 `vmm` 表里，不需要加。
+- 启用硬件脏页跟踪的 `KVM_ENABLE_CAP` 三张表里都没有，因为它发生在装过滤器之前；
+  这是一条只靠调用顺序维持、没有机制保护的隐含依赖。
 - 三层之后 aarch64 表是 `vmm` 59 条 / `api` 35 条 / `vcpu` 37 条规则；`api` 表三层都没动过。
 - `ioctl` 的 `val` 是 `_IOW` / `_IOR` 展开后的 32 位位域，`size` 字段把结构体大小编了进去，
   跨架构抄数字不安全；`type` 必须写 `dword`，因为 `eq` + `dword` 生成的是掩码比较，

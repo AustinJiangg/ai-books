@@ -5,7 +5,7 @@
 > 本篇把这四组输入与两组输出收成可查的表，标出三层基线各自加了什么。
 >
 > **读者**：部署与运维、写调用方的后端工程师、排查进程异常退出的人。
-> **预备**：[第 6 篇 · 构建、运行与调试](06-build-run-debug.md)、[第 44 篇 · 日志与 metrics](44-logging-and-metrics.md)。
+> **预备**：[第 06 篇 · 构建、运行与调试](06-build-run-debug.md)、[第 44 篇 · 日志与 metrics](44-logging-and-metrics.md)。
 > **代码**：`src/firecracker/src/main.rs`、`src/jailer/src/main.rs`、`src/vmm/src/vmm_config/`、
 > `src/vmm/src/logger/metrics.rs`、`src/vmm/src/lib.rs`、`src/vmm/src/vstate/vm.rs`
 
@@ -268,7 +268,7 @@ HTTP 响应的 `timings_us` 里，不进 metrics（[第 69 篇](69-rollback-api-
 
 `register_signal_handler()` 只为这八个信号装处理器：SIGSYS、SIGBUS、SIGSEGV、SIGXFSZ、SIGXCPU、
 SIGPIPE、SIGHUP、SIGILL。SIGTERM 与 SIGINT **不在其中**，保持系统默认行为
-（[第 7 篇](07-process-startup.md)）。
+（[第 07 篇](07-process-startup.md)）。
 
 ARM 适配版没有新增退出码。回滚失败不让进程退出，而是把 microVM 置为 `Faulted`：
 `Vmm::pause_vm()` 与 `resume_vm()` 此后返回 `VmmError::VmFaulted`，进程活着等编排层替换
@@ -304,7 +304,7 @@ ARM 适配版没有新增退出码。回滚失败不让进程退出，而是把 
 
 ## 延伸阅读 / 下一篇
 
-- [第 6 篇 · 构建、运行与调试](06-build-run-debug.md)：这些参数在真实命令行里怎么组合。
+- [第 06 篇 · 构建、运行与调试](06-build-run-debug.md)：这些参数在真实命令行里怎么组合。
 - [第 44 篇 · 日志与 metrics](44-logging-and-metrics.md)：metrics 树的结构与丢数据的条件。
 - [第 76 篇 · API 端点总表](76-api-reference.md)：配置项对应的端点与 JSON 骨架。
 - [第 66 篇 · HDBSS](66-hdbss.md)：两个环境变量背后的硬件机制与回落路径。

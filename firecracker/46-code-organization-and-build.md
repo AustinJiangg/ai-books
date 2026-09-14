@@ -1,12 +1,12 @@
 # 46 · 代码组织、依赖与构建
 
-> 九万行代码切成十二个 crate，不是为了复用 —— 这些 crate 没有一个发布到 crates.io。
+> 九万四千行代码切成十二个 crate，不是为了复用 —— 这些 crate 没有一个发布到 crates.io。
 > 切分的目的是约束：谁能依赖谁、哪些代码进哪个二进制、哪些东西在编译期就必须定下来。
 > 本篇讲这套约束是什么、由什么机制维持，以及它在两层改动下各被动了哪里。
 >
 > **读者**：要改 Firecracker 源码、升级它的依赖，或者把它接进自己构建体系的工程师。
-> **预备**：[第 5 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)、
-> [第 6 篇 · 构建、运行与调试环境](06-build-run-debug.md)（本篇不重复讲怎么编）。
+> **预备**：[第 05 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)、
+> [第 06 篇 · 构建、运行与调试环境](06-build-run-debug.md)（本篇不重复讲怎么编）。
 > **代码**：`Cargo.toml`、`src/*/Cargo.toml`、`src/firecracker/build.rs`、`rust-toolchain.toml`、
 > `deny.toml`、`tools/bindgen.sh`、`tools/test_bindings.py`、`.buildkite/pipeline_pr.py`
 
@@ -41,7 +41,7 @@ Rust 的 crate 与 cargo 的 feature 是实现这两类边界的工具。下面�
 
 ## 2. 依赖方向：哪几条边被刻意画出来
 
-十二个 crate 的清单与规模在[第 1 篇](01-lineage-and-repo-map.md)，这里只看边。
+十二个 crate 的清单与规模在[第 01 篇 §3](01-lineage-and-repo-map.md#3-仓库地图十二个-crate)，这里只看边。
 
 ### 2.1 `vmm` 是唯一的大库，三个二进制建立在它之上
 
@@ -64,7 +64,7 @@ e2b 定制版给 `InstanceInfo` 加了一个 `memory_regions` 字段，
 所以这条边不存在是设计而不是巧合。`rebase-snap` 同理：它按字节合并两个内存文件，
 不需要理解快照格式。
 
-`jailer` 还有一层特殊处理。根 `Cargo.toml` 的 `default-members` 列了六个成员，
+`jailer` 还有一层特殊处理。根 `Cargo.toml` 的 `default-members` 列了七个成员，
 唯独不含 `src/jailer`，注释给出的理由是：默认的 `cargo build` 编 gnu target，
 而 jailer 必须静态链接才能在 chroot 之后正常工作。于是日常开发时 `cargo build`
 不会编它，正式构建靠 `tools/release.sh` 里的 `cargo build --target … --workspace --bins --examples`
@@ -83,7 +83,7 @@ e2b 定制版给 `InstanceInfo` 加了一个 `memory_regions` 字段，
 
 这条边是「编译期确定」原则的具体实现：白名单不是配置文件，不能在部署时替换，
 它随二进制一起发布。`--seccomp-filter` 参数允许在运行时换一份，
-但那是显式的降级路径，默认路径上过滤器与二进制同生命周期（[第 42 篇](42-seccomp.md)）。
+但那是显式的降级路径，默认路径上过滤器与二进制同生命周期（[第 42 篇 §3](42-seccomp.md#3-从-json-到二进制)）。
 
 ### 2.4 两个容易认错的 `utils`
 
@@ -151,7 +151,8 @@ flowchart TB
 ## 3. `vmm` 内部：一条主干与两个例外
 
 `vmm` 一个 crate 占全部代码的八成，所以它内部的划分才是真正起作用的组织结构。
-`src/vmm/src/lib.rs` 声明了十七个模块，按职责可以归成四组。
+`src/vmm/src/lib.rs` 声明了二十三个模块（十六个目录加七个顶层文件，
+逐项清单见[第 01 篇 §4](01-lineage-and-repo-map.md#4-vmm-内部十六个目录与八个顶层文件)），按职责可以归成四组。
 
 ```text
 src/vmm/src/
@@ -178,7 +179,7 @@ src/vmm/src/
     └── logger/              日志与 metrics
 ```
 
-两个例外。`device_manager` 是十七个模块里唯一声明为 `pub(crate)` 的，
+两个例外。`device_manager` 是这些模块里唯一声明为 `pub(crate)` 的，
 也就是说设备管理器不对 crate 外暴露 —— 外部要操作设备只能经由 `Vmm` 的方法。
 另一个是 `gdb/` 与 `test_utils/`：前者挂在 `#[cfg(feature = "gdb")]` 下，
 后者只在测试与 `integration_tests` 里用到，两者都不进正常的发布产物。
@@ -186,7 +187,7 @@ src/vmm/src/
 `arch/` 的组织方式对读代码影响最大。同一个概念在两个架构下各有一份实现，
 靠 `#[cfg(target_arch = …)]` 选择；`src/vmm/src/arch/mod.rs` 负责把两边的公共接口对齐。
 读一个功能时通常要同时看 `arch/x86_64/` 与 `arch/aarch64/` 下的同名文件，
-两边的差异往往就是[第十部分](58-building-and-running-on-aarch64.md)要处理的问题的来源。
+两边的差异往往就是[第 58 篇 · 在 aarch64 上构建与运行](58-building-and-running-on-aarch64.md)那一部分要处理的问题的来源。
 
 ---
 
@@ -202,7 +203,7 @@ src/vmm/src/
 `src/vmm/src/vmm_config/machine_config.rs` 里有五处，`src/vmm/src/persist.rs`、
 `src/vmm/src/resources.rs`、`src/firecracker/src/api_server/request/machine_configuration.rs`
 里还有若干处。这些 `cfg` 与调试功能本身无关，纯粹是「可选字段」这一决定的税
-（该特性的行为见[第 45 篇](45-gdb-tracing-and-kani.md)）。
+（该特性的行为见[第 45 篇 §2](45-gdb-tracing-and-kani.md#2-gdb把-firecracker-变成一个远程目标)）。
 
 真正的开关不只 feature 一种。`Cargo.toml` 的 profile 设置也是编译期决定，其中两条值得说：
 
@@ -212,7 +213,7 @@ src/vmm/src/
   两个 profile 都设同一个值，则保证了开发时看到的失败语义与生产一致。
 - `lto = true` 与 `strip = "none"` 只在 release 下。不 strip 是因为
   `tools/release.sh` 要用 `objcopy` 自己把 debuginfo 分离成 `.debug` 文件，
-  而不是简单丢掉（[第 6 篇 §2.3](06-build-run-debug.md#23-产物)）。
+  而不是简单丢掉（[第 06 篇 §2.3](06-build-run-debug.md#23-产物)）。
 
 ---
 
@@ -324,7 +325,7 @@ ARM 适配版在这一层的改动只有一处构建脚本：`scripts/build.sh` 
 ## 延伸阅读 / 下一篇
 
 - 下一篇：[第 47 篇 · 测试体系：单元、集成与性能](47-testing.md) —— 上面这些 CI 步骤里具体跑的是什么。
-- [第 6 篇 · 构建、运行与调试环境](06-build-run-debug.md) 讲怎么真正编出一个二进制。
+- [第 06 篇 · 构建、运行与调试环境](06-build-run-debug.md) 讲怎么真正编出一个二进制。
 - [第 48 篇 · 发布策略、版本与兼容承诺](48-release-and-compat-policy.md) 讲版本号与兼容窗口。
 - [第 75 篇 · 代码地图](75-code-map.md) 是本篇模块树的完整版，按文件对应到篇目。
 - [第 78 篇 · 三层差异总表](78-layer-diff-tables.md) 给出文件级的改动清单与升级重放顺序。

@@ -240,8 +240,9 @@ Firecracker 一侧的关闭而失效。
 **seccomp 与 uffd 的创建时机。** vmm 线程的 seccomp 过滤器
 （[第 42 篇 · seccomp](42-seccomp.md)）是在 `build_microvm_from_snapshot()` 的最后一步才装上的，
 而 uffd 的创建、注册与握手都发生在这之前。查一下 `resources/seccomp/` 里的表就能确认这一点：
-`vmm` 线程的白名单里既没有 `userfaultfd` 系统调用，`ioctl` 也只放行了四个终端相关的请求号
-加四个 KVM 请求号，没有任何 `UFFDIO_*`。恢复完成之后，Firecracker 一侧不会再对 uffd 做任何操作，
+`vmm` 线程的白名单里既没有 `userfaultfd` 系统调用，`ioctl` 也只放行了四个 tty / fd 控制类请求号
+（`FIONBIO`、`TIOCGWINSZ`、`TCGETS`、`TCSETS`）加少数几个 KVM 请求号
+（x86_64 表四个，aarch64 表三个），没有任何 `UFFDIO_*`。恢复完成之后，Firecracker 一侧不会再对 uffd 做任何操作，
 所有 ioctl 都由处理器进程发出，而那个进程不在 Firecracker 的过滤器管辖范围内。
 
 **uffd 对象从哪里来。** `userfaultfd` crate 优先打开 `/dev/userfaultfd`，
@@ -257,7 +258,12 @@ e2b 定制版改动了本篇讲的注册环节：它换用一个支持写保护�
 在 `MISSING` 之外再加 `WRITE_PROTECT` 模式注册，为的是让宿主侧能按页判断哪些内存被写过。
 这条改动与它服务的脏页判据在[第 53 篇 · uffd 写保护](53-uffd-write-protection.md)展开。
 ARM 适配版又把这几处写保护代码按架构关掉，因为 aarch64 内核没有对应特性，
-见[第 57 篇](57-which-fork-commit-and-uffd-wp.md)。本篇其余部分三层一致。
+见[第 57 篇](57-which-fork-commit-and-uffd-wp.md)。
+
+`src/firecracker/examples/uffd/` 里的示例处理器三层都没有动过。这一点在配套判据时要留意：
+e2b 定制版把写保护注册加进了 Firecracker 一侧，示例处理器却不认识 `UFFDIO_WRITEPROTECT`
+那一类事件，拿它去配 e2b 定制版的判据不会报错，只会静默地什么都判不出来。
+本篇其余部分三层一致。
 
 ---
 

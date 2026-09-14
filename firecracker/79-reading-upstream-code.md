@@ -4,7 +4,7 @@
 > 或者确认书里的某条论断在你手上的那份代码里还成不成立。本篇给出六条可复用的追踪路径，每条都带可运行的命令；
 > 后半是读代码时最容易卡住的八个问题，每个给出一段结论与讲它的篇目。
 >
-> **读者**：准备自己动手读 Firecracker 源码的人。　**预备**：[第 1 篇](01-lineage-and-repo-map.md)、[第 5 篇](05-rust-and-crates-primer.md)。
+> **读者**：准备自己动手读 Firecracker 源码的人。　**预备**：[第 01 篇](01-lineage-and-repo-map.md)、[第 05 篇](05-rust-and-crates-primer.md)。
 > **代码**：`src/firecracker/src/api_server/parsed_request.rs`、`src/vmm/src/rpc_interface.rs`、`src/vmm/src/arch/mod.rs`、`resources/seccomp/`
 
 ---
@@ -270,7 +270,7 @@ aarch64 上的两个 `link-arg` 是链接 `libfdt` 与 `libgcc` 所需；
 `src/firecracker/build.rs` 在 `DEBUG` 为真、或者目标三元组没有对应策略文件时，
 把策略换成 `resources/seccomp/unimplemented.json` 并打一条 `cargo:warning`。
 所以「这个操作会不会被 seccomp 挡住」这类问题，只能用 release 的 musl 构建去验证
-（[第 6 篇 §2.5](06-build-run-debug.md#25-debug-构建不只是慢)）。
+（[第 06 篇 §2.5](06-build-run-debug.md#25-debug-构建不只是慢)）。
 
 ---
 
@@ -300,7 +300,7 @@ API 线程把动作经 mpsc 通道送给 VMM 线程，写一次 eventfd 唤醒�
 请求严格串行，并发发两个请求得到的是排队而不是并行，VMM 侧因此完全不需要并发控制；
 `recv()` 没有超时，VMM 线程卡住则 HTTP 调用一直挂着。
 `RequestAction` 枚举只有 `Sync` 一个变体，结构上给别的执行方式留了位置，但 v1.12.1 里没有用。
-见[第 8 篇 §4](08-api-server.md#4-同步语义)与[第 9 篇](09-rpc-interface.md)。
+见[第 08 篇 §4](08-api-server.md#4-同步语义)与[第 09 篇](09-rpc-interface.md)。
 
 **4. 为什么 v1.12.1 对配置了 vhost-user 块设备的 microVM 创建快照不报错？**
 文档与代码在这里不一致。`docs/api_requests/block-vhost-user.md` 说快照会失败，
@@ -368,5 +368,5 @@ ARM 适配版因此换了后端，用鲲鹏 950 的硬件脏页跟踪 HDBSS 重�
 - [第 76 篇 · API 端点总表](76-api-reference.md)与[第 77 篇 · 配置与 metrics 总表](77-config-cli-env-metrics-reference.md)：查字段与参数用。
 - [第 78 篇 · 三层差异总表](78-layer-diff-tables.md)：判断手上这份代码属于哪一层，以及升级时要重放什么。
 - [第 74 篇 · 术语表](74-glossary.md)：读到不认识的词先查这里。
-- [第 6 篇 · 构建、运行与调试](06-build-run-debug.md)与[第 47 篇 · 测试体系](47-testing.md)：本篇第 7 节的完整版。
+- [第 06 篇 · 构建、运行与调试](06-build-run-debug.md)与[第 47 篇 · 测试体系](47-testing.md)：本篇第 7 节的完整版。
 - 上游仓库的 `CONTRIBUTING.md` 给出提交规范与 PR 流程，读提交信息时有帮助；以代码为准。

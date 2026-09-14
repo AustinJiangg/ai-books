@@ -30,7 +30,7 @@ Firecracker 提供给 guest 的硬件是一份很短的清单：若干 virtio-mm
 （[第 23 篇](23-bus-and-mmio-device-manager.md)、[第 17 篇](17-x86-64-platform.md)）。
 没有 PCI、没有 BIOS、没有 option ROM、没有磁盘控制器。
 
-这份清单的短，是[第 2 篇](02-microvm-design-tradeoffs.md)讲的那组取舍在 guest 一侧的投影：
+这份清单的短，是[第 02 篇](02-microvm-design-tradeoffs.md)讲的那组取舍在 guest 一侧的投影：
 设备少，攻击面就小、启动就快、VMM 的代码量就少。但它把成本转移了一部分给 guest 内核。
 
 这带来一个不常见的约束：**一个通用发行版内核在这台机器上通常起不来，或者起得很慢。**
@@ -79,9 +79,11 @@ guest 随机数（`CONFIG_RANDOM_TRUST_CPU`），以及两个架构各自的计�
 x86_64 的 `CONFIG_KVM_GUEST`、`CONFIG_PTP_1588_CLOCK_KVM`、`CONFIG_SERIO_I8042`）。
 
 这份清单要对着自带的 config 读，而不是当成硬性最小集。文档在「最小启动要求」一节里写
-x86_64 从块设备启动需要 `CONFIG_ACPI=y` 和 `CONFIG_PCI=y`，
-但 `resources/guest_configs/microvm-kernel-ci-x86_64-6.1.config` 里 `CONFIG_PCI` 是关的。
-以配置为准：v1.12.1 的 x86_64 microVM 里没有 PCI 总线，文档这一条是过时的。
+x86_64 从块设备启动需要 `CONFIG_ACPI=y` 和 `CONFIG_PCI=y`，理由是 guest 内的 ACPI 初始化要用到 PCI 子系统
+（文档同时声明 Firecracker 不提供任何 PCI 设备）；但同一个仓库里的
+`resources/guest_configs/microvm-kernel-ci-x86_64-6.1.config` 中 `CONFIG_PCI` 是关的，而 `CONFIG_ACPI` 是开的。
+两者对不上，以配置为准：v1.12.1 自带的那份 config 不开 PCI 也能从块设备启动，
+文档这一条要么是更早版本的遗留，要么描述的是别的内核树。
 
 **内核来源本身是政策的一部分。** `docs/kernel-policy.md` 说明这些 config 是用来构建
 Amazon Linux 发布的 microVM 内核的，源码在 `amazonlinux/linux` 仓库的
@@ -235,25 +237,32 @@ Kconfig 的配置文件格式里「关闭」写作 `# CONFIG_X is not set`，
 
 ---
 
-## 6. 一处值得核对的不一致：arm64 产物的格式
+## 6. v0.0.8 的 arm64 产物不能被 Firecracker 加载
 
 第 2 节说过，aarch64 的 `load_kernel()` 用 PE 加载器，上游的 `rebuild.sh`
-在 aarch64 上因此取 `arch/arm64/boot/Image`。而 fc-kernels 的 `build.sh`
+在 aarch64 上因此取 `arch/arm64/boot/Image`。而 `v0.0.8`（`b8cea06`）的 `build.sh`
 对两个架构都执行 `make $make_opts vmlinux` 并复制内核树根目录下的 `vmlinux`——
 那是一个 ELF 文件，不是 PE。
 
-**推论**：`v0.0.8` 发布的 `vmlinux-<版本>-arm64.bin` 不能被 aarch64 上的 Firecracker 直接加载，
-`load_kernel()` 会返回 `KernelLoader` 错误。本书没有在 aarch64 上实际跑过这个资产，
-所以标为推论；但两处代码位置都是确定的，读者要在 ARM 环境里用这个仓库的产物时应当先核对格式。
-可能的处置有两种：把 `build.sh` 在 arm64 分支上改成 `make Image` 并复制
-`arch/arm64/boot/Image`，或者在部署时另行转换。ARM 适配版实际部署的内核文件从哪里来，
-是[第 61 篇](61-guest-kernel-on-arm.md)的题目。
+结论是确定的，不是推论：`v0.0.8` 发布的 `vmlinux-<版本>-arm64.bin` 是 ELF `vmlinux`，
+aarch64 上的 Firecracker 只认 PE，`load_kernel()` 会返回 `KernelLoader` 错误。
+仓库自己后来也承认了这一点 —— 下一个 release `v0.0.9`（提交 `7fa4f34`，提交标题写明
+「arm64 build now provides PE format image, instead of ELF, as expected by firecracker」）
+把 `build.sh` 在 arm64 分支上改成 `make Image` 并复制 `arch/arm64/boot/Image`。
+也就是说，`v0.0.8` 这一版的 arm64 资产在 Firecracker 上是不可用的，
+本书说「2026.09 的 e2b 定制版 guest 内核是 `v0.0.8`」时，这条限定适用于 arm64 那一半。
+ARM 部署里实际使用的内核文件来自更晚的 release，见[第 61 篇](61-guest-kernel-on-arm.md)。
 
 顺带记一个与之相关的事实：release `v0.0.8` 的提交信息是
 「add ARM64 kernel build support, move configs to per-arch dirs」，
 也就是说 arm64 这条构建路径在这个 release 里是**刚加上的**，
 此前这个仓库只构建 x86_64。一条新加的、在真实目标机器上验证机会有限的路径，
-出现上面这种不一致是可以预期的。
+出现上面这种不一致是可以预期的，而它在下一个 release 就被改掉了。
+
+这是这一层的 aarch64 支持普遍不完整的一个例子，另外两处分别在配置和过滤器上：
+上一节说的 arm64 config 少开六七组选项，以及 e2b 定制版只给 aarch64 的 seccomp 表补了 `mincore`、
+没补 `pread64`（[第 55 篇 §2](55-seccomp-build-upload-and-upstream-fixes.md#2-seccomp两条系统调用两张不对称的表)、
+[第 62 篇](62-aarch64-seccomp-filter.md)）。三处的共同成因相同：分叉只在 x86_64 上构建与运行。
 
 ---
 
@@ -267,7 +276,7 @@ Kconfig 的配置文件格式里「关闭」写作 `# CONFIG_X is not set`，
 - release 号自增、与内核版本无关；产物有带架构与不带架构两套命名并存。
 - x86_64 config 相对上游多开的七组选项全部服务于 guest 内的用户工作负载，与 Firecracker 接口无关；代价是内核体积与攻击面。
 - 两个架构的 config 差异不对称，arm64 缺 nftables、TUN、FUSE、landlock 等；同一镜像在两个架构上可能行为不同。
-- `build.sh` 在 arm64 上产出的是 ELF `vmlinux`，与 Firecracker aarch64 的 PE 加载器不匹配（推论），使用前需核对。
+- `v0.0.8` 的 `build.sh` 在 arm64 上产出的是 ELF `vmlinux`，与 Firecracker aarch64 的 PE 加载器不匹配，这一版的 arm64 资产不可用；`v0.0.9`（`7fa4f34`）改成 `make Image` 后才可用。
 
 ---
 

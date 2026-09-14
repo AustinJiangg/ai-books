@@ -7,7 +7,7 @@
 >
 > **读者**：系统工程师。
 > **预备**：[第 13 篇 · guest 内存](13-guest-memory.md#4-注册给-kvm一个区域一个-memslot)、
-> [第 3 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)。
+> [第 03 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)。
 > **代码**：`src/vmm/src/vstate/vm.rs`、`src/vmm/src/vstate/memory.rs`、`src/vmm/src/persist.rs`、
 > `src/vmm/src/devices/virtio/queue.rs`、`src/vmm/src/devices/virtio/iovec.rs`
 
@@ -267,16 +267,18 @@ if create_params.snapshot_type == SnapshotType::Diff
 
 ## 7. 后续各层的差异
 
-e2b 定制版没有改这两张位图，而是在旁边加了第三条判据：`GET /memory/dirty` 用 `/proc/self/pagemap`
-的软脏位与 uffd 写保护位判断脏页，让调用方不经过 Firecracker 的快照路径就能取到差分，
-见[第 52 篇](52-memory-dirty-api.md)。
+e2b 定制版没有改这两张位图，而是在旁边加了第三条判据：`GET /memory/dirty` 先用 `mincore`
+筛出驻留页，再逐页读 `/proc/self/pagemap`，把「已驻留且 uffd 写保护位（第 57 位）已清」
+当作写过（`src/vmm/src/utils/pagemap.rs` 的 `PagemapReader::is_page_dirty()`），
+让调用方不经过 Firecracker 的快照路径就能取到差分，见[第 52 篇](52-memory-dirty-api.md)。
+这条判据成立的前提是 uffd 写保护确实装上了，与本篇的两张位图各记各的、互不影响。
 
 ARM 适配版在这一层做了两件事：把脏页跟踪后端做成可选，在鲲鹏 950 上换成硬件脏页跟踪
 HDBSS（hardware dirty bit state structure），见[第 65 篇](65-dirty-tracking-backend.md)与
 [第 66 篇](66-hdbss.md)；以及把本篇的合并结果序列化成一个位图 sidecar 文件交给调用方，
 见[第 67 篇](67-dirty-bitmap-sidecar.md)。它还加了 `dump_dirty()` 的逆操作，
 用于把内存文件里的页写回运行中的 guest，见[第 70 篇](70-rollback-memory.md)。
-ARM 适配版没有改动本篇涉及的文件。
+本篇讲的合并判据 `dump_dirty()` 本身，两层都没有改。
 
 ---
 

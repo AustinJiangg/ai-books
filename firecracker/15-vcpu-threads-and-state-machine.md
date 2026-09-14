@@ -5,7 +5,7 @@
 > 怎样在 `KVM_RUN` 阻塞期间被打断、从 KVM 退出时按什么分类处理，以及整台机器的拆除握手为什么要写成八步。
 >
 > **读者**：系统工程师、需要在 Firecracker 上加控制面动作的开发者。
-> **预备**：[第 3 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、
+> **预备**：[第 03 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、
 > [第 11 篇 · builder](11-builder.md)。
 > **代码**：`src/vmm/src/vstate/vcpu.rs`、`src/vmm/src/utils/sm.rs`、`src/vmm/src/lib.rs`
 

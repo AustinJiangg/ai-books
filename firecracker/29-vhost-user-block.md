@@ -32,7 +32,7 @@ virtio-block 的两个引擎（[第 27 篇](27-virtio-block.md)、[第 28 篇](2
 考虑几类需求：数据不在本地磁盘上而在网络存储里，要按块拉取并缓存；要按访问模式做预读，
 预读策略依赖上层语义；要在读路径上做去重或解压。这些逻辑写进 Firecracker 意味着两件事：
 VMM 的代码面与攻击面按需求的复杂度增长，而 Firecracker 的整个设计前提是这个面要小
-（见[第 2 篇](02-microvm-design-tradeoffs.md)）；并且这些逻辑一旦跑在 VMM 线程里，
+（见[第 02 篇](02-microvm-design-tradeoffs.md)）；并且这些逻辑一旦跑在 VMM 线程里，
 就与 vCPU 线程、事件循环共享同一个进程的命运，一处崩溃全盘皆输。
 
 vhost-user 的做法是把边界划在 virtqueue 上：**谁来轮询和处理这个队列，是可以换人的**。

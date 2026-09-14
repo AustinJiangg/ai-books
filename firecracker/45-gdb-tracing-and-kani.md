@@ -5,7 +5,7 @@
 > 上游 v1.12.1 为这三类问题各准备了一套工具，它们的共同点是都不在生产二进制里。
 >
 > **读者**：需要定位 guest 侧启动问题、VMM 内部时延异常，或评估 Firecracker 安全论证强度的工程师。
-> **预备**：[第 5 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)、
+> **预备**：[第 05 篇 · 本书用到的 Rust 与依赖 crate](05-rust-and-crates-primer.md)、
 > [第 15 篇 · vCPU 线程与状态机](15-vcpu-threads-and-state-machine.md)、
 > [第 44 篇 · 日志与 metrics](44-logging-and-metrics.md)。
 > **代码**：`src/vmm/src/gdb/`、`src/log-instrument/`、`src/clippy-tracing/`、

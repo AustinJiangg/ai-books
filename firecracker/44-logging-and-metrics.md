@@ -4,7 +4,7 @@
 > 负责人类可读的行，一个 `METRICS` 树负责机器可读的计数。本篇讲这两套东西的结构、
 > 写出的时机与格式，以及它们各自在什么情况下会悄悄丢数据。
 >
-> **读者**：系统工程师、运维。　**预备**：[第 9 篇 · rpc_interface](09-rpc-interface.md)、
+> **读者**：系统工程师、运维。　**预备**：[第 09 篇 · rpc_interface](09-rpc-interface.md)、
 > [第 12 篇 · Vmm、事件循环与退出路径](12-vmm-event-loop-and-exit.md)。　**代码**：
 > `src/vmm/src/logger/logging.rs`、`src/vmm/src/logger/metrics.rs`、`src/vmm/src/logger/mod.rs`、
 > `src/firecracker/src/metrics.rs`、`src/vmm/src/vmm_config/metrics.rs`

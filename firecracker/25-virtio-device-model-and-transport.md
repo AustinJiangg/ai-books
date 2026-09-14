@@ -5,7 +5,7 @@
 > 讲设备是在哪一刻、由谁「激活」的，以及通知与中断这两个方向各自绕开了什么。
 >
 > **读者**：系统工程师。
-> **预备**：[第 4 篇 · virtio 与 MMIO 入门](04-virtio-and-mmio-primer.md)、
+> **预备**：[第 04 篇 · virtio 与 MMIO 入门](04-virtio-and-mmio-primer.md)、
 > [第 23 篇 · 设备总线与 MMIO 设备管理器](23-bus-and-mmio-device-manager.md)。
 > **代码**：`src/vmm/src/devices/virtio/device.rs`、`mmio.rs`、`mod.rs`、`persist.rs`、
 > `src/vmm/src/devices/virtio/block/virtio/event_handler.rs`、`src/vmm/src/device_manager/mmio.rs`
@@ -342,7 +342,7 @@ e2b 定制版没有改动本篇涉及的任何文件；ARM 适配版除上面这
 
 ## 延伸阅读 / 下一篇
 
-- [第 4 篇 · virtio 与 MMIO 入门](04-virtio-and-mmio-primer.md)：virtio 规范本身的概念与术语。
+- [第 04 篇 · virtio 与 MMIO 入门](04-virtio-and-mmio-primer.md)：virtio 规范本身的概念与术语。
 - [第 23 篇 · 设备总线与 MMIO 设备管理器](23-bus-and-mmio-device-manager.md)：
   `register_mmio_virtio()` 的地址与 IRQ 分配，以及内核命令行参数的生成。
 - [第 40 篇 · 设备状态的 Persist](40-device-persist.md)：各设备 `persist.rs` 的全貌。

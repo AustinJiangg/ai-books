@@ -195,7 +195,7 @@ runner 标签与测试集。这一类改动的取向是「够用即可」：`too
 
 三个端点的实现主体集中在 `vstate/vm.rs` 与新文件 `utils/pagemap.rs`，其余都是把这条链路接起来的胶水：
 从 HTTP 路径到 `VmmAction`，从 `VmmAction` 到 `RuntimeApiController` 的分支，再到 `VmmData` 的序列化。
-这条链路本身是上游的（[第 8 篇](08-api-server.md)、[第 9 篇](09-rpc-interface.md)），
+这条链路本身是上游的（[第 08 篇](08-api-server.md)、[第 09 篇](09-rpc-interface.md)），
 新端点只是在每一层各加一个分支，这是分叉能保持小体量的结构性原因。
 
 ---
@@ -246,7 +246,7 @@ e2b 定制版没有削弱这些约束，但在它们之外增加了一条从外�
 补上了它的定义，客户端代码由那一份生成，所以线上能用。
 另一处同类的痕迹在 `src/vmm/src/vmm_config/instance_info.rs`：
 `InstanceInfo` 上有一个 `memory_regions: Option<Vec<GuestMemoryRegionMapping>>` 字段，
-三处构造点全部写 `None`，运行期没有任何代码给它赋值，而 swagger 的 `InstanceInfo` 定义里也没有它。
+两处显式构造点都写 `None`，运行期没有任何代码给它赋值，而 swagger 的 `InstanceInfo` 定义里也没有它。
 结果是 `GET /` 返回一个契约上不存在、值恒为 `null` 的字段。这两处都不影响功能，
 但在排查「文档里为什么没有这个端点」时会浪费时间，也是升级分叉时要一并处理的负债。
 

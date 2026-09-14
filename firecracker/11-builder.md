@@ -6,7 +6,7 @@
 >
 > **读者**：系统工程师。
 > **预备**：[第 10 篇 · 资源模型](10-vm-resources-and-config.md#5-设备配置builder-里已经是设备)、
-> [第 3 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)。
+> [第 03 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)。
 > **代码**：`src/vmm/src/builder.rs`、`src/vmm/src/device_manager/mmio.rs`、
 > `src/vmm/src/vstate/vm.rs`、`src/vmm/src/arch/x86_64/mod.rs`、`src/vmm/src/arch/aarch64/mod.rs`
 
@@ -255,7 +255,7 @@ guest 开始执行。
 的某个变体，不做回滚。已经建好的东西随着函数的局部变量被丢弃：`Vmm` 析构时关闭
 VM fd 与 vCPU fd，KVM 侧的对象随之释放；已经挂上事件管理器的设备则保留着一个 `Arc`，
 直到事件管理器本身被丢弃。进程没有被杀掉，控制器仍然停在 Preboot 阶段，
-调用方可以改配置再发一次 `InstanceStart` —— 这也是[第 9 篇 §3.4](09-rpc-interface.md#34-fatal_error哪些失败不能原地重试)
+调用方可以改配置再发一次 `InstanceStart` —— 这也是[第 09 篇 §3.4](09-rpc-interface.md#34-fatal_error哪些失败不能原地重试)
 里冷启动失败不算致命错误的原因。
 
 ---

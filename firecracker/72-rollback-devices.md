@@ -99,7 +99,9 @@ e2b 的 orchestrator 本来就不配置 balloon，vsock 也不在这条路径上
 `for_each_device()` 遍历的是一张 `HashMap`，顺序不稳定，所以同一台 microVM 连续存两次，
 `DeviceStates` 里 `block_devices` 的元素次序都可能不同。
 校验如果按下标配对，就会在有两块磁盘时随机失败。代码的做法是按 `(类型, id)` 查找加总数比较，
-对两边的排列顺序都不敏感。这也是回滚全程认设备身份的唯一依据 —— 与恢复路径认地址与 id
+对两边的排列顺序都不敏感。要区分清楚的是：guest 看到的设备次序是稳定的 ——
+aarch64 上 `create_fdt()` 按 MMIO 地址排序写设备节点（[第 19 篇 §4](19-aarch64-platform.md#4-设备树create_fdt-写了什么)）——
+不稳定的只是快照里 `DeviceStates` 各数组的元素次序。这也是回滚全程认设备身份的唯一依据 —— 与恢复路径认地址与 id
 的做法（[第 23 篇 §7](23-bus-and-mmio-device-manager.md#7-恢复地址精确匹配中断号不重放)）一致。
 
 `activated` 必须一致，理由在 virtio 的激活语义里：激活是一次性的，

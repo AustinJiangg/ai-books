@@ -45,27 +45,27 @@ Firecracker 没有固件，这些数据结构必须由 VMM 自己在 guest 内�
 GPA
 0x0000_0000  ┌──────────────────────────────────┐
              │ 0x0500 GDT   0x0520 IDT          │
-             │ 0x6000 hvm_start_info   PVH       │
-             │ 0x7000 zero page / memmap         │
-             │ 0x8ff0 引导栈顶                    │
-             │ 0x9000 PML4  0xa000 PDPTE         │
-             │ 0xb000 PDE                        │
-             │ 0x2_0000 内核命令行 最大 2048 字节  │
+             │ 0x6000 hvm_start_info   PVH      │
+             │ 0x7000 zero page / memmap        │
+             │ 0x8ff0 引导栈顶                  │
+             │ 0x9000 PML4  0xa000 PDPTE        │
+             │ 0xb000 PDE                       │
+             │ 0x2_0000 内核命令行 上限 2048 B  │
 0x0009_fc00  ├──────────────────────────────────┤
-             │ SYSTEM_MEM 257 KiB                │
-             │   mptable + DSDT/FADT/MADT/XSDT   │
+             │ SYSTEM_MEM 257 KiB               │
+             │   mptable + DSDT/FADT/MADT/XSDT  │
 0x000e_0000  ├──────────────────────────────────┤  RSDP_ADDR
-             │ RSDP                              │
+             │ RSDP                             │
 0x0010_0000  ├──────────────────────────────────┤  HIMEM_START 1 MiB
-             │ 内核映像、initrd、guest RAM        │
-             │                                   │
+             │ 内核映像、initrd、guest RAM      │
+             │                                  │
 0xd000_0000  ├──────────────────────────────────┤  MMIO_MEM_START
-             │ MMIO 空洞 768 MiB                  │
-             │   0xfec0_0000 IOAPIC              │
-             │   0xfee0_0000 LAPIC               │
-             │   0xfffb_d000 KVM TSS             │
+             │ MMIO 空洞 768 MiB                │
+             │   0xfec0_0000 IOAPIC             │
+             │   0xfee0_0000 LAPIC              │
+             │   0xfffb_d000 KVM TSS            │
 0x1_0000_0000├──────────────────────────────────┤  4 GiB
-             │ 剩余 guest RAM 若内存超过 3.25 GiB │
+             │ 内存超 3.25 GiB 时的剩余 RAM     │
              └──────────────────────────────────┘
 ```
 
@@ -203,9 +203,14 @@ VMGenID 是第三类。它是一段 16 字节的 guest 内存加一个 GSI，
 注释里点明了一个前提：这个通知只有在 guest 内存里的代际值**已经被改过**之后才有意义 ——
 先写值，再通知，顺序反了 guest 会读到旧值。
 
+`ACPIDeviceManager` 本身不是 x86_64 专有的：`src/vmm/src/device_manager/acpi.rs`
+没有任何 `cfg(target_arch)`，两个架构上 `Vmm` 都有这个字段，唯一的成员也都是
+`Option<VmGenId>`。差别只在 guest 怎么看到这个设备 —— x86_64 上经本节的 AML，
+aarch64 上经一个 FDT 节点，那里没有 ACPI 表（[第 19 篇](19-aarch64-platform.md)）。
+
 这三类设备的信息都只存在于 DSDT 里，而 DSDT 是在 `configure_system_for_boot()`
 这一步一次性生成并写进 guest 内存的，代码里没有任何在运行中重新生成或修改它的路径。
-推论：这与「配置阶段与运行阶段严格分离」的控制面设计（见 [第 9 篇](09-rpc-interface.md)）互为因果 ——
+推论：这与「配置阶段与运行阶段严格分离」的控制面设计（见 [第 09 篇](09-rpc-interface.md)）互为因果 ——
 既然设备只能在启动前配置，平台描述就不必支持增量更新；
 反过来，要支持运行中新增设备，就得先解决 ACPI 命名空间如何变更的问题。
 

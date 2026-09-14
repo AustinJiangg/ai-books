@@ -71,6 +71,11 @@ pub struct MemoryResponse {
 页序就是[第 50 篇 §2.1](50-memory-mappings-api.md#21-offset-的坐标系扁平序列不是-gpa)讲的扁平序列：
 区域按顺序首尾相接，第一个区域的第 0 页是全局第 0 页，第二个区域的第 0 页接在第一个区域最后一页之后。
 第 n 页对应 `bitmap[n / 64]` 的第 `n % 64` 位，低位在前。
+实现上这条性质来自 `get_memory_info()` 里那个**跨区域连续递增**的 `global_page_idx`：
+它在区域之间不清零、不对齐，下标直接 `global_page_idx / 64`。
+这一点与 `GET /memory/dirty` 不同，后者按区域各自算一张 `nr_pages.div_ceil(64)` 的位图再 `extend_from_slice` 拼接，
+区域页数不是 64 的整数倍时会插入填充位。两张位图因此**不保证共用同一套位号**，
+细节与发作条件见[第 52 篇 §4](52-memory-dirty-api.md#4-计算过程两级过滤)。
 调用方只要把 `Vec<u64>` 原样喂给一个 64 位字宽、低位在前的位集合实现，
 位号就直接是页号；orchestrator 侧用的 `bitset.From()` 正是这个约定。
 
@@ -265,6 +270,8 @@ seccomp 侧要加一条：`mincore` 进白名单。
   `GET /memory` 把它拆成 `resident` 与 `empty` 两张可组合的位图交出去，减法由调用方做。
 - 两张位图共用 `GET /memory/mappings` 的扁平页序，每 64 页打包一个 `u64`、低位在前，
   长度都是 `ceil(总页数 / 64)`；`empty` 由实现保证是 `resident` 的子集。
+- 本端点的位号由跨区域连续的 `global_page_idx` 给出，而 `/memory/dirty` 按区域各自补齐到 64 位再拼接；
+  区域页数非 64 倍数时两张位图会错位，调用方不能假定它们同号。
 - 算法是：校验各区域页大小一致 → 对每个区域调一次 `mincore` 得到宿主页粒度的常驻向量 →
   按 guest 页折算 → 常驻页再用一个复用的零缓冲区做 `memcmp`。
 - 三处保守处理方向一致（宁可多导）：任一子页常驻即整页常驻、`mincore` 失败按全部常驻、

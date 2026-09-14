@@ -5,7 +5,7 @@
 > aarch64 的寄存器如何用一个 64 位 ID 统一寻址，vCPU 状态怎么进出快照，以及 PSCI 在多核启动与关机中的角色。
 >
 > **读者**：系统工程师、需要在 ARM 上做快照或回滚的开发者。
-> **预备**：[第 3 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、
+> **预备**：[第 03 篇 · 本书用到的 KVM API](03-kvm-api-primer.md)、
 > [第 15 篇 · vCPU 线程与状态机](15-vcpu-threads-and-state-machine.md)。
 > **代码**：`src/vmm/src/arch/aarch64/vcpu.rs`、`regs.rs`、`cache_info.rs`、`kvm.rs`、
 > `src/vmm/src/cpu_config/aarch64/mod.rs`
@@ -259,7 +259,7 @@ L2 及以上作为独立的 `lN-M-cache` 节点并用 `next-level-cache` 串成�
 
 e2b 定制版没有改动 aarch64 的 vCPU 代码。
 
-ARM 适配版在 `src/vmm/src/arch/aarch64/vcpu.rs` 里加了一个方法，
+ARM 适配版在 `src/vmm/src/arch/aarch64/vcpu.rs` 里加了 `KvmVcpu::restore_state_in_place()`，
 把快照中的 `VcpuState` 写回**当前这个已经运行过的** vCPU fd，用于原地回滚；
 它的实现就是直接调用上游的 `restore_state()`，理由正是第 6 节的那条性质：
 `KVM_ARM_VCPU_INIT` 在已运行的 vCPU 上等于架构定义的复位，因此上游的恢复序列原样适用。

@@ -137,7 +137,7 @@ GPA 空间                         扁平序列（内存产物的坐标系）
 
 ## 3. 从 HTTP 路径到响应
 
-这个端点走的是上游既有的控制面链路（[第 8 篇](08-api-server.md)、[第 9 篇](09-rpc-interface.md)），
+这个端点走的是上游既有的控制面链路（[第 08 篇](08-api-server.md)、[第 09 篇](09-rpc-interface.md)），
 每一层各加一个分支。
 
 ```mermaid
@@ -264,8 +264,9 @@ e2b 定制版没有削弱这些约束，但在它们之外开了一条从外向�
 
 还有一处与本端点同源的残留。`src/vmm/src/vmm_config/instance_info.rs` 的 `InstanceInfo`
 上有一个字段 `memory_regions: Option<Vec<GuestMemoryRegionMapping>>`。
-它的三处构造点（`src/firecracker/src/main.rs`、`src/cpu-template-helper/src/utils/mod.rs`，
-以及 `Vmm::instance_info()` 返回的那份克隆）全部是 `None`，运行期没有任何代码给它赋值，
+全仓库只有两处显式构造这个结构体 —— `src/firecracker/src/main.rs` 与
+`src/cpu-template-helper/src/utils/mod.rs` —— 两处都写死 `memory_regions: None`；
+`Vmm::instance_info()` 返回的是这份值的克隆，运行期没有任何代码给它赋值，
 而 `src/firecracker/swagger/firecracker.yaml` 的 `InstanceInfo` 定义里也没有这个属性。
 结果是 `GET /` 会返回一个契约上不存在、值恒为 `null` 的字段。
 它不影响功能，但读代码的人会以为存在第二条取映射表的路径；

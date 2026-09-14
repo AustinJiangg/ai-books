@@ -113,6 +113,12 @@ v0.0.8 发的是 `vmlinux-6.1.158-x86_64.bin`，v0.0.12 发的是 `vmlinux-6.1.1
 arm64 的配置是在加 arm64 支持时直接从上游参考配置起步、只补上当时已知需要的几项。
 `configs/arm64/6.1.102.config` 与参考配置的差异更小，只有 WireGuard 与 NFS 客户端那几项。
 
+这份「只加了三类东西」的清单反过来也是一份缺口清单：x86_64 那份配置里为 guest 内的沙箱运行时
+打开的 nftables、`TUN`、`FUSE_FS` 与 landlock，arm64 这份都没有开
+（[第 56 篇](56-guest-kernel-requirements-and-e2b-configs.md)逐项列出了两边的不对称）。
+同一个 rootfs 镜像跑在两个架构上，guest 内能用的内核能力因此并不相同，
+而这件事在 Firecracker 一侧看不出来。
+
 这也说明这一层的「定制」仍然只有配置，没有内核补丁。
 
 ### 3.2 相对 x86_64 配置：架构决定的部分

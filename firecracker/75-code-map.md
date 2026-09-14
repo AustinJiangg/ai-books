@@ -4,7 +4,7 @@
 > 对上「它做什么」「本书哪一篇讲它」「e2b 定制版与 ARM 适配版有没有动过它」。
 > 读代码时遇到一个陌生文件，从这里能一步找到对应的篇目；准备改一处代码时，从这里能一眼看出这处是不是已经被两层改动占用。
 >
-> **读者**：所有读者。　**预备**：[第 1 篇 · 三层版本谱系与仓库地图](01-lineage-and-repo-map.md)、
+> **读者**：所有读者。　**预备**：[第 01 篇 · 三层版本谱系与仓库地图](01-lineage-and-repo-map.md)、
 > [第 46 篇 · 代码组织、依赖与构建](46-code-organization-and-build.md)。
 > **代码**：整棵源码树，基线为 `tmp/e2b-book-src/fc-upstream/`（`v1.12.1`，commit `d990331f7`）
 
@@ -91,14 +91,14 @@ firecracker/
 | crate | 产物 | `.rs` 文件 / 行数 | 做什么 | 篇目 |
 |---|---|---|---|---|
 | `vmm` | 库 | 235 / 78 704 | VMM 的全部实现：KVM 抽象、设备、快照、配置 | 第 7–41 篇 |
-| `firecracker` | 可执行 | 35 / 5 737 | 主二进制：参数解析、API server、seccomp 安装 | [第 7 篇](07-process-startup.md)、[第 8 篇](08-api-server.md) |
+| `firecracker` | 可执行 | 35 / 5 737 | 主二进制：参数解析、API server、seccomp 安装 | [第 07 篇](07-process-startup.md)、[第 08 篇](08-api-server.md) |
 | `jailer` | 可执行 | 5 / 3 133 | chroot、cgroup、namespace 与降权 | [第 43 篇](43-jailer.md) |
 | `cpu-template-helper` | 可执行 | 18 / 2 739 | 采集 CPU 指纹、生成与裁剪 CPU 模板 | [第 22 篇](22-aarch64-templates-and-helper.md) |
 | `snapshot-editor` | 可执行 | 5 / 650 | 离线编辑 vmstate 与内存文件 | [第 41 篇](41-snapshot-tools-and-compat.md) |
 | `rebase-snap` | 可执行 | 1 / 329 | 把 Diff 内存文件合进基线内存文件 | [第 41 篇](41-snapshot-tools-and-compat.md) |
 | `seccompiler` | 库 + 可执行 | 5 / 606 | 把 JSON 过滤器编成 BPF 程序 | [第 42 篇](42-seccomp.md) |
 | `acpi-tables` | 库 | 7 / 2 704 | 构造 RSDP / XSDT / FADT / MADT / DSDT 与 AML | [第 17 篇](17-x86-64-platform.md) |
-| `utils` | 库 | 4 / 1 411 | 参数解析、时间、字符串校验 | [第 6 篇](06-build-run-debug.md) |
+| `utils` | 库 | 4 / 1 411 | 参数解析、时间、字符串校验 | [第 06 篇](06-build-run-debug.md) |
 | `clippy-tracing` | 可执行 | 2 / 934 | 批量增删 `#[instrument]` 属性的源码改写工具 | [第 45 篇](45-gdb-tracing-and-kani.md) |
 | `log-instrument` | 库 | 7 / 216 | `instrument` 过程宏的运行时支撑 | [第 45 篇](45-gdb-tracing-and-kani.md) |
 | `log-instrument-macros` | 库 | 1 / 38 | 上面那个宏的实现 | [第 45 篇](45-gdb-tracing-and-kani.md) |
@@ -116,7 +116,7 @@ crate 之间的依赖方向、哪几条边被刻意断开，见
 的四组划分排列如下。括号里是该目录下所有 `.rs` 文件的行数合计。
 
 ```text
-src/vmm/src/                                      78 704 行
+src/vmm/src/                                      77 285 行
 │
 ├─ 控制面：从 API 请求到一台运行中的 microVM
 │  ├── rpc_interface.rs                    1 276   VmmAction 与 Preboot / Runtime 两个控制器
@@ -153,8 +153,9 @@ src/vmm/src/                                      78 704 行
    └── test_utils/                            269  单元测试与 vmm 内集成测试的夹具
 ```
 
-`arch/` 的两个子树在行数上并不对称：`x86_64/` 5 234 行，`aarch64/` 5 380 行，
-但 `x86_64/generated/` 里有将近一千行是 bindgen 从内核头文件生成的常量表。
+`arch/` 的两个子树在行数上并不对称：`x86_64/` 5 441 行，`aarch64/` 5 057 行，
+另有 `arch/mod.rs` 116 行。差距的一部分来自 `x86_64/generated/` 的 998 行 ——
+那是 bindgen 从内核头文件生成的常量表，不是手写代码。
 两边同名文件的差异是[第 59 篇 · aarch64 与 x86_64 运行路径的差异清单](59-aarch64-vs-x86-64-runtime-paths.md)的主题。
 
 ---
@@ -163,7 +164,7 @@ src/vmm/src/                                      78 704 行
 
 | 文件 | 内容 | e2b | ARM | 篇目 |
 |---|---|---|---|---|
-| `rpc_interface.rs` | `VmmAction` 枚举、`PrebootApiController` 与 `RuntimeApiController` | ✓ | ✓ | [第 9 篇](09-rpc-interface.md) |
+| `rpc_interface.rs` | `VmmAction` 枚举、`PrebootApiController` 与 `RuntimeApiController` | ✓ | ✓ | [第 09 篇](09-rpc-interface.md) |
 | `resources.rs` | `VmResources`：启动前累积的全部配置，含 `from_json()` | | | [第 10 篇](10-vm-resources-and-config.md) |
 | `builder.rs` | `build_microvm_for_boot()` 与 `build_microvm_from_snapshot()` | | ✓ | [第 11 篇](11-builder.md) |
 | `lib.rs` | `Vmm` 结构体、`EventManager` 订阅、pause / resume、退出码 | ✓ | ✓ | [第 12 篇](12-vmm-event-loop-and-exit.md) |
@@ -191,7 +192,7 @@ src/vmm/src/                                      78 704 行
 | `vmm_config/entropy.rs` | entropy 设备的速率限制 | | | [第 35 篇](35-entropy-vmgenid-rate-limiter.md) |
 | `vmm_config/mmds.rs` | MMDS 版本、IPv4 地址、允许访问的网卡 | | | [第 32 篇](32-mmds.md) |
 | `vmm_config/metrics.rs` | metrics 输出路径 | | | [第 44 篇](44-logging-and-metrics.md) |
-| `vmm_config/instance_info.rs` | `InstanceInfo`：实例 id、版本、`VmState` | ✓ | ✓ | [第 9 篇](09-rpc-interface.md)、[第 73 篇](73-failure-model-faulted-and-seccomp.md) |
+| `vmm_config/instance_info.rs` | `InstanceInfo`：实例 id、版本、`VmState` | ✓ | ✓ | [第 09 篇](09-rpc-interface.md)、[第 73 篇](73-failure-model-faulted-and-seccomp.md) |
 | `vmm_config/snapshot.rs` | `CreateSnapshotParams`、`LoadSnapshotParams`、内存后端类型 | ✓ | ✓ | [第 36 篇](36-snapshot-overview-and-format.md)、[第 67 篇](67-dirty-bitmap-sidecar.md) |
 | `vmm_config/mod.rs` | 速率限制配置的公共类型 `RateLimiterConfig` | | | [第 10 篇](10-vm-resources-and-config.md)、[第 35 篇](35-entropy-vmgenid-rate-limiter.md) |
 
@@ -209,7 +210,7 @@ src/vmm/src/                                      78 704 行
 | `snapshot/mod.rs` | 快照容器格式：magic、版本、bincode 编解码 | | | [第 36 篇](36-snapshot-overview-and-format.md)、[第 48 篇](48-release-and-compat-policy.md) |
 | `snapshot/crc.rs` | 写入与读取时的 CRC64 包装 Reader / Writer | | | [第 36 篇](36-snapshot-overview-and-format.md) |
 | `snapshot/persist.rs` | `Persist` trait 的定义（25 行，全书设备恢复的接口原点） | | | [第 40 篇](40-device-persist.md) |
-| `rollback.rs` | **ARM 适配版新增**（656 行）：原地回滚的五个阶段与脏位图落盘 | | ✓ | [第 69 篇](69-rollback-api-and-phases.md)、[第 70 篇](70-rollback-memory.md)、[第 71 篇](71-rollback-vcpu-and-gic.md)、[第 72 篇](72-rollback-devices.md) |
+| `rollback.rs` | **ARM 适配版新增**（656 行）：原地回滚的十个阶段与脏位图落盘 | | ✓ | [第 69 篇](69-rollback-api-and-phases.md)、[第 70 篇](70-rollback-memory.md)、[第 71 篇](71-rollback-vcpu-and-gic.md)、[第 72 篇](72-rollback-devices.md) |
 
 `persist.rs` 只有 762 行，却是三层改动重叠最深的一个文件：
 e2b 在这里加了可选 memfile 的分支与 uffd 写保护的注册，
@@ -224,7 +225,7 @@ ARM 适配版在这里接上了脏位图 sidecar 的写出，并且因为迁入�
 
 | 文件 | 行数 | 内容 | e2b | ARM | 篇目 |
 |---|---|---|---|---|---|
-| `vstate/kvm.rs` | 120 | `/dev/kvm` 的打开与能力检查 | | | [第 3 篇](03-kvm-api-primer.md) |
+| `vstate/kvm.rs` | 120 | `/dev/kvm` 的打开与能力检查 | | | [第 03 篇](03-kvm-api-primer.md) |
 | `vstate/vm.rs` | 394 | VM fd：memslot 注册、脏页位图、中断控制器 | ✓ | ✓ | [第 13 篇](13-guest-memory.md)、[第 14 篇](14-dirty-page-tracking.md) |
 | `vstate/vcpu.rs` | 1 249 | vCPU 线程、状态机、`KVM_RUN` 循环与退出处理 | | ✓ | [第 15 篇](15-vcpu-threads-and-state-machine.md) |
 | `vstate/memory.rs` | 725 | `GuestMemoryMmap` 的构建、dump、位图与 uffd 后端 | | ✓ | [第 13 篇](13-guest-memory.md)、[第 39 篇](39-uffd-backend.md) |
@@ -249,10 +250,10 @@ ARM 适配版又在这里加了脏页跟踪后端的抽象（[第 65 篇](65-dir
 | `arch/x86_64/xstate.rs` | 136 | XSAVE 区域的保存与恢复 | | | [第 16 篇](16-x86-64-vcpu.md) |
 | `arch/x86_64/interrupts.rs` | 153 | LAPIC 的初始配置 | | | [第 16 篇](16-x86-64-vcpu.md) |
 | `arch/x86_64/vm.rs` | 314 | x86_64 的 VM 级状态：PIT、irqchip、TSS | | | [第 17 篇](17-x86-64-platform.md) |
-| `arch/x86_64/kvm.rs` | 70 | x86_64 必需的 KVM 能力清单 | | | [第 3 篇](03-kvm-api-primer.md) |
+| `arch/x86_64/kvm.rs` | 70 | x86_64 必需的 KVM 能力清单 | | | [第 03 篇](03-kvm-api-primer.md) |
 | `arch/x86_64/mptable.rs` | 458 | 无 ACPI 时的 MP 表 | | | [第 17 篇](17-x86-64-platform.md) |
 | `arch/x86_64/cpu_model.rs` | 98 | 从 CPUID 判定厂商与型号 | | | [第 17 篇](17-x86-64-platform.md) |
-| `arch/x86_64/generated/` | 998 | bindgen 生成：MSR 索引、mpspec、hyperv 常量 | | | [第 5 篇](05-rust-and-crates-primer.md) |
+| `arch/x86_64/generated/` | 998 | bindgen 生成：MSR 索引、mpspec、hyperv 常量 | | | [第 05 篇](05-rust-and-crates-primer.md) |
 | `arch/aarch64/mod.rs` | 284 | aarch64 内存布局与内核镜像加载 | | | [第 19 篇](19-aarch64-platform.md) |
 | `arch/aarch64/layout.rs` | 84 | 各段 GPA 常量、MMIO 窗口 | | | [第 19 篇](19-aarch64-platform.md) |
 | `arch/aarch64/vcpu.rs` | 781 | `KVM_ARM_VCPU_INIT`、寄存器列表、PSCI 与保存恢复 | | ✓ | [第 18 篇](18-aarch64-vcpu.md) |
@@ -260,7 +261,7 @@ ARM 适配版又在这里加了脏页跟踪后端的抽象（[第 65 篇](65-dir
 | `arch/aarch64/cache_info.rs` | 579 | 从 sysfs 读取宿主缓存层次，写进 FDT | | | [第 18 篇](18-aarch64-vcpu.md)、[第 60 篇](60-kunpeng-openeuler-host.md) |
 | `arch/aarch64/fdt.rs` | 650 | 设备树的构造：内存、CPU、GIC、virtio-mmio 节点 | | | [第 19 篇](19-aarch64-platform.md)、[第 61 篇](61-guest-kernel-on-arm.md) |
 | `arch/aarch64/vm.rs` | 101 | aarch64 的 VM 级状态：GIC 的创建与保存恢复 | | ✓ | [第 19 篇](19-aarch64-platform.md)、[第 66 篇](66-hdbss.md) |
-| `arch/aarch64/kvm.rs` | 60 | aarch64 必需的 KVM 能力清单 | | | [第 3 篇](03-kvm-api-primer.md)、[第 60 篇](60-kunpeng-openeuler-host.md) |
+| `arch/aarch64/kvm.rs` | 60 | aarch64 必需的 KVM 能力清单 | | | [第 03 篇](03-kvm-api-primer.md)、[第 60 篇](60-kunpeng-openeuler-host.md) |
 | `arch/aarch64/gic/mod.rs` | 180 | GIC 版本探测：先试 v3 再退 v2 | | | [第 19 篇](19-aarch64-platform.md) |
 | `arch/aarch64/gic/regs.rs` | 166 | GIC 寄存器读写的公共辅助 | | | [第 19 篇](19-aarch64-platform.md) |
 | `arch/aarch64/gic/gicv3/` | 851 | GICv3 的分发器、重分发器与 CPU 接口寄存器 | | | [第 19 篇](19-aarch64-platform.md) |
@@ -410,18 +411,18 @@ devices/
 
 | 文件 | 内容 | e2b | ARM | 篇目 |
 |---|---|---|---|---|
-| `src/main.rs` | 参数解析、日志与 metrics 初始化、两种启动模式的分叉 | ✓ | ✓ | [第 7 篇](07-process-startup.md) |
+| `src/main.rs` | 参数解析、日志与 metrics 初始化、两种启动模式的分叉 | ✓ | ✓ | [第 07 篇](07-process-startup.md) |
 | `build.rs` | 编译期调用 seccompiler，把 BPF 字节码嵌进二进制 | | | [第 42 篇](42-seccomp.md) |
-| `src/api_server/mod.rs` | Unix socket 上的 HTTP 服务与请求分发 | ✓ | | [第 8 篇](08-api-server.md) |
-| `src/api_server/parsed_request.rs` | 路径与方法到 `VmmAction` 的映射表 | ✓ | ✓ | [第 8 篇](08-api-server.md) |
-| `src/api_server/request/` | 每类资源一个文件，负责请求体反序列化与校验 | ✓ | ✓ | [第 8 篇](08-api-server.md) |
+| `src/api_server/mod.rs` | Unix socket 上的 HTTP 服务与请求分发 | ✓ | | [第 08 篇](08-api-server.md) |
+| `src/api_server/parsed_request.rs` | 路径与方法到 `VmmAction` 的映射表 | ✓ | ✓ | [第 08 篇](08-api-server.md) |
+| `src/api_server/request/` | 每类资源一个文件，负责请求体反序列化与校验 | ✓ | ✓ | [第 08 篇](08-api-server.md) |
 | `src/api_server/request/memory.rs` | **e2b 新增**：三个内存查询端点的解析 | ✓ | | [第 50 篇](50-memory-mappings-api.md)、[第 52 篇](52-memory-dirty-api.md) |
 | `src/api_server/request/snapshot.rs` | 快照四个端点的解析 | ✓ | ✓ | [第 38 篇](38-snapshot-load.md)、[第 68 篇](68-save-dirty-bitmap-api.md) |
-| `src/api_server_adapter.rs` | API 线程与 VMM 线程之间的请求 / 响应通道 | | | [第 9 篇](09-rpc-interface.md) |
+| `src/api_server_adapter.rs` | API 线程与 VMM 线程之间的请求 / 响应通道 | | | [第 09 篇](09-rpc-interface.md) |
 | `src/seccomp.rs` | 过滤器的选择：内嵌、外部文件或禁用 | | | [第 42 篇](42-seccomp.md) |
 | `src/metrics.rs` | 周期性刷新 metrics 的定时器 | | | [第 44 篇](44-logging-and-metrics.md) |
 | `src/generated/prctl.rs` | bindgen 生成的 prctl 常量 | | | — |
-| `swagger/firecracker.yaml` | API 的 OpenAPI 描述，CI 校验它与代码一致 | ✓ | ✓ | [第 8 篇](08-api-server.md)、[第 76 篇](76-api-reference.md) |
+| `swagger/firecracker.yaml` | API 的 OpenAPI 描述，CI 校验它与代码一致 | ✓ | ✓ | [第 08 篇](08-api-server.md)、[第 76 篇](76-api-reference.md) |
 | `examples/uffd/` | 三个 uffd 处理进程示例与它们共用的 `uffd_utils.rs` | | | [第 39 篇](39-uffd-backend.md) |
 | `examples/seccomp/` | 四个用于验证过滤器行为的小程序 | | | [第 42 篇](42-seccomp.md) |
 
@@ -445,9 +446,9 @@ devices/
 | `cpu-template-helper/src/main.rs` | 五个子命令的入口 | | | [第 22 篇](22-aarch64-templates-and-helper.md) |
 | `cpu-template-helper/src/template/{dump,strip,verify}/` | 模板的采集、裁剪与校验，各有两架构实现 | | | [第 22 篇](22-aarch64-templates-and-helper.md) |
 | `cpu-template-helper/src/utils/mod.rs` | `build_microvm_from_config()`：构建一台不启动的 microVM | ✓ | ✓ | [第 22 篇](22-aarch64-templates-and-helper.md)、[第 46 篇](46-code-organization-and-build.md) |
-| `utils/src/arg_parser.rs` | 自己实现的命令行解析器（1 086 行） | | | [第 6 篇](06-build-run-debug.md) |
+| `utils/src/arg_parser.rs` | 自己实现的命令行解析器（1 086 行） | | | [第 06 篇](06-build-run-debug.md) |
 | `utils/src/time.rs` | 单调时钟与时间戳格式 | | | [第 44 篇](44-logging-and-metrics.md) |
-| `utils/src/validators.rs` | 实例 id 等字符串的合法性检查 | | | [第 7 篇](07-process-startup.md) |
+| `utils/src/validators.rs` | 实例 id 等字符串的合法性检查 | | | [第 07 篇](07-process-startup.md) |
 | `clippy-tracing/src/main.rs` | 批量增删 `#[instrument]` 的源码改写 | | | [第 45 篇](45-gdb-tracing-and-kani.md) |
 | `log-instrument/src/lib.rs` | 宏展开后调用的日志函数 | | | [第 45 篇](45-gdb-tracing-and-kani.md) |
 | `log-instrument-macros/src/lib.rs` | 过程宏本体（38 行） | | | [第 45 篇](45-gdb-tracing-and-kani.md) |
@@ -466,16 +467,16 @@ devices/
 | `resources/seccomp/unimplemented.json` | 占位文件，给未支持架构 | | | [第 42 篇](42-seccomp.md) |
 | `resources/guest_configs/` | CI 用的 guest 内核 config，五个架构 / 版本组合 | | | [第 56 篇](56-guest-kernel-requirements-and-e2b-configs.md) |
 | `resources/overlay/` | 测试 rootfs 的 init 与网络配置脚本 | | | [第 47 篇](47-testing.md) |
-| `resources/rebuild.sh` | 重建 CI 内核与 rootfs | | | [第 6 篇](06-build-run-debug.md) |
+| `resources/rebuild.sh` | 重建 CI 内核与 rootfs | | | [第 06 篇](06-build-run-debug.md) |
 | `tests/framework/` | pytest 夹具：`Microvm`、`http_api`、jailer 包装 | ✓ | | [第 47 篇](47-testing.md) |
 | `tests/integration_tests/functional/` | 功能测试，最大的一组 | ✓ | | [第 47 篇](47-testing.md) |
 | `tests/integration_tests/security/` | 安全测试，e2b 定制版改了其中的漏洞基线 | ✓ | | [第 47 篇](47-testing.md) |
 | `tests/integration_tests/{performance,build,style}/` | 性能、构建与风格三组 | | | [第 47 篇](47-testing.md) |
 | `tests/data/` | CPU 指纹、模板、MSR 列表等基线数据 | | | [第 47 篇](47-testing.md) |
-| `tools/devtool` | 开发容器的入口脚本，本书多数命令的前缀 | | | [第 6 篇](06-build-run-debug.md) |
-| `tools/devctr/Dockerfile` | 开发容器镜像 | | | [第 6 篇](06-build-run-debug.md) |
+| `tools/devtool` | 开发容器的入口脚本，本书多数命令的前缀 | | | [第 06 篇](06-build-run-debug.md) |
+| `tools/devctr/Dockerfile` | 开发容器镜像 | | | [第 06 篇](06-build-run-debug.md) |
 | `tools/release.sh`、`release-prepare.sh`、`release-tag.sh`、`bump-version.sh` | 发布流程的四个脚本 | | | [第 48 篇](48-release-and-compat-policy.md) |
-| `tools/bindgen.sh`、`test_bindings.py` | 生成并校验内核头文件绑定 | | | [第 5 篇](05-rust-and-crates-primer.md)、[第 46 篇](46-code-organization-and-build.md) |
+| `tools/bindgen.sh`、`test_bindings.py` | 生成并校验内核头文件绑定 | | | [第 05 篇](05-rust-and-crates-primer.md)、[第 46 篇](46-code-organization-and-build.md) |
 | `tools/test.sh` | 单元测试与集成测试的统一入口 | ✓ | | [第 47 篇](47-testing.md) |
 | `tools/ab_test.py` | A/B 性能与安全比较 | | | [第 47 篇](47-testing.md) |
 | `.buildkite/pipeline_*.py` | 五条 CI 流水线的生成脚本 | | | [第 46 篇](46-code-organization-and-build.md) |
@@ -553,11 +554,11 @@ devices/
 | `resources/seccomp/aarch64-unknown-linux-musl.json` | 放行回滚路径用到的系统调用 | [第 73 篇](73-failure-model-faulted-and-seccomp.md) |
 | `src/vmm/tests/integration_tests.rs` | 随接口变化调整 | [第 47 篇](47-testing.md) |
 
-两层都触及的文件共十二个：`src/vmm/src/lib.rs`、`persist.rs`、`rpc_interface.rs`、
+两层都触及的文件共十四个：`src/vmm/src/lib.rs`、`persist.rs`、`rpc_interface.rs`、
 `vstate/vm.rs`、`vmm_config/snapshot.rs`、`vmm_config/instance_info.rs`、
 `src/firecracker/src/main.rs`、`src/firecracker/src/api_server/parsed_request.rs`、
-`src/firecracker/src/api_server/request/snapshot.rs`、
-以及 `src/cpu-template-helper/src/utils/mod.rs` 与
+`src/firecracker/src/api_server/request/snapshot.rs`、`src/firecracker/swagger/firecracker.yaml`、
+`src/vmm/tests/integration_tests.rs`，以及 `src/cpu-template-helper/src/utils/mod.rs` 与
 `resources/seccomp/aarch64-unknown-linux-musl.json`、`scripts/build.sh`。
 升级上游时，这些文件的冲突解决要按「先 e2b 后 ARM」的顺序做，反过来会丢掉第一层的语义。
 
@@ -581,7 +582,7 @@ devices/
 
 ## 延伸阅读 / 下一篇
 
-- [第 1 篇 · 三层版本谱系与仓库地图](01-lineage-and-repo-map.md)：本篇的叙述版，讲每层改了多少、为什么。
+- [第 01 篇 · 三层版本谱系与仓库地图](01-lineage-and-repo-map.md)：本篇的叙述版，讲每层改了多少、为什么。
 - [第 46 篇 · 代码组织、依赖与构建](46-code-organization-and-build.md)：crate 之间的依赖方向与构建约束。
 - [第 78 篇 · 三层差异总表](78-layer-diff-tables.md)：同样的文件清单，但带增删行数与升级重放清单。
 - [第 79 篇 · 阅读上游代码的方法与常见问题](79-reading-upstream-code.md)：从一个 API 路径追到执行代码的具体走法。

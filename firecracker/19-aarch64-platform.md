@@ -293,12 +293,24 @@ GIC 处于「建好但没有恢复完整状态」的状态；反方向则是拿�
 aarch64 没有这条路，整机退出只能靠 PSCI 经 `KVM_EXIT_SYSTEM_EVENT`
 （[第 18 篇 §7](18-aarch64-vcpu.md#7-psci次核启动与关机)）。
 
+表里「没有 ACPI」这一条要说得更准确一点。没有的是 ACPI **表**，不是那个管理器：
+`Vmm` 上的 `acpi_device_manager` 字段与 `src/vmm/src/device_manager/acpi.rs` 都不带
+`cfg(target_arch)`，两个架构上都编译进去，`ACPIDeviceManager` 的唯一成员也都是
+`Option<VmGenId>`。差别在于这个成员怎么被 guest 看见：x86_64 上 `append_aml_bytes()`
+把它写成 DSDT 里的 GED 与 VGEN 节点（[第 17 篇](17-x86-64-platform.md)），
+aarch64 上那份 AML 没有任何消费者，设备改由 `fdt.rs` 的 `create_vmgenid_node()`
+写成一个 `compatible = "microsoft,vmgenid"` 的设备树节点，`reg` 是那 2 MiB 系统保留区里的缓冲地址，
+`interrupts` 是一个 SPI。真正只属于 x86_64 的字段是 `pio_device_manager`
+（[第 12 篇 §2](12-vmm-event-loop-and-exit.md#2-vmm-结构运行期的全部句柄)）。
+所以 aarch64 上这台机器仍然有 vmgenid 设备与它的换代通知，只是通知路径不经过 ACPI。
+
 ## 7. 后续各层的差异
 
 e2b 定制版没有改动 aarch64 平台代码。
 
 ARM 适配版在 `src/vmm/src/arch/aarch64/vm.rs` 里加了一个 `enable_hdbss()`，
-用 `KVM_ENABLE_CAP` 打开鲲鹏平台上的硬件脏页跟踪（HDBSS，hardware dirty bit state structure），
+绕开 kvm-ioctls 直接发一次 `libc::ioctl`，用 `KVM_ENABLE_CAP`
+打开鲲鹏平台上的硬件脏页跟踪（HDBSS，hardware dirty bit state structure），
 让处理器自己记录脏页，替代 KVM 逐页写保护的做法。
 相应的能力号与 ioctl 号在当时的 `kvm-bindings` 里没有，代码里就地写成了常量，
 这条技术债的后果是升级 `kvm-bindings` 或换用不同的内核分支时要重新核对。

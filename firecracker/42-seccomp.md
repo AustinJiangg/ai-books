@@ -4,7 +4,7 @@
 > 再由三类线程各自在进入主循环前装上。本篇讲这三张表长什么样、编译与安装发生在哪一刻、
 > 一条带参数条件的规则怎么读，以及这道边界挡得住什么、挡不住什么。
 >
-> **读者**：系统工程师、运维。　**预备**：[第 7 篇 · 进程启动](07-process-startup.md)、
+> **读者**：系统工程师、运维。　**预备**：[第 07 篇 · 进程启动](07-process-startup.md)、
 > [第 15 篇 · vCPU 线程与状态机](15-vcpu-threads-and-state-machine.md)。　**代码**：`resources/seccomp/`、
 > `src/seccompiler/src/lib.rs`、`src/seccompiler/src/types.rs`、`src/firecracker/build.rs`、
 > `src/firecracker/src/seccomp.rs`、`src/vmm/src/seccomp.rs`、`src/vmm/src/signal_handler.rs`

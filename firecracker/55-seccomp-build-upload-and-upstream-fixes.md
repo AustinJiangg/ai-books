@@ -62,7 +62,7 @@ e2b 定制版在这三件事上的处理各有分寸：seccomp 只补最小集�
 aarch64 的表只是顺手补了一半。后果很具体：在 aarch64 上跑这个二进制，
 `GET /memory` 可用，`GET /memory/dirty` 会在 VMM 线程第一次 `pread64` 时触发 SIGSYS，
 按第 42 篇的处理流程记一次 `seccomp.num_faults` 并让进程以退出码 148 结束。
-ARM 适配版把 `pread64` 补进了 aarch64 的表，见
+ARM 适配版把 `pread64` 补进了 aarch64 的表，另外还为回滚路径补了四条 vCPU 相关的 ioctl，见
 [第 62 篇 · aarch64 的 seccomp 过滤器](62-aarch64-seccomp-filter.md)。
 
 **uffd 相关的调用不在任何一张表里，这不是遗漏。** 第 53 篇讲的写保护改动引入了
@@ -229,8 +229,8 @@ flowchart TB
 
 ## 7. 分叉之后：升级要重放什么
 
-`a41d3fb` 不是分支的末端。它之后还有三个提交：两个只补规格文档
-（给 swagger 加 `/memory/dirty` 定义、把 `mem_file_path` 标成非必填），
+`a41d3fb` 不是分支的末端。它之后还有三个提交：两个只补规格文档 ——
+`827b7839e` 给 swagger 加 `/memory/dirty` 的定义、`59b0ad163` 把 `mem_file_path` 标成非必填 ——
 一个是 `210cbac11`，改 `src/vmm/src/arch/x86_64/vm.rs`：
 恢复 kvmclock 时不再把 `KVM_CLOCK_REALTIME` 传给 `KVM_SET_CLOCK`。
 提交信息给出的理由是，带上这个标志会让内核按经过的墙上时间推进 guest 的单调时钟，
@@ -243,7 +243,12 @@ flowchart TB
 对本项目的含义是：这层定制不是一次性的补丁，而是一组需要跟着上游版本反复移植的改动。
 要移植的东西可以按本部分的篇目清点 —— 三个查询端点（第 50 至 52 篇）、
 uffd 写保护与依赖替换（第 53 篇）、可选 memfile（第 54 篇）、
-两张 seccomp 表与三个脚本（本篇）。差异总表在[第 78 篇](78-layer-diff-tables.md)。
+两张 seccomp 表与三个脚本（本篇），再加上面两个补规格的提交。差异总表在[第 78 篇](78-layer-diff-tables.md)。
+
+清单里还有一项容易漏：`src/firecracker/examples/uffd/` 下的示例 uffd 处理器
+在 `8fc760f61` 里**没有**被一起改，仍然用不带写保护模式的 `UFFDIO_COPY` 填页。
+移植这层改动时如果只盯着 `src/vmm/`，示例处理器会继续以一个「看起来能跑、脏页判据却恒为全脏」的形态留在仓库里
+（[第 53 篇 §4](53-uffd-write-protection.md#4-匿名内存为什么不能在这里保护)）。
 
 ---
 

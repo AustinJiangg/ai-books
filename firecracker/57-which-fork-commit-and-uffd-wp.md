@@ -28,7 +28,8 @@ ARM 适配版不是一个 fork of fork。它把 e2b 分叉的整棵工作树复�
 坏处是 `git log` 到此为止：从 KASandbox 一侧看不到任何上游或 e2b 的提交历史，
 也就无法用 `git merge-base` 之类的手段回答「这是哪一版」。
 
-回答这个问题只能靠比对文件内容。把 e2b 分叉在候选提交上的树导出来，与迁入的目录做一次递归比较：
+回答这个问题只能靠比对文件内容。把 e2b 分叉在候选提交上的树导出来，
+与**迁入那一次提交上**的 `firecracker/` 目录做一次递归比较（后来的改动会叠在上面，所以要拿迁入那一版比）：
 
 ```bash
 git -C tmp/e2b-book-src/fc-e2b archive 54a1c1a | tar -x -C /tmp/fc54
@@ -111,11 +112,10 @@ arm64 同样没有这个 ioctl，失败映射成 `GuestMemoryFromUffdError::Writ
 三条路径中任何一条失败，都会让整次快照恢复失败。而 e2b 的运行模式里每一台沙箱都是从模板快照恢复出来的，
 所以后果不是「某个功能不可用」，而是「一台 microVM 都起不来」。
 
-同一个分叉上有一个分支给出了另一种处理：`firecracker-v1.12-direct-mem-arm64-uffd-fix` 的 `136ef0e01`
-把上面三处分别用 `#[cfg(target_arch = "x86_64")]` 圈起来，在非 x86_64 上只请求
-`EVENT_REMOVE | MISSING_HUGETLBFS`、只以 `MISSING` 模式注册、完全不发 `UFFDIO_WRITEPROTECT`。
-它的提交说明把理由写得很清楚：arm64 内核缺 `UFFD_FEATURE_WP_ASYNC`、`UFFDIO_REGISTER_MODE_WP`、
-`UFFDIO_WRITEPROTECT` 与 `UFFDIO_COPY_MODE_WP`，恢复会被内核以 ioctl 错误拒绝。
+回顾[第 53 篇 §6](53-uffd-write-protection.md#6-同一个分叉在另一个分支上把它关掉了)：
+同一个分叉的 `firecracker-v1.12-direct-mem-arm64-uffd-fix` 分支（`136ef0e01`）
+把上面这三处逐一用 `#[cfg(target_arch = "x86_64")]` 关掉，理由与本节列出的失败点一一对应。
+那一篇给出了三处 cfg 的完整清单，这里不重复，只把它作为对照放进下表。
 
 三个版本在这件事上的形态可以并排看：
 
@@ -208,6 +208,11 @@ uffd 恢复的 microVM 里大部分页从未被触碰过，这层过滤仍然有
 以后要把 e2b 的新改动合进来，`8fc760f61` 这个提交必须单独处理 —— 要么按 `136ef0e01` 的方式加 `cfg` 门，
 要么继续挑不带它的提交。这属于升级时必须重放的改动清单，
 全书的差异总表（[第 78 篇](78-layer-diff-tables.md)）把这类条目集中列出。
+
+升级的另一面是能顺带拿到的修复。上游 v1.14.0 给 aarch64 的 virtio-mmio 设备树节点加了
+`dma-coherent` 属性，修的是非 FWB 平台上的缓存一致性问题（[第 48 篇](48-release-and-compat-policy.md)）。
+这一条直接关系 ARM 适配版的正确性，而 v1.12.1 这条线上没有它 ——
+判断要不要跟进上游版本时，这类修复与上面那份重放清单要一起算。
 
 需要说明的是，两个版本都要用 `bindgen` 编译 `userfaultfd-sys`，
 所以「回到上游 crate」并没有省掉构建环境对内核头文件与 clang 的依赖，省掉的只是网络上的那个分支。

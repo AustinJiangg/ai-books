@@ -3,7 +3,7 @@
 > 这一篇收三样小东西：一个把宿主随机数递给 guest 的 virtio 设备、一个只有 16 字节状态的通知设备、
 > 一个被三类设备共用的令牌桶。它们的共同点不是尺寸，而是都为「同一份快照被恢复成很多台实例」这件事服务 ——
 > 前两样负责让克隆出来的实例不要共享随机数状态，第三样负责让它们不要抢光同一台宿主的 I/O 带宽。
-
+>
 > **读者**：系统工程师。　**预备**：[第 25 篇 · virtio 设备模型与 MMIO 传输层](25-virtio-device-model-and-transport.md)、
 > [第 23 篇 · 设备总线与 MMIO 设备管理器](23-bus-and-mmio-device-manager.md)。
 > **代码**：`src/vmm/src/devices/virtio/rng/`（`device.rs`、`event_handler.rs`、`persist.rs`）、
@@ -94,9 +94,15 @@ KVM 就会把中断投递给 guest。
 与本书里别的设备不同，vmgenid 是**无条件安装**的：`builder.rs` 的 `build_microvm_for_boot()` 里，
 `attach_vmgenid_device()` 不在任何 `if let` 分支下。没有 API 可以关掉它。
 
+装它的是 `src/vmm/src/device_manager/acpi.rs` 的 `ACPIDeviceManager`。这个类型的名字容易误导：
+它在两个架构上都编译，并且在 v1.12.1 里只放 vmgenid 这一个设备。
+真正按架构切开的是 ACPI 表的生成代码 —— `src/vmm/src/acpi/` 整个模块带 `#[cfg(target_arch = "x86_64")]`，
+aarch64 上不存在任何 ACPI 代码，那一侧靠 FDT 描述这个设备。
+
 guest 怎么知道这块内存在哪、中断走哪条线？两个架构的答案完全不同，因为两个架构的固件模型不同。
 
-- **x86_64 走 ACPI。** `ACPIDeviceManager` 实现 `Aml`，在有 vmgenid 时生成两段 AML：
+- **x86_64 走 ACPI。** `ACPIDeviceManager` 实现 `Aml`（这个实现本身不带 cfg，但只有 x86_64 的建表流程会用到它），
+  在有 vmgenid 时生成两段 AML：
   一个 GED 设备（`_HID` 为 `ACPI0013`，通用事件设备），它的 `_EVT` 方法判断中断号匹配时
   向 `\_SB_.VGEN` 发 `Notify(0x80)`；以及 VGEN 设备本身（`_HID` 为 `FCVMGID`、
   `_CID` 为 `VM_Gen_Counter`，`ADDR` 包里放 generation ID 地址的高低 32 位）。

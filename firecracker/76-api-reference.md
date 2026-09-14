@@ -6,7 +6,7 @@
 > swagger 与代码不一致的地方在最后一节逐条列出。
 >
 > **读者**：写调用方的后端工程师、需要核对接口契约的系统工程师。
-> **预备**：[第 8 篇 · API server](08-api-server.md)、[第 9 篇 · rpc_interface](09-rpc-interface.md)。
+> **预备**：[第 08 篇 · API server](08-api-server.md)、[第 09 篇 · rpc_interface](09-rpc-interface.md)。
 > **代码**：`src/firecracker/src/api_server/parsed_request.rs`、`src/firecracker/src/api_server/request/`、
 > `src/vmm/src/rpc_interface.rs`、`src/vmm/src/vmm_config/`、`src/firecracker/swagger/firecracker.yaml`
 
@@ -437,8 +437,8 @@ e2b 定制版与 ARM 适配版的 swagger 都已把它移出 `required`，与代
 
 ## 延伸阅读 / 下一篇
 
-- [第 8 篇 · API server](08-api-server.md)：HTTP 层怎么实现，为什么是串行的。
-- [第 9 篇 · rpc_interface](09-rpc-interface.md)：两个控制器的划分与动作分派。
+- [第 08 篇 · API server](08-api-server.md)：HTTP 层怎么实现，为什么是串行的。
+- [第 09 篇 · rpc_interface](09-rpc-interface.md)：两个控制器的划分与动作分派。
 - [第 77 篇 · 配置项、命令行参数、环境变量与 metrics 总表](77-config-cli-env-metrics-reference.md)：
   本篇里出现的配置项字段在那里有完整取值范围。
 - [第 73 篇 · 失败模型](73-failure-model-faulted-and-seccomp.md)：`Faulted` 状态下哪些端点还能用。

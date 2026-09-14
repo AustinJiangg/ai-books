@@ -141,7 +141,7 @@ orchestrator 通过 Unix socket 上的 HTTP 与 Firecracker 说话，客户端�
 
 **顺序不是习惯，是 Preboot 状态机的要求。** `PUT /actions` 之后 microVM 进入 Runtime 状态，
 `boot-source`、`drives`、`network-interfaces`、`machine-config` 这些配置端点都不再接受写入
-（[第 9 篇 · rpc_interface](09-rpc-interface.md)）。`PUT /mmds/config` 必须在网络接口存在之后调用，
+（[第 09 篇 · rpc_interface](09-rpc-interface.md)）。`PUT /mmds/config` 必须在网络接口存在之后调用，
 因为它要按接口 id 指定哪些接口上提供元数据服务；而 `PUT /mmds`（写数据）在恢复路径上排在
 `PATCH /vm` 之后，因为数据里带着这次恢复才知道的沙箱标识。
 
@@ -177,8 +177,10 @@ orchestrator 因此把「暂停 microVM」与「导出内存」拆成了两段�
 
 ### 3.2 内核命令行
 
-内核命令行由 `fc/kernel_args.go` 的 `KernelArgs` 拼成一个按键排序的字符串，
-通过 `PUT /boot-source` 的 `boot_args` 传进去。ARM 适配的 orchestrator 把其中五项挪进了架构分支：
+内核命令行是一张 `map[string]string`：`fc/kernel_args.go` 只定义了 `KernelArgs` 这个类型
+与把它拼成按键排序字符串的 `String()`，参数本身在 `fc/process.go` 里逐条填进去，
+再通过 `PUT /boot-source` 的 `boot_args` 传给 Firecracker。
+按架构分支的代码也在 `fc/process.go`，ARM 适配的 orchestrator 把其中五项挪进了这个分支：
 
 | 参数 | 作用 | 这套部署里的条件 |
 |---|---|---|

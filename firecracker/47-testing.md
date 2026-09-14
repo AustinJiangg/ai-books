@@ -6,7 +6,7 @@
 > 没有基线的性能与安全属性怎么用 A/B 比较来判定。
 >
 > **读者**：维护者、要改 Firecracker 的工程师。
-> **预备**：[第 6 篇 · 构建、运行与调试环境](06-build-run-debug.md#2-两条构建路径)、
+> **预备**：[第 06 篇 · 构建、运行与调试环境](06-build-run-debug.md#2-两条构建路径)、
 > [第 46 篇 · 代码组织、依赖与构建](46-code-organization-and-build.md)。
 > **代码**：`src/vmm/src/test_utils/`、`src/vmm/tests/integration_tests.rs`、`tests/framework/`、
 > `tests/integration_tests/`、`tests/conftest.py`、`tools/test.sh`、`tools/ab_test.py`
@@ -31,7 +31,7 @@
 一个 virtqueue 的描述符解析写错，是纯 Rust 逻辑问题，单元测试就能抓住。
 但「快照恢复后 guest 的时钟没有跳变」这种论断，牵涉 KVM 的寄存器保存、guest 内核的时钟驱动、
 宿主内核版本；「进程只发出白名单内的系统调用」这种论断，只在 release 的 musl 构建里成立
-（debug 构建装的是空过滤器，见[第 6 篇](06-build-run-debug.md)）；
+（debug 构建装的是空过滤器，见[第 06 篇](06-build-run-debug.md)）；
 「这次改动没有让快照恢复变慢」这种论断，甚至没有一个可以写进仓库的正确答案。
 
 上游的应对是把测试按「需要什么才能成立」分层，而不是按「测什么功能」分层：
@@ -72,7 +72,7 @@ Rust 的单元测试按惯例内联在被测模块里（`mod tests`），v1.12.1
 `src/vmm/tests/` 下的三个文件（`integration_tests.rs`、`devices.rs`、`io_uring.rs`）是 Rust 集成测试：
 cargo 把它们编成独立的 crate，因此只能调用 `pub` 的接口。
 `integration_tests.rs` 里的 `test_build_and_boot_microvm()`、快照创建与恢复的用例，
-走的是 `VmmAction` 与 `RuntimeApiController`（[第 9 篇 · rpc_interface](09-rpc-interface.md)），
+走的是 `VmmAction` 与 `RuntimeApiController`（[第 09 篇 · rpc_interface](09-rpc-interface.md)），
 也就是 HTTP API 背后的那一层，但不经过 HTTP。
 这一层有一个已知的副作用：正常路径下 VMM 会自己 `exit`，而 cargo 不预期测试进程自杀，
 所以这类用例的输出收集不完整，`tests/README.md` 里对此有说明。
@@ -146,7 +146,7 @@ flowchart LR
 
 | 目录 | 守什么 | 代表用例 |
 |---|---|---|
-| `build/` | 构建期的质量门 | `test_unittests.py`、`test_clippy.py`、`test_coverage.py`、`test_dependencies.py` |
+| `build/` | 构建期的质量门 | `test_unittests.py`、`test_clippy.py`、`test_coverage.py`、`test_dependencies.py`、`test_gdb.py` |
 | `functional/` | 功能行为（168 个，占绝大多数） | `test_snapshot_basic.py`、`test_pause_resume.py`、`test_dirty_pages_in_full_snapshot.py`、`test_uffd.py` |
 | `security/` | 安全边界 | `test_seccomp.py`、`test_jail.py`、`test_vulnerabilities.py`、`test_sec_audit.py` |
 | `performance/` | 性能指标的采集 | `test_snapshot_ab.py`、`test_boottime.py`、`test_memory_overhead.py` |
@@ -164,6 +164,13 @@ flowchart LR
 因为差分快照是稀疏文件）。断言是「差分比全量占的块少」且「两次连续的差分占块相同」。
 它顺带记录了一条实现事实：差分快照里总会有一些页，因为 virtqueue 用到的页永远被标记为脏
 （[第 14 篇 · 脏页跟踪](14-dirty-page-tracking.md)）。
+
+两个编译期特性在这一层的待遇差别很大。`build/test_gdb.py` 的 `test_gdb_compiles()` 只执行一次
+`cargo build --features gdb`，确认这个组合还能编过，不验证任何调试行为；`tracing` 特性则在 `tests/` 下
+没有任何用例，`.buildkite/` 的流水线里也没有对应步骤。Kani 是第三种待遇：它的入口
+`tests/integration_tests/test_kani.py` 不在这五个目录里，而是放在 `tests/integration_tests/` 根下，
+由 `pipeline_pr.py` 在有 `.rs` / `.toml` / `.lock` 改动时条件触发，排在专用机型上
+（三者的对比见[第 45 篇 §5](45-gdb-tracing-and-kani.md#5-三种工具的位置)）。
 
 `test_swagger.py` 用 `openapi_spec_validator` 校验 `src/firecracker/swagger/firecracker.yaml`。
 swagger 文件因此是一个会被 CI 拦住的契约，不是文档——这一点在[第 48 篇](48-release-and-compat-policy.md)还会用到。
@@ -275,6 +282,7 @@ ARM 适配版没有修改 `tests/` 与 `tools/` 下的任何测试代码；
 - pytest 夹具把「启动的 VM」与「从快照恢复的 VM」并列参数化，使快照一致性成为基础设施而非逐个测试的负担。
 - `Microvm.kill()` 的拆卸阶段带三条断言：无信号终止、无进程残留、API 时延在上限内。
 - 五个测试目录对应五类契约；swagger 校验与 clippy 是会拦住合入的硬门。
+- 三个编译期工具的 CI 投入差三个量级：Kani 条件触发全量跑，gdb 只验证能编译，tracing 无任何步骤。
 - 没有基线的属性改判相对变化：性能用置换检验比较两个二进制，安全审计用「集合没有变大」作判据。
 - A/B 测试只重编 Rust 二进制，测不出 Python 侧改动；误差修正用漏报换误报，这是自觉的取舍。
 - 本项目的 aarch64 环境跑不了 pytest 层，只能跑 cargo 单元与集成测试；快照相关的上游用例因此全部失效。
@@ -288,5 +296,5 @@ ARM 适配版没有修改 `tests/` 与 `tools/` 下的任何测试代码；
 - [第 42 篇 · seccomp](42-seccomp.md) 讲 `test_seccomp.py` 验证的那套过滤器。
 - [第 43 篇 · jailer](43-jailer.md) 讲 `test_jail.py` 里那些 cgroup 与 namespace 断言的对象。
 - 上游文档 `tests/README.md` 给出 devtool 与 A/B 测试的完整操作说明；以代码为准。
-- 编排层的端到端验证与性能数据在 [e2b 手册](../e2b-infra/37-pause-and-snapshot.md) 与 checkpoint / restore 手册
+- 编排层的端到端验证与性能数据在 [e2b 手册第 37 篇](../e2b-infra/37-pause-and-snapshot.md) 与 checkpoint / restore 手册
   `../../e2b-infra-docs/rollback/docs/` 中。

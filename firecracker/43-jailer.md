@@ -4,7 +4,7 @@
 > 设好 cgroup、资源上限与 namespace，降权，然后 `exec` 成 Firecracker。本篇讲这些步骤的顺序为什么是这个顺序、
 > 每一步挡住了什么，以及有哪些事它明确不做。
 >
-> **读者**：系统工程师、运维。　**预备**：[第 7 篇 · 进程启动](07-process-startup.md)、
+> **读者**：系统工程师、运维。　**预备**：[第 07 篇 · 进程启动](07-process-startup.md)、
 > [第 42 篇 · seccomp](42-seccomp.md)。　**代码**：`src/jailer/src/main.rs`、`src/jailer/src/env.rs`、
 > `src/jailer/src/chroot.rs`、`src/jailer/src/cgroup.rs`、`src/jailer/src/resource_limits.rs`
 >
