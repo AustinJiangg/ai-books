@@ -28,13 +28,18 @@
 
 ## 打包
 
-需要 `markdown-it-py` 与 rollback 手册 `slides/node_modules` 里的 mermaid。改过图之后先跑 `tools/figcheck.sh <书目录>` 确认全部 PASS：
+需要 Python 的 `markdown-it-py`（`pip install markdown-it-py`）与 `tools/node_modules` 里的 mermaid
+（`cd tools && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install`，同时装好 `figcheck` 用的 jsdom 与 playwright-chromium）。
+改过图之后先跑 `tools/figcheck.sh <书目录>` 确认全部 PASS：
 
 ```bash
-python3 tools/build_docs_html.py e2b-infra ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/e2b-infra.html
-python3 tools/build_docs_html.py firecracker ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/firecracker.html
-python3 tools/build_docs_html.py agentenv ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/agentenv.html
+M=tools/node_modules/mermaid/dist/mermaid.min.js
+python3 tools/build_docs_html.py e2b-infra   $M dist/e2b-infra.html
+python3 tools/build_docs_html.py firecracker $M dist/firecracker.html
+python3 tools/build_docs_html.py agentenv    $M dist/agentenv.html
 ```
+
+AgentENV 手册的代码基线不入库，用 `tools/fetch-sources.sh` 拉到仓库根下的 `.src/`。
 
 书名、版本、日期与修订记录都在各书 `README.md` 顶部与「版本」节；打包脚本从那里读取。
 

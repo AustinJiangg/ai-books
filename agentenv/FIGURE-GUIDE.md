@@ -73,8 +73,8 @@ mermaid 的状态图对带标签的转移排布很差，多条转移汇入同一
 ## 4. 检查与验收
 
 ```bash
-cd /home/austin/projects/e2b-repo/e2b-book
-tools/figcheck.sh --png /tmp/figs <书目录>/NN-xxx.md        # 每张图一行 PASS/WARN，并输出 PNG
+cd "$(git rev-parse --show-toplevel)"
+tools/figcheck.sh --png .src/figs <书目录>/NN-xxx.md       # 每张图一行 PASS/WARN，并输出 PNG
 node tools/mdmermaid.mjs <书目录>/NN-xxx.md                   # 语法
 python3 tools/mdlinks.py <书目录>/NN-xxx.md                   # 链接与锚点（改了标题就要跑）
 ```
@@ -82,8 +82,8 @@ python3 tools/mdlinks.py <书目录>/NN-xxx.md                   # 链接与锚�
 验收标准：每张图 PASS；打开 PNG 看一遍：文字全部可读、无被裁的字、边不绕远路穿过别的节点、
 整张图的重心居中不偏一角、留白均匀。**figcheck 通过但看着别扭的，仍然要改。**
 
-`figcheck.sh` 依赖 `tools/node_modules`（指向 rollback 手册 slides 的 node_modules，含 playwright-chromium）
-与 `tools/.chromium-libs`（从 Ubuntu deb 解出的 libnss3 / libnspr4 / libasound2，chromium 需要）。
+`figcheck.sh` 依赖 `tools/node_modules`（在 `tools/` 下 `npm install` 安装 `package.json` 里的 mermaid、jsdom、playwright-chromium；
+`PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` 时使用环境里已装的 chromium）。若系统缺 libnss3 等库，把解出的库放在 `tools/.chromium-libs`，`figcheck.sh` 会自动带上。
 
 ## 5. 两个范例
 

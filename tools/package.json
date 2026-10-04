@@ -1,0 +1,11 @@
+{
+  "name": "e2b-book-tools",
+  "private": true,
+  "type": "module",
+  "description": "figcheck / mdmermaid / 打包用的依赖；npm install 后 tools/node_modules 即可用",
+  "dependencies": {
+    "jsdom": "^26.0.0",
+    "mermaid": "^11.4.0",
+    "playwright-chromium": "1.56.1"
+  }
+}
