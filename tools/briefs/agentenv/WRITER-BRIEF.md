@@ -1,0 +1,82 @@
+# 编写者简报（AgentENV 手册，每位章节编写者必读）
+
+你是一本教材式技术手册的**一篇**的作者。这本书讲 AgentENV（kvcache-ai/AgentENV，tag v0.2.3）——
+一个为 agent 环境设计、E2B 兼容的 Firecracker 沙箱平台，以及它依赖的 AENV 补丁版 Firecracker。
+读者是美国顶级大学计算机专业本科高年级与研究生：懂操作系统、存储、网络、分布式系统的基本概念，
+但不一定接触过 io_uring、ublk、overlaybd、Firecracker、Rust 异步。主语言中文，技术名词按需用英文。
+
+## 你必须先读的三份文件
+
+1. `/home/austin/projects/e2b-repo/e2b-book/agentenv/STYLE.md` —— 体例、术语、称谓、自检清单。**逐条遵守。**
+2. `/home/austin/projects/e2b-repo/e2b-book/agentenv/OUTLINE.md` —— 找到你这一篇的要点（讲什么 / 代码 / 图表），
+   并读一遍**前后相邻篇目**的要点，避免重复、便于交叉引用。要点里标「确认」的地方必须到代码里核实。
+3. 风格样例：`/home/austin/projects/e2b-repo/e2b-book/firecracker/12-vmm-event-loop-and-exit.md`
+   与 `/home/austin/projects/e2b-repo/e2b-book/e2b-infra/37-pause-and-snapshot.md`
+   （另外两本手册的篇目；读它们的写法与图的用法，不要引用它们的内容，除非你的篇目要点明确要求）。
+
+规划阶段的调研笔记在 `/home/austin/projects/e2b-repo/e2b-book/tools/briefs/agentenv/survey/`（按区域分五份，索引见其 `README.md`）。
+动笔前读你这一篇对应区域的那一份：它给出模块地图、函数名与已知问题，能省下大半摸索时间；
+但它**不是依据**，正文里的每条论断仍要你自己读代码确认。
+
+## 代码基线（读代码时只用这些路径）
+
+| 基线 | 路径 |
+|---|---|
+| AgentENV v0.2.3 | `/home/austin/projects/e2b-repo/tmp/e2b-book-src/agentenv/`（tag `v0.2.3`，commit `6cccaa7842bd`）|
+| AENV 补丁版 Firecracker | `/home/austin/projects/e2b-repo/tmp/e2b-book-src/fc-aenv/`（tag `aenv-deps`，commit `90288c39`）；差异：`git -C /home/austin/projects/e2b-repo/tmp/e2b-book-src/fc-aenv diff v1.15.1 aenv-deps -- <path>`；提交：`git -C … log --stat v1.15.1..aenv-deps` |
+| 上游 Firecracker v1.15.1 | 同一 clone 的 tag `v1.15.1`：`git -C … show v1.15.1:<path>` |
+| e2b infra 2026.09（对照） | `/home/austin/projects/e2b-repo/tmp/e2b-book-src/upstream/`；**优先读 e2b 手册** `/home/austin/projects/e2b-repo/e2b-book/e2b-infra/` |
+| 上游 overlaybd（只为核实格式兼容） | `/home/austin/projects/e2b-repo/tmp/e2b-book-src/overlaybd-upstream/` |
+
+两个 AgentENV / Firecracker 基线若不存在，第一个需要它的编写者按下面的命令建好（已存在就直接用，**不要 checkout 别的版本**）：
+
+```bash
+cd /home/austin/projects/e2b-repo/tmp/e2b-book-src
+git clone https://github.com/kvcache-ai/AgentENV agentenv && git -C agentenv checkout v0.2.3
+git clone --filter=blob:none https://github.com/kvcache-ai/firecracker fc-aenv
+git -C fc-aenv remote add upstream https://github.com/firecracker-microvm/firecracker
+git -C fc-aenv fetch upstream tag v1.15.1 --no-tags && git -C fc-aenv checkout aenv-deps
+git clone --depth 1 https://github.com/containerd/overlaybd overlaybd-upstream   # 只在要核实上游格式时
+```
+
+写第 65、66 篇与「与 e2b infra 的对照」小节时，e2b 侧的论断以 e2b 手册为依据；手册里没有的才读 `upstream/` 的代码。
+写第 03、42、67 篇时读 fc-aenv 的 diff；其它篇目只在要点让你看时看 Firecracker 代码。
+
+**不要**读 `/home/austin/projects/kvcache-ai/` 下的任何工作树（版本不确定）；
+不要把 kvcache-ai/firecracker 的 `v1.15.1-patch`（`patch-v2`）、`v1.15.1-patch-nestedvirt`、`v1.16.1-patch` 分支当基线；
+不要读 `KASandbox*/`、`infra-arm/`、`fc-kernels-arm/`（另外两本书的材料，与本书无关）。
+`docs/src/**` 与 `AGENTS.md` 是参考，不是依据：调研已发现多处与代码不符，以代码为准。
+
+## 写作要求（STYLE.md 的浓缩，冲突时以 STYLE.md 为准）
+
+- 结构：`# NN · 标题` → 题注引用块（一到三句 + 读者 / 预备 / 代码）→ `## 0. 本篇要回答的问题` →
+  正文各节 `## 1.` … →（可选）`## N. 与 e2b infra 的对照` → `## N. 小结` → `## 延伸阅读 / 下一篇`。
+- 正文 3000–5000 汉字（不含代码块与表格）。
+- **每个行为论断都要读过代码**，给出仓库相对路径 + 函数名（`src/orchestrator/service.rs` 的 `launch_sandbox()`）；
+  读不到、拿不准的标「推论：」。不要凭对 E2B 或 Firecracker 的印象写 AgentENV 的行为。
+- 称谓：只用「AgentENV v0.2.3」「AENV 补丁版 Firecracker」「上游 Firecracker v1.15.1」「Rust 版 overlaybd」「上游 overlaybd」「overlaybd 工具」「e2b infra」。
+  补丁版 Firecracker 的行为不要写成上游就有；AgentENV 扩展的格式（Hybrid RW、`PMIDX001`、`OBCH`、`AENVMF01`）不要写成与上游兼容。
+- 先讲问题再讲方案；代价与收益成对；不写宣传腔；不用「显然」；不用 emoji 与感叹号。**不给性能数字**，README 里的宣称也不引用。
+- 图：mermaid 内嵌，1–3 张，节点 ≤ 20，标签用 `A["..."]` 形式，标签里不要有未转义的括号 / 引号 / 竖线；
+  目录、字节布局、位域用 ```text。**图必须在 `tools/figcheck.sh` 下 PASS**，画法与阈值见 `agentenv/FIGURE-GUIDE.md`
+  （尤其：直线长链拆列、状态机改 flowchart + 编号表、时序图 ≤ 6 参与者 ≤ 14 消息）。
+- 交叉引用只链接 OUTLINE 里存在的文件名：`[第 42 篇 · 内存快照](42-memory-snapshot-over-ublk.md)`。
+  目标篇已经存在于 `agentenv/` 时可以加小节锚点（先读它的标题确认锚点）；不存在时只链文件。
+  另外两本手册只在「延伸阅读」里链接（写法见 STYLE.md 第二节）。
+- 不写过程叙事、不写「我们决定」。代码注释里出现的 issue 号、人名、内部称呼不要照搬，翻译成设计取舍。
+- 技术债如实写，语气中性；同时把它记进交付说明，供第 68 篇汇总。
+
+## 交付
+
+1. 把文档写到 `/home/austin/projects/e2b-repo/e2b-book/agentenv/<你的文件名>`。只写分配给你的文件，不改别的文件。
+2. 写完后自检：
+   ```bash
+   cd /home/austin/projects/e2b-repo/e2b-book
+   python3 tools/mdlinks.py agentenv/<你的文件名>
+   node tools/mdmermaid.mjs agentenv/<你的文件名>
+   tools/figcheck.sh --png /tmp/claude-1000/figs-<你的篇号> agentenv/<你的文件名>
+   ```
+   MISSING-FILE 对尚未写的篇目是正常的；其它问题要修掉。figcheck 每张图必须 PASS；WARN 就改图（拆列、缩短标签、减少节点）。
+3. 统计汉字数：`python3 -c "import re,sys;t=open(sys.argv[1],encoding='utf-8').read();t=re.sub(r'\x60\x60\x60.*?\x60\x60\x60','',t,flags=re.S);t=re.sub(r'^\|.*$','',t,flags=re.M);print(len(re.findall(r'[一-鿿]',t)))" agentenv/<你的文件名>`
+4. 在最终回复里给出**交付说明**（每篇不超过 250 字）：核心论断清单、标为推论的地方、发现的与大纲不符之处、
+   发现的技术债 / 文档漂移（给第 68 篇）、建议其它篇目补充或修改之处、汉字数、figcheck 结果。
