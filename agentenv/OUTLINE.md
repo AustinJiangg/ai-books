@@ -39,18 +39,18 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | 基线 | 位置 | 说明 |
 |---|---|---|
-| AgentENV v0.2.3 | `tmp/e2b-book-src/agentenv/` | kvcache-ai/AgentENV tag `v0.2.3`（commit `6cccaa7842bd`，2026-09-30）。clone 方法见 `tools/briefs/agentenv/WRITER-BRIEF.md`。main 在其后只有 5 个可观测性与 clippy 小修，不影响正文 |
-| AENV 补丁版 Firecracker | `tmp/e2b-book-src/fc-aenv/` | kvcache-ai/firecracker tag `aenv-deps`（commit `90288c39`，发布资产名 `1.15.1-patch-v1`，即 `config/deps_manifest.toml` 的 `[firecracker.kvm]`）。clone 带 `upstream` 远端与 tag `v1.15.1`（commit `f82c0bd0`）。差异：`git -C tmp/e2b-book-src/fc-aenv diff v1.15.1 aenv-deps`（30 文件，+1219 −145，其中 `src/` 26 文件 +1018 −138）；提交：`git -C … log v1.15.1..aenv-deps`（7 个） |
+| AgentENV v0.2.3 | `.src/agentenv/` | kvcache-ai/AgentENV tag `v0.2.3`（commit `6cccaa7842bd`，2026-09-30）。main 在其后只有 5 个可观测性与 clippy 小修，不影响正文 |
+| AENV 补丁版 Firecracker | `.src/fc-aenv/` | kvcache-ai/firecracker tag `aenv-deps`（commit `90288c39`，发布资产名 `1.15.1-patch-v1`，即 `config/deps_manifest.toml` 的 `[firecracker.kvm]`）。clone 带 `upstream` 远端与 tag `v1.15.1`（commit `f82c0bd0`）。差异：`git -C .src/fc-aenv diff v1.15.1 aenv-deps`（30 文件，+1219 −145，其中 `src/` 26 文件 +1018 −138）；提交：`git -C … log v1.15.1..aenv-deps`（7 个） |
 | 上游 Firecracker v1.15.1 | 同上 clone 的 tag `v1.15.1` | 只在需要说明「上游原本怎样」时看。Firecracker 本身的机制不在本书展开，链接 Firecracker 手册 |
-| e2b infra（对照） | `tmp/e2b-book-src/upstream/` | e2b-dev/infra tag `2026.09`（commit `f8c2f0cde`），即 e2b 手册的基线。**只在第 65、66 篇与各篇「与 e2b infra 的对照」短节里用**；优先读 e2b 手册对应篇，不够时才读代码 |
-| 上游 overlaybd（对照） | `tmp/e2b-book-src/overlaybd-upstream/`（编写者自己 clone containerd/overlaybd，只读） | 只在需要核实「与上游 C++ 格式兼容」的论断时看（第 05、34、35 篇与附录 73） |
+| e2b infra（对照） | `.src/e2b-infra/` | e2b-dev/infra tag `2026.09`（commit `4853232b`），即 e2b 手册的基线。**只在第 65、66 篇与各篇「与 e2b infra 的对照」短节里用**；优先读 e2b 手册对应篇，不够时才读代码 |
+| 上游 overlaybd（对照） | `.src/overlaybd-upstream/`（containerd/overlaybd 默认分支，浅 clone） | 只在需要核实「与上游 C++ 格式兼容」的论断时看（第 05、34、35 篇与附录 73） |
 | overlaybd 工具 | GitHub kvcache-ai/overlaybd tag `static-v1.0.18-aenv.1` | AgentENV 只用它的 `overlaybd-create/apply/commit/resize` 二进制；本书不讲它的源码，只讲调用方式 |
-| AgentENV 文档 | `tmp/e2b-book-src/agentenv/docs/src/` | mdBook 站点源码。**是参考，不是依据**；调研已发现多处与代码不符（见第 68 篇要点） |
+| AgentENV 文档 | `.src/agentenv/docs/src/` | mdBook 站点源码。**是参考，不是依据**；调研已发现多处与代码不符（见第 68 篇要点） |
 
-所有路径相对于 `/home/austin/projects/e2b-repo/`。AgentENV 仓库内的路径（正文里引用的）相对于仓库根。
+`.src/` 在本仓库根下、不入库，由 `tools/fetch-sources.sh` 拉取（已存在的目录不重复拉）。正文里引用的路径一律相对于各自仓库的根，不出现 `.src/`。
 
-**不要**读 `/home/austin/projects/kvcache-ai/` 下的任何工作树（版本不确定），不要读 kvcache-ai/firecracker 的
-`v1.15.1-patch`（= `v1.15.1-patch-v2`）、`v1.15.1-patch-nestedvirt`、`v1.16.1-patch` 分支作为基线 ——
+**不要**把 kvcache-ai/firecracker 的
+`v1.15.1-patch`（= `v1.15.1-patch-v2`）、`v1.15.1-patch-nestedvirt`、`v1.16.1-patch` 分支当基线 ——
 它们只在第 67 篇作为「补丁栈的后续」各提一句。PVM 用的 kvcache-ai/firecracker-next 不在本书范围，第 61 篇只讲 AgentENV 侧怎么切换。
 
 ---

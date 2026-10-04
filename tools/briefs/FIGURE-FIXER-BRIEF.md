@@ -3,10 +3,12 @@
 你负责一组篇目里 **所有 mermaid 图** 的返工。目标：每张图在 `tools/figcheck.sh` 下 PASS，并且肉眼看着清楚、匀称、好看。
 正文文字原则上不动；只有把长链图改成列表 / 表格、或给编号边补一张说明表时才动图附近的正文。
 
+本简报里的路径都相对于本仓库根（`git rev-parse --show-toplevel`）。
+
 ## 先读
 
-1. `/home/austin/projects/e2b-repo/e2b-book/<书目录>/FIGURE-GUIDE.md`（<书目录> 是 e2b-infra、firecracker 或 agentenv，由任务指定）（全文，逐条遵守）
-2. `/home/austin/projects/e2b-repo/e2b-book/<书目录>/STYLE.md` 4.4 节（图的体例）
+1. `<书目录>/FIGURE-GUIDE.md`（<书目录> 是 e2b-infra、firecracker 或 agentenv，由任务指定）（全文，逐条遵守）
+2. `<书目录>/STYLE.md` 4.4 节（图的体例）
 
 ## 做法
 
@@ -24,7 +26,7 @@
 4. 跑 `node tools/mdmermaid.mjs  <书目录>/<文件>` 与 `python3 tools/mdlinks.py  <书目录>/<文件>`，都不能有错。
 5. 图的信息不能丢：改画法不是删内容。若把一张图降级为列表，该篇仍要至少保留一张图。
 6. 不要改别的篇目，不要改 tools/ 与 STYLE / OUTLINE / FIGURE-GUIDE。
-7. 汉字数变化控制在 ±300 以内（统计命令见 `tools/WRITER-BRIEF.md` 交付节）。
+7. 汉字数变化控制在 ±300 以内（统计命令见 `tools/briefs/<书目录>/WRITER-BRIEF.md` 交付节）。
 
 ## 交付
 
