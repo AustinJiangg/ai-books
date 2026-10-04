@@ -5,7 +5,7 @@
 
 ## 先读
 
-1. `/home/austin/projects/e2b-repo/e2b-book/<书目录>/FIGURE-GUIDE.md`（<书目录> 是 e2b-infra 或 firecracker，由任务指定）（全文，逐条遵守）
+1. `/home/austin/projects/e2b-repo/e2b-book/<书目录>/FIGURE-GUIDE.md`（<书目录> 是 e2b-infra、firecracker 或 agentenv，由任务指定）（全文，逐条遵守）
 2. `/home/austin/projects/e2b-repo/e2b-book/<书目录>/STYLE.md` 4.4 节（图的体例）
 
 ## 做法

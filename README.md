@@ -7,6 +7,7 @@
 |---|---|---|---|
 | e2b 服务端基础设施技术手册 | [`e2b-infra/`](e2b-infra/) | [e2b-dev/infra](https://github.com/e2b-dev/infra) tag `2026.09` 及其 aarch64（鲲鹏 / openEuler）适配版；入口 [`e2b-infra/README.md`](e2b-infra/README.md) | `dist/e2b-infra.html` |
 | Firecracker 技术手册 | [`firecracker/`](firecracker/) | 上游 Firecracker v1.12.1、e2b 定制版、ARM 适配版与 checkpoint / restore 扩展四层的代码讲解；入口 [`firecracker/README.md`](firecracker/README.md) | `dist/firecracker.html` |
+| AgentENV 技术手册 | [`agentenv/`](agentenv/) | [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) tag `v0.2.3` 及其依赖的 AENV 补丁版 Firecracker（`aenv-deps`），并与 e2b infra 逐项对照；入口 [`agentenv/README.md`](agentenv/README.md)（规划中，正文未写） | `dist/agentenv.html` |
 
 每本书的目录里固定有四个编写用文件：`README.md`（导读、目录、版本）、`OUTLINE.md`（编写计划与每篇要点）、
 `STYLE.md`（写作规约）、`FIGURE-GUIDE.md`（图的规约）。正文是 `NN-xxx.md`。
@@ -32,6 +33,7 @@
 ```bash
 python3 tools/build_docs_html.py e2b-infra ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/e2b-infra.html
 python3 tools/build_docs_html.py firecracker ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/firecracker.html
+python3 tools/build_docs_html.py agentenv ../e2b-infra-docs/rollback/slides/node_modules/mermaid/dist/mermaid.min.js dist/agentenv.html
 ```
 
 书名、版本、日期与修订记录都在各书 `README.md` 顶部与「版本」节；打包脚本从那里读取。
@@ -48,6 +50,11 @@ gh release create e2b-infra-vX.Y.Z dist/e2b-infra.html --title "e2b-infra vX.Y.Z
 ```bash
 git tag -a firecracker-vX.Y.Z -m "Firecracker 技术手册 vX.Y.Z" && git push origin firecracker-vX.Y.Z
 gh release create firecracker-vX.Y.Z dist/firecracker.html --title "firecracker vX.Y.Z · YYYY-MM-DD" --notes "改动摘要"
+```
+
+```bash
+git tag -a agentenv-vX.Y.Z -m "AgentENV 技术手册 vX.Y.Z" && git push origin agentenv-vX.Y.Z
+gh release create agentenv-vX.Y.Z dist/agentenv.html --title "agentenv vX.Y.Z · YYYY-MM-DD" --notes "改动摘要"
 ```
 
 早期的 `v0.1.5` 及之前的 tag / Release 属于 e2b 手册（当时仓库只有这一本书）。
