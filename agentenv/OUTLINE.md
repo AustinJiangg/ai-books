@@ -275,7 +275,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 19 | `19-state-machine-and-concurrency.md` | 状态机与并发控制 | ○ |
+| 19 | `19-state-machine-and-concurrency.md` | 状态机与并发控制 | ● |
 | 20 | `20-launch-plan-and-rollback.md` | launch plan 与失败回滚 | ○ |
 | 21 | `21-deletion-and-volume-capture.md` | 删除与卷的捕获提交 | ○ |
 | 22 | `22-persistence-across-restarts.md` | 跨重启持久化 | ○ |
