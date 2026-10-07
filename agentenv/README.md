@@ -1,6 +1,6 @@
 # AgentENV 技术手册
 
-> **v0.0.1** · 2026-10-04 · 江路路
+> 江路路
 
 一本关于 **AgentENV**（[kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV)，tag `v0.2.3`）的教材式技术手册，
 并讲解它依赖的 **AENV 补丁版 Firecracker**（kvcache-ai/firecracker `aenv-deps`，上游 v1.15.1 之上 7 个提交）
@@ -178,14 +178,3 @@ AgentENV 是为 agentic RL 训练大规模运行 agent 环境的沙箱平台，�
 
 - [e2b 服务端基础设施技术手册](../e2b-infra/README.md)：同一组问题的另一种实现；第 65、66 篇的对照以它为依据，第 05、06、31、33、37 篇与本书第六、七部分关系最密切。
 - [Firecracker 技术手册](../firecracker/README.md)：本书不展开 Firecracker 本身；第 36–39 篇（快照与内存后端）、第 14 篇（脏页跟踪）、第 49–54 篇（e2b 定制版的内存 API）是本书第 03、42、67 篇的背景。
-
----
-
-## 版本
-
-| 版本 | 日期 | 说明 |
-|---|---|---|
-| v0.0.1 | 2026-10-04 | 脚手架：README、OUTLINE（74 篇要点）、STYLE、FIGURE-GUIDE 与编写 / 审校简报；正文未写 |
-
-修订规则：每次改动默认修订号加一（最后一位），日期精确到日；正文有实质改动才升次版本号（v0.1.0 为 74 篇齐、审校完成）。
-版本与日期只在本文件顶部的信息行维护一处，打包脚本从这里读取。

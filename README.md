@@ -5,13 +5,13 @@
 
 ## 书目
 
-- **e2b 服务端基础设施技术手册** · v0.1.6 · [网页版](https://austinjiangg.github.io/ai-books/html/e2b-infra.html) · [Markdown](e2b-infra/README.md)<br>
+- **e2b 服务端基础设施技术手册** · [网页版](https://austinjiangg.github.io/ai-books/html/e2b-infra.html) · [Markdown](e2b-infra/README.md)<br>
   [e2b-dev/infra](https://github.com/e2b-dev/infra) tag `2026.09` 及其 aarch64（鲲鹏 / openEuler）适配版。
-- **Firecracker 技术手册** · v0.1.0 · [网页版](https://austinjiangg.github.io/ai-books/html/firecracker.html) · [Markdown](firecracker/README.md)<br>
+- **Firecracker 技术手册** · [网页版](https://austinjiangg.github.io/ai-books/html/firecracker.html) · [Markdown](firecracker/README.md)<br>
   上游 Firecracker v1.12.1、e2b 定制版、ARM 适配版与 checkpoint / restore 扩展四层的代码讲解。
-- **AI Agent 沙箱** · v0.1.0 · [网页版](https://austinjiangg.github.io/ai-books/html/agent-sandbox.html) · [Markdown](agent-sandbox/README.md)<br>
+- **AI Agent 沙箱** · [网页版](https://austinjiangg.github.io/ai-books/html/agent-sandbox.html) · [Markdown](agent-sandbox/README.md)<br>
   Agent 沙箱作为 RL 训练、评测与产品推理的基础设施：隔离原语、参考架构、案例与研究议程。
-- **C++ 期末笔试突击手册** · v0.1.0 · [网页版](https://austinjiangg.github.io/ai-books/html/cpp-exam.html) · [Markdown](cpp-exam/README.md)<br>
+- **C++ 期末笔试突击手册** · [网页版](https://austinjiangg.github.io/ai-books/html/cpp-exam.html) · [Markdown](cpp-exam/README.md)<br>
   按 Stroustrup《C++程序设计语言》（第 4 版，C++11）讲大学 C++ 期末笔试考点。
 - **AgentENV 技术手册** · 编写中（1 / 74 篇） · [Markdown](agentenv/README.md)<br>
   [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) tag `v0.2.3` 的代码讲解，并与 e2b infra 逐项对照。

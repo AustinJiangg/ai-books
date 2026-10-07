@@ -1,6 +1,6 @@
 # e2b 服务端基础设施技术手册
 
-> **v0.1.6** · 2026-09-12 · 江路路
+> 江路路
 
 一本关于 **e2b 服务端基础设施**（[e2b-dev/infra](https://github.com/e2b-dev/infra)，tag `2026.09`）
 及其 **aarch64（鲲鹏 / openEuler）适配版**的教材式技术手册。
@@ -190,18 +190,3 @@ e2b 用 Firecracker microVM 给 AI 生成的代码提供隔离执行环境。它
 - checkpoint / restore（沙箱活着时的高频快速回滚）：[`../../e2b-infra-docs/rollback/docs/`](../../e2b-infra-docs/rollback/docs/README.md)
 - 单机离线部署操作手册：[`../../e2b-infra/single-node-offline-deploy.md`](../../e2b-infra/single-node-offline-deploy.md)；
   逐脚本讲解：[`../../e2b-infra/deploy-docs/`](../../e2b-infra/deploy-docs/README.md)
-
-## 版本
-
-| 版本 | 日期 | 说明 |
-|---|---|---|
-| v0.1.0 | 2026-09-08 | 首版 |
-| v0.1.1 | 2026-09-09 | 138 张图按 FIGURE-GUIDE 返工；打包页改版（分部目录、图号与放大、篇间导航）|
-| v0.1.2 | 2026-09-09 | 图放大改为居中显示，支持滚轮缩放 |
-| v0.1.3 | 2026-09-09 | 修正时序图底部被裁切（渲染后按内容扩 viewBox）|
-| v0.1.4 | 2026-09-09 | 时序图恢复底部参与者框（mirrorActors）|
-| v0.1.5 | 2026-09-09 | 清理试验残留（时序图补丁脚本、D2），首次推送 GitHub |
-| v0.1.6 | 2026-09-12 | 仓库改为多书结构：目录 `docs/` 改名 `e2b-infra/`，打包件改名 `e2b-infra.html`，tag 与 Release 带书前缀 |
-
-修订规则：每次改动默认修订号加一（最后一位），日期精确到日；正文有实质改动才升次版本号（v0.2.0）。
-版本与日期只在本文件顶部的信息行维护一处，打包脚本从这里读取。

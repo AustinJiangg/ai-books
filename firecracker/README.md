@@ -1,6 +1,6 @@
 # Firecracker 技术手册
 
-> **v0.1.0** · 2026-09-15 · 江路路
+> 江路路
 
 一本关于 **Firecracker**（[firecracker-microvm/firecracker](https://github.com/firecracker-microvm/firecracker)，tag `v1.12.1`）
 的教材式技术手册，并逐层讲解 **e2b 定制版**与本项目的 **aarch64（鲲鹏 / openEuler）适配版**（含 checkpoint / restore 扩展）
@@ -179,14 +179,3 @@ Firecracker 是 e2b 沙箱的执行引擎：一个进程一台 microVM，KVM 之
 
 - [e2b 服务端基础设施技术手册](../e2b-infra/README.md)：Firecracker 的调用方（orchestrator）怎么用它；第 03、28、31、37、70 篇与本书关系最密切。
 - [checkpoint / restore 手册](../../e2b-infra-docs/rollback/docs/README.md)：本书第十部分 checkpoint / restore 扩展的设计动机、orchestrator 侧实现、测试与性能。
-
----
-
-## 版本
-
-| 版本 | 日期 | 说明 |
-|---|---|---|
-| v0.1.0 | 2026-09-15 | 初版：80 篇（00–79），约 28 万汉字、99 张图 |
-
-修订规则：每次改动默认修订号加一（最后一位），日期精确到日；正文有实质改动才升次版本号（v0.2.0）。
-版本与日期只在本文件顶部的信息行维护一处，打包脚本从这里读取。

@@ -10,7 +10,7 @@
 | 编写环境 | 完成：`tools/fetch-sources.sh`（代码基线拉到不入库的 `.src/`）、`tools/package.json`（mermaid / jsdom / playwright-chromium） |
 | 正文 | **1 / 74**：只有第 19 篇（状态机与并发控制，约 4300 字，初稿 `●`） |
 | 已知待修 | 第 19 篇第 2 张图 figcheck WARN（边标签重叠 4 处），审校时按 FIGURE-GUIDE 改成编号边 + 图下表 |
-| 审校 / 打包 / 发布 | 未开始；README 版本仍是 v0.0.1（脚手架） |
+| 审校 / 打包 / 发布 | 未开始 |
 
 第一波（08–39，10 个代理并行）在启动后不久因额度原因全部中止，除第 19 篇外没有产出；
 那一波主要成本花在读代码上，因此下次每个代理的篇数宜少（2 篇），一次派的代理数也宜少。
@@ -44,8 +44,8 @@ tools/figcheck.sh agentenv/19-state-machine-and-concurrency.md   # 验证图检�
 | 9 | 67 + 68、69–70、71–73、00–01 |
 
 然后审校（每 8–10 篇一个审校代理，用 `REVIEWER-BRIEF.md`）、图返工（`tools/briefs/FIGURE-FIXER-BRIEF.md`）、
-`tools/mdlinks.py agentenv` 与 `tools/figcheck.sh agentenv` 全过、打包 `dist/agentenv.html`、
-README 版本行改为 v0.1.0 并补版本表、打 tag `agentenv-v0.1.0` 发 Release（命令见根目录 README）。
+`tools/mdlinks.py agentenv` 与 `tools/figcheck.sh agentenv` 全过、生成 `html/agentenv.html`，
+并在根目录 `README.md` 与 `index.html` 的书目里加上网页版链接。
 
 ## 派编写代理用的提示词模板
 

@@ -3,7 +3,7 @@
 """把 ai-books 下一本书的目录（如 e2b-infra/、firecracker/）打成一个自包含的单文件 HTML。
 
 用法: python3 build_docs_html.py <书目录> <mermaid.min.js> <输出 html>
-书名取自 <书目录>/README.md 的一级标题；版本、日期、署名取自其下的信息行。
+书名取自 <书目录>/README.md 的一级标题；署名取自其下的信息行「> 作者」。
 
 产物特点：双击即看，无需任何工具；mermaid 内联渲染；三张 SVG 嵌进附录；
 所有跨文档链接与锚点改写成页内跳转，因此永远不会断。
@@ -19,12 +19,12 @@ from markdown_it import MarkdownIt
 DOCS_DIR, MERMAID_JS, OUT = sys.argv[1:4]
 
 
-# 书名、版本、日期与署名：唯一来源是 <书目录>/README.md 顶部的一级标题与信息行「> **vX.Y.Z** · YYYY-MM-DD · 作者」
+# 书名与署名：唯一来源是 <书目录>/README.md 顶部的一级标题与信息行「> 作者」
 _readme_head = open(os.path.join(DOCS_DIR, 'README.md'), encoding='utf-8').read(2000)
-_m = re.search(r'^>\s*\*\*(v\d+\.\d+\.\d+)\*\*\s*·\s*(\d{4}-\d{2}-\d{2})\s*·\s*(.+?)\s*$', _readme_head, re.M)
+_m = re.search(r'^>\s*(.+?)\s*$', _readme_head, re.M)
 if not _m:
-    sys.exit('README.md 顶部缺少「> **vX.Y.Z** · YYYY-MM-DD · 作者」信息行')
-DOC_VERSION, DOC_DATE, DOC_AUTHOR = _m.groups()
+    sys.exit('README.md 顶部缺少「> 作者」信息行')
+DOC_AUTHOR = _m.group(1)
 _t = re.search(r'^#\s+(.+?)\s*$', _readme_head, re.M)
 if not _t:
     sys.exit('README.md 顶部缺少一级标题（书名）')
@@ -406,14 +406,14 @@ doc = f"""<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{BOOK_TITLE} {DOC_VERSION}</title>
+<title>{BOOK_TITLE}</title>
 <style>{CSS}</style>
 </head>
 <body>
 <div id="layout">
 <nav id="sidebar">
   <h2>{BOOK_TITLE}</h2>
-  <div class="sub">{DOC_VERSION} · {DOC_DATE} · {DOC_AUTHOR}<br>
+  <div class="sub">{DOC_AUTHOR}<br>
   {n_docs} 篇 · 约 {total_chars/10000:.0f} 万字 · 单文件离线版</div>
   <input id="filter" type="search" placeholder="过滤篇目…" autocomplete="off">
   <ul>{''.join(nav)}</ul>
@@ -432,4 +432,4 @@ doc = f"""<!doctype html>
 """
 
 open(OUT, 'w', encoding='utf-8').write(doc)
-print(f'{OUT}  {DOC_VERSION} {DOC_DATE}  {len(doc.encode("utf-8"))/1048576:.2f} MB  ({n_docs} 篇正文 + README/STYLE/FIGURE-GUIDE/OUTLINE)')
+print(f'{OUT}  {len(doc.encode("utf-8"))/1048576:.2f} MB  ({n_docs} 篇正文 + README/STYLE/FIGURE-GUIDE/OUTLINE)')
