@@ -16,6 +16,8 @@ AgentENV 是为 agentic RL 训练大规模运行 agent 环境的沙箱平台，�
 未特别说明处，全书讲的都是 **AgentENV v0.2.3**。版本称谓与术语见 [`STYLE.md`](STYLE.md)，
 图的画法见 [`FIGURE-GUIDE.md`](FIGURE-GUIDE.md)，编写计划见 [`OUTLINE.md`](OUTLINE.md)。
 
+> **编写进度**：74 篇中已完成 1 篇（第 19 篇），其余未写。续写方法见 `tools/briefs/agentenv/HANDOFF.md`。
+
 ---
 
 ## 怎么读

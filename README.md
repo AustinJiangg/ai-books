@@ -11,7 +11,7 @@
 | Firecracker 技术手册 | v0.1.0 · 2026-09-15 | 上游 Firecracker v1.12.1、e2b 定制版、ARM 适配版与 checkpoint / restore 扩展四层的代码讲解 | [打开](https://austinjiangg.github.io/ai-books/html/firecracker.html) | [目录](firecracker/README.md) |
 | AI Agent 沙箱 | v0.1.0 · 2026-10-07 | Agent 沙箱作为 RL 训练、评测与产品推理的基础设施：隔离原语、八层参考架构、DSec / AgentENV 等案例、国内外披露矩阵与研究议程 | [打开](https://austinjiangg.github.io/ai-books/html/agent-sandbox.html) | [目录](agent-sandbox/README.md) |
 | C++ 期末笔试突击手册 | v0.1.0 · 2026-10-07 | 按 Stroustrup《C++程序设计语言》（第 4 版，C++11）讲大学 C++ 期末笔试考点 | [打开](https://austinjiangg.github.io/ai-books/html/cpp-exam.html) | [目录](cpp-exam/README.md) |
-| AgentENV 技术手册 | v0.0.1 · 2026-10-04 | [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) tag `v0.2.3` 及其依赖的 AENV 补丁版 Firecracker（`aenv-deps`），并与 e2b infra 逐项对照（规划中，正文未写） | — | [目录](agentenv/README.md) |
+| AgentENV 技术手册 | v0.0.1 · 2026-10-04 | [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) tag `v0.2.3` 及其依赖的 AENV 补丁版 Firecracker（`aenv-deps`），并与 e2b infra 逐项对照（编写中：已写 1 / 74 篇，续写见 `tools/briefs/agentenv/HANDOFF.md`） | — | [目录](agentenv/README.md) |
 
 **怎么读**
 
