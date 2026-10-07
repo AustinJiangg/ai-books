@@ -1,7 +1,5 @@
 # e2b 服务端基础设施技术手册
 
-> 江路路
-
 一本关于 **e2b 服务端基础设施**（[e2b-dev/infra](https://github.com/e2b-dev/infra)，tag `2026.09`）
 及其 **aarch64（鲲鹏 / openEuler）适配版**的教材式技术手册。
 

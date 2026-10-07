@@ -1,7 +1,5 @@
 # Firecracker 技术手册
 
-> 江路路
-
 一本关于 **Firecracker**（[firecracker-microvm/firecracker](https://github.com/firecracker-microvm/firecracker)，tag `v1.12.1`）
 的教材式技术手册，并逐层讲解 **e2b 定制版**与本项目的 **aarch64（鲲鹏 / openEuler）适配版**（含 checkpoint / restore 扩展）
 在它之上改了什么、为什么改、代价是什么。也讲 guest 内核的配置，但不讲内核源码。

@@ -1,7 +1,5 @@
 # AgentENV 技术手册
 
-> 江路路
-
 一本关于 **AgentENV**（[kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV)，tag `v0.2.3`）的教材式技术手册，
 并讲解它依赖的 **AENV 补丁版 Firecracker**（kvcache-ai/firecracker `aenv-deps`，上游 v1.15.1 之上 7 个提交）
 在上游之上加了什么、为什么加。
