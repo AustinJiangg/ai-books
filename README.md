@@ -29,15 +29,3 @@
 | [`tools/briefs/`](tools/briefs/) | 给编写 / 审校 / 图修订子任务的简报，按书分目录 |
 
 书名、版本、日期与修订记录都在各书 `README.md` 顶部与「版本」节。
-
-检查与生成网页版需要 Python 的 `markdown-it-py`（`pip install markdown-it-py`）与 `tools/node_modules` 里的 mermaid
-（`cd tools && PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install`，同时装好 `figcheck` 用的 jsdom 与 playwright-chromium）。
-AgentENV 手册的代码基线不入库，用 `tools/fetch-sources.sh` 拉到仓库根下的 `.src/`。
-
-与本仓库之外其它文档的关系：
-
-- checkpoint / restore（高频快速回滚）在 orchestrator 一侧的设计与测试有独立的手册：
-  [`../e2b-infra-docs/rollback/docs/`](../e2b-infra-docs/rollback/docs/)。e2b 手册第 87 篇给概览与入口；
-  Firecracker 手册第十一部分讲 Firecracker 一侧的实现，与那本手册分工不重复。
-- 单机离线部署的**操作手册**是 [`../e2b-infra/single-node-offline-deploy.md`](../e2b-infra/single-node-offline-deploy.md)，
-  **逐脚本讲解**在 [`../e2b-infra/deploy-docs/`](../e2b-infra/deploy-docs/)。
