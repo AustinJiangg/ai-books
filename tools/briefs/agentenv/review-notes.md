@@ -131,3 +131,21 @@
 - 61 → 68：`VirtualizationModeMismatch` 无 API 映射、返回 500；scheduler / gateway 不知道 mode，k8s DaemonSet 写死 `kvm`；PVM 无任何测试；`runtime_versions` 只核对 tools 盘版本。
 - 62 → 65：e2b 手册基线 SDK 用 unary `SendInput`；e2b 手册 48 §7.2 称 client streaming 在 HTTP/1.1 不可用，而 aenv 实际用了半双工 `StreamInput`，两本书口径要说明差别。
 - 62 → 68：`from_env` 不读环境变量；单条隧道连接失败即中止整个 build；暂停 / 删除 / 丢失都以 130 退出；三条不同的 TTL 续期路径；keepalive 常量与代理 30 s 空闲超时是隐式契约。
+- 03（已核实）：File 后端 `snapshot_file()` 在上游与补丁版都是 MAP_PRIVATE；`track_dirty_pages=false` 回退 `mincore_bitmap()`（过估、开 swap 时可能漏报）；补丁版缺 `mem_file_path` 时还跳过 `mark_virtio_queue_memory_dirty`。09 的相关推论改为引用 03 §3.2。
+- 03 → 61：mincore 回退只对 KVM 线（aenv-deps）成立，firecracker-next 仍无法确认。
+- 03 → 67：补「`mem_file_path` 缺省时跳过 virtio 队列重新标脏」。
+- 03 → 68：`track_dirty_pages=false`（含 PVM 强制）时写出量不再正比于改动量。
+- 43 → 41：`PackRecordingStatus` / `PrefetchStartupPack` 的 RPC 总是返回 Ok。
+- 43 → 73：收录 trace 魔数 `AENVTRC1`；manifest `AENVMF01` 版本字段为 4，prefix 页恒为空。
+- 43 → 68：`RecordingVerdict::Fail` 从未构造；`src/cfg.rs` 注释写「OSS only」「v3」与代码不符；`pack_planner` 的 v2 预算模型已失效（传 `u64::MAX`）；无指标区分「没有 pack」与「pack 失败」；daemon 侧预取在沙箱停止后不取消（推论）。
+- 44 → 66 / 67：File 后端放弃了大页（上游 File 后端拒绝 hugetlbfs 快照）。
+- 44 → 68：`load_snapshot_uffd` 用 `resume_vm=true`，若重新启用会跳过新卷、MMDS、限流补发；两份 `ProcessVmReader` 不一致。
+- 47：正常运行时 alias 先于 record 的窗口在 alias 锁内、读者看不到，只有崩溃留下陈旧 alias；只有 delete 同时取两把锁（record → alias）。
+- 47 → 68：manifest `fs::write` 非原子无 fsync、commit 标记不 fsync、`write_json` 不 fsync 父目录；锁文件从不删除；一个坏 record 让 `list()` 失败；拷贝路径不哈希校验；硬链接 chmod 只读会连带改节点本地文件；无启动扫描与 GC；推论：提交不取 record 锁，与 `mark_error()` / delete 并发可能复活被删模板；NFS `local_lock` 时 flock 跨节点失效。
+- 48 → 49：从对象存储快照继承的 rootfs 层再次发布时被记为带桶地址的 External 引用（内存层是 Managed），换桶或改 prefix 后无法解析。
+- 48 → 53：builder 竞争「由仓库 alias 提交保证」在 OSS 后端不严格成立（读-写-回读可能两方都成功），53 审校时核实并改口径。
+- 48 → 36：36 §4.3 仍写「Hybrid 是 AgentENV 扩展」，审校时按更正条目改。
+- 48 → 68：`default.toml` 称 `credential_process` 优先，代码两者同配直接报错；`bind_alias()` 注释关于阿里云条件写的说法与层上传注释、卷代码自相矛盾；403 重试从头重传整个文件；无 Expiration 的凭证永不主动刷新；推论：record PUT 结果不确定时回滚可能删掉已提交快照的制品。
+- 53 → 68：builder 模板无 GC；种子与工作卷的 managed 层不回收。
+- 54 → 56 / 57：HA 引用 54 §3.4、状态推导引用 54 §4；`default.toml` 写死 `service_instance_id = "service-instance-a"`，Compose 与 k8s 都不覆盖，`UnregisterNode` 防误注销校验失效。
+- 54 → 68：scheduler gRPC 明文无认证；CI 不校验 proto 生成物；`schedule_hint.go` 手工镜像 openapi 字段；`services/README.md` 称 gateway 调 P2P RPC（实际不调）、写 Go 1.21+（`go.mod` 为 1.25.0）；08 条所说的 README「Limitations」节在 v0.2.3 中找不到，审校复核。
