@@ -41,12 +41,10 @@ AgentENV 把这个转发器放在 `server` 进程里，与控制面 API 共用�
 
 ```mermaid
 flowchart TB
-    R["请求<br/>已通过 require_auth"] --> C{"Host 是<br/>端口-沙箱 ID.域名"}
-    C -->|"是"| H["分类器写入路由头"]
-    C -->|"否"| M{"路由匹配结果"}
-    M -->|"/proxy 前缀"| P["剥掉前缀"]
-    M -->|"未匹配且有路由头"| F["保留原路径"]
-    M -->|"控制面路由"| API["生成的 handler"]
+    R["请求<br/>已通过 require_auth"] --> H["Host 名路由<br/>分类器写入路由头"]
+    R --> P["/proxy 前缀<br/>剥掉前缀"]
+    R --> F["未匹配路径带路由头<br/>fallback 保留原路径"]
+    R --> API["其余控制面路由<br/>生成的 handler"]
     H --> X["proxy_request"]
     P --> X
     F --> X
@@ -128,18 +126,16 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    L["proxy_lookup_for"] --> Q{"查找结果"}
-    Q -->|"Ready"| OK["拼上游 URI"]
-    Q -->|"NotFound"| E404["404"]
-    Q -->|"Paused 未开自动恢复"| E410["410"]
-    Q -->|"Unavailable"| E410
-    Q -->|"RouteMissing"| E502["502"]
-    Q -->|"Paused 开了自动恢复"| T{"已经恢复过"}
+    L["proxy_lookup_for"] --> R1["Ready<br/>拼上游 URI"]
+    L --> R2["NotFound<br/>404"]
+    L --> R3["Unavailable 或未开恢复<br/>410"]
+    L --> R4["RouteMissing<br/>502"]
+    L --> R5["Paused<br/>开了自动恢复"]
+    R5 --> T{"本请求<br/>已恢复过"}
+    T -->|"是"| E1["502 恢复失败"]
     T -->|"否"| AR["try_auto_resume"]
-    T -->|"是"| E502
-    AR -->|"成功"| L
-    AR -->|"失败"| E502
-    AR -->|"超时"| E504["504"]
+    AR -->|"成功 再查一次"| L
+    AR --> E2["失败 502<br/>超时 504"]
 ```
 
 图中省略了一条规则：已经尝试过自动恢复之后，第二轮再得到 `Unavailable`、`RouteMissing` 或查询错误，一律报「自动恢复失败」（502）；

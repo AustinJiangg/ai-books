@@ -116,26 +116,16 @@ daemon 启动时用 `detect_ublk_features()` 发一次 `GET_FEATURES`：内核�
 
 ```mermaid
 flowchart TB
-    subgraph TH["queue 线程 ublk-q-N-0"]
+    K["内核 ublk_drv"] -->|"写请求描述"| DESC["mmap 的 io_desc 数组"]
+    subgraph TH["queue 线程"]
         direction TB
-        RT["current_thread runtime<br/>加 LocalSet"]
-        SL["16 个 slot_task<br/>每 tag 一个"]
-        CP["handle_completion<br/>收割 CQE"]
-        RING["本线程的 io_uring<br/>UBLK_QUEUE_URING"]
-        PARK["on_thread_park<br/>批量 submit"]
-        RT --> SL
-        RT --> CP
-        SL -->|"推 SQE"| RING
-        PARK -->|"提交"| RING
-        RING -->|"可读"| CP
+        SL["16 个 slot_task<br/>每 tag 一个"] -->|"推 SQE"| RING["本线程的 io_uring"]
+        PARK["on_thread_park<br/>批量 submit"] -->|"提交"| RING
+        RING -->|"可读"| CP["handle_completion<br/>收割 CQE 唤醒"]
     end
-    DESC["mmap 的 io_desc 数组"]
-    K["内核 ublk_drv"]
-    REM["obd-remote-io runtime"]
-    K -->|"写请求描述"| DESC
     DESC --> SL
-    RING <--> K
-    SL -.->|"远端读投递"| REM
+    RING <-->|"命令与 CQE"| K
+    SL -.->|"远端读投递"| REM["obd-remote-io runtime"]
 ```
 
 `UVMUblkQueue::new()` 做四件事：建一个 `AsyncIoRing`（SQ / CQ 各 `depth × 2` = 32 项，稀疏缓冲表 `depth × 4` = 64 项，稀疏文件表 16 项）；

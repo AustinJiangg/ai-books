@@ -230,10 +230,10 @@ flowchart LR
         MT --> RB["样本缓存<br/>保留 3600 s"]
         EV --> RP["事件循环"]
     end
-    NS -->|"心跳 5 s"| SC["scheduler<br/>容量过滤"]
+    NS --> SC["scheduler<br/>心跳 5 s 容量过滤"]
     NS --> NA["GET /nodes"]
     RB --> SA["沙箱指标 API"]
-    RP -->|"批量上报"| DROP["scheduler<br/>记日志后丢弃"]
+    RP --> DROP["scheduler<br/>事件批 记日志后丢弃"]
     class DROP ext
     classDef ext fill:#f6f7f9,stroke:#b8c2cf,stroke-dasharray:4 3
 ```
