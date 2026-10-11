@@ -189,6 +189,8 @@ flowchart TB
 发布的其余步骤失败时，`publish_with_local_layers()` 删除 `artifacts/<id>/` 前缀，并按逆序对每条发布记录调用 `rollback_publication()`：
 按 manifest digest 删除 manifest。已上传的增量 blob 不删，注释写「留给 registry GC」。
 删除快照时，对象存储后端在删掉记录之后 best-effort 地删除这些 manifest，失败只记警告（`delete_disk_publications()`）。
+每个快照的 manifest 都列出整叠层，所以后代快照自己的 manifest 仍引用祖先的 blob，删除祖先的 manifest 不会让后代失去引用。
+推论：从被删快照创建、尚未再做快照的沙箱（运行中或暂停中）只通过那份被删的 manifest 间接引用这些 blob，registry 端若按「无 manifest 引用」回收 blob，它们的 rootfs 会在下次按需读时失败。
 
 这里有一个可见性窗口：rootfs 的 tag 在第 1 步就推上去了，而记录要到最后才写。在此之间，registry 里已经能看到 `agentenv-snapshot-<id>`，
 快照 API 却还查不到这个 id；发布失败且回滚也失败时，tag 会一直留在 registry 里。
