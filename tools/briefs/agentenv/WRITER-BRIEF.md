@@ -37,6 +37,13 @@
 不要把 kvcache-ai/firecracker 的 `v1.15.1-patch`（`patch-v2`）、`v1.15.1-patch-nestedvirt`、`v1.16.1-patch` 分支当基线。
 `.src/agentenv/docs/src/**` 与 `AGENTS.md` 是参考，不是依据：调研已发现多处与代码不符，以代码为准。
 
+## 读代码的方法（控制成本）
+
+- 以调研笔记为地图：先在笔记里找到你这一篇涉及的文件与函数名，再用 `grep -n` 定位、用 Read 的 offset / limit 只读相关段落。
+  **不要整文件通读**几千行的文件（如 `src/orchestrator/service.rs`、`src/sandbox/firecracker/sandbox.rs`、`src/api/proxy.rs`），也不要通读测试文件。
+- 一个论断核实到能写出路径 + 函数名即可，不必追到每个调用者。核实不了就标「推论：」，不要为一个细节花大量时间。
+- **写完一篇就落盘、跑完自检，再开始下一篇**；中途被打断时，已完成的篇目要能直接用。
+
 ## 写作要求（STYLE.md 的浓缩，冲突时以 STYLE.md 为准）
 
 - 结构：`# NN · 标题` → 题注引用块（一到三句 + 读者 / 预备 / 代码）→ `## 0. 本篇要回答的问题` →
