@@ -37,3 +37,12 @@
 - 13 → 17：数据面鉴权直接引用 13 §4 的决策树，不重复。
 - 13 → 62：`aenv` 保存凭据先 `fs::write` 再 chmod 0600，有按 umask 可读的窗口。
 - 13 → 68：token 不能单独吊销；显式 seed 被改无检测、旧 token 静默失效；集群 seed 不一致只 warn；非 secure 沙箱 envd 只靠 UUID，v1 创建缺省非 secure；带 `sandbox_id` 的控制面请求多一次元数据读、key 检查两次。
+- 14 → 16：卷在创建时先挂在 `pending-<uuid>` owner 下，成功后转给沙箱 id；16 要讲这个预留（崩溃后残留 pending owner 的清理是推论）。
+- 14 → 18：状态折叠把 Killing 算 running，但 state 过滤按内部状态精确匹配，过渡态沙箱会从过滤列表中消失；spec 说 `limit` 缺省 100，代码省略时返回全部。
+- 14 → 23：TTL 口径统一为「缺省 15 s / v2 300 s / auto-resume 至少 300 s」；resume 传 `{}` 可把 TTL 缩到 15 s。
+- 14 → 68：`OrchestratorError::InvalidTimeout` 从未构造、相应分支是死代码；对暂停沙箱调 `/timeout`、`/refreshes` 返回 HTTP 500 而 body code 400（spec 没声明 400/409 变体）；同一错误按端点映射成 409 / 400 / 500；GET 删除中的沙箱报 running 而 connect 返回 404；多数 handler 把 ShuttingDown（503）塞进 500 变体。
+- 15 → 52：步骤路径的构建 VM 由 `src/template/runner.rs` 用 `SandboxId::new()` 自己创建，不经 orchestrator；只有 BuildKit builder VM 用 build id 并对用户 API 隐藏（修正 OUTLINE 15 / 调研笔记 A 的说法）。
+- 15 → 53：builder 的 TTL = 请求 timeout + 3900 s，到期动作 delete。
+- 15 → 57：`template_build_ids` 经 `src/observability/service.rs` 进入心跳名单。
+- 15 → 18：列出 COPY / ADD 不支持与 ARG 当 ENV；spec 声明了 PUT / DELETE builder，只有 WebSocket GET 不在 spec 里。
+- 15 → 68：步骤路径构建崩溃后不恢复（记录永远 Building）；`max_concurrent_builds` 与删除时 409 只覆盖 BuildKit 会话；spec 允许 `name` 带 `:tag` 而代码返回 400；templateID ≠ buildID 在两条路径分别返回 400 / 404，重复 start 分别 400 / 409；`force` 被忽略；`public` 在模板上恒 true、alias 查询恒 false。

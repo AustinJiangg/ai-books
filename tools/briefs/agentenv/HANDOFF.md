@@ -8,7 +8,7 @@
 |---|---|
 | 脚手架 | 完成：`agentenv/{README,OUTLINE,STYLE,FIGURE-GUIDE}.md`、`tools/briefs/agentenv/{WRITER-BRIEF,REVIEWER-BRIEF,review-notes}.md`、调研笔记 `survey/` |
 | 编写环境 | 完成：`tools/fetch-sources.sh`（代码基线拉到不入库的 `.src/`）、`tools/package.json`（mermaid / jsdom / playwright-chromium） |
-| 正文 | **1 / 74**：只有第 19 篇（状态机与并发控制，约 4300 字，初稿 `●`） |
+| 正文 | **9 / 74**：第 08–15、19 篇初稿 `●`（2026-10-11 第 1 批完成 08–15）。下一批从 HANDOFF 批次表第 2 批开始 |
 | 已知待修 | 第 19 篇第 2 张图 figcheck WARN（边标签重叠 4 处），审校时按 FIGURE-GUIDE 改成编号边 + 图下表 |
 | 审校 / 打包 / 发布 | 未开始；README 版本仍是 v0.0.1（脚手架） |
 
