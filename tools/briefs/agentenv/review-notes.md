@@ -180,3 +180,8 @@
 - 49 → 68：in-flight fetch 时调用方 future 被 drop，条目永不清理、该 key 在进程生命期内一直失败；跨重启复用只看文件是否存在、不检测仓库路径变化；POSIX 写死 10 GiB 上限；每次 BuildKit 构建新建一个 cache 实例；推论：OSS 下从快照创建的沙箱在暂停时重读内存 `image.json`，若已被 LRU 驱逐则 pause 失败。
 - 50 → 45：§6「所有 registry 访问经 regctl」不成立，发布路径用进程内 `AcrClient`，需加限定。
 - 50 → 68：tag 先于 record 可见，回滚失败时 tag 残留；两套 registry 客户端（regctl 与 `AcrClient`）；文档安装 `target/debug` 二进制；推论：同 tag 并发导出可互相覆盖、删除快照后 registry GC 可能回收仍被沙箱使用的 blob。
+- 55：`request_timeout` 代码缺省 30 s；90 s 写在 `services/config/local.json`、`deploy/docker/config/default.json` 与 k8s `gateway.json` 三处（修正 08 条的「只在 local.json」）。55 汉字 5011，审校时略删。
+- 55 → 68：显式 `/proxy` 请求经 gateway 多一层前缀（推论：guest 看到 `/proxy/x`）；gateway 超时比节点更严、可能截断大文件与自动恢复（推论）；README 称 HA 只覆盖数据面与代码不符；404 不区分沙箱不存在与绑定缺失且是纯文本；hint 只为 debug 日志缓冲；到 scheduler 的 gRPC 无 TLS；集群列表每翻一页都拉全量。
+- 56：query-only 副本只能撑到绑定过期（缺省 30 s）—— Redis 绑定只由 primary 续期、心跳只发 primary；54 / 57 讲 HA 时与此一致。
+- 56 → 10：「注销能让 gateway 停止往本节点送新请求」在静态发现模式下不成立。
+- 56 → 68：策略名拼错静默退回 round_robin；不在集群内运行时 k8s 发现永久停止而 health 仍报 SERVING；README 漏列三项 including_paused 限额；推论：内存版过期绑定不回收、静态模式下关闭中的节点仍被调度。

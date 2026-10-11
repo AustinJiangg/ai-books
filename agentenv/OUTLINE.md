@@ -651,8 +651,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
 | 54 | `54-control-plane-overview.md` | 控制面总览与 proto 契约 | ● |
-| 55 | `55-gateway.md` | gateway：路由判定与反向代理 | ○ |
-| 56 | `56-scheduler.md` | scheduler：放置、绑定与 HA | ○ |
+| 55 | `55-gateway.md` | gateway：路由判定与反向代理 | ● |
+| 56 | `56-scheduler.md` | scheduler：放置、绑定与 HA | ● |
 | 57 | `57-heartbeat-and-cpu-intersection.md` | 心跳、节点可观测与 CPU 模板交集 | ○ |
 | 58 | `58-p2p-artifact-transport.md` | P2P 制品传输 | ○ |
 
