@@ -95,8 +95,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 02 | `02-why-agentenv.md` | agent 环境的规模问题与 AgentENV 的取舍 | ● |
 | 03 | `03-firecracker-for-agentenv.md` | 本书用到的 Firecracker：快照、内存后端与脏页 | ● |
-| 04 | `04-io-uring-and-ublk.md` | io_uring 与 ublk | ○ |
-| 05 | `05-overlaybd-and-lazy-loading.md` | overlaybd、LSMT 与 OCI 镜像按需加载 | ○ |
+| 04 | `04-io-uring-and-ublk.md` | io_uring 与 ublk | ● |
+| 05 | `05-overlaybd-and-lazy-loading.md` | overlaybd、LSMT 与 OCI 镜像按需加载 | ● |
 | 06 | `06-netns-iptables-transparent-proxy.md` | 网络命名空间、iptables 与透明代理 | ● |
 | 07 | `07-rust-async-primer.md` | 本书用到的 Rust 异步与依赖 crate | ● |
 

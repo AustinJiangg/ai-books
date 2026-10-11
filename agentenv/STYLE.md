@@ -41,7 +41,7 @@
 | **AENV 补丁版 Firecracker** | kvcache-ai/firecracker tag `aenv-deps`（commit `90288c39`）：上游 v1.15.1 之上 7 个提交。发布资产名是 `1.15.1-patch-v1`，即 `config/deps_manifest.toml` 的 `[firecracker.kvm]` | `.src/fc-aenv/`；差异：`git -C .src/fc-aenv diff v1.15.1 aenv-deps -- <path>` |
 | **上游 Firecracker v1.15.1** | firecracker-microvm/firecracker tag `v1.15.1`（commit `f82c0bd0`） | 同一 clone 的 tag `v1.15.1` |
 | **Rust 版 overlaybd** | AgentENV 仓库内的 `storage/overlaybd` crate：用 Rust 重写的 overlaybd 在线数据面 | `.src/agentenv/storage/overlaybd/` |
-| **上游 overlaybd** | containerd/overlaybd（C++，tcmu 前端） | `.src/overlaybd-upstream/`（只为核实格式兼容） |
+| **上游 overlaybd** | containerd/overlaybd（C++；经典前端是 tcmu，默认分支 `e2a2ef3` 也已带 ublk 前端 `src/ublk/`） | `.src/overlaybd-upstream/`（只为核实格式兼容） |
 | **overlaybd 工具** | kvcache-ai/overlaybd `static-v1.0.18-aenv.1` 发布的 `overlaybd-create/apply/commit/resize` 二进制 | 不读源码，只讲调用方式 |
 | **e2b infra** | e2b-dev/infra tag `2026.09`，即 e2b 手册的基线 | 优先读 e2b 手册；必要时读 `.src/e2b-infra/` |
 
