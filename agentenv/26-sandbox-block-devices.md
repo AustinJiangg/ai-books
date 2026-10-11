@@ -47,11 +47,9 @@ flowchart TB
         G1["/dev/vda<br/>tools 盘"]
         G2["/dev/vdb 与 /dev/vdc 起<br/>rootfs 附加盘"]
     end
-    subgraph F["Firecracker 进程"]
-        M["File 后端 mmap"]
-        V1["virtio-blk<br/>缓冲 I/O"]
-        V2["virtio-blk<br/>O_DIRECT"]
-    end
+    M["Firecracker<br/>File 后端 mmap"]
+    V1["Firecracker virtio-blk<br/>缓冲 I/O"]
+    V2["Firecracker virtio-blk<br/>O_DIRECT"]
     PC["宿主页缓存"]
     UB["/dev/ublkbN 若干"]
     D["ublk-daemon<br/>OverlaybdTarget"]
