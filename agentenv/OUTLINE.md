@@ -200,8 +200,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 12 | `12-spec-driven-server.md` | 规范驱动的服务骨架 | ● |
 | 13 | `13-authentication.md` | 认证与凭据 | ● |
-| 14 | `14-sandbox-api.md` | 沙箱生命周期 API | ○ |
-| 15 | `15-template-build-api.md` | 模板构建 API | ○ |
+| 14 | `14-sandbox-api.md` | 沙箱生命周期 API | ● |
+| 15 | `15-template-build-api.md` | 模板构建 API | ● |
 | 16 | `16-snapshot-and-volume-api.md` | 快照与卷 API | ○ |
 | 17 | `17-reverse-proxy.md` | 反向代理 | ○ |
 | 18 | `18-e2b-compatibility.md` | E2B 兼容性：矩阵与偏差 | ○ |
