@@ -42,16 +42,15 @@ AgentENV 把前两个问题交给 scheduler 的绑定表与放置算法，把第
 
 ## 2. 三个角色与调用方向
 
-下图标出控制面里所有的调用。箭头从调用方指向被调用方，边上写的是用到的 RPC 或协议。
+下图标出控制面里所有的调用。箭头从调用方指向被调用方；gateway 用到的 6 个 RPC 与节点用到的 7 个 RPC 见 3.1 节的表。
 
 ```mermaid
 flowchart TB
     CL["客户端 SDK"]:::ext --> GW["gateway<br/>HTTP 入口"]
-    GW -->|"放置 定位 列表"| SC["scheduler<br/>gRPC"]
+    GW -->|"6 个 RPC"| SC["scheduler<br/>gRPC 服务端"]
     GW -->|"HTTP 转发"| ND["节点 server"]
-    ND -->|"心跳 事件 注销"| SC
-    ND -->|"P2P 索引"| SC
-    SC -.-> RD["Redis<br/>可选"]:::ext
+    ND -->|"7 个 RPC"| SC
+    SC -.-> RD["Redis<br/>可选绑定存储"]:::ext
     ND -.->|"P2P 取制品"| PEER["其它节点"]
     classDef ext fill:#f6f7f9,stroke:#b8c2cf,stroke-dasharray:4 3
 ```

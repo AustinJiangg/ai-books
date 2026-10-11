@@ -129,10 +129,10 @@ AgentENV 依赖的 Firecracker 是 AENV 补丁版（`config/deps_manifest.toml` 
 | 内存文件大小 | `fstat`，块设备得 0 | `lseek(SEEK_END)`，块设备得容量 | `instance.rs` 的 `load_snapshot_file()` |
 | drive 的 `direct` | 无，总是缓冲 I/O | 为真时以 O_DIRECT 打开后端文件 | `instance.rs` 的 `add_drive()` |
 
-前三个组成一条主线：**快照内存不经过内存文件**（图 2）。
+前三个组成一条主线：**快照内存不经过内存文件**（图 2，橙色节点依赖补丁行为）。
 
 ```mermaid
-flowchart TB
+flowchart LR
     subgraph UP["上游 Firecracker v1.15.1"]
         direction TB
         U1["snapshot/create<br/>写状态与内存文件"]
@@ -149,6 +149,9 @@ flowchart TB
         A5["snapshot/load<br/>File 后端 块设备"]
         A1 --> A2 --> A3 --> A4 --> A5
     end
+    UP ~~~ AE
+    classDef diff fill:#fdf2e9,stroke:#d9822b
+    class A1,A2,A5 diff
 ```
 
 - **可选的 `mem_file_path`**：补丁版 `create_snapshot()` 在没有内存文件路径时只调 `snapshot_state_to_file()`，既不写内存，也不动任何脏页记录

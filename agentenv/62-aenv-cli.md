@@ -41,12 +41,14 @@ flowchart TB
         U["ureq 同步客户端<br/>REST 调用"]
         RQ["reqwest 异步客户端<br/>构建会话请求"]
         WS["WebSocket 隧道<br/>BuildKit"]
+        U ~~~ RQ ~~~ WS
     end
     subgraph DP["数据面 带沙箱 token"]
         direction TB
         T["Connect 客户端<br/>Process 与 Filesystem"]
         F["envd 文件 HTTP 接口"]
         PX["/proxy WebSocket<br/>codex 用"]
+        T ~~~ F ~~~ PX
     end
     API["节点 server<br/>API 与反向代理"]
     CMD --> CP

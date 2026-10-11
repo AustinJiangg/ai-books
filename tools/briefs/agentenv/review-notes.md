@@ -126,3 +126,8 @@
 
 - 07：仓库没有 `[lints]` 表或 `clippy.toml`，clippy 规则来自 `make clippy`（`-D warnings`），修正 OUTLINE 05/07 的说法；64 讲 CI 时引用这一口径。
 - 06 / 07 → 68：`build_restore_script()` 的 `debug_assert` 实际要求表名按字典序（比注释更严）；`SAFETY` 注释无工具强制（约 50 处 SAFETY / 117 处 unsafe）；`uffd-core` 不在 workspace、不受 clippy 检查。
+- 61：`validate_mode()` 只在正常启动时运行，`--setup-only` / `--setup-host` 不检查 `kvm_pvm`（修正调研笔记 B / E）；PVM 下暂停仍调 `dirty-memory-ranges`，补丁版回退到 mincore 过估计。
+- 61 → 11：§2.3 改为「端点总是被调用，开关只决定用 KVM dirty log 还是 mincore」。
+- 61 → 68：`VirtualizationModeMismatch` 无 API 映射、返回 500；scheduler / gateway 不知道 mode，k8s DaemonSet 写死 `kvm`；PVM 无任何测试；`runtime_versions` 只核对 tools 盘版本。
+- 62 → 65：e2b 手册基线 SDK 用 unary `SendInput`；e2b 手册 48 §7.2 称 client streaming 在 HTTP/1.1 不可用，而 aenv 实际用了半双工 `StreamInput`，两本书口径要说明差别。
+- 62 → 68：`from_env` 不读环境变量；单条隧道连接失败即中止整个 build；暂停 / 删除 / 丢失都以 130 退出；三条不同的 TTL 续期路径；keepalive 常量与代理 30 s 空闲超时是隐式契约。

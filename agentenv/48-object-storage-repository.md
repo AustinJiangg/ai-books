@@ -313,4 +313,4 @@ AgentENV 把 catalog 本身放进对象存储，换来的是仓库自包含、�
 - POSIX 协议：[第 47 篇](47-posix-repository.md)；对象模型：[第 46 篇](46-snapshot-object-model.md)；推回源镜像仓库：[第 50 篇](50-rootfs-as-oci-image.md)。
 - 发布压缩与 ZFile：[第 35 篇](35-zfile-compression.md)；运行时按需读：[第 38 篇](38-virtualfile-chain-and-remote-io.md)、[第 39 篇](39-block-cache-and-background-download.md)；P2P：[第 58 篇](58-p2p-artifact-transport.md)。
 - 技术债汇总：[第 68 篇](68-known-issues-and-debt.md)。
-- 对照：[e2b 手册第 13 篇 · 存储全景](../e2b-infra/13-storage-landscape.md)、[e2b 手册第 75 篇 · MinIO 存储](../e2b-infra/75-minio-storage.md)。
+- 对照：[e2b 手册第 13 篇 · 存储全景](../e2b-infra/13-storage-landscape.md)、[e2b 手册第 75 篇 · MinIO 存储 provider](../e2b-infra/75-minio-storage.md)。

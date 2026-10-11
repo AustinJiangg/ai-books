@@ -706,8 +706,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 59 | `59-host-setup-and-privileges.md` | 宿主准备、依赖供给与权限模型 | ○ |
 | 60 | `60-deployment.md` | 单节点安装、Compose 与 Kubernetes | ○ |
-| 61 | `61-pvm.md` | PVM：没有嵌套虚拟化时 | ○ |
-| 62 | `62-aenv-cli.md` | aenv CLI | ○ |
+| 61 | `61-pvm.md` | PVM：没有嵌套虚拟化时 | ● |
+| 62 | `62-aenv-cli.md` | aenv CLI | ● |
 | 63 | `63-testing-and-benchmarks.md` | 测试与基准 | ○ |
 | 64 | `64-build-codegen-release.md` | 构建、代码生成与发布 | ○ |
 
