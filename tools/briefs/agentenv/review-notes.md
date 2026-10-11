@@ -166,3 +166,9 @@
 - 60 → 56：`publishNotReadyAddresses` 配合按 `Serving` 过滤，让终止中的 Pod 成为 lingering。
 - 60 → 08 / 47：k8s base 清单用默认配置，每个节点各有自己的快照仓库、快照不共享；也没有生产用的 token seed（只有 local-dev overlay 有）。
 - 59 / 60 → 68：`docker-setup.sh` 与 `--setup-host` 都写 `/etc/sysctl.d/99-aenv.conf`，只有后者含 `ip_forward`，先后运行可能丢掉转发；ublk-daemon 不为子进程清 ambient（推论：`overlaybd-resize` 带 CAP_SYS_ADMIN）；`OverlaybdInstalledRelease.digest` 恒为 None；`deps/` 只增不减；k8s 无共享仓库 / Redis / query-only；Compose 无 `stop_grace_period`；不经 `run.sh` 直接 apply 会得到空 key 而启动失败；k8s hostPath 盖住镜像里预烘焙的依赖；推论：Dockerfile 的 `RUSTUP_TOOLCHAIN=${RUST_VERSION}` 无对应 `ARG`。
+- 63：基准是 5 个（另有 `storage/overlaybd/benches/zfile_read_benchmark.rs`，不在 `make bench` 里）；release 只校验 agentenv 与 aenv 两个包的版本（修正调研笔记 E）。
+- 63 → 60：讲 E2E 三种模式时引用 63 §2.4。
+- 63 → 68：E2E 跳过的 suite 记为 pass；三个 ignored 用例没有任何入口运行；`test_envd.sh` 用第三方 `envd-debug:latest`；E2B 基准克隆未固定版本的个人 fork；`src/snapshot/mock.rs` 是 `pub` 模块、编进生产库；snapshot 基准冒烟失败时静默跳过；OCI 转换基准手抄生产流水线；覆盖率与变异测试 continue-on-error，覆盖率不含 ignored 用例；基准无基线与阈值。
+- 64 → 60：Dockerfile 里的节点镜像与 release bundle 是两次独立构建（镜像内不带 `--locked`、不用 vendored-openssl）。
+- 64 → 67：client crate 版本号写 1.15.1 而描述的是补丁版 API，引用 64 §3。
+- 64 → 68：protoc 版本三处不一致（CI 33.4 / release apt / 入库 `.pb.go` 头 3.21.12）；release 不依赖 CI 测试；gateway / scheduler 镜像不随版本发布、仓库清单只引用本地 `:latest`；Go 镜像不注入版本与提交号；`install.sh` 用 GitHub API 资产摘要而不用 `SHA256SUMS`，两个安装脚本不在 `SHA256SUMS` 里；`adev` 下载 protoc 无校验、文件非空即跳过；`publish-tools-image.yml` 版本缺省 0.1.0 而其它处是 0.1.1，manifest 按 tag 引用 tools 盘镜像；mdBook 版本未固定；推论：`.dockerignore` 排除 `.git`，镜像里的提交号为 `unknown`。
