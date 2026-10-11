@@ -4,6 +4,7 @@
 
 - 全书：AENV 补丁版 Firecracker 的四个被用到的补丁行为（可选 `mem_file_path`、`dirty-memory-ranges`、seek 取内存文件大小、drive `direct`）在 03 / 27 / 42 / 67 四篇的说法必须一致；未被使用的两个补丁（pmem seek、`guest-memory-regions`）只在 67 出现。
 - 全书：「Rust 版 overlaybd 与上游格式兼容」只对 LSMT / ZFile / tar 包裹成立；Hybrid RW、`PMIDX001`、`OBCH`、`AENVMF01` 是扩展；05 / 34 / 35 / 39 / 73 口径一致。
+  **更正（2026-10-11）**：上游 containerd/overlaybd 默认分支 `src/overlaybd/lsmt/file.cpp` 已有 `FLAG_HYBRID_RW = 5`，Hybrid RW 不是 AgentENV 扩展；34 / 36 / 37 / 73 审校时统一改口径（说明上游也定义该位、语义是否一致需核对，浅 clone 无法确定起始版本）。
 - 26 ↔ 41：两级 refcount 与 `cache_fd` 的讲法统一；26 讲节点侧，41 讲 daemon 侧。
 - 27 ↔ 42：27 只讲 FC 调用顺序，42 讲数据成层与共享设备；`moffset = HVA` 只在 42 详讲。
 - 42：File 后端 MAP_PRIVATE 与「resumed VM 的脏页 = COW 过的页」在 AgentENV 仓库里没有代码依据，要到 fc-aenv 的 `vstate/memory.rs` 核实，否则标推论。
@@ -46,3 +47,49 @@
 - 15 → 57：`template_build_ids` 经 `src/observability/service.rs` 进入心跳名单。
 - 15 → 18：列出 COPY / ADD 不支持与 ARG 当 ENV；spec 声明了 PUT / DELETE builder，只有 WebSocket GET 不在 spec 里。
 - 15 → 68：步骤路径构建崩溃后不恢复（记录永远 Building）；`max_concurrent_builds` 与删除时 409 只覆盖 BuildKit 会话；spec 允许 `name` 带 `:tag` 而代码返回 400；templateID ≠ buildID 在两条路径分别返回 400 / 404，重复 start 分别 400 / 409；`force` 被忽略；`public` 在模板上恒 true、alias 查询恒 false。
+- 21 → 16 / 31：暂停只在本地 restack 卷、不发布；删除才是卷内容进入快照仓库的提交点。
+- 21 → 23：自动回收持 `deletion_progress` 锁做完整捕获。
+- 21 → 68：`finalize_terminal_volumes()` 在 pause / snapshot / fork 的 Terminal 失败后直接发布卷，与删除路径的 `fail_backings()` 口径不一致；删除进度不跨重启；启动时不回收卷预留；Killing 态无人重试；Terminal 捕获失败时沙箱已删而函数仍返回错误。
+- 22 → 59 / 60：补一步外部清理残留 FC 进程（如 systemd 按 cgroup 清理）；SIGKILL 后孤儿 FC 进程、`firecracker-work/`、`managed-snapshots/` 无人回收。
+- 22 → 61：模式不符的持久记录不被 pin，镜像 GC 可能删它们的层（推论）。
+- 22 → 68：`rollback_resuming()` 失败只 warn，下次重启会丢弃完好的暂停沙箱；记录版本不符即删、无迁移；`decode()` 忽略 `artifact_root`、记录依赖绝对路径；记录 fsync 而内存层与 vm_state 未见 fsync（推论：掉电可能留下不完整产物）；无法删除的残留目录会阻止启动。
+- 18 → 65：直接引用 18 的「四类端点」划分；e2b infra 2026.09 的 spec 里没有 `POST /v2/sandboxes`、v2 connect、`PUT /network`、`GET /snapshots/{id}`、`GET /v2/templates`；安全方案名与 `autoResume` 形状都与 2026.09 不同。
+- 18 → 55：gateway 也接受 `e2b-sandbox-id` 头。
+- 18：更正调研笔记 A —— `thirdparty/envd` 是 host 侧 Rust 客户端，不是 envd 的 fork；guest 内 envd 随 tools 盘提供（`ENVD_REF=2026.17` 从 e2b-dev/infra 编译）。
+- 18 → 68：`autoPause` 缺省与 e2b 相反（AgentENV 缺省暂停）；不检查「私有入口必须 secure」；`maskRequestHost` 接受不读；`09_e2b_compat.sh` 缺工具时记 pass、SDK 版本不固定；`GET /health` 返回 204（e2b 200）。
+- 20 → 22：讲 `mark_resuming` / `rollback_resuming` 时引用 20 §4.1 回滚表。
+- 20 → 45：镜像 GC 的 `maintain_running` 保护来自句柄表。
+- 20 → 46：`publish_captured` 在状态回到 Running 之后才执行。
+- 20 → 68：`resume_sandbox_inner` 在 `mark_resuming` 后缺 `paused_state` 直接返回不回滚（记录卡 Resuming）；pause 失败不删已分配的产物目录；错误缺省 `Recoverable`；fork 无关闭检查点；句柄不一致时启动成功却无路由。
+- 27 → 31：卷绑定「全有或全无」由 `initial_guest_drive_mounts` 是否为空决定；新卷在 load 后 PATCH、resume 前。
+- 27 → 46：manifest 不含卷。
+- 27：cpu-config 由 scheduler 下发、经 `cpu_config_arc` 注入；pause / snapshot / fork / `capture_to_dir` 共用 `pause_to_dir()`，有四种收尾。
+- 27 → 68：扩展 hook 返回的 boot args 不过滤（API 的 `extraBootArgs` 才过白名单）；非 ublk rootfs 分支不可达且会 copy tools 盘链接。
+- 28：Executor 默认以 envd 默认用户运行，只有 `with_root_user()` 才用 root；所有启动都发 `/init`，不只 resume。
+- 28 → 13 / 17：代理路由在 `/init` 之后才发布。
+- 28 → 65：envd 随 tools 盘分发 vs e2b 随模板分发。
+- 28 → 68：`[envd] version` 只声明不核对；H2 探测结果不跨通道缓存；宿主会改写 guest `/etc/passwd`。
+- 29 → 13：宿主 FORWARD 策略是数据面鉴权的前提（推论：宿主 FORWARD 默认放行时外部主机可直连 guest 端口）。
+- 29 → 59：sysctl 由 `--setup-host` 写、普通启动只检查，ip_forward ≠ 1 拒绝启动；槽位容量要算上网络池与进程池的占用。
+- 29 / 30 → 68：`networking.md` 的「/31 per slot」与「移除策略时关闭被跟踪连接」均与代码不符；`host_ns_fd` 注释写 `/proc/1/ns/net`；`Slot::cleanup()` 注释仍说删 MASQUERADE；残留槽位位只占不清；回池不 teardown 代理连接、不清 conntrack 与邻居表；代理每连接两线程。
+- 31 → 16：讲 `extra_drives_in_snapshot`，卷 drive id 就是卷 ID。
+- 31 → 68：槽位数在首次冷启动时固化，调大 `max_volume_count` 后 API 放行的卷数可超旧模板槽位；init 挂载失败只 WARN、热插失败则创建失败；`validate_mount_path` 注释示例不成立。
+- 32：进程池「只接 resume」的原因只能写推论（冷启动同样需要未配置进程）。
+- 32 → 41：引用 32 §4 的占位镜像与 `BLKFLSBUF`。
+- 32 → 68：`[pool.network] enabled=false` 不阻止缓存；`[pool.network] startup_prewarm` 无读取者；daemon 侧 `startup_prewarm` 名不副实；warm-pool 模块文档提到的「进程退出 hook」不存在；网络池 / 进程池补充失败不退避（推论）。
+- 33 → 25 / 27：stop hook 位于释放块设备之后、释放网络槽位之前；snapshot / fork 原地捕获不触发任何 hook。
+- 33 → 32：扩展在 netns 里的改动随预热槽位残留（推论）。
+- 33 → 52：模板构建 VM 也触发 hook，扩展会看到 API 查不到的 sandboxId。
+- 33 → 68：`default.toml` 称 `timeout_ms` 不管 stop，代码里 stop 同样受限；显式 `{}` 会覆盖快照继承的参数（与「absent 等价 {}」契约不符）；注释「stop 恰好送达一次」实为恰好发出一次。
+- 34：Hybrid RW 口径定为「与上游 main 同位同义，ReuseZero 为 Rust 版独有」，05 / 35 / 36 / 37 / 39 / 73 统一；premerged 清理按写入时间淘汰（非 LRU）；上游未定义 bit3。
+- 35 → 39：节点块缓存存的是压缩字节；`CachedFile::evict_range` 退化为整文件驱逐。
+- 35 → 73：上游 flags bit5（压缩 index）有定义无使用；MINI_LZO 不支持。
+- 35 → 68：AgentENV 发布 ZFile 时 `verify=0`（数据块无 CRC）；解压器报错不重试；`level` 不被读取；本地与远端两套 digest、重封装后 uuid 为 nil。
+- 36 / 37 → 41 / 46：缺省布局 hybridLogStructured，`close_seal` 不返回增量 digest，需发布时另算。
+- 36：三种布局的写都持 index 写锁做完物理 I/O（单镜像写串行）；只有读侧「持锁到 I/O 结束」是 Hybrid 独有。
+- 36 → 68：Sparse discard 的零映射只在内存（推论：重开后可能读出 lower 旧内容）；group commit 生产中从未打开；upper 索引重放两遍；每次写后都刷新大小。
+- 37：Terminal 时实际是 recover_and_publish 后释放卷，不是「标记不可安全恢复」；客户端把 RPC 超时（360 s）也当 Terminal。
+- 37 → 68：live 栈不压缩，推论约第 256 次 restack 失败且为 Terminal；层数预算无配置项；`RestackSnapshotTerminalFailure` 两份定义。
+- 38 → 39：`set_switch_file()` 除测试外无调用者，SwitchFile 现在只做 ZFile 识别，「后台下载完成后切本地」不成立（修正 OUTLINE 38 / 39 与调研笔记 C）。
+- 38 → 58：P2P 门面可达时仓库 blob 走 Direct 模式、不经节点块缓存；uuid 门面也不经缓存。
+- 38 → 68：`enable_acceleration()` 在 async 路径同步 `connect_timeout`（推论：门面不可达时每次开镜像等最多 1 s）；OSS 10,000 分片上限无前置检查；「每 5 分钟刷新 HTTP client」只用于上传路径。
