@@ -149,3 +149,20 @@
 - 53 → 68：builder 模板无 GC；种子与工作卷的 managed 层不回收。
 - 54 → 56 / 57：HA 引用 54 §3.4、状态推导引用 54 §4；`default.toml` 写死 `service_instance_id = "service-instance-a"`，Compose 与 k8s 都不覆盖，`UnregisterNode` 防误注销校验失效。
 - 54 → 68：scheduler gRPC 明文无认证；CI 不校验 proto 生成物；`schedule_hint.go` 手工镜像 openapi 字段；`services/README.md` 称 gateway 调 P2P RPC（实际不调）、写 Go 1.21+（`go.mod` 为 1.25.0）；08 条所说的 README「Limitations」节在 v0.2.3 中找不到，审校复核。
+- 51 → 16 / 31：卷封存早于内存捕获、期间源沙箱仍在运行，子沙箱的卷与内存可能来自不同时刻（推论）。
+- 51 → 68：fork 捕获目录只在整棵树消失时才回收（长寿源沙箱下累积）；子沙箱注册无关闭检查点与容量检查（一次最多加 100 个）；`FirecrackerSandbox::pause()` 文档注释的根目录层级与代码不符。
+- 52 → 15 / 18：USER 不影响 RUN 的执行身份（推论；e2b infra 的 RUN 可逐步指定用户）。
+- 52 → 46：Waiting 记录里的资源与 base 模板的 cpu / mem 一致性（推论：base 模板规格非默认时构建失败）。
+- 52 → 68：RUN 依赖 bash（`/bin/bash -lc`）；构建日志每 1 s 整体重写；推论：基于模板的构建未覆盖 startup 时继承的 start_cmd 会再启动一次；构建 VM 用缺省出站策略（可上网）；SIGKILL 后构建 VM 进程与目录残留。
+- 45 → 58：`oci-layer/v1` 键，以及「先记 P2P 键、再发布」的顺序。
+- 45 → 39：确认 native 层的 `dir` 指向 image-cache `commits/`。
+- 45 → 68：schema 版本不符时 image-cache RocksDB 整库清空、hold 丢失；zstd 层先经 `zstd -dc` 管道解压（绕工具缺陷）；同镜像转换锁只在进程内；推论：P2P 复用转换层依赖 `overlaybd-apply` 输出逐字节确定、regctl 复制整个镜像（已命中的层也下载）。
+- 46 → 47：`committed_record_unlocked()` 在记录不存在时直接造 Ready 记录；描述符信任。
+- 46 → 49：hydrate 与 `CacheArtifactLease`。
+- 46 → 68：`mark_committed()` 不检查原状态，Error 记录会直接变 Ready；外部层缺 digest 时回退 `external:{index}`；`persistence-artifact-inventory.md` 三处与代码不符（模板构建暂存位置、记录文件名、image-cache「没有统一 GC」）。
+- 59 → 10：§2.2 能力委派条件改为「在 I、P、E 中」（`is_delegable` 要求三者）。
+- 59：`--setup-only` 缺系统包时会经 `sudo` 安装，并非严格无特权；`--setup-host` 不设 `ublks_max`、不改 `/dev/kvm` 权限；版本 manifest 以 `include_str!` 编进二进制。
+- 59 / 60 → 25：node 以 root 运行（Compose 与 DaemonSet 的特权容器）时，FC 进程拿到完整能力集 —— 「FC 不带能力」在容器部署下不成立。
+- 60 → 56：`publishNotReadyAddresses` 配合按 `Serving` 过滤，让终止中的 Pod 成为 lingering。
+- 60 → 08 / 47：k8s base 清单用默认配置，每个节点各有自己的快照仓库、快照不共享；也没有生产用的 token seed（只有 local-dev overlay 有）。
+- 59 / 60 → 68：`docker-setup.sh` 与 `--setup-host` 都写 `/etc/sysctl.d/99-aenv.conf`，只有后者含 `ip_forward`，先后运行可能丢掉转发；ublk-daemon 不为子进程清 ambient（推论：`overlaybd-resize` 带 CAP_SYS_ADMIN）；`OverlaybdInstalledRelease.digest` 恒为 None；`deps/` 只增不减；k8s 无共享仓库 / Redis / query-only；Compose 无 `stop_grace_period`；不经 `run.sh` 直接 apply 会得到空 key 而启动失败；k8s hostPath 盖住镜像里预烘焙的依赖；推论：Dockerfile 的 `RUSTUP_TOOLCHAIN=${RUST_VERSION}` 无对应 `ARG`。
