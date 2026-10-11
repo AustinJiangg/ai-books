@@ -63,6 +63,24 @@ README 版本行改为 v0.1.0 并补版本表、打 tag `agentenv-v0.1.0` 发 Re
 最终回复给出每篇的交付说明（按 WRITER-BRIEF「交付」第 4 条）。
 ```
 
+## 基线升级待办
+
+决定（2026-10-11）：全书继续以 AgentENV `v0.2.3` 为基线，不写 main 上未发版的改动；上游发布下一个 release 后再统一升级。
+升级时：`git -C .src/agentenv fetch --tags && git -C .src/agentenv diff --stat v0.2.3 <新tag>`，逐项更新受影响篇目，
+同时更新 STYLE.md 第二节、OUTLINE.md 第二节、WRITER-BRIEF 与 `tools/fetch-sources.sh` 里的 tag 与 commit，并检查 `config/deps_manifest.toml` 的 Firecracker 版本是否变化。
+
+截至 2026-10-10，main 在 v0.2.3 之后已有 11 个提交（44 文件，+2657 −174），预计进入下一版：
+
+| 改动 | 提交 | 受影响篇目 |
+|---|---|---|
+| 新增沙箱日志 API（`src/sandbox/logs.rs`、`openapi.yml`、`envd.rs`） | `34cdc80` | 14、18、28、72 |
+| overlaybd 块缓存：回收被打开条目占住的容量 | `3bc6329` | 39 |
+| ublk 块设备默认 I/O 调度器设为 none | `c0c4ad0` | 41、59 |
+| ublk-daemon 关闭时并发停止设备 | `e006de0` | 41 |
+| 心跳连接超时与失败原因日志 | `854cb14`、`5843159` | 57 |
+| aenv CLI 断线恢复时保留排队输入 | `5d30259`、`3d9989b` | 62 |
+| clippy、grpc 依赖、CI | `00351e2`、`39b1c90`、`e668fdb` | 无 |
+
 ## 约定回顾
 
 - 书里与简报里不出现任何本机路径；代码基线只在 `.src/`，正文引用路径相对于各自仓库根。
