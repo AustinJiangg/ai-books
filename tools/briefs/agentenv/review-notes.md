@@ -185,3 +185,9 @@
 - 56：query-only 副本只能撑到绑定过期（缺省 30 s）—— Redis 绑定只由 primary 续期、心跳只发 primary；54 / 57 讲 HA 时与此一致。
 - 56 → 10：「注销能让 gateway 停止往本节点送新请求」在静态发现模式下不成立。
 - 56 → 68：策略名拼错静默退回 round_robin；不在集群内运行时 k8s 发现永久停止而 health 仍报 SERVING；README 漏列三项 including_paused 限额；推论：内存版过期绑定不回收、静态模式下关闭中的节点仍被调度。
+- 41：扩容目标非 GiB 对齐时直接 InvalidRequest（不是截断）；`delete` 只查 managed 表（修正调研笔记 C）；`overlaybd-resize` 是否写 discard 记录无法核实（34 → 41 条停在推论）。41 汉字 5136，审校时略删。
+- 41 → 32：§4「任何一步失败都删除设备」对清页缓存一步不成立。
+- 41 → 68：`wait_for_ublk_dev()` 在 async handler 里 `std::thread::sleep` 最长约 30 s；客户端超时不取消 daemon 处理，可能留下节点不知道的 active 设备（shared 计数永不归零）；`prepare_overlaybd_device()` swap / 改容量失败时池设备既不回池也不拆；`update_size` / `get_features` RPC 无调用者；每次 acquire 先完整打开一次镜像；daemon 死后 `is_available()` 仍为真；metrics 监听 `0.0.0.0:9103` 无鉴权；`architecture.md` 称设备号在 daemon 里分配（实为内核）、把 `/dev/ublkcN` 叫 control 设备。
+- 42：virtio 队列内存在 `initialize()` 时被标脏且位图从不重置，所以每次查询都包含它；「COW 页即脏页」按 03 §3.2 写成事实。
+- 42 → 44：引用 42 §2.4、§2.5，与 uffd-core 的同一套 HVA 技巧对照。
+- 42 → 68：同一运行中 VM 被反复捕获时层越来越大；内存设备无常驻引用，页缓存随最后一台沙箱消失；`architecture.md` 的「dirty/present ranges」与缺省路径不符。
