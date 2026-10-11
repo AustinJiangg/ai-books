@@ -77,8 +77,8 @@ rustls 无法自动选出缺省值，依赖缺省值的连接（`aenv build` 的
 
 ### 3.1 为什么是 Connect
 
-guest 里的 envd 来自 e2b-dev/infra，用 ConnectRPC 框架实现，同时接受 gRPC、gRPC-Web 与 Connect 三种线协议。
-`grpc/mod.rs` 的模块注释给出了选择：原生 gRPC 要求代理到 envd 之间走 HTTP/2，而 AgentENV 的反向代理对上游只说 HTTP/1.1；
+guest 里的 envd 来自 e2b-dev/infra，用 ConnectRPC 框架实现，同一个 handler 接受 gRPC、gRPC-Web 与 Connect 三种线协议。
+`grpc/mod.rs` 的模块注释给出了选择：原生 gRPC 要求代理到 envd 之间走 HTTP/2，而 AgentENV 的反向代理不提供这一点；
 Connect 协议对 HTTP/1.1 友好 —— unary 调用是一个普通的 POST，body 是 protobuf；server streaming 是一个请求加一串分块传输的 envelope，能原样穿过代理。
 
 `Transport` 实现了这三种调用形态：
@@ -89,7 +89,7 @@ Connect 协议对 HTTP/1.1 友好 —— unary 调用是一个普通的 POST，b
 
 envelope 是 5 字节头加负载：1 字节标志、4 字节大端长度。标志 `0x00` 表示数据，`0x02` 表示流结束，结束帧的负载是 JSON，可能带错误码。
 `try_decode_envelope()` 在缓冲区里攒够一整帧再解码，`envelope_stream()` 用 `futures::stream::unfold` 把字节流转成消息流。
-双向流（bidi streaming）在 HTTP/1.1 上无法实现，这也是终端输入走单独的 client streaming 调用 `StreamInput`、输出走 server streaming 的原因。
+双向流（bidi streaming）需要全双工的 HTTP/2，在 HTTP/1.1 上无法实现；client streaming 是半双工的，服务端读完整个分块请求体之后才回应，HTTP/1.1 能承载。终端输入因此走单独的 client streaming 调用 `StreamInput`，输出走 server streaming。
 
 ### 3.2 路由与凭据
 
@@ -257,9 +257,9 @@ CLI 在请求体里显式写 `secure: true` 弥补 v1 缺省非 secure 的差异
 
 ## 8. 与 e2b infra 的对照
 
-e2b 的官方 CLI 与 SDK 访问 envd 时走 client-proxy，后者对上游支持 HTTP/2，SDK 可以直接使用 Connect 或 gRPC 的流式调用。
-AgentENV 的代理只对上游说 HTTP/1.1，`aenv` 因此固定使用 Connect 协议，把双向流拆成一条 client stream 加一条 server stream，并用 keepalive 对抗代理的空闲超时。
-推论：E2B SDK 在 AgentENV 上能工作，是因为它在浏览器兼容的考虑下同样可以使用 Connect 协议（[第 18 篇](18-e2b-compatibility.md)）。
+据 e2b 手册的考察，e2b 的 JS 与 Python SDK 向 envd 送 PTY 输入用的是 unary 的 `SendInput`，生成的 `StreamInput` 存根没有被业务代码使用，因而没有长期挂着的请求体。
+`aenv` 选择了长期存在的 `StreamInput` 客户端流，换来输入的顺序保证与更少的请求数，代价是要用 10 s 的 keepalive 维持这条流、在它被切断时重建，并在恢复期间退回 unary 的 `SendInput`。
+两边都用 Connect 协议、都能在 HTTP/1.1 上工作，这是 E2B SDK 能直接访问 AgentENV 沙箱里 envd 的前提之一（[第 18 篇](18-e2b-compatibility.md)）。
 
 ---
 
@@ -279,5 +279,5 @@ AgentENV 的代理只对上游说 HTTP/1.1，`aenv` 因此固定使用 Connect �
 
 - 下一篇：[第 63 篇 · 测试与基准](63-testing-and-benchmarks.md)。
 - 服务端一侧：构建会话与隧道见 [第 15 篇](15-template-build-api.md)，代理的超时与 fallback 见 [第 17 篇](17-reverse-proxy.md)，envd 的来源与就绪见 [第 28 篇](28-mmds-and-envd.md)，BuildKit 在 microVM 里的运行见 [第 53 篇](53-buildkit-in-microvm.md)。
-- e2b infra 的 envd 与 client-proxy：[e2b 手册第 16 篇](../e2b-infra/16-client-proxy.md)。
+- e2b infra 的 envd 协议与 SDK 侧的 Connect 客户端：[e2b 手册第 48 篇](../e2b-infra/48-envd-overview.md)、[e2b 手册第 52 篇](../e2b-infra/52-envd-legacy-and-sdk-compat.md)。
 - Connect 协议规范：<https://connectrpc.com/docs/protocol/>。

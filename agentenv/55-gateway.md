@@ -139,7 +139,7 @@ flowchart LR
 
 上表与节点 `src/api/openapi.yml` 里所有带 `{sandboxID}` 的路径逐条对应，v0.2.3 没有遗漏。但这种对应只靠人工维护：
 节点新增一个按 sandbox 路由的端点而 gateway 没有同步，这个请求就会落到第 6 类，被 `Schedule` 送到任意节点。
-推论：在 N 个节点的集群里，它大约只有 1/N 的机会碰到正确的节点，其余时候得到那台节点的 404，而且这个错误在单节点测试里看不出来。
+推论：在 N 个节点的集群里，它大约只有 1/N 的机会碰到正确的节点，其余时候得到那台节点的 404，单节点测试发现不了。
 proto 契约一侧的同类耦合在[第 54 篇](54-control-plane-overview.md)讨论。
 
 显式 `/proxy` 前缀还有一处行为值得注意。它被判为数据面，路由来源是 header，而 `upstreamTargetPath()` 对 header 与 host 两类来源**无条件**在路径前加 `/proxy`。
@@ -203,7 +203,6 @@ gateway 只有一个可配置的超时 `request_timeout`。`config.go` 的 `defa
 
 - **长连接请求**用客户端连接自己的上下文，不受 `request_timeout` 约束；`FlushInterval` 设为 −1，每次写都立即刷出。
   `isWebSocketRequest()` 认 `Upgrade: websocket` 加 `Connection: upgrade`；`isStreamingRequest()` 认 `application/grpc*`、`application/connect+*`、`Connect-Protocol-Version` 头、`Accept: text/event-stream` 与 `TE: trailers`。
-  envd 的进程与终端接口是 Connect 协议，它们落在这一类。
 - **其余请求**用 `routingCtx`：从进入 `handleProxy()` 算起，选节点、连接上游、上传请求体、等待响应、下载响应体，**全部**要在 `request_timeout` 内完成，超时得到 504 `upstream timeout`（测试 `TestProxyRequestContextDeadlineReturnsGatewayTimeout`）。
 
 这与节点代理的做法不同。节点把超时分成「上传期间按数据帧重置的空闲计时」与「上传结束后等响应头」两段，响应头之后不再计时（[第 17 篇 §5.2](17-reverse-proxy.md#52-两阶段超时)）。

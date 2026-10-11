@@ -114,7 +114,10 @@ scheduler 可以把两组字段合起来实现「含暂停」的容量限制。
 所以一个 scheduler 可以服务多个逻辑集群；但绑定表与 `Schedule` 不看它，放置时所有发现到的节点都是候选。推论：真正需要隔离的集群应当各用一个 scheduler。
 
 **`UnregisterNode` 带 `service_instance_id`。** scheduler 只在它与观测记录里的值一致时才注销（`UnregisterObserved()`，不一致返回 FailedPrecondition）。
-同一个 `node_id` 的节点重启后会换一个实例 ID 并先发心跳；如果旧实例的注销请求迟到，它不会把新实例的绑定清掉。
+设计意图是：同一个 `node_id` 的节点重启后换一个实例 ID 并先发心跳，迟到的旧实例注销请求不会清掉新实例的绑定。
+这个保护依赖实例 ID 真的每次不同。`src/identity.rs` 的 `NodeIdentity::from_config()` 在未配置时用 `Uuid::now_v7()` 生成，
+但 `config/default.toml` 的 `[node_identity]` 写死了 `service_instance_id = "service-instance-a"`，仓库里的 Compose 与 Kubernetes 部署也没有用 `AENV_SERVICE_INSTANCE_ID` 覆盖它。
+推论：按缺省配置部署时，所有节点、每次重启都报同一个实例 ID，这道校验形同虚设。
 
 ### 3.3 错误码约定
 
@@ -244,7 +247,7 @@ AgentENV 反过来，由节点推送心跳、scheduler 只做被动的服务端�
 - 三个角色中 scheduler 完全被动：gateway 调它的 6 个 RPC，节点调另外 7 个；scheduler 从不调用节点，节点之间只有 P2P 直连。
 - 13 个 RPC 分为调度与发现、绑定、观测、观测查询、P2P、生命周期；`ReportSandboxEvent` 在 scheduler 端是空实现。
 - `HeartbeatResponse` 是 scheduler 到节点唯一的下行通道，目前只承载 CPU 配置交集。
-- `RecordAssignment` 只接受发现列表里的节点；`UnregisterNode` 用 `service_instance_id` 防止旧实例误注销新实例。
+- `RecordAssignment` 只接受发现列表里的节点；`UnregisterNode` 用 `service_instance_id` 防止旧实例误注销新实例，但 `default.toml` 写死了实例 ID，使这道校验在缺省部署下失效。
 - proto 里的节点状态推导表是意图：「从未心跳 → CONNECTING」没有对应代码，`Schedule` 也不按推导状态过滤。
 - Go 生成代码入库、CI 不校验是否最新；Rust 由 `build.rs` 每次构建生成且只生成客户端，两侧可能静默不一致。
 - gateway 路径模式、hint 字段镜像、路由头名、绑定键空间与六项全集群一致的配置，都在契约之外靠约定维持。
