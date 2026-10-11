@@ -154,8 +154,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 08 | `08-system-architecture.md` | 系统架构：单节点与多节点 | ○ |
-| 09 | `09-sandbox-lifecycle-walkthrough.md` | 一个沙箱的一生 | ○ |
+| 08 | `08-system-architecture.md` | 系统架构：单节点与多节点 | ● |
+| 09 | `09-sandbox-lifecycle-walkthrough.md` | 一个沙箱的一生 | ● |
 | 10 | `10-node-process-and-object-model.md` | 节点进程：启动、关闭与对象模型 | ○ |
 | 11 | `11-configuration.md` | 配置体系 | ○ |
 
