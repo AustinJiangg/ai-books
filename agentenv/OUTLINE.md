@@ -445,8 +445,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 38 | `38-virtualfile-chain-and-remote-io.md` | VirtualFile 装饰器链与远端 I/O 运行时 | ● |
 | 39 | `39-block-cache-and-background-download.md` | 节点块缓存与后台下载 | ● |
 | 40 | `40-ublk-library.md` | ublk 库 | ● |
-| 41 | `41-ublk-daemon.md` | ublk-daemon | ○ |
-| 42 | `42-memory-snapshot-over-ublk.md` | 内存快照：脏页成层与共享只读设备 | ○ |
+| 41 | `41-ublk-daemon.md` | ublk-daemon | ● |
+| 42 | `42-memory-snapshot-over-ublk.md` | 内存快照：脏页成层与共享只读设备 | ● |
 | 43 | `43-startup-pack-and-prefetch.md` | 启动加速：trace prefetch 与 startup pack | ● |
 | 44 | `44-uffd-alternative.md` | uffd 方案与对比 | ● |
 
