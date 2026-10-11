@@ -298,7 +298,7 @@ Pausing、Paused、Snapshotting、Forking → `paused`；其余（Creating、Res
 
 过渡态的沙箱在不过滤的列表里出现，在按任一状态过滤的列表里都不出现。`x-total-running` 头同样只数内部 Running。
 v1 的 `sandboxes_get()` 固定过滤 `[Running]`，所以 v1 列表也看不到过渡态。
-两者都经 `list_sandboxes_filtered()` 去掉 `template_builder` 为真的记录，构建用的 VM 不出现在用户列表里（[第 15 篇](15-template-build-api.md)）。
+两者都经 `list_sandboxes_filtered()` 去掉 `template_builder` 为真的记录，Dockerfile 构建用的 builder VM 不出现在用户列表里（[第 15 篇](15-template-build-api.md)）。
 
 其它过滤条件：`metadata` 是 URL 编码的 `k=v&k2=v2`，由 `parse_metadata_filter()` 解析，空键或空值被丢弃，要求全部键值匹配；
 `startedAfter` 按创建时间；`template` 同时匹配快照 ID 与别名。
