@@ -188,13 +188,13 @@ sequenceDiagram
     cli->>api: POST /v3/templates
     cli->>api: PUT builder
     api->>sess: reserve 检查上限
-    api->>repo: try_start_build 与写 journal
+    api->>repo: try_start_build
     api-->>cli: 202 imageName
     api->>vm: 启动 builder 与 buildkitd
     api->>sess: 状态置为 Ready
     cli->>api: GET builder 升级 WebSocket
     api->>vm: 桥接到 buildkitd 端口
-    cli->>vm: buildctl solve 经隧道
+    cli-->>vm: buildctl solve 经隧道
     api->>vm: 等 history 并读镜像内容
     api->>repo: 转换镜像并发布模板
     cli->>api: 轮询 status 至 ready
