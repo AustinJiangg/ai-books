@@ -69,7 +69,7 @@
 1. 把文档写到 `agentenv/<你的文件名>`。只写分配给你的文件，不改别的文件（OUTLINE / README / STYLE / review-notes 都不要动）。不要 git commit。
 2. 写完后自检：
    ```bash
-   python3 tools/mdlinks.py agentenv/<你的文件名>
+   python3 tools/mdlinks.py agentenv        # 传整个目录，才能核对指向其它篇的锚点
    node tools/mdmermaid.mjs agentenv/<你的文件名>
    tools/figcheck.sh --png .src/figs/<你的篇号> agentenv/<你的文件名>
    ```

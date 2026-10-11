@@ -95,3 +95,9 @@
 - 38 → 68：`enable_acceleration()` 在 async 路径同步 `connect_timeout`（推论：门面不可达时每次开镜像等最多 1 s）；OSS 10,000 分片上限无前置检查；「每 5 分钟刷新 HTTP client」只用于上传路径。
 - 34 → 36 / 41（推论，需核实）：上游 RW 层 `discard()` 写的 zeroed 映射 moffset 是当时数据 EOF 的占位值；Rust 版重放 RW 索引时保留它并当作 backed zero，之后 `ReuseZero` 可能覆盖上游后来追加的数据（反方向安全）。36 讲 ReuseZero 时引用；41 核实 `overlaybd-resize` 是否写 discard 记录。
 - 34 → 68：RW 重放保留 zeroed 映射 moffset，与上游占位语义不一致。
+- 16 → 31：恢复时的槽位顺序；请求带空 `volumeMounts` 时 guest 内存仍记着原挂载（推论）。
+- 16 → 46 / 47：managed-layers 不回收是「源卷删除后克隆仍可用」的前提，口径一致。
+- 16 → 68：`pending-` 孤儿预留无回收、卷永久 409 且 API 不暴露持有者；`volume-restore-*` 卷沙箱删除后只释放不删除；`fromVolume` 与 `image` 同给时 `image` 静默忽略；`fromVolume` 要求大小相等而 `sizeMB` 缺省 64 GiB；删卷竞态映射 500；快照别名冲突返回 400（spec 无 409）；spec 无快照删除端点（只能经 `DELETE /templates/{id}`，且不检查来源）。
+- 17 → 23：代理流量不续期 TTL；与自动恢复 `EnsureMinimum(300 s)` 联动。
+- 17 → 55：确认 gateway 把 Host 路由转成头再发给节点。
+- 17 → 68：恢复中并发到达的请求得 410 而不等待；`x-forwarded-proto` 写死 `http`；带连字符首 label 的主机名一律截为数据面；格式错的 WebSocket 升级先触发自动恢复再 400；转发阶段 502 / 504 空 body；响应头到达后无超时。
