@@ -86,7 +86,7 @@ flowchart TB
 `UblkDeviceManager::init_global()`（`src/sandbox/ublk/device.rs`）在节点启动时调用 `UblkDaemonClient::new()`（`storage/ublk-daemon/src/client.rs`），后者依次做五件事：
 
 1. **处理旧 socket。** `wait_for_socket_available()`：socket 文件不存在就继续；存在但 connect 失败，说明是上一次留下的，删掉；
-   能 connect 上，说明另一个 daemon 还活着，每 100 ms 重试，30 s 后报错。推论：这段等待覆盖的是 `server` 快速重启时旧 daemon 仍在关闭设备的窗口。
+   能 connect 上，说明另一个 daemon 还活着，每 100 ms 重试，30 s 后报错（推论：覆盖 `server` 快速重启时旧 daemon 仍在拆设备的窗口）。
 2. **委派能力。** `configure_daemon_capabilities()` 先确认 `server` 自己的有效集里有 `CAP_SYS_ADMIN`，否则拒绝 spawn；
    随后在 `pre_exec` 里调用 `linux_cap::configure_current_process_capabilities()`：清空 ambient 集，把 permitted、effective、inheritable 都设成只有 `CAP_SYS_ADMIN`，再把它升进 ambient 集，
    使这一项能力跨过 exec 留下来。推论（与[第 25 篇](25-backend-and-firecracker-process.md)对 Firecracker 的讨论相同）：「只有一项能力」只在 `server` 以非 root 身份运行时成立，root 身份 exec 时内核会重新授予 bounding 集里的能力。
@@ -188,9 +188,8 @@ daemon 里并存两套互不相交的设备表（`storage/ublk-daemon/src/server
 每个请求都带一份 overlaybd 全局配置路径。`ImageServiceCache::get_or_create()` 以规范化后的路径为 key 懒建 `ImageService`，
 创建期间一直持有异步锁，防止并发请求为同一份配置建出两个带后台任务的实例。默认的那一份（`--global-config`，即 rootfs 用的配置）在构造时预先放进去。
 
-一个节点生成四份全局配置（`src/setup/deps.rs` 的 `write_generated_overlaybd_global_configs()`）：rootfs、内存、离线转换、扩容，四者的 `cacheDir` 两两不同。
-daemon 用到其中三份：rootfs 与内存经 `ImageServiceCache` 各对应一个 `ImageService`，各有自己的远端 I/O runtime 与块缓存（[第 38 篇 §4](38-virtualfile-chain-and-remote-io.md#4-多-runtime-陷阱)、[第 39 篇](39-block-cache-and-background-download.md)）；
-扩容配置只交给 `overlaybd-resize` 子进程（§5）。推论：内存镜像单独一份缓存目录与下载参数，是因为它的访问模式（缺页驱动、只读、可能被预取）与 rootfs 不同。
+节点生成四份全局配置（`src/setup/deps.rs` 的 `write_generated_overlaybd_global_configs()`）：rootfs、内存、离线转换、扩容，`cacheDir` 两两不同。
+daemon 用到三份：rootfs 与内存各对应一个 `ImageService`，各有远端 I/O runtime 与块缓存（[第 38 篇 §4](38-virtualfile-chain-and-remote-io.md#4-多-runtime-陷阱)、[第 39 篇](39-block-cache-and-background-download.md)）；扩容配置只交给 `overlaybd-resize` 子进程（§5）。
 
 ### 4.3 一台池化设备的流转
 
