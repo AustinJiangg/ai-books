@@ -31,3 +31,9 @@
 - 11 → 41 / 68（需核实）：ublk-daemon 用自己的 `DaemonTomlConfig` 再读同一 TOML，env 只认 `AENV_HOME_PATH` / `AENV_DEPS_PATH`；daemon `DEFAULT_DEPS_PATH = ./env` 与 server 的 `$AENV_HOME/deps` 不同，`default.toml` 注释掉 `deps_path`，于是 daemon 去「配置目录/env/overlaybd/bin/」找 `overlaybd-resize`（推论：可能致冷启动 resize 失败）；`startup_prewarm` server 侧默认 true、daemon 侧按 `UBLK_F_UPDATE_SIZE` 决定。
 - 11 → 68：配置文件缺失不报错、静默用代码默认值；`capacity_gb` 代码无上限 vs toml 100；`remote_blocks.max_size_gb` 代码 10 vs toml / `reference.md` 100；`node_id` toml 写死 `node-a` vs 代码回退主机名；`reference.md` 的 `boot_args` 默认写的是文件值。
 - 11 → 71：键表同时列「代码默认」与「default.toml」两列。
+- 12 → 17：Host 路由的准确说法是「分类器在路由匹配之后、handler 之前把请求截走」（axum `layer` 在匹配后运行），不是「优先于路由匹配」。
+- 12 → 68：`fix_duplicate_auth_trait` 逐字正则依赖生成器格式；CI 无「重新生成并比较」检查；生成的 `new()` 中 `ApiKeyAuthHeader` 约束重复四次；500 响应原样返回内部错误链；`/nodes` 恒为 Ready；`cluster_id` 解析失败降级为 nil UUID 而非拒绝启动。
+- 13 → 14：`From<SandboxState>` 把 Snapshotting、Forking 也折叠成 paused，14 核实并写入。
+- 13 → 17：数据面鉴权直接引用 13 §4 的决策树，不重复。
+- 13 → 62：`aenv` 保存凭据先 `fs::write` 再 chmod 0600，有按 umask 可读的窗口。
+- 13 → 68：token 不能单独吊销；显式 seed 被改无检测、旧 token 静默失效；集群 seed 不一致只 warn；非 secure 沙箱 envd 只靠 UUID，v1 创建缺省非 secure；带 `sandbox_id` 的控制面请求多一次元数据读、key 检查两次。
