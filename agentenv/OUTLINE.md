@@ -708,8 +708,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 60 | `60-deployment.md` | 单节点安装、Compose 与 Kubernetes | ● |
 | 61 | `61-pvm.md` | PVM：没有嵌套虚拟化时 | ● |
 | 62 | `62-aenv-cli.md` | aenv CLI | ● |
-| 63 | `63-testing-and-benchmarks.md` | 测试与基准 | ○ |
-| 64 | `64-build-codegen-release.md` | 构建、代码生成与发布 | ○ |
+| 63 | `63-testing-and-benchmarks.md` | 测试与基准 | ● |
+| 64 | `64-build-codegen-release.md` | 构建、代码生成与发布 | ● |
 
 **59 · 宿主准备、依赖供给与权限模型**
 - 三种模式的分工：`--setup-only`（无特权下载依赖）、`--setup-host`（root 一次性配置宿主：KVM、ublk、udev、sysctl）、运行时 `ensure_environment()`（只校验）
