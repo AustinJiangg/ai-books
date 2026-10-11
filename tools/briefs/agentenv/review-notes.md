@@ -121,3 +121,8 @@
 - 40 → 41：关闭顺序与 GET_FEATURES 降级按 40 §3。
 - 40 → 43：startup 槽位 = max(file slots / 4, 1)；后台任务在 chunk 边界让路。
 - 40 → 68：`uvm-ublk` 遗留 CLI；`spawn_data_io_ring_worker` 无调用者；`zero_copy` 日志检查的位不对；EINTR 两处 FIXME；`UserBuffer` 的 fixed 注册未被使用；`architecture.md` 的「zero-copy, kernel 6.8+」误导。
+
+## 第 3 批交付说明中的建议
+
+- 07：仓库没有 `[lints]` 表或 `clippy.toml`，clippy 规则来自 `make clippy`（`-D warnings`），修正 OUTLINE 05/07 的说法；64 讲 CI 时引用这一口径。
+- 06 / 07 → 68：`build_restore_script()` 的 `debug_assert` 实际要求表名按字典序（比注释更严）；`SAFETY` 注释无工具强制（约 50 处 SAFETY / 117 处 unsafe）；`uffd-core` 不在 workspace、不受 clippy 检查。
