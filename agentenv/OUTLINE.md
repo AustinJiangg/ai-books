@@ -279,8 +279,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 20 | `20-launch-plan-and-rollback.md` | launch plan 与失败回滚 | ● |
 | 21 | `21-deletion-and-volume-capture.md` | 删除与卷的捕获提交 | ● |
 | 22 | `22-persistence-across-restarts.md` | 跨重启持久化 | ● |
-| 23 | `23-auto-eviction-and-ttl.md` | 自动驱逐与 TTL | ○ |
-| 24 | `24-metrics-and-events.md` | 指标与生命周期事件 | ○ |
+| 23 | `23-auto-eviction-and-ttl.md` | 自动驱逐与 TTL | ● |
+| 24 | `24-metrics-and-events.md` | 指标与生命周期事件 | ● |
 
 **19 · 状态机与并发控制**
 - 八个状态：Creating、Resuming、Running、Snapshotting、Forking、Pausing、Paused、Killing；没有 Killed（删除即从 store 移除，watch 发 None）
