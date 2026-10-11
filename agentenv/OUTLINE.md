@@ -339,8 +339,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 25 | `25-backend-and-firecracker-process.md` | 后端抽象与 Firecracker 进程 | ○ |
-| 26 | `26-sandbox-block-devices.md` | 沙箱的块设备：tools 盘、rootfs 与内存设备 | ○ |
+| 25 | `25-backend-and-firecracker-process.md` | 后端抽象与 Firecracker 进程 | ● |
+| 26 | `26-sandbox-block-devices.md` | 沙箱的块设备：tools 盘、rootfs 与内存设备 | ● |
 | 27 | `27-start-pause-resume-sequences.md` | 启动、暂停与恢复的 Firecracker 调用序列 | ● |
 | 28 | `28-mmds-and-envd.md` | MMDS 与 envd | ● |
 | 29 | `29-network-slots.md` | 网络（一）：槽位、命名空间与地址计划 | ● |
@@ -443,8 +443,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 36 | `36-read-write-paths-and-rw-layouts.md` | 读写路径与三种可写布局 | ● |
 | 37 | `37-seal-restack-compact.md` | 封存、restack 与 compact | ● |
 | 38 | `38-virtualfile-chain-and-remote-io.md` | VirtualFile 装饰器链与远端 I/O 运行时 | ● |
-| 39 | `39-block-cache-and-background-download.md` | 节点块缓存与后台下载 | ○ |
-| 40 | `40-ublk-library.md` | ublk 库 | ○ |
+| 39 | `39-block-cache-and-background-download.md` | 节点块缓存与后台下载 | ● |
+| 40 | `40-ublk-library.md` | ublk 库 | ● |
 | 41 | `41-ublk-daemon.md` | ublk-daemon | ○ |
 | 42 | `42-memory-snapshot-over-ublk.md` | 内存快照：脏页成层与共享只读设备 | ○ |
 | 43 | `43-startup-pack-and-prefetch.md` | 启动加速：trace prefetch 与 startup pack | ○ |

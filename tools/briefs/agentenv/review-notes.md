@@ -106,3 +106,18 @@
 - 24 → 57：`ReportSandboxEvent` 在 scheduler 端只记 debug 丢弃，节点同步靠心跳。
 - 24 → 21：驱逐路径以 `previous_state=Running` 直接调 `delete_sandbox_impl`。
 - 24 → 68：Terminal 失败移除沙箱不发 Delete 事件；删除沙箱不清样本；route 标签把 connect / timeout / refreshes 归为 `unmatched`；stage 计时不覆盖 delete、驱逐与关闭时的暂停；按 `dev_id` 的 gauge 不移除。
+- 25 → 22 / 60：systemd `KillMode=process` + `TimeoutStopSec=30` 与串行 pause 冲突，超时后只杀 server、FC 成孤儿。
+- 25 → 59：「FC 进程不带能力」只在 server 非 root 时成立（root exec 时内核从 bounding 集重新授予）；生产靠 systemd `User=aenv` 与受限 bounding 集保证。
+- 25 → 68：`FirecrackerInstance::stop()` 恒返回 Ok；不经 `stop()` 的 Drop 把 rootfs 与附加盘设备泄漏在 daemon；FC 与 server 同 uid（推论：VMM 逃逸后可读其它沙箱的 ublkb 与 `secrets/`）；FC 不处理 SIGTERM。
+- 26 → 41：daemon 侧 Shared refcount 正常为 1；key 含 global_config。
+- 26 → 36 / 37：冷启动 rootfs 实际是 Hybrid 布局（factory 写 LogStructured，随后被全局配置覆盖）。
+- 26：tools 盘真正的解析在 `resolve_tools_image()`、首次使用时进行，`ensure_tools` 只装本地配置的盘；`recent_tools_device` 让 tools 盘常驻一份，内存设备没有。
+- 26 → 68：drive_id `rootfs` / 文件名 `rootfs.ext4` 实指 tools 盘，命名误导；旧 `"Cow"` 后端记录只能丢弃。
+- 39 → 05 / 34 / 73：缓存 key 在 live 路径是完整 URL；basename 变换只在无外部调用者的 `CachedFs` 里生效 —— 「按 digest 跨 registry 共享缓存」不成立（修正调研笔记 C 与 OUTLINE 39）。
+- 39：「对冲重试」实为超时后重发，不是并发重复请求；水位 = max(90% 容量, 容量 − 50 GiB)；驱逐跳过 `open_count > 0` 的条目。
+- 39 → 68：`DEFAULT_MAX_REFILLING` 不真正限并发；`WaitPending` 分支不可达且注释不符；`FG_REMOTE_INFLIGHT` 统计所有读而非只远端读；sandbox-ready 集合不清理；被打开文件钉住的条目使容量上限变软；未 checkpoint 的条目重启后丢失。
+- 40：`ReloadableIDAllocator` 不是死代码（`AsyncIoRing` 用它分配 sparse 表下标，修正调研笔记 C）；slab + cancelled 只防误投递，不管缓冲寿命。
+- 40 → 04：内核版本分级表要覆盖 `UPDATE_SIZE` 与 `AUTO_BUF_REG`。
+- 40 → 41：关闭顺序与 GET_FEATURES 降级按 40 §3。
+- 40 → 43：startup 槽位 = max(file slots / 4, 1)；后台任务在 chunk 边界让路。
+- 40 → 68：`uvm-ublk` 遗留 CLI；`spawn_data_io_ring_worker` 无调用者；`zero_copy` 日志检查的位不对；EINTR 两处 FIXME；`UserBuffer` 的 fixed 注册未被使用；`architecture.md` 的「zero-copy, kernel 6.8+」误导。
