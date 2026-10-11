@@ -4,7 +4,7 @@
 > AgentENV 的 P2P 子系统让节点之间直接交换这些制品：一个与具体实现无关的传输抽象，一个基于 iroh 的后端，scheduler 上的一张「谁有什么」索引，以及三类各自定义 key 与校验方式的消费者。
 > 本篇讲这条加速路径怎样工作、失败时怎样退回源头，以及它默认信任集群内每个对端这一前提。
 >
-> **读者**：工程师、运维。　**预备**：[第 57 篇 · 心跳](57-heartbeat-and-cpu-intersection.md)、[第 38 篇 · VirtualFile 链与远端 I/O](38-virtualfile-chain-and-remote-io.md)、[第 48 篇 · 对象存储仓库](48-oss-repository.md)。
+> **读者**：工程师、运维。　**预备**：[第 57 篇 · 心跳](57-heartbeat-and-cpu-intersection.md)、[第 38 篇 · VirtualFile 链与远端 I/O](38-virtualfile-chain-and-remote-io.md)、[第 48 篇 · 对象存储仓库](48-object-storage-repository.md)。
 > **代码**：`src/p2p/transport.rs`、`src/p2p/types.rs`、`src/p2p/mod.rs`、`src/p2p/iroh/transport.rs`、`src/p2p/iroh/catalog.rs`、`src/p2p/discovery/`、`src/overlaybd/p2p/`、`src/snapshot/p2p.rs`、`src/snapshot/manager.rs`、`src/snapshot/repository/backends/oss/resolver.rs`、`src/image/cache/service.rs`、`services/scheduler/internal/store.go`
 
 ---
@@ -22,8 +22,8 @@
 
 ## 1. 问题：制品已经在邻居那里
 
-节点要从远端取的东西有三类：OSS 仓库里的快照固定制品（vm_state、Firecracker manifest，[第 48 篇](48-oss-repository.md)），
-overlaybd 层的按需块读（[第 38 篇](38-virtualfile-chain-and-remote-io.md)），以及把 OCI 层转换成 overlaybd 层的产物（[第 45 篇](45-image-pull-and-conversion.md)）。
+节点要从远端取的东西有三类：OSS 仓库里的快照固定制品（vm_state、Firecracker manifest，[第 49 篇 §4](49-resolve-and-artifact-cache.md#4-对象存储后端只下载小的层留在远端)），
+overlaybd 层的按需块读（[第 38 篇](38-virtualfile-chain-and-remote-io.md)），以及把 OCI 层转换成 overlaybd 层的产物（[第 45 篇 §4](45-oci-to-overlaybd.md#4-标准-oci逐层转换)）。
 在一个几十台节点的集群里，热门模板的这些制品很快就会在多台节点上各有一份。
 
 P2P 要做的是在「去源头取」之前先问一句「集群里谁已经有了」。这句问话的代价必须足够小，失败必须不影响正确性：
@@ -73,32 +73,18 @@ catalog 协议很简单：请求是一个 JSON `{key}`（上限 1 MiB），响�
 `SchedulerPeerDiscovery`（`src/p2p/discovery/scheduler.rs`）每隔 `peer_discovery_refresh_interval_secs`（缺省 5 s，至少 1 s，首轮加随机抖动）调用 `ListP2pPeers` 刷新对端表；
 scheduler 只返回推导状态为 READY、上报了 endpoint、backend 匹配且不是自己的节点。没有配置 `[cluster] scheduler_endpoint` 时用 `NoopP2pPeerDiscovery`，单节点只能命中本地。
 
-下图是三台节点与 scheduler 之间的关系。scheduler 只保存地址与「谁有什么」，不代理 catalog 请求，也不经手字节。
+下图是三台节点与 scheduler 之间的关系：① 节点 B 向 scheduler 查谁登记过这个 key，② 向节点 A 的 catalog 要 descriptor，③ 按 hash 从 A 取字节，④ 索引落空时逐个询问其它对端，⑤ 节点 A 发布后向 scheduler 登记。scheduler 只保存地址与「谁有什么」，不代理 catalog 请求，也不经手字节。
 
 ```mermaid
 flowchart TB
-    subgraph SC["scheduler 内存"]
-        direction LR
-        EP["对端表<br/>来自心跳"]
-        IDX["key 到节点索引<br/>LRU"]
-    end
-    subgraph NA["节点 A 提供方"]
-        direction TB
-        A1["catalog ALPN"] --- A3["catalog.db<br/>FsStore"]
-        A2["blobs ALPN"] --- A3
-    end
-    subgraph NB["节点 B 请求方"]
-        direction TB
-        B1["消费者"] --> B2["P2pTransport"]
-    end
-    subgraph NC["节点 C 提供方"]
-        C1["catalog 与 blobs"]
-    end
-    NA -->|"发布后登记"| IDX
-    B2 -->|"查索引 查对端"| SC
-    B2 -->|"按 key 问"| A1
-    B2 -->|"按 hash 取"| A2
-    B2 -.->|"索引落空时逐个问"| C1
+    B1["节点 B<br/>消费者"] --> B2["节点 B<br/>P2pTransport"]
+    B2 -->|"①"| IDX["scheduler<br/>key 到节点索引"]
+    B2 -->|"②"| A1["节点 A<br/>catalog ALPN"]
+    B2 -->|"③"| A2["节点 A<br/>blobs ALPN"]
+    B2 -.->|"④"| C1["节点 C<br/>catalog 与 blobs"]
+    A1 --- A3["节点 A<br/>catalog.db 与 FsStore"]
+    A2 --- A3
+    A3 -.->|"⑤"| IDX
 ```
 
 ### 3.2 publish
@@ -258,7 +244,7 @@ Rust 版 overlaybd 跑在 ublk-daemon 进程里，它读 registry 层时发出�
 - 转换层复用会重算 sha256，但比较对象同样来自对端的 metadata；预期 uuid 由源层 digest 确定性地推出（`uuid_from_layer_digest()`），可以被预测。
 - 对照之下，本地 `/p2p-control/publish-layer` 端点的注释明说「回环只是进程边界、不是信任边界」，因而重算了 digest。
 
-这些放在一起，含义是：**集群内的每个 P2P 对端都被视为可信**。scheduler 的心跳与 P2P RPC 本身也没有鉴权（[第 54 篇](54-control-plane-overview.md)），
+这些放在一起，含义是：**集群内的每个 P2P 对端都被视为可信**。scheduler 的心跳与 P2P RPC 本身也没有鉴权（[第 54 篇 §7](54-control-plane-overview.md#7-信任边界)），
 任何能向 scheduler 报出一个发现列表里节点 ID 的进程，都能把自己的 endpoint 登记为该节点的 P2P 地址。推论：在多租户或节点不完全受信的环境里，
 开启 P2P 等于把快照 vm_state 与镜像层的完整性交给集群里最弱的一台节点。
 
@@ -289,8 +275,8 @@ AgentENV 让节点彼此充当缓存、由 scheduler 维护「谁有什么」的
 
 - [第 38 篇 · VirtualFile 链与远端 I/O](38-virtualfile-chain-and-remote-io.md)：加速地址、`Direct` 模式与 uuid 门面在读链上的位置。
 - [第 39 篇 · 块缓存与后台下载](39-block-cache-and-background-download.md)：门面可达时为什么不经节点块缓存。
-- [第 48 篇 · 对象存储仓库](48-oss-repository.md)：OSS resolver 与 vm_state 的本地缓存。
-- [第 45 篇 · 镜像拉取与转换](45-image-pull-and-conversion.md)：`LayerConversionKey` 与 image cache GC。
-- [第 56 篇 · scheduler](56-scheduler.md)：primary 与 query-only 副本，P2P 索引为什么不在 HA 覆盖范围内。
+- [第 49 篇 · 从记录到可运行](49-resolve-and-artifact-cache.md)：OSS resolver 与 vm_state 的本地缓存；[第 48 篇 · 对象存储仓库](48-object-storage-repository.md)：发布压缩与上传。
+- [第 45 篇 · 从 OCI 镜像到 overlaybd 层栈](45-oci-to-overlaybd.md)：转换层的三级查找与 image cache GC。
+- [第 56 篇 §6 · scheduler 的 HA](56-scheduler.md#6-haprimary-与-query-only)：primary 与 query-only 副本，P2P 索引为什么不在 HA 覆盖范围内。
 - [e2b 手册第 34 篇 · 模板缓存与本地存储](../e2b-infra/34-template-cache-and-local-storage.md)：NFS 共享分片缓存。
 - 下一篇：[第 59 篇 · 宿主准备、依赖供给与权限模型](59-host-setup-and-privileges.md)。

@@ -140,7 +140,7 @@ flowchart LR
 上表与节点 `src/api/openapi.yml` 里所有带 `{sandboxID}` 的路径逐条对应，v0.2.3 没有遗漏。但这种对应只靠人工维护：
 节点新增一个按 sandbox 路由的端点而 gateway 没有同步，这个请求就会落到第 6 类，被 `Schedule` 送到任意节点。
 推论：在 N 个节点的集群里，它大约只有 1/N 的机会碰到正确的节点，其余时候得到那台节点的 404，单节点测试发现不了。
-proto 契约一侧的同类耦合在[第 54 篇](54-control-plane-overview.md)讨论。
+这类契约之外的耦合在[第 54 篇 §6](54-control-plane-overview.md#6-契约之外的耦合)汇总。
 
 显式 `/proxy` 前缀还有一处行为值得注意。它被判为数据面，路由来源是 header，而 `upstreamTargetPath()` 对 header 与 host 两类来源**无条件**在路径前加 `/proxy`。
 推论：客户端经 gateway 访问 `/proxy/x`，节点收到的是 `/proxy/proxy/x`，节点只剥一层前缀（[第 17 篇 §2](17-reverse-proxy.md#2-三个入口)），guest 看到的是 `/proxy/x`；

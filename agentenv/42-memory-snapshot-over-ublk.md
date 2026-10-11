@@ -87,7 +87,7 @@ flowchart LR
 
 「不清除」在 AgentENV 里还有第二层意义。`snapshot()` 与 `fork()` 在写完快照后原地恢复源 VM（[第 27 篇 §6](27-start-pause-resume-sequences.md#6-capture-与-pause同一段代码四种收尾)），
 同一台 VM 可能被捕获多次。每次捕获的新层都压在**这台 VM 启动时**的内存层栈上（§2.6），所以它必须包含自启动以来的全部脏页，而不只是自上次捕获以来的。
-脏位只增不减，恰好给出这个集合。代价是：对同一台运行中的 VM 反复捕获，每一份新层都比上一份大或相等。
+脏位只增不减，恰好给出这个集合；换句话说，「不清除」是原地捕获之后再捕获仍然正确的前提——若查询清除了脏位，第二份层会漏掉第一次捕获之前写过的页，而它下面的层栈里并没有这些页。代价是：对同一台运行中的 VM 反复捕获，每一份新层都比上一份大或相等。
 
 还有一类页不经过上述两个位图写入：virtio 队列结构（描述符表、avail / used ring）由 Firecracker 通过裸指针更新。
 上游的处理是在 `Queue::initialize()` 里把这几块内存标脏（设备激活与从快照恢复时都会调用），并在每次把内存写进文件之后重新标脏。
@@ -99,10 +99,13 @@ AgentENV 的路径从不写内存文件、也从不重置 Firecracker 位图，�
 包括 Firecracker 装入的内核与 initrd。新层只覆盖这些页，其余位置是没有映射的空洞，读出 0，与匿名内存的初值一致。
 
 **从快照恢复的 VM。** `PUT /snapshot/load` 的 File 后端走 `guest_memory_from_file()`（`src/vmm/src/persist.rs`）：`File::open()` 只读打开 `/dev/ublkbN`，
-`memory::snapshot_file()` 以 `MAP_PRIVATE` 映射它。这两处是上游代码，AENV 补丁版只把其中的取文件大小从 `fstat` 改成了 seek 到末尾——块设备的 `st_size` 是 0（[第 67 篇](67-firecracker-patch-layer.md)）。
+`memory::snapshot_file()` 以 `MAP_PRIVATE` 映射它。这两处在上游 Firecracker v1.15.1 与 AENV 补丁版 Firecracker 中相同，补丁只把取文件大小从 `fstat` 改成了 seek 到末尾——块设备的 `st_size` 是 0（[第 03 篇 §3.2](03-firecracker-for-agentenv.md#32-file-后端)、[第 67 篇](67-firecracker-patch-layer.md)）。
 私有映射意味着：读缺页把块设备页缓存里的页映射进来；第一次写触发写时复制，该页变成 Firecracker 进程私有的匿名页，块设备本身永不被写。
-脏页跟踪在 load 时随 `track_dirty_pages` 重新开启，所以恢复后的脏页 = 自 load 以来被写过的页 = 发生过写时复制的页，再加上始终脏的队列内存。
-推论（依据上述 Firecracker 代码与 KVM 脏页日志的语义）：两者等价的前提是 guest 的每一次写都经过 KVM 的写保护跟踪、Firecracker 的每一次写都经过位图，本书没有找到反例。
+load 时内存槽是新注册的，脏页跟踪随 `track_dirty_pages` 从空开始，所以恢复后被写过的页既被记为脏页、也是发生过写时复制的页，它们就是下一次暂停要写的内容。
+推论：「脏页集合」与「COW 过的页的集合」严格相等，前提是 guest 的每一次写都经过 KVM 的脏页记录、Firecracker 的每一次写都经过位图；本书没有找到反例，也没有逐一证明。
+
+有一个已知的例外方向：free page reporting。guest 报告为空闲的页段，Firecracker 用一段匿名映射原地覆盖，既不经过 vCPU 写、也不置位图；
+这一页之后若没再被写，就不会出现在脏页区间里，恢复后读到的是 lower 里的旧内容。guest 认为它是空闲页，通常无害，详见[第 03 篇 §5](03-firecracker-for-agentenv.md#5-balloon-与-damon把内存还给宿主)。
 
 没被写过的页，内容就是 lower 层栈里的内容。新层压在 lower 之上，读一页时先看新层、再看下面的层（[第 34 篇](34-lsmt-format-and-index.md)），所以只写脏页就足以表达新的完整内存。
 
@@ -202,18 +205,18 @@ flowchart TB
         F3["FC 3<br/>私有 COW 页"]
     end
     PC["/dev/ublkbN 的页缓存<br/>只读共享"]
-    CFD["节点的 cache_fd"]
+    CFD["节点的 cache_fd<br/>保持设备打开"]
     subgraph D["ublk-daemon"]
         direction TB
         QT["queue 线程<br/>OverlaybdTarget"]
         IMG["ImageFile<br/>合并索引查层"]
     end
     SRC["本地层 节点块缓存<br/>远端 P2P"]
-    F1 -->|"读缺页"| PC
+    F1 --> PC
     F2 --> PC
     F3 --> PC
-    CFD -.->|"保持打开"| PC
-    PC -->|"未命中"| QT
+    CFD -.-> PC
+    PC -->|"未命中"| D
     QT --> IMG
     IMG --> SRC
 ```
@@ -241,12 +244,12 @@ envd 就绪后，节点对内存 image.json 调 `notify_sandbox_ready()`，放�
 `[memory_snapshot] track_dirty_pages`（`src/cfg.rs` 的 `MemorySnapshotConfig`，缺省 true，可由 `AGENTENV_MEMORY_SNAPSHOT_TRACK_DIRTY_PAGES` 覆盖）决定冷启动的 machine-config 与 load 时是否开启 KVM 脏页跟踪。
 PVM 模式下，配置归一化会把它强制设为 false，校验也拒绝在 PVM 下设为 true（「has not been tested」）。
 
-此时 AgentENV 的流程不变，仍然调用 `GET /vm/dirty-memory-ranges`。差别在 Firecracker 内部：内存槽没有位图，`Vm::get_dirty_bitmap()` 改用上游的 `mincore_bitmap()`，
-上游注释把它描述为「对脏页位图的过近似」——它报告的是**驻留**的页，而不是写过的页。配置项的注释「set … false to use mincore」说的就是这条路径。
+此时 AgentENV 的流程不变，仍然调用 `GET /vm/dirty-memory-ranges`；差别在 Firecracker 内部：内存槽没有位图，`Vm::get_dirty_bitmap()` 退回上游的 `mincore_bitmap()`，
+把**驻留**的页都当作脏页，上游注释称之为过估（[第 03 篇 §2.3](03-firecracker-for-agentenv.md#23-脏页从哪里来)）。配置项注释里的「use mincore」说的就是这条路径。
 
-推论（依据 `mincore(2)` 的语义）：对冷启动 VM 的匿名内存，驻留页大致是被触碰过的页，新层会多出一些只读未写的页；
-对从快照恢复的 VM，文件映射部分的驻留判据是「该页在块设备页缓存里」，而共享设备的页缓存里还有其它沙箱读过的页，于是新层可能包含大量本沙箱从未写过的页。
-内容仍然正确（读出来的就是 lower 里的内容），只是层更大。另一个方向的风险来自上游的 TODO：被换出到 swap 的页 `mincore` 不报告为驻留，开启 swap 的宿主上这些页若是写过的私有页，就会被漏掉。
+对本篇的影响有两点。其一，恢复出来的 VM 的文件映射部分按「是否在块设备页缓存里」判定驻留，而共享设备的页缓存里还有其它沙箱读入的页，
+所以新层可能包含大量本沙箱从未写过的页：内容正确（读出的就是 lower 的内容），但写入量不再正比于改动量（[第 03 篇 §3.2](03-firecracker-for-agentenv.md#32-file-后端)）。
+共享设备在这里放大了过估。其二，上游注释指出开了 swap 的宿主上被换出的页会被漏报；推论：若漏报的是写过的私有页，内存层会丢失这些改动。
 
 ---
 
@@ -271,7 +274,7 @@ PVM 模式下，配置归一化会把它强制设为 false，校验也拒绝在 
 e2b infra 也不让 Firecracker 写内存文件、也用 `process_vm_readv` 读脏页，但判据来自分叉 Firecracker 的 `GET /memory/dirty`（`mincore` 加 pagemap），产物是与上一代合并的扁平 memfile diff（见 e2b 手册第 37 篇）；
 恢复时每台沙箱由自己的 uffd 处理器逐页供给内存（见 e2b 手册第 31 篇）。
 AgentENV 用 KVM 脏页日志确定写过的页、把结果写成 LSMT 层，并把恢复交给块设备页缓存，换来跨沙箱共享与免去每 VM 一个缺页处理器；代价是依赖 ublk 与 daemon、以及层栈预算。
-两种方案的系统比较在[第 44 篇](44-uffd-alternative.md)与[第 66 篇](66-design-tradeoffs-vs-e2b.md)。
+两种方案的系统比较在[第 44 篇](44-uffd-alternative.md)与[第 66 篇](66-vs-e2b-infra-storage-and-memory.md)。
 
 ---
 
@@ -280,7 +283,7 @@ AgentENV 用 KVM 脏页日志确定写过的页、把结果写成 LSMT 层，并
 - 暂停时 Firecracker 只写 `vm_state.bin` 并报告脏区间；数据由 AgentENV 用 `process_vm_readv` 直接读出写成层，没有中间内存文件，写入量正比于脏页数。
 - `DirtyMemoryRanges` 用 Firecracker 快照的连续镜像布局（去掉 MMIO 空洞），脏 = KVM 位图或 Firecracker 位图置位；查询把 KVM 的位存回，逻辑上不清除。
 - 不清除使原地捕获的每一层都包含自启动以来的全部脏页，与「新层压在启动时的层栈上」的做法一致；virtio 队列内存因从不重置而始终在内。
-- 冷启动 VM 的脏页是启动以来写过的页，其余为空洞读 0；恢复的 VM 以 `MAP_PRIVATE` 映射只读块设备，脏页即写时复制过的页（已在 Firecracker 代码中核实映射方式）。
+- 冷启动 VM 的脏页是启动以来写过的页，其余为空洞读 0；恢复的 VM 以 `MAP_PRIVATE` 映射只读块设备，写过的页 COW 成私有匿名页、即下一次的脏页；两个集合严格相等只是推论，free page reporting 覆盖的页是已知例外。
 - 段映射的 `offset` 是镜像扇区，`moffset` 是 Firecracker 进程 HVA 的扇区数，`tag` 0 指向 `ProcessVmReader`；通用的 `compact_to()` 以并发 32 写出 sealed raw 层。
 - 新层压在启动所用的内存层栈之上，运行时后缀按与 rootfs 相同的预算硬链接继承或压成 `mem_compacted.commit`。
 - 恢复时同一内存 image.json 的沙箱共享一个只读 `/dev/ublkbN`，缺页先查页缓存、未命中经 ublk 到 daemon 的 LSMT 栈；页缓存共享即内存去重，每台沙箱只为自己写过的页付内存。

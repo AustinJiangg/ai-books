@@ -128,7 +128,7 @@ sequenceDiagram
   发现列表来自 static 配置或 Kubernetes 发现（[第 56 篇](56-scheduler.md)），心跳本身不能让一个新节点「加入」集群。
   通过检查后，它用请求内容整体替换该节点的 `observedNodeRecord`：快照、机器信息、P2P 端点、`LastSeenUnixMs = now`。
   CPU 交集的计算也在这里，见 §5.3。
-- **刷新绑定**：`ReconcileNode(node, sandbox_ids)` 让绑定表与名单一致——名单内的续期，名单外的删除。这就是「心跳名单即真相」，细节在第 56 篇。
+- **刷新绑定**：`ReconcileNode(node, sandbox_ids)` 让绑定表与名单一致——名单内的续期，名单外的删除。这就是「心跳名单即真相」，它与 gateway 提前写入之间的竞态见[第 56 篇 §5](56-scheduler.md#5-一致性心跳与提前写入的交错)。
   绑定存储不可用时返回 Unavailable，节点按失败退避。
 
 ### 3.3 节点状态由谁推导
@@ -147,7 +147,7 @@ sequenceDiagram
 反过来，表里没有的「不在发现列表中」分支实际几乎不可达：`Heartbeat()` 拒绝不在列表里的节点，`Set()` 替换发现列表时会删掉消失节点的观测记录。
 
 推导出的状态被三处使用：`GET /nodes` 等展示、scheduler 每 15 s 刷新一次的 `agentenv_scheduler_observed_nodes` gauge，以及 P2P 对端过滤（只保留 READY）。
-`Schedule` 不看它，它只按发现列表去掉 lingering 节点；一台已经 UNHEALTHY 的节点仍可能被选中，这一点在第 56 篇讨论。
+`Schedule` 不看它，它只按发现列表去掉 lingering 节点；一台已经 UNHEALTHY 的节点仍可能被选中（[第 56 篇 §2.4](56-scheduler.md#24-不排除-unhealthy-节点)）。
 UNHEALTHY 的观测记录也不会被自动删除，它一直留在 `observed` 里，直到节点注销或从发现列表消失。
 
 ---
@@ -166,9 +166,8 @@ scheduler 端的 `Service.UnregisterNode()` 做三件事：
 3. `artifacts.ForgetNode()`：从 P2P 制品索引里删掉这个节点（[第 58 篇](58-p2p-artifact-transport.md)）。
 
 `service_instance_id` 检查要防的场景是：同一个节点 ID 的新进程已经起来并心跳过，旧进程的注销姗姗来迟，把新进程的记录删掉。
-这个检查只有在每个进程的实例 ID 不同时才有意义。`NodeIdentity::from_config()` 在配置为空时会生成一个 UUIDv7，每次启动都不同；
-但 `config/default.toml` 把 `service_instance_id` 写成了固定的 `"service-instance-a"`，Compose 与 Kubernetes 清单都直接使用这份文件且不设 `AENV_SERVICE_INSTANCE_ID`。
-在缺省部署下，所有节点、所有重启共用同一个实例 ID，这道防护形同虚设。
+这个检查只有在每个进程的实例 ID 不同时才有意义。`NodeIdentity::from_config()` 在配置为空时生成 UUIDv7，但 `config/default.toml` 写死了 `"service-instance-a"`，
+仓库里的 Compose 与 Kubernetes 部署都不覆盖它；缺省部署下这道防护形同虚设（[第 54 篇 §3.2](54-control-plane-overview.md#32-消息设计里的几个决定)）。
 
 ### 4.2 关闭顺序带来的两个窗口
 
@@ -283,7 +282,7 @@ cluster 按心跳里的 `cluster_id` 字符串分组。`config/default.toml` 的
 |---|---|---|
 | 交集随节点加入而收窄 | 第一台节点心跳时 cluster 里只有它一条记录，交集就是它自己；之后每有新节点首次心跳，交集失效、重算、重新下发 | 早先冷启动的沙箱带着更宽的特性集，它们的快照恢复到后加入的节点上不受保护 |
 | 任一节点没有上报配置 | 没有 `cpu-template-helper`、dump 失败，或 §5.2 的「只发一次」已经用掉 | `allConfigsReadyLocked()` 永远为假，整个 cluster 没有交集，新节点拿不到，老节点保留手里的旧值 |
-| scheduler 重启 | 观测记录全在内存里，重启后清空；节点的后续心跳不再带配置，新建的记录配置为空 | 同上一行；直到所有节点各自重启并重新上报 |
+| scheduler 重启 | 观测记录全在内存里，重启后清空（[第 56 篇 §6.3](56-scheduler.md#63-primary-重启之后)）；节点的后续心跳不再带配置，新建的记录配置为空 | 同上一行；直到所有节点各自重启并重新上报 |
 | 节点崩溃后重启 | 没走注销，scheduler 里旧记录还在；新进程带来同样的配置，不触发失效；`intersectionSent` 仍为真 | 新进程收不到交集，它的冷启动不设 cpu-config，guest 看到本机全部特性 |
 | 交集响应丢失 | `intersectionSent` 在 `Heartbeat()` 返回前已置真；之后 `ReconcileNode` 失败返回 Unavailable，或节点侧 10 s 超时 | 这个节点收不到交集，也不会再收到，直到下一次失效 |
 | 交集被 Firecracker 拒绝 | `set_cpu_config()` 出错会让 `configure_microvm()` 失败 | 这个节点此后所有冷启动都失败 |

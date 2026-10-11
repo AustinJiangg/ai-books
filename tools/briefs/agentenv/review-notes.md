@@ -175,3 +175,8 @@
 - 04 → 40 / 41：内核版本直接引用 04 §5.2 的分级表（UPDATE_SIZE 与 AUTO_BUF_REG 都在 6.16 首次出现，AUTO_BUF_REG 是 bit 11；推论最低可运行约 6.4）；ADD_DEV 遇不支持的特性位不会失败，内核静默清掉（`flags &= UBLK_F_ALL`）。
 - 04 → 68：README 与部署文档写 6.8+，但 6.8 拿不到 UPDATE_SIZE；`architecture.md` 的「AutoReg zero-copy kernel 6.8+」不成立。
 - 05 **更正**：上游 overlaybd 默认分支（`e2a2ef3`）已带 ublk 前端（`src/ublk/`、ublkd、pool_placeholder），「上游 = TCMU 前端」只对经典前端成立；STYLE 第二节已改；34 / 41 / 66 / 73 照此写。`upper.mode` 是扩展（上游 `UpperConfig` 无此字段）。
+- 49：OSS 端「并发校验层存在」只在首次物化 `image.json` 时做，External 层不校验；POSIX 不拷贝任何东西、绕过节点块缓存。
+- 49 → 46：§2.5 的 lease 「RunnableSnapshot 存活期间保护文件」补一句「只覆盖启动窗口（随 `LaunchPlan` drop）」。
+- 49 → 68：in-flight fetch 时调用方 future 被 drop，条目永不清理、该 key 在进程生命期内一直失败；跨重启复用只看文件是否存在、不检测仓库路径变化；POSIX 写死 10 GiB 上限；每次 BuildKit 构建新建一个 cache 实例；推论：OSS 下从快照创建的沙箱在暂停时重读内存 `image.json`，若已被 LRU 驱逐则 pause 失败。
+- 50 → 45：§6「所有 registry 访问经 regctl」不成立，发布路径用进程内 `AcrClient`，需加限定。
+- 50 → 68：tag 先于 record 可见，回滚失败时 tag 残留；两套 registry 客户端（regctl 与 `AcrClient`）；文档安装 `target/debug` 二进制；推论：同 tag 并发导出可互相覆盖、删除快照后 registry GC 可能回收仍被沙箱使用的 blob。
