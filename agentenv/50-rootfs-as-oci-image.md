@@ -62,9 +62,11 @@
 ```
 
 **层。** `OciDescriptor::overlaybd_layer()` 把 mediaType 写成普通 tar，但字节其实是 overlaybd 层本身，用两个注解声明这一点。
-这是 accelerated-container-image 系列工具使用的约定之一。AgentENV 自己读镜像时（`src/image/oci_image.rs` 的 `classify_layer()`），
+这是 accelerated-container-image 系列工具使用的约定之一。AgentENV 自己读镜像时（`src/image/oci_image.rs` 的 `classify_layer()`，分类表见[第 45 篇 §2.3](45-oci-to-overlaybd.md#23-分类)），
 `blob-digest` 注解等于层 digest 的层被判为 overlaybd-native（注释称之为 mediaType-lying native），
-不等的被判为 tar 包裹形式并拒绝。所以这里写出的镜像可以被 AgentENV 按 overlaybd-native 冷启动：不下载任何 blob，运行时按需读。
+不等的被判为 tar 包裹形式并拒绝。
+为什么不直接用一个 overlaybd 专用的 mediaType？推论：registry 与 `regctl`、`skopeo` 这类通用 OCI 工具只按 mediaType 搬运 blob，并不解析内容；
+用标准 tar mediaType，镜像可以被任何 registry 存放、被任何工具复制或镜像同步，只有真正读取层内容的消费者需要认识注解。所以这里写出的镜像可以被 AgentENV 按 overlaybd-native 冷启动：不下载任何 blob，运行时按需读。
 
 **config。** `snapshot_oci_config_blob()` 以记录里保存的源镜像 OCI config 为底，用快照的 `CommandContext` 覆盖 `Env`（排序后写入）、
 `WorkingDir`、`User`、`Entrypoint`、`Cmd`、`ExposedPorts`、`Volumes`、`Labels`，然后把整个 JSON 的键递归排序。
@@ -125,13 +127,13 @@ flowchart TB
 |---|---|---|
 | Managed，POSIX 仓库 | 仓库里的 `managed-layers/` 文件 | 原地校验大小后 `blob put` |
 | Managed，对象存储仓库 | `managed-layers/<digest>` 对象 | 下载到临时目录、校验大小后 `blob put` |
-| External，`s3://` URL | 同上，按 Managed 处理 | 从对象存储恢复的沙箱再做快照时，继承的层会记成这种形式 |
+| External，`s3://` URL | 同上，按 Managed 处理 | 从对象存储恢复的沙箱再做快照时，继承的层会记成这种形式（第 48 篇 §4.3） |
 | External，跨 registry | 源 registry | `regctl blob get` 管道接 `blob put`，不落盘 |
 | External，同 registry 不同仓库 | 源 registry | `regctl blob copy`，由 registry 端完成 |
 | External，同仓库 | — | head 已证明缺失，无处可取，报 `ArtifactNotFound` |
 
 全部层就位后上传 config blob，最后 `manifest put`。`regctl.rs` 的封装让 payload 从文件描述符流入子进程，
-重试、GOMAXPROCS 上限与 404 判定沿用 `src/image/oci_image.rs` 的 `regctl` 调用约定（第 45 篇）。
+重试、GOMAXPROCS 上限与 404 判定沿用 `src/image/oci_image.rs` 的 `regctl` 调用约定（[第 45 篇 §6](45-oci-to-overlaybd.md#6-调用-regctl-的两条约束)）。
 
 这个流程用 manifest digest 代替了状态记录：工具本身不记任何东西，重复运行时要么在 head 处直接复用，要么只补传上次没传完的 blob。
 代价是「先 head、后 put」不是原子的。推论：两个进程同时用同一个 tag 导出不同内容时，两者都可能看到 tag 不存在，后写者覆盖先写者，
@@ -164,6 +166,8 @@ flowchart TB
 满足条件时，`export()` 依次：
 
 - 生成 tag：rootfs 是 `rootfs_snapshot_image_tag()` 给出的 `agentenv-snapshot-<id>`；附加盘在其后接 `-drive-<净化后的 drive id>-<12 位哈希>`。
+  drive id 可以含 OCI tag 不允许的字符，`sanitize_drive_tag_component()` 把它们替换成 `-` 并截到 32 个字符；
+  替换与截断可能让两个不同的 drive id 变成同一个串，所以再接上原 id 的 SHA-256 前 12 位十六进制，保证同一快照内各盘的 tag 互不相同。
 - `ensure_manifest_absent()`：tag 已存在即报错。快照 id 是新生成的 UUIDv7，正常情况下不会撞上。
 - 远端 lower 直接引用，不传字节。本地增量经 `prepare_layer_upload()` 上传：开启 `[snapshot.publish_compression]` 时 raw 层被重封装成 ZFile，
   manifest 注解与记录里的 digest、size 描述的是上传后的字节；稀疏层先做 dense 导出再上传。上传前 `blob_exists()` 探测，已有即跳过。
@@ -202,19 +206,19 @@ flowchart TB
 下图对照两条路径的输入、字节来源与产物落点。
 
 ```mermaid
-flowchart LR
+flowchart TB
+    subgraph PB["② 发布时推回"]
+        direction TB
+        P1["捕获目录<br/>rootfs image.json"] --> P2["AcrDiskImageExporter"]
+        P2 --> P3["源 registry<br/>agentenv-snapshot-id"]
+        P2 --> P4["对象存储<br/>记录 内存层 vm_state"]
+    end
     subgraph EX["① 离线导出"]
         direction TB
         E1["committed 记录<br/>rootfs 层引用"] --> E2["aenv-snapshot-image<br/>经 regctl"]
         E3["仓库 managed 层"] --> E2
         E4["源 registry 层"] --> E2
         E2 --> E5["任意目标 registry<br/>snapshot-id 或自定 tag"]
-    end
-    subgraph PB["② 发布时推回"]
-        direction TB
-        P1["捕获目录<br/>rootfs image.json"] --> P2["AcrDiskImageExporter"]
-        P2 --> P3["源 registry<br/>agentenv-snapshot-id"]
-        P2 --> P4["对象存储<br/>记录 内存层 vm_state"]
     end
 ```
 
@@ -252,7 +256,7 @@ flowchart LR
 ## 延伸阅读 / 下一篇
 
 - [第 45 篇 · 从 OCI 镜像到 overlaybd 层栈](45-oci-to-overlaybd.md)：`classify_layer()` 与 overlaybd-native 镜像的冷启动。
-- [第 48 篇 · 对象存储仓库](48-object-storage-repository.md)：发布七步、`managed-layers/` 与发布压缩。
+- [第 48 篇 · 对象存储仓库](48-object-storage-repository.md)：发布七步、`managed-layers/` 与发布压缩；[§4.3](48-object-storage-repository.md#43-继承层的两种记法) 讲 `s3://` External 引用。
 - [第 49 篇 · 从记录到可运行](49-resolve-and-artifact-cache.md)：External 层在 resolve 时怎样写进 `image.json`。
 - [第 35 篇 · ZFile 压缩](35-zfile-compression.md)：发布压缩产生的层格式。
 - [第 37 篇 · 封存、restack 与 compact](37-seal-restack-compact.md)：运行时增量层从哪里来。

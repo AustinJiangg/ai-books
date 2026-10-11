@@ -44,25 +44,16 @@ gateway 无状态（[第 55 篇](55-gateway.md)），状态都在 scheduler 里�
 `Service::Schedule()` 的全部逻辑是下面几步：
 
 ```mermaid
-flowchart LR
-    subgraph P1["① 候选"]
-        direction TB
-        A["发现列表<br/>去掉 lingering"] --> B["配上最近一次<br/>心跳快照"]
-    end
-    subgraph P2["② 阈值过滤"]
-        direction TB
-        C{"有快照"} -->|"是"| D{"所有上限<br/>都未超过"}
-        C -->|"否"| K["保留"]
-        D -->|"是"| K
-        D -->|"否"| X["排除"]
-    end
-    subgraph P3["③ 策略"]
-        direction TB
-        S["轮询或随机"] -->|"有候选"| N["返回节点"]
-        S -->|"为空"| U["Unavailable"]
-    end
-    B --> C
-    K --> S
+flowchart TB
+    A["发现列表去掉 lingering 节点"] --> B["配上最近心跳快照"]
+    B --> C{"有快照"}
+    C -->|"否"| K["保留为候选"]
+    C -->|"是"| D{"所有上限都未超过"}
+    D -->|"是"| K
+    D -->|"否"| X["排除"]
+    K --> S["策略 轮询或随机"]
+    S -->|"有候选"| N["返回节点"]
+    S -->|"为空"| U["Unavailable"]
 ```
 
 1. `nodes.Snapshot(false)` 取发现列表，去掉 lingering 节点，按 ID 排序。
@@ -186,7 +177,7 @@ Redis Cluster 要求脚本访问的键都在 `KEYS` 里声明且落在同一个 
 - `Terminating` 为真的 endpoint 进入 **lingering**：仍在节点表里、仍能被列表与按 ID 路由访问，但 `Schedule()` 不再选它。
 - 匹配 `ignore_pod_selector` 的 Pod 整个忽略；匹配 `no_schedule_pod_selector` 的 Pod 强制算 lingering，可用来手动排空一台节点。
 
-lingering 与 DaemonSet 的 `preStop` 配合完成排空：Pod 进入 Terminating 后不再接新沙箱，`preStop` 轮询节点的沙箱数直到为零，`terminationGracePeriodSeconds` 为 3600（[第 60 篇](60-deployment.md)）。
+lingering 与 DaemonSet 的 `preStop` 配合完成排空：Pod 进入 Terminating 后不再接新沙箱，`preStop` 轮询节点的沙箱数直到为零，`terminationGracePeriodSeconds` 为 3600（[第 60 篇 §5.3](60-deployment.md#53-prestop-与-3600-s)）。
 
 `Set()` 替换节点表时，删除不再存在的节点的观测记录并使相应集群的 CPU 交集失效（[第 57 篇](57-heartbeat-and-cpu-intersection.md)），但**不碰绑定**：消失节点的绑定靠 TTL 自然过期。
 `main.go` 的 `runKubernetesDiscoveryWithRetry()` 在初始化失败时按 1 s 起、30 s 封顶指数退避重试；唯一例外是 `rest.ErrNotInCluster`（不在集群内运行），
@@ -281,7 +272,7 @@ query-only 覆盖的是 primary 的**短暂**重启或升级；要覆盖更长�
 | 不在集群内跑 Kubernetes 发现 | 发现永久停止，全部创建 503，health 仍为 SERVING | `runKubernetesDiscoveryWithRetry()` |
 | 策略名拼错 | 静默使用 round_robin | `NewStrategy()` |
 
-`UnregisterNode()` 用 `service_instance_id` 防止误注销：观测记录里的实例 ID 与请求不符时返回 `FailedPrecondition`，旧进程迟到的注销不会撤掉新进程刚建立的绑定。
+`UnregisterNode()` 用 `service_instance_id` 防止误注销：观测记录里的实例 ID 与请求不符时返回 `FailedPrecondition`；但 `default.toml` 把实例 ID 写死成同一个值，缺省部署下这道校验不起作用（[第 57 篇 §4](57-heartbeat-and-cpu-intersection.md#4-注销与关闭)）。
 但注销只删除观测记录与绑定，不改发现列表。静态模式下一台正在关闭的节点仍在 `Snapshot(false)` 里，而且已经没有快照、不受资源过滤，
 推论：它在关闭期间还会被 round-robin 选中，新建请求被它以关闭中拒绝；Kubernetes 模式下 Pod 处于 Terminating，已是 lingering，不受影响。
 

@@ -81,7 +81,7 @@ resolve 的结果是 `RunnableSnapshot`（`src/snapshot/types/snapshot.rs`），
 
 这里没有任何字节被搬到节点本地。Rust 版 overlaybd 打开 rootfs 时，每一层都直接读共享文件系统上的仓库文件；
 Firecracker 加载快照时也直接读仓库里的 vm_state。收益是 resolve 几乎只是写几个小 JSON；
-代价是共享文件系统的读延迟与吞吐直接决定冷启动与缺页的速度，而这些读不经过节点块缓存——
+代价是共享文件系统的读延迟与吞吐直接决定冷启动与缺页的速度，而这些读不经过节点块缓存（另见[第 47 篇 §8](47-posix-repository.md#8-运行时直接读仓库)）——
 块缓存只套在远端源上（[第 39 篇 §2.1](39-block-cache-and-background-download.md#21-位置)），`file=` 指向的仓库层是本地文件，节点的宿主页缓存是唯一的缓存。
 POSIX resolver 也不消费 P2P：仓库本身可达，缺文件直接报错，不会从别的节点修补。
 
@@ -159,7 +159,7 @@ Rust 版 overlaybd 打开层时（`storage/overlaybd/src/image/image_file.rs` �
 规则的用意写在 `attach_local_layer_location()` 的注释与 `service.rs` 的测试
 `overlaybd_layer_location_binds_file_for_cache_local_and_dir_for_remote` 里：**能从远端恢复的层一律用 `dir=`**，
 即便本地缓存里恰好有完整副本。`dir=` 只是一个「先看看本地」的提示，镜像缓存的 GC 可以随时回收那份副本，overlaybd 下次打开时自然读远端；
-`file=` 没有回退，一旦指向的文件被删，打开就失败。所以只有本地唯一的副本才允许写 `file=`，而这样的层由镜像缓存的保护机制钉住（[第 20 篇 §5](20-launch-plan-and-rollback.md#5-镜像引用保护的交接)、[第 45 篇](45-oci-to-overlaybd.md)）。
+`file=` 没有回退，一旦指向的文件被删，打开就失败。所以只有本地唯一的副本才允许写 `file=`，而这样的层由镜像缓存的保护机制钉住（[第 20 篇 §5](20-launch-plan-and-rollback.md#5-镜像引用保护的交接)、[第 45 篇 §5](45-oci-to-overlaybd.md#5-节点本地的-image-cache)）。
 
 这个规则顺带带来一个收益：对象存储快照里的某一层如果与本节点镜像缓存里某个已转换的层 digest 相同，
 resolve 不需要知道这件事，overlaybd 打开时会自己在 `dir=` 里找到它。
@@ -247,7 +247,7 @@ startup manifest 记录一份快照恢复后首批被触碰的内存页位置，
 **命名。** 制品文件名是 `MEMORY_STARTUP_PACK_ARTIFACT = "memory-startup.pack"`（`src/snapshot/startup_pack.rs`），但内容不是页数据，
 而是魔数为 `AENVMF01` 的 manifest，只记位置不含字节；记录里的描述符 `MemoryStartupPackInfo` 有 `pack_size`、`mem_virtual_size`
 与 `index_sha256` 三个字段，最后一个其实是整个 manifest 的 SHA-256，字段名为兼容旧记录保留。
-同一份代码里，发布侧注释称它为「v4 startup manifest」，`oss/resolver.rs` 的注释却写「v2 packs only」，称呼不统一。
+代码注释里的版本称呼不统一（发布侧称 v4，`oss/resolver.rs` 称 v2），对照表见[第 43 篇 §3.3](43-startup-pack-and-prefetch.md#33-名字的混用)；本书统一称 startup manifest。
 
 **它在提交之后才出现。** 两个后端的 `publish()` 都先完成同步提交，记录里 `memory_startup` 为空；然后在开启 `[snapshot.memory_startup_pack] enabled` 时
 `tokio::spawn` 一个后续任务：等录制得到 trace、`build_startup_manifest()` 编码、写制品、最后把描述符挂到记录上。全程 best-effort，失败只记日志。
@@ -261,7 +261,7 @@ startup manifest 记录一份快照恢复后首批被触碰的内存页位置，
 | 崩溃窗口 | 制品已写、描述符未写：孤儿制品，读者看不到；重试可复用 | 删除与挂描述符并发时可能把记录写回（注释承认） |
 
 POSIX 的注释直说这「不是多文件持久事务」：两次 rename 之间崩溃，要么留下读者看不到的孤儿制品，要么在修补场景下留下缺制品的描述符，
-用同一描述符重试可以修复。对象存储侧的读改写与 alias 绑定是同一种弱一致模型（[第 48 篇](48-object-storage-repository.md)）。
+用同一描述符重试可以修复。对象存储侧的读改写与 alias 绑定是同一种弱一致模型（[第 48 篇 §6.3](48-object-storage-repository.md#63-startup-描述符)）。
 
 **关停。** 这些后续任务可能比同步发布活得久，所以它们持有捕获目录的 lease（`StartupRecording::spawn_with_capture_lease()`），
 并在进程全局的 `StartupManifestShutdown` 里登记。关停时 `drain_startup_manifest_tasks()` 先禁止新任务、有界等待在途任务；
