@@ -93,8 +93,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 02 | `02-why-agentenv.md` | agent 环境的规模问题与 AgentENV 的取舍 | ○ |
-| 03 | `03-firecracker-for-agentenv.md` | 本书用到的 Firecracker：快照、内存后端与脏页 | ○ |
+| 02 | `02-why-agentenv.md` | agent 环境的规模问题与 AgentENV 的取舍 | ● |
+| 03 | `03-firecracker-for-agentenv.md` | 本书用到的 Firecracker：快照、内存后端与脏页 | ● |
 | 04 | `04-io-uring-and-ublk.md` | io_uring 与 ublk | ○ |
 | 05 | `05-overlaybd-and-lazy-loading.md` | overlaybd、LSMT 与 OCI 镜像按需加载 | ○ |
 | 06 | `06-netns-iptables-transparent-proxy.md` | 网络命名空间、iptables 与透明代理 | ● |
@@ -447,8 +447,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 40 | `40-ublk-library.md` | ublk 库 | ● |
 | 41 | `41-ublk-daemon.md` | ublk-daemon | ○ |
 | 42 | `42-memory-snapshot-over-ublk.md` | 内存快照：脏页成层与共享只读设备 | ○ |
-| 43 | `43-startup-pack-and-prefetch.md` | 启动加速：trace prefetch 与 startup pack | ○ |
-| 44 | `44-uffd-alternative.md` | uffd 方案与对比 | ○ |
+| 43 | `43-startup-pack-and-prefetch.md` | 启动加速：trace prefetch 与 startup pack | ● |
+| 44 | `44-uffd-alternative.md` | uffd 方案与对比 | ● |
 
 **34 · LSMT 格式与索引**
 - `HeaderTrailer`（390 B，占一个 4 KiB 块）字段表；flags 各位（含 AgentENV 新增的 bit5 hybrid_rw）；`index_size` 是条数不是字节
@@ -560,13 +560,13 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 45 | `45-oci-to-overlaybd.md` | 从 OCI 镜像到 overlaybd 层栈 | ○ |
 | 46 | `46-snapshot-object-model.md` | 快照对象模型与 SnapshotManager | ○ |
-| 47 | `47-posix-repository.md` | POSIX 仓库与提交协议 | ○ |
-| 48 | `48-object-storage-repository.md` | 对象存储仓库：上传、回滚与弱一致 | ○ |
+| 47 | `47-posix-repository.md` | POSIX 仓库与提交协议 | ● |
+| 48 | `48-object-storage-repository.md` | 对象存储仓库：上传、回滚与弱一致 | ● |
 | 49 | `49-resolve-and-artifact-cache.md` | 从记录到可运行：resolve 与本地制品缓存 | ○ |
 | 50 | `50-rootfs-as-oci-image.md` | 快照 rootfs 作为 OCI 镜像 | ○ |
 | 51 | `51-fork.md` | fork：同节点的内存分叉 | ○ |
 | 52 | `52-template-builder.md` | 模板构建器 | ○ |
-| 53 | `53-buildkit-in-microvm.md` | BuildKit：在 microVM 里跑 Dockerfile | ○ |
+| 53 | `53-buildkit-in-microvm.md` | BuildKit：在 microVM 里跑 Dockerfile | ● |
 
 **45 · 从 OCI 镜像到 overlaybd 层栈**
 - `ImageResolver::resolve()`：候选 registry 展开（search / allowed registries）→ regctl 取 manifest（按宿主架构选子 manifest）→ 只有取 manifest 阶段可以换 registry → referrers 找 overlaybd-native 加速层 → 分类（StandardOci / OverlaybdNative / turbo 拒绝）
@@ -650,7 +650,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 54 | `54-control-plane-overview.md` | 控制面总览与 proto 契约 | ○ |
+| 54 | `54-control-plane-overview.md` | 控制面总览与 proto 契约 | ● |
 | 55 | `55-gateway.md` | gateway：路由判定与反向代理 | ○ |
 | 56 | `56-scheduler.md` | scheduler：放置、绑定与 HA | ○ |
 | 57 | `57-heartbeat-and-cpu-intersection.md` | 心跳、节点可观测与 CPU 模板交集 | ○ |

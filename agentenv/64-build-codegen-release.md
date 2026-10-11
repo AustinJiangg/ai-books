@@ -64,6 +64,7 @@ Go 侧有自己的 `services/Makefile`（`build`、`test`、`fmt-check`、`vet`�
 - `rust-toolchain.toml` 只写 `channel = "stable"`、`profile = "minimal"` 与 clippy、rustfmt 两个组件，**不锁具体版本**。
   rustup 在每台机器上取当时最新的 stable；发布流水线用 `dtolnay/rust-toolchain@stable`，节点镜像的构建阶段用 `rust:1-bookworm`。
   三处都是「当时的 stable」，同一个 commit 在不同日期构建可能用不同的编译器。依赖版本则由入库的 `Cargo.lock` 与发布构建的 `--locked` 固定。
+- 仓库没有 `[lints]` / `[workspace.lints]` 表，也没有 `clippy.toml` 或 `rustfmt.toml`：lint 规则完全由 `make clippy` 的命令行（`-D warnings`）决定，格式用 rustfmt 缺省值。不在 workspace 里的 `storage/uffd-core` 因此也不受 clippy 检查。
 - `.cargo/config.toml` 只定义一个别名：`adev = "run --package adev --"`，所以 `cargo adev …` 会先编译再运行 `adev` crate。
 
 ### 2.3 `adev`：开发与 CI 工具
@@ -131,25 +132,21 @@ CI 经 `make ci-deps` 用 `33.4`，发布流水线用 Ubuntu 22.04 的 apt 包 `
 
 ```mermaid
 flowchart LR
-    subgraph P1["① 校验"]
+    subgraph P1["① 校验与构建"]
         direction TB
-        V["validate-version<br/>tag 等于包版本"]
+        V["validate-version<br/>tag 等于包版本"] --> C["build-cli<br/>四个平台"]
+        V --> S["build-server<br/>三个 bundle"]
     end
-    subgraph P2["② 构建"]
-        direction TB
-        C["build-cli<br/>四个平台"]
-        S["build-server<br/>三个 bundle"]
-    end
-    subgraph P3["③ Release"]
+    subgraph P2["② Release"]
         direction TB
         R1["SHA256SUMS"] --> R2["git-cliff<br/>生成 notes"] --> R3["上传资产<br/>与安装脚本"]
     end
-    subgraph P4["④ 镜像"]
+    subgraph P3["③ 镜像"]
         direction TB
         K["KVM 镜像<br/>amd64 与 arm64"] --> M["多架构 manifest<br/>tag 与 latest"]
         PV["PVM 镜像<br/>仅 amd64"]
     end
-    P1 --> P2 --> P3 --> P4
+    P1 --> P2 --> P3
 ```
 
 ### 4.1 校验版本
@@ -256,7 +253,7 @@ manifest 按 tag 而不是 digest 引用镜像，所以「同一版本同一内�
 
 e2b infra 有一个 `pr-no-generated-changes` 工作流，在 PR 上重跑 `make generate` 并比较工作树；AgentENV 的 OpenAPI 产物同样入库，但没有对应的检查。
 e2b infra 的镜像只打 `latest`，回滚等于重建旧 commit；AgentENV 的 server 镜像与 bundle 按 tag 版本化，代价是 bundle 与镜像是两次独立构建。
-e2b infra 不对外发布离线安装包，AgentENV 把依赖预下载进 bundle，换来离线安装，也把「依赖未校验」的问题带进了发布产物。
+e2b 手册描述的 e2b infra 产物是镜像与上传到对象存储的裸二进制，没有离线安装包；AgentENV 把依赖预下载进 bundle，换来离线安装，也把「依赖未校验」的问题带进了发布产物。
 
 ---
 
