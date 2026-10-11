@@ -558,14 +558,14 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 45 | `45-oci-to-overlaybd.md` | 从 OCI 镜像到 overlaybd 层栈 | ○ |
-| 46 | `46-snapshot-object-model.md` | 快照对象模型与 SnapshotManager | ○ |
+| 45 | `45-oci-to-overlaybd.md` | 从 OCI 镜像到 overlaybd 层栈 | ● |
+| 46 | `46-snapshot-object-model.md` | 快照对象模型与 SnapshotManager | ● |
 | 47 | `47-posix-repository.md` | POSIX 仓库与提交协议 | ● |
 | 48 | `48-object-storage-repository.md` | 对象存储仓库：上传、回滚与弱一致 | ● |
 | 49 | `49-resolve-and-artifact-cache.md` | 从记录到可运行：resolve 与本地制品缓存 | ○ |
 | 50 | `50-rootfs-as-oci-image.md` | 快照 rootfs 作为 OCI 镜像 | ○ |
-| 51 | `51-fork.md` | fork：同节点的内存分叉 | ○ |
-| 52 | `52-template-builder.md` | 模板构建器 | ○ |
+| 51 | `51-fork.md` | fork：同节点的内存分叉 | ● |
+| 52 | `52-template-builder.md` | 模板构建器 | ● |
 | 53 | `53-buildkit-in-microvm.md` | BuildKit：在 microVM 里跑 Dockerfile | ● |
 
 **45 · 从 OCI 镜像到 overlaybd 层栈**
@@ -704,8 +704,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 59 | `59-host-setup-and-privileges.md` | 宿主准备、依赖供给与权限模型 | ○ |
-| 60 | `60-deployment.md` | 单节点安装、Compose 与 Kubernetes | ○ |
+| 59 | `59-host-setup-and-privileges.md` | 宿主准备、依赖供给与权限模型 | ● |
+| 60 | `60-deployment.md` | 单节点安装、Compose 与 Kubernetes | ● |
 | 61 | `61-pvm.md` | PVM：没有嵌套虚拟化时 | ● |
 | 62 | `62-aenv-cli.md` | aenv CLI | ● |
 | 63 | `63-testing-and-benchmarks.md` | 测试与基准 | ○ |

@@ -181,9 +181,8 @@ flowchart TB
     F["LSMT 层文件<br/>双方共同的格式"]
     C1 -->|"写出"| F
     C2 -->|"原地改写"| F
-    F -->|"读取"| R1
-    R1 -->|"写出 upper 与封存层"| F
-    R1 --> U["ublk-daemon<br/>/dev/ublkbN"]
+    F <-->|"读取与写出"| ON
+    ON --> U["ublk-daemon<br/>/dev/ublkbN"]
 ```
 
 推论（依据代码结构）：这样分工的理由是两边的约束不同。在线数据面每个请求都要经过，要与 ublk 的 io_uring 模型、
