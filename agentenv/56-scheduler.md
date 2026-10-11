@@ -45,15 +45,24 @@ gateway 无状态（[第 55 篇](55-gateway.md)），状态都在 scheduler 里�
 
 ```mermaid
 flowchart LR
-    A["发现列表<br/>去掉 lingering"] --> B["配上最近一次<br/>心跳快照"]
-    B --> C{"有快照"}
-    C -->|"否"| K["保留"]
-    C -->|"是"| D{"所有上限<br/>都未超过"}
-    D -->|"是"| K
-    D -->|"否"| X["排除"]
-    K --> S["策略选一个<br/>轮询或随机"]
-    S --> N["返回节点"]
-    S -->|"候选为空"| U["Unavailable"]
+    subgraph P1["① 候选"]
+        direction TB
+        A["发现列表<br/>去掉 lingering"] --> B["配上最近一次<br/>心跳快照"]
+    end
+    subgraph P2["② 阈值过滤"]
+        direction TB
+        C{"有快照"} -->|"是"| D{"所有上限<br/>都未超过"}
+        C -->|"否"| K["保留"]
+        D -->|"是"| K
+        D -->|"否"| X["排除"]
+    end
+    subgraph P3["③ 策略"]
+        direction TB
+        S["轮询或随机"] -->|"有候选"| N["返回节点"]
+        S -->|"为空"| U["Unavailable"]
+    end
+    B --> C
+    K --> S
 ```
 
 1. `nodes.Snapshot(false)` 取发现列表，去掉 lingering 节点，按 ID 排序。

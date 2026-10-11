@@ -172,3 +172,6 @@
 - 64 → 60：Dockerfile 里的节点镜像与 release bundle 是两次独立构建（镜像内不带 `--locked`、不用 vendored-openssl）。
 - 64 → 67：client crate 版本号写 1.15.1 而描述的是补丁版 API，引用 64 §3。
 - 64 → 68：protoc 版本三处不一致（CI 33.4 / release apt / 入库 `.pb.go` 头 3.21.12）；release 不依赖 CI 测试；gateway / scheduler 镜像不随版本发布、仓库清单只引用本地 `:latest`；Go 镜像不注入版本与提交号；`install.sh` 用 GitHub API 资产摘要而不用 `SHA256SUMS`，两个安装脚本不在 `SHA256SUMS` 里；`adev` 下载 protoc 无校验、文件非空即跳过；`publish-tools-image.yml` 版本缺省 0.1.0 而其它处是 0.1.1，manifest 按 tag 引用 tools 盘镜像；mdBook 版本未固定；推论：`.dockerignore` 排除 `.git`，镜像里的提交号为 `unknown`。
+- 04 → 40 / 41：内核版本直接引用 04 §5.2 的分级表（UPDATE_SIZE 与 AUTO_BUF_REG 都在 6.16 首次出现，AUTO_BUF_REG 是 bit 11；推论最低可运行约 6.4）；ADD_DEV 遇不支持的特性位不会失败，内核静默清掉（`flags &= UBLK_F_ALL`）。
+- 04 → 68：README 与部署文档写 6.8+，但 6.8 拿不到 UPDATE_SIZE；`architecture.md` 的「AutoReg zero-copy kernel 6.8+」不成立。
+- 05 **更正**：上游 overlaybd 默认分支（`e2a2ef3`）已带 ublk 前端（`src/ublk/`、ublkd、pool_placeholder），「上游 = TCMU 前端」只对经典前端成立；STYLE 第二节已改；34 / 41 / 66 / 73 照此写。`upper.mode` 是扩展（上游 `UpperConfig` 无此字段）。
