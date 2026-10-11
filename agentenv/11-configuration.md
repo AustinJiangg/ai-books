@@ -41,12 +41,18 @@ AgentENV 的答案是：用 confique 派生分层加载，加载后立刻做一�
 下图是 `ConfigManager::load_config_file()` 的全过程，六个步骤在一次函数调用里完成，任一步失败都让 `server` 启动失败。
 
 ```mermaid
-flowchart TB
-    A["确定配置文件路径"] --> B["confique 分层加载<br/>env 然后 file 然后 default"]
-    B --> C["normalize<br/>占位符与相对路径"]
-    C --> D["normalize<br/>改写与清洗"]
-    D --> E["validate<br/>一致性与范围"]
-    E --> F["写入全局 OnceLock"]
+flowchart LR
+    subgraph L1["① 读入"]
+        direction TB
+        A["确定配置文件路径"] --> B["confique 分层加载<br/>env 然后 file 然后 default"]
+        B --> C["normalize<br/>占位符与相对路径"]
+    end
+    subgraph L2["② 整理与发布"]
+        direction TB
+        D["normalize<br/>改写与清洗"] --> E["validate<br/>一致性与范围"]
+        E --> F["写入全局 OnceLock"]
+    end
+    L1 --> L2
 ```
 
 **第一步：配置文件路径。** `src/bin/server.rs` 的 `main()` 先看命令行 `--config`，有则调 `ConfigManager::init_global_from_path()`；
@@ -88,7 +94,7 @@ flowchart TB
 | 检查 | 函数 | 拒绝的情况 |
 |---|---|---|
 | 预热池 | `validate_pool_config()` | 任一启用的池 `low_watermark > high_watermark`；Firecracker 池 `fill_concurrency = 0` |
-| 镜像 GC | `ImageCacheGcConfig::validate()` | 水位比例越界 |
+| 镜像 GC | `ImageCacheGcConfig::validate()` | 水位比例不在 (0, 1] 内，或低水位高于高水位 |
 | 网络地址池 | `NetworkConfig::validate()` | CIDR 无法解析；host interaction 池不足 32768 个地址、veth 池不足 65536 个；三个网段（含固定的 VM 链路 `169.254.0.20/30`）互相重叠 |
 | ublk | `validate()` 内联 | `resize_timeout_secs = 0`；`remote_io_workers = 0` |
 | 内存快照 | `validate_memory_snapshot_options()` 等 | PVM 下开脏页跟踪；后台下载的并发、块大小及两者乘积超过上限 |
@@ -122,7 +128,7 @@ orchestrator 在构造时（`with_file_backed_store_factory_and_volumes()`）、
 **测试隔离。** `OnceLock` 一个进程只能写一次，所以同一测试二进制里的所有测试共用一份配置。代码对此做了两处适配：
 `#[cfg(test)]` 下 `global()` 遇到未初始化会自动调用 `init_global()`；`set_global()` 在测试构建里给 `access_token_hash_seed` 注入一个固定的测试种子 `TEST_ACCESS_TOKEN_HASH_SEED`，
 避免测试去碰 `$AENV_HOME/secrets`。需要不同配置的测试只能绕开单例，直接构造 `AppConfig` 并调用 `from_app_config()` 一类接受显式配置的函数——
-仓库里许多构造函数都同时提供 `from_app_config(&AppConfig)` 与读全局的版本，正是为此。
+例如 `FirecrackerSandboxConfig` 同时提供 `from_app_config_with_user_image(&AppConfig, …)` 与读全局的 `from_global_config_with_user_image()`，正是为此。
 
 **没有热加载。** `ConfigManager` 没有任何重载方法，`OnceLock` 也无法重置；许多消费方在初始化时就把值拷进自己的结构（预热池水位、网络管理器的地址池、ublk-daemon 的命令行参数）。
 所以修改配置一律需要重启 `server`。这对节点来说可以接受：重启会经由关闭序列把运行中的沙箱暂停落盘（[第 10 篇 §3](10-node-process-and-object-model.md#3-关闭序列)），
@@ -194,6 +200,8 @@ orchestrator 在构造时（`with_file_backed_store_factory_and_volumes()`）、
 `server` 并不是唯一读这份 TOML 的进程。`UblkDaemonConfig::from_app_config()`（`src/sandbox/ublk/device.rs`）把 `ConfigManager::config_path()` 作为 `--config` 传给 ublk-daemon，
 daemon 在 `storage/ublk-daemon/src/main.rs` 里用自己的 serde 结构 `DaemonTomlConfig` 再解析一遍，只取 `home_path`、`deps_path`、`[pool]` 与 `[ublk.overlaybd].resize_timeout_secs`。
 
+下图画出两个进程各自怎样得到配置：`server` 经 confique 合并环境变量与文件，再把一部分结果（socket 路径、生成配置路径、metrics 地址等）作为命令行参数交给 daemon；daemon 另外直接读同一个文件。
+
 ```mermaid
 flowchart LR
     T["配置文件 TOML"]
@@ -216,7 +224,7 @@ flowchart LR
     CLI --> RT
 ```
 
-这条第二路径不经过 confique，因而规则与 `server` 不同。daemon 只认 `AENV_HOME_PATH` 与 `AENV_DEPS_PATH` 两个环境变量（自己读 `std::env`），其余覆盖看不到；
+这条第二路径不经过 confique，因而规则与 `server` 不同。除了命令行参数，daemon 只认 `AENV_HOME_PATH` 与 `AENV_DEPS_PATH` 两个环境变量（自己读 `std::env`），其余覆盖看不到；
 它的默认值也是自己定义的：`home_path` 缺省 `/var/lib/aenv` 与 `server` 一致，而 `deps_path` 缺省是 `./env`（`DEFAULT_DEPS_PATH`），与 `server` 的 `$AENV_HOME/deps` 不同。
 `default.toml` 把 `deps_path` 注释掉了，于是在不设 `AENV_DEPS_PATH` 时，daemon 会到「配置文件目录/env/overlaybd/bin/overlaybd-resize」去找 C++ 扩容工具，
 而 `server` 把 overlaybd 工具安装在 `$AENV_HOME/deps/overlaybd/` 下。推论：按仓库默认文件部署且需要冷启动扩容 rootfs 时，扩容会因找不到工具而失败；本书未在运行环境中验证。

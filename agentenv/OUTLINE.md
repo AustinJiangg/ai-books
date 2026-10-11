@@ -156,8 +156,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 08 | `08-system-architecture.md` | 系统架构：单节点与多节点 | ● |
 | 09 | `09-sandbox-lifecycle-walkthrough.md` | 一个沙箱的一生 | ● |
-| 10 | `10-node-process-and-object-model.md` | 节点进程：启动、关闭与对象模型 | ○ |
-| 11 | `11-configuration.md` | 配置体系 | ○ |
+| 10 | `10-node-process-and-object-model.md` | 节点进程：启动、关闭与对象模型 | ● |
+| 11 | `11-configuration.md` | 配置体系 | ● |
 
 **08 · 系统架构：单节点与多节点**
 - 单节点：客户端直连 `server`（默认 `:8000`）；节点内部的子系统（API、orchestrator、sandbox、snapshot、template、image、p2p、observability）与外部进程（ublk-daemon、FC）

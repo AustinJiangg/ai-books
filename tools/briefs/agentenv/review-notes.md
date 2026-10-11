@@ -25,3 +25,9 @@
 - 09 → 42：「File 后端私有映射、guest 写页 COW 成匿名页即下一次的脏页」在 09 标为推论，由 42 到 fc-aenv 核实后统一口径。
 - 09 → 52：builder VM 可从镜像冷启动或从快照恢复；产物是 capture 后发布（`execute_and_publish()`），不是 pause。
 - 09 → 14：v2 创建写死 `secure: true`、`timeout` 缺省 300；v1 与 orchestrator 缺省 TTL 用 `default_sandbox_timeout`，口径一致。
+- 10 → 59：`ensure_environment()` 不只校验 —— 会下载缺失依赖、每次启动重写 overlaybd 全局配置；59 按此写，OUTLINE 59 要点有误。
+- 10 → 19 / 22：生产元数据存储也是 `InMemoryMetadataStore`，「file backed」只指持久化器。
+- 10 → 68：关闭时三轮 pause 仍失败则跳过网络清理；pause 串行使关闭时间正比于运行中沙箱数。
+- 11 → 41 / 68（需核实）：ublk-daemon 用自己的 `DaemonTomlConfig` 再读同一 TOML，env 只认 `AENV_HOME_PATH` / `AENV_DEPS_PATH`；daemon `DEFAULT_DEPS_PATH = ./env` 与 server 的 `$AENV_HOME/deps` 不同，`default.toml` 注释掉 `deps_path`，于是 daemon 去「配置目录/env/overlaybd/bin/」找 `overlaybd-resize`（推论：可能致冷启动 resize 失败）；`startup_prewarm` server 侧默认 true、daemon 侧按 `UBLK_F_UPDATE_SIZE` 决定。
+- 11 → 68：配置文件缺失不报错、静默用代码默认值；`capacity_gb` 代码无上限 vs toml 100；`remote_blocks.max_size_gb` 代码 10 vs toml / `reference.md` 100；`node_id` toml 写死 `node-a` vs 代码回退主机名；`reference.md` 的 `boot_args` 默认写的是文件值。
+- 11 → 71：键表同时列「代码默认」与「default.toml」两列。
