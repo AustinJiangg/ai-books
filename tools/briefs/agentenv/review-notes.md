@@ -101,3 +101,8 @@
 - 17 → 23：代理流量不续期 TTL；与自动恢复 `EnsureMinimum(300 s)` 联动。
 - 17 → 55：确认 gateway 把 Host 路由转成头再发给节点。
 - 17 → 68：恢复中并发到达的请求得 410 而不等待；`x-forwarded-proto` 写死 `http`；带连字符首 label 的主机名一律截为数据面；格式错的 WebSocket 升级先触发自动恢复再 400；转发阶段 502 / 504 空 body；响应头到达后无超时。
+- 23 → 68：暂停不清 `expires_at`，暂停沙箱每轮被克隆再跳过；可恢复失败每拍重试；停在 Killing 的沙箱无人处理；Pausing 时 connect 返回 400 无法表达可重试；`deletions` 表留残留项；推论 `auto_evict_interval_ms=0` 会 panic。
+- 24 → 56：`withinLimit` 用 `>`，计数等于上限的节点仍可被选中；starting 不计入 `MaxSandboxCount`。
+- 24 → 57：`ReportSandboxEvent` 在 scheduler 端只记 debug 丢弃，节点同步靠心跳。
+- 24 → 21：驱逐路径以 `previous_state=Running` 直接调 `delete_sandbox_impl`。
+- 24 → 68：Terminal 失败移除沙箱不发 Delete 事件；删除沙箱不清样本；route 标签把 connect / timeout / refreshes 归为 `unmatched`；stage 计时不覆盖 delete、驱逐与关闭时的暂停；按 `dev_id` 的 gauge 不移除。
