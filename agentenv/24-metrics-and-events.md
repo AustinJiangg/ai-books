@@ -166,7 +166,7 @@ sequenceDiagram
 代数真正频繁起作用的地方在读侧与去重：
 
 - `latest_sandbox_metrics()` 只返回**当前**代数的最新样本。一台刚恢复、还没被重新采样的沙箱，`GET /sandboxes/metrics` 里没有它，而不是给出暂停前的旧数字。
-- 第 4 步的去重以代数为键：恢复事件触发的采样一定会执行，因为新代数下还没有样本。
+- [§3.3](#33-一轮采样) 第 4 步的去重以代数为键：恢复事件触发的采样一定会执行，因为新代数下还没有样本。
 
 失败的 pause 原地恢复也会换代，此时 VM 并没有换。这是保守的选择：宁可让一条连续的序列被切成两代，也不让旧实例的数据冒充新实例。
 
@@ -210,7 +210,7 @@ sequenceDiagram
 
 ### 4.2 谁在收
 
-订阅者有两个。一个是 §3.2 的采样任务，只关心 Create、Resume、Fork。另一个是心跳上报器的事件循环（`src/observability/reporter.rs` 的 `start()`）：
+订阅者有两个。一个是 [§3.2](#32-采样任务) 的采样任务，只关心 Create、Resume、Fork。另一个是心跳上报器的事件循环（`src/observability/reporter.rs` 的 `start()`）：
 `recv_sandbox_event_batch()` 阻塞等第一条，再用 `try_recv()` 把缓冲里现有的全部取出凑成一批，
 `Lagged` 时记 warn 后继续；`send_sandbox_events()` 以 10 s 超时调用 scheduler 的 `ReportSandboxEvent`，失败只记 warn，这一批不重试。
 
@@ -242,7 +242,7 @@ flowchart LR
 
 调度器需要的是「节点上现在有哪些沙箱、占了多少资源」，这是**状态**；事件描述的是**变化**。
 心跳每次都带着完整的沙箱 ID 名单与现算的容量，是一种电平触发（level-triggered）的同步：丢一次心跳，下一次自然补齐。
-事件是边沿触发（edge-triggered）的：丢一条就永远丢了，而 §4.1 已经说明它本身就不完整。
+事件是边沿触发（edge-triggered）的：丢一条就永远丢了，而 [§4.1](#41-谁发发什么) 已经说明它本身就不完整。
 把权威放在心跳上，事件最多只能做「提前得知」的提示，这正是事件路径可以「尽力而为」、甚至被对端忽略而系统照常运转的原因。
 
 代价是延迟：scheduler 对节点变化的感知最多滞后一个心跳周期。事件通道与 `ReportSandboxEvent` RPC 已经就位，

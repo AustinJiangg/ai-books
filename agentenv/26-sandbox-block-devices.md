@@ -241,7 +241,7 @@ daemon 在 `materialize_overlaybd_runtime()`（`storage/ublk-daemon/src/runtime.
 `[ublk.overlaybd] runtime_upper_mode` 的代码默认值与 `default.toml` 都是 `hybridLogStructured`（`src/cfg.rs` 的 `UblkOverlaybdTomlConfig`）。
 有一处容易看错：`FirecrackerSandboxFactory::build()` 构造 `OverlaybdConfig` 时写的是 `UpperMode::LogStructured`，
 但随后调用的 `FirecrackerSandboxConfig::from_app_config_with_user_image()` 会用全局配置覆盖它，所以冷启动的 rootfs 实际用 Hybrid 布局。
-三种布局的差别——追加写、原地写、Hybrid 的分片规划——在[第 36 篇](36-read-write-paths-and-rw-layouts.md)；Hybrid RW 是 AgentENV 扩展的格式，不与上游 overlaybd 兼容。
+三种布局的差别——追加写、原地写、Hybrid 的分片规划——在[第 36 篇](36-read-write-paths-and-rw-layouts.md)；Hybrid RW 的标志位在上游 overlaybd 中也有定义，其中 ReuseZero 一类写入是 Rust 版 overlaybd 独有的。
 
 ### 5.3 大小只在冷启动时改变
 

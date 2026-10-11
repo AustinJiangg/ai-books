@@ -93,3 +93,5 @@
 - 38 → 39：`set_switch_file()` 除测试外无调用者，SwitchFile 现在只做 ZFile 识别，「后台下载完成后切本地」不成立（修正 OUTLINE 38 / 39 与调研笔记 C）。
 - 38 → 58：P2P 门面可达时仓库 blob 走 Direct 模式、不经节点块缓存；uuid 门面也不经缓存。
 - 38 → 68：`enable_acceleration()` 在 async 路径同步 `connect_timeout`（推论：门面不可达时每次开镜像等最多 1 s）；OSS 10,000 分片上限无前置检查；「每 5 分钟刷新 HTTP client」只用于上传路径。
+- 34 → 36 / 41（推论，需核实）：上游 RW 层 `discard()` 写的 zeroed 映射 moffset 是当时数据 EOF 的占位值；Rust 版重放 RW 索引时保留它并当作 backed zero，之后 `ReuseZero` 可能覆盖上游后来追加的数据（反方向安全）。36 讲 ReuseZero 时引用；41 核实 `overlaybd-resize` 是否写 discard 记录。
+- 34 → 68：RW 重放保留 zeroed 映射 moffset，与上游占位语义不一致。
