@@ -191,3 +191,8 @@
 - 42：virtio 队列内存在 `initialize()` 时被标脏且位图从不重置，所以每次查询都包含它；「COW 页即脏页」按 03 §3.2 写成事实。
 - 42 → 44：引用 42 §2.4、§2.5，与 uffd-core 的同一套 HVA 技巧对照。
 - 42 → 68：同一运行中 VM 被反复捕获时层越来越大；内存设备无常驻引用，页缓存随最后一台沙箱消失；`architecture.md` 的「dirty/present ranges」与缺省路径不符。
+- 57：proto 状态表里两行「无心跳 → CONNECTING」没有代码对应；主机 CPU% 是距「任何人」上次调用的 `/proc/stat` 差值，`GET /nodes` 与心跳共享基线；CPU 交集跳过 CPUID leaf 0xb 与 0x1f，只用于冷启动 `PUT /cpu-config`。57 汉字 4991。
+- 57 → 10：§3.1「注销让 gateway 停止把新请求送到本节点」不准确（与 56 → 10 同）。
+- 57 → 68：崩溃重启的节点再也拿不到交集（`intersectionSent` 仍为 true）；`intersectionSent` 先于 `ReconcileNode` 置位，响应失败即永久丢失；一个节点缺 `cpu-template-helper` 会阻塞整个集群的交集；scheduler 重启后交集不再重算；交集随节点加入收窄、早先的快照不在覆盖内；首次主机采样在 tokio worker 上 `thread::sleep` 100 ms；`buckets.go` 的同步注释指向已不含桶定义的文件。
+- 58：`/p2p-control/publish-layer` 在 v0.2.3 无调用者（URL 传到 `ImageService` 但只在 `Debug` 中读取），daemon 下载的层从不发布（修正调研笔记 C / D）；默认配置把 P2P 标为 EXPERIMENTAL；P2P key 只按 digest，同层跨 registry 共享（区别于 39 所说的块缓存 key）。
+- 58 → 68：删除快照不 unpublish 其制品；自广告 TODO（不合并先前 provider）；节点重启后 catalog 不重新登记到 scheduler；P2P 路径绕过 registry 认证；catalog 与 blob 无访问控制；`p2p-design.md` 的 `fetch_byte_range` 返回类型与代码不符。
