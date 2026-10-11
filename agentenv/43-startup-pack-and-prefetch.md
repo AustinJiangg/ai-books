@@ -73,7 +73,7 @@ flowchart LR
 开关是 `[snapshot.memory_startup_pack] enabled`，代码缺省为关（`src/cfg.rs` 的 `SnapshotStartupPackConfig`），
 `config/default.toml` 里整节被注释掉。关闭时 `record_startup_pack()` 直接返回 `None`。
 两个后端（`posixfs/backend.rs`、`oss/repository.rs`）在提交记录之后，各自 spawn 一个后续任务：
-等录制结束、把 trace 展开成 manifest、写入仓库、再把描述符挂到已提交的记录上；挂接的细节在[第 49 篇](49-resolve-and-artifact-cache.md)。
+等录制结束、把 trace 展开成 manifest、写入仓库、再把描述符挂到已提交的记录上；挂接的细节在[第 49 篇 §7](49-resolve-and-artifact-cache.md#7-startup-manifest-制品)。
 后续任务由 `StartupManifestTaskGuard` 计数。进程正常关闭时，`src/bin/server.rs` 调 `drain_startup_manifest_tasks()` 最多等 15 s，
 超时后发出 abort 通知，仍在进行的任务尽快收尾。
 
