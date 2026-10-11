@@ -53,7 +53,7 @@
   读不到、拿不准的标「推论：」。不要凭对 E2B 或 Firecracker 的印象写 AgentENV 的行为。
   正文里的路径相对于 AgentENV（或 firecracker）仓库根，**不出现 `.src/`**，不写行号。
 - 称谓：只用「AgentENV v0.2.3」「AENV 补丁版 Firecracker」「上游 Firecracker v1.15.1」「Rust 版 overlaybd」「上游 overlaybd」「overlaybd 工具」「e2b infra」。
-  补丁版 Firecracker 的行为不要写成上游就有；AgentENV 扩展的格式（Hybrid RW、`PMIDX001`、`OBCH`、`AENVMF01`）不要写成与上游兼容。
+  补丁版 Firecracker 的行为不要写成上游就有；AgentENV 扩展的格式（`PMIDX001`、`OBCH`、`AENVMF01`）不要写成与上游兼容；Hybrid RW（flags bit5）上游默认分支也有定义，不要写成 AgentENV 扩展，兼容性逐项核实。
 - 先讲问题再讲方案；代价与收益成对；不写宣传腔；不用「显然」；不用 emoji 与感叹号。**不给性能数字**，README 里的宣称也不引用。
 - 图：mermaid 内嵌，1–3 张，节点 ≤ 20，标签用 `A["..."]` 形式，标签里不要有未转义的括号 / 引号 / 竖线；
   目录、字节布局、位域用 ```text。**图必须在 `tools/figcheck.sh` 下 PASS**

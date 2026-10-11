@@ -204,7 +204,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 15 | `15-template-build-api.md` | 模板构建 API | ● |
 | 16 | `16-snapshot-and-volume-api.md` | 快照与卷 API | ○ |
 | 17 | `17-reverse-proxy.md` | 反向代理 | ○ |
-| 18 | `18-e2b-compatibility.md` | E2B 兼容性：矩阵与偏差 | ○ |
+| 18 | `18-e2b-compatibility.md` | E2B 兼容性：矩阵与偏差 | ● |
 
 **12 · 规范驱动的服务骨架**
 - spec-first：`src/api/openapi.yml` 是唯一真相；openapi-generator 7.22.0 `rust-axum` 生成 `agentenv_http_server` crate；手写 `ApiImpl` 只实现六个 trait
@@ -276,9 +276,9 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
 | 19 | `19-state-machine-and-concurrency.md` | 状态机与并发控制 | ● |
-| 20 | `20-launch-plan-and-rollback.md` | launch plan 与失败回滚 | ○ |
-| 21 | `21-deletion-and-volume-capture.md` | 删除与卷的捕获提交 | ○ |
-| 22 | `22-persistence-across-restarts.md` | 跨重启持久化 | ○ |
+| 20 | `20-launch-plan-and-rollback.md` | launch plan 与失败回滚 | ● |
+| 21 | `21-deletion-and-volume-capture.md` | 删除与卷的捕获提交 | ● |
+| 22 | `22-persistence-across-restarts.md` | 跨重启持久化 | ● |
 | 23 | `23-auto-eviction-and-ttl.md` | 自动驱逐与 TTL | ○ |
 | 24 | `24-metrics-and-events.md` | 指标与生命周期事件 | ○ |
 
@@ -341,13 +341,13 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 25 | `25-backend-and-firecracker-process.md` | 后端抽象与 Firecracker 进程 | ○ |
 | 26 | `26-sandbox-block-devices.md` | 沙箱的块设备：tools 盘、rootfs 与内存设备 | ○ |
-| 27 | `27-start-pause-resume-sequences.md` | 启动、暂停与恢复的 Firecracker 调用序列 | ○ |
-| 28 | `28-mmds-and-envd.md` | MMDS 与 envd | ○ |
-| 29 | `29-network-slots.md` | 网络（一）：槽位、命名空间与地址计划 | ○ |
-| 30 | `30-egress-policy-and-proxy.md` | 网络（二）：出站策略与透明代理 | ○ |
-| 31 | `31-extra-drives-and-volumes.md` | 附加盘与卷：预留槽位与热插 | ○ |
-| 32 | `32-warm-pools.md` | 预热池：网络、块设备与 Firecracker 进程 | ○ |
-| 33 | `33-custom-extension-hooks.md` | 自定义扩展 hook | ○ |
+| 27 | `27-start-pause-resume-sequences.md` | 启动、暂停与恢复的 Firecracker 调用序列 | ● |
+| 28 | `28-mmds-and-envd.md` | MMDS 与 envd | ● |
+| 29 | `29-network-slots.md` | 网络（一）：槽位、命名空间与地址计划 | ● |
+| 30 | `30-egress-policy-and-proxy.md` | 网络（二）：出站策略与透明代理 | ● |
+| 31 | `31-extra-drives-and-volumes.md` | 附加盘与卷：预留槽位与热插 | ● |
+| 32 | `32-warm-pools.md` | 预热池：网络、块设备与 Firecracker 进程 | ● |
+| 33 | `33-custom-extension-hooks.md` | 自定义扩展 hook | ● |
 
 **25 · 后端抽象与 Firecracker 进程**
 - `SandboxBackend` / `SandboxBackendFactory`；`FirecrackerSandbox` 的字段（work_dir、fc_instance、network_slot、envd、各 ublk 句柄、hook guard）
@@ -438,11 +438,11 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 34 | `34-lsmt-format-and-index.md` | LSMT 格式与索引 | ○ |
-| 35 | `35-zfile-compression.md` | ZFile 压缩 | ○ |
-| 36 | `36-read-write-paths-and-rw-layouts.md` | 读写路径与三种可写布局 | ○ |
-| 37 | `37-seal-restack-compact.md` | 封存、restack 与 compact | ○ |
-| 38 | `38-virtualfile-chain-and-remote-io.md` | VirtualFile 装饰器链与远端 I/O 运行时 | ○ |
+| 34 | `34-lsmt-format-and-index.md` | LSMT 格式与索引 | ● |
+| 35 | `35-zfile-compression.md` | ZFile 压缩 | ● |
+| 36 | `36-read-write-paths-and-rw-layouts.md` | 读写路径与三种可写布局 | ● |
+| 37 | `37-seal-restack-compact.md` | 封存、restack 与 compact | ● |
+| 38 | `38-virtualfile-chain-and-remote-io.md` | VirtualFile 装饰器链与远端 I/O 运行时 | ● |
 | 39 | `39-block-cache-and-background-download.md` | 节点块缓存与后台下载 | ○ |
 | 40 | `40-ublk-library.md` | ublk 库 | ○ |
 | 41 | `41-ublk-daemon.md` | ublk-daemon | ○ |
