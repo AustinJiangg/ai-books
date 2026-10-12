@@ -103,7 +103,7 @@ CPU 数（缺省 16）、内存（缺省 32768 MiB）、就绪命令 `BUILDER_RE
 换镜像、改规格、在 KVM 与 PVM 之间切换，都会得到新的 alias，从而构建一份新的 builder 模板。
 alias 是内容寻址的，所以它也是跨节点的协调键：哪个节点先发布，其它节点就直接复用。
 
-推论：旧配置对应的 builder 模板不会被任何代码删除。`build_builder_snapshot_backend` 只有这一个调用者，没有对应的回收路径，改配置之后旧模板留在仓库里。
+推论：私有命名空间没有回收路径，改配置之后旧的 builder 模板一直留在仓库里。
 
 ### 3.2 私有命名空间
 
@@ -190,7 +190,7 @@ flowchart LR
 ### 4.2 在 history 里认出自己
 
 `BuildkitHistory::wait_for_image()` 调 BuildKit Control 服务的 `ListenBuildHistory`。这个流会先**重放**已经完成的记录，再推送实时事件。
-重放是必要的：服务端连接 history 时，用户的 `buildctl` 可能已经提交了求解，甚至已经完成。
+重放是必要的：服务端连接时，用户的求解可能已经提交甚至完成。
 但重放也带来一个陷阱：缓存卷是从种子派生的，buildkitd 的历史记录也存在 `/var/lib/buildkit` 里，所以流里会出现**以前构建**的记录。
 
 认领规则因此不能是「第一条完成的记录」，而是看导出器：记录的 `exporters` 中有一个 `type == "image"` 且 `attrs["name"]` 等于 `aenv-build:{build_id}`。
@@ -234,7 +234,7 @@ builder VM 运行着用户代码，content store 里的字节不可信；digest 
    builder VM 的内存与 rootfs 不保存。
 3. 卷状态回到 Ready 才最终认定 `cache_ready`；最后 `release_cache_lease()` 解除构建 ID 对工作卷的持有。对父种子的只读租约要到清理阶段才释放（5.5 节）。
 
-buildkitd 先正常退出、再冻结文件系统，是为了让缓存卷里的 BuildKit 元数据处于一致状态；停止失败时注释写明保留上一个种子。
+buildkitd 先正常退出、再冻结文件系统，是为了让缓存卷里的元数据一致；停止失败时保留上一个种子。
 
 接着服务端用导入得到的 overlaybd 镜像构造 `TemplateBuildSpec`：alias 与 CPU、内存来自模板记录，`with_resolved_overlaybd_image()` 指向转换结果，
 命令上下文来自镜像 config 的环境变量、工作目录与用户，然后调 `build_and_publish_with_id()`，以构建 ID 作为快照 ID 发布。

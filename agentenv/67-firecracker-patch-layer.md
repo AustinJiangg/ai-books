@@ -125,7 +125,7 @@ if let Some(ref mem_file_path) = params.mem_file_path {
 
 不给路径时，被跳过的有两件事。第一是 `snapshot_memory_to_file()`：不打开内存文件，不读脏页位图，Full 与 Diff 各自的清位逻辑都不执行，所以脏页记录原封不动。
 第二是 `mark_virtio_queue_memory_dirty()`：上游在写完内存文件之后把 virtio 队列所在的页重新标脏，因为队列结构由 Firecracker 经裸指针更新、运行期不进位图；
-补丁把这一步一并放进了「有内存文件」的分支。AgentENV 的路径上这不会漏页：`Queue::initialize()` 在设备激活与从快照恢复时已把队列内存标脏，而 AgentENV 从不重置 Firecracker 的位图，
+补丁把这一步一并放进了「有内存文件」的分支，即 `mem_file_path` 缺省时跳过 virtio 队列重新标脏（[第 03 篇 §4](03-firecracker-for-agentenv.md#4-aenv-补丁版-firecracker-的四个被用到的行为)的说法与此一致）。AgentENV 的路径上这不会漏页：`Queue::initialize()` 在设备激活与从快照恢复时已把队列内存标脏，而 AgentENV 从不重置 Firecracker 的位图，
 所以队列页在每次查询里都是脏的（[第 42 篇 §2.2](42-memory-snapshot-over-ublk.md#22-dirtymemoryranges-的语义)）。
 推论：若有调用方在同一个进程里先做一次带内存文件的 Diff（它会清位图），再做不带内存文件的快照并查询区间，队列页能否出现取决于后来的写，这个组合 AgentENV 不会用到。
 
