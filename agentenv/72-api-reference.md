@@ -186,3 +186,114 @@ AgentENV 经 Firecracker 的 API socket（UDS）手写 REST 请求：包装方�
 `socket.rs` 测试里出现的 `GET /vm` 等请求只用于测试 `UnixSocketClient`，生产路径不调用。
 
 ---
+
+## 4. ublk-daemon 的 14 种 RPC
+
+协议定义在 `storage/ublk-daemon/src/protocol.rs`：每条消息是 4 字节大端长度加 JSON（上限 16 MiB），请求是以 `kind` 为标签的 `DaemonRequest`，响应是以 `status` 为标签的 `DaemonResponse`；
+一个 UDS 连接只承载一个请求（[第 41 篇 §3.1](41-ublk-daemon.md#31-帧与连接)）。客户端是同一 crate 的 `client.rs` 里的 `UblkDaemonClient`，每个请求对应一个同名方法。
+
+| 请求 `kind` | 成功响应 `status` | 作用 | 节点侧调用者 | 篇目 |
+|---|---|---|---|---|
+| `create_overlaybd` | `device_created` | 按给定 image.json 原样建设备，进 managed 表 | 录制用专用内存设备；块设备池关闭时的共享设备 | [41 §3.2](41-ublk-daemon.md#32-请求一览) |
+| `create_overlaybd_runtime_device` | `overlaybd_runtime_device_created` | 物化运行时目录后建独占设备 | rootfs、附加盘 | [41 §5](41-ublk-daemon.md#5-运行时物化) |
+| `delete` | `deleted` | 先中止录制，再拆 managed 表里的设备 | `delete_device()` | [41 §3.2](41-ublk-daemon.md#32-请求一览) |
+| `acquire_overlaybd` | `device_acquired` | 按 `exclusive` / `shared` 从池中取设备 | 共享只读设备 | [41 §4.3](41-ublk-daemon.md#43-一台池化设备的流转) |
+| `release_overlaybd` | `released` | 归还；shared 计数归零才回池 | `release_device()` | [41 §4.3](41-ublk-daemon.md#43-一台池化设备的流转)、[26 §4.3](26-sandbox-block-devices.md#43-daemon-一级activesharedrefcount) |
+| `update_size` | `size_updated` | 在线改设备容量 | 无（只有 daemon 集成测试） | [41 §3.2](41-ublk-daemon.md#32-请求一览) |
+| `get_features` | `features` | 返回启动时探测的特性位；池关闭时恒为 0 | 无（只有 daemon 集成测试） | [41 §3.2](41-ublk-daemon.md#32-请求一览) |
+| `restack_snapshot` | `restack_snapshot_created` | 封存 upper、换上新 upper，返回层描述 | `restack_snapshot_device()` | [37](37-seal-restack-compact.md)、[41 §3.3](41-ublk-daemon.md#33-三类错误与超时) |
+| `start_pack_recording` | `ok` | 开始首触页录制 | startup pack 录制 VM | [43 §2.3](43-startup-pack-and-prefetch.md#23-startuppackrecorder) |
+| `pack_recording_status` | `pack_recording` | 查询录制状态 | 同上 | [43 §2.5](43-startup-pack-and-prefetch.md#25-节点侧的等待与收尾) |
+| `abort_pack_recording` | `ok` | 中止录制 | 同上 | [43 §2.5](43-startup-pack-and-prefetch.md#25-节点侧的等待与收尾) |
+| `prefetch_startup_pack` | `ok`（恒回） | 按 startup manifest 回填块缓存 | 对象存储来源的恢复 | [43 §4.2](43-startup-pack-and-prefetch.md#42-对象存储来源交给-daemon-回填块缓存) |
+| `notify_sandbox_ready` | `ok` | 放开被 envd 就绪门挡住的后台下载 | envd 就绪后 | [39 §6.2](39-block-cache-and-background-download.md#62-envd-就绪信号) |
+| `shutdown` | `ok`（客户端不看结果） | 请求 daemon 退出；客户端最多等回复 5 s，随后等进程退出 | `shutdown_daemon()` | [41 §2.2](41-ublk-daemon.md#22-何时退出) |
+
+任何请求都可能得到三种错误响应：`terminal_error`（已改动 live 状态，设备不可安全继续用）、`invalid_request`（改参数可重试）、`error`（未改状态，可原样重试），
+映射规则在 daemon 的 `handle_connection()`（[第 41 篇 §3.3](41-ublk-daemon.md#33-三类错误与超时)）。超时只在客户端：普通请求 30 s，`shutdown` 5 s，`restack_snapshot` 360 s，
+`create_overlaybd_runtime_device` 取 360 s 与「扩容超时 + 120 s」的较大者；客户端超时不取消 daemon 内的处理。
+
+ublk-daemon 另有一个 HTTP 监听：`storage/ublk-daemon/src/metrics_server.rs` 的 `spawn()` 在 `[ublk].daemon_metrics_listen_addr`（`config/default.toml` 为 `0.0.0.0:9103`）上用 `serve_metrics()` 暴露 Prometheus 指标，留空则不开，没有鉴权（[第 24 篇 §5.1](24-metrics-and-events.md#51-记录器与暴露位置)）。
+
+---
+
+## 5. scheduler 的 13 个 gRPC
+
+`services/api/proto/scheduler.proto` 只定义一个服务 `scheduler.v1.Scheduler`。服务端实现是 `services/scheduler/internal/service.go` 的 `Service`；
+query-only 角色用 `QueryOnlyService`，它只实现 `LookupNode`，其余方法落到生成的 `UnimplementedSchedulerServer`（[第 54 篇 §3.4](54-control-plane-overview.md#34-query-only-服务)）。
+Go 生成名把 `P2p` 写成 `P2P`（`ListP2PPeers()`），线上的方法名仍是 proto 里的 `/scheduler.v1.Scheduler/ListP2pPeers`。
+调用方一列沿用[第 54 篇 §3.1](54-control-plane-overview.md#31-分组)的核对结果；gateway 侧文件在 `services/gateway/internal/`，节点侧是 Rust 生成的 tonic 客户端。
+
+| RPC | 调用方 | 调用点 | 落到 scheduler 的状态 | 篇目 |
+|---|---|---|---|---|
+| `Schedule` | gateway | `server.go` 的 `handleProxy()` | 发现列表 + 最近心跳快照 | [56 §2](56-scheduler.md#2-放置) |
+| `ListNodes` | gateway | `cluster_list.go` 的 `handleClusterList()` | 发现列表，含下线中节点 | [55 §7.1](55-gateway.md#71-集群沙箱列表) |
+| `LookupNode` | gateway | `server.go` 的 `handleProxy()`、`sandbox_metrics.go` 的 `handleSandboxMetricsList()` | 绑定表（内存或 Redis） | [56 §3](56-scheduler.md#3-绑定) |
+| `RecordAssignment` | gateway | `server.go` 的 `recordAssignment()` | 绑定表 | [55 §6](55-gateway.md#6-写绑定)、[56 §3](56-scheduler.md#3-绑定) |
+| `ListObservedNodes` | gateway | `node_list.go` 的 `handleNodeList()` | 观测记录，读取时推导状态 | [55 §7.2](55-gateway.md#72-节点列表与节点详情) |
+| `GetNode` | gateway | `node_list.go` 的 `handleNodeDetail()` | 观测记录 | [55 §7.2](55-gateway.md#72-节点列表与节点详情) |
+| `Heartbeat` | 节点 | `src/observability/reporter.rs` 的 `send_heartbeat()` | 观测记录、绑定表、CPU 交集 | [57 §3](57-heartbeat-and-cpu-intersection.md#3-心跳循环) |
+| `ReportSandboxEvent` | 节点 | `reporter.rs` 的 `send_sandbox_events()` | 无：只打 debug 日志 | [54 §3.1](54-control-plane-overview.md#31-分组) |
+| `UnregisterNode` | 节点 | `reporter.rs` 的 `unregister_node()`（由 `shutdown()` 调用） | 删观测记录、清该节点绑定与 P2P 索引 | [57 §4.1](57-heartbeat-and-cpu-intersection.md#41-unregisternode) |
+| `ListP2pPeers` | 节点 | `src/p2p/discovery/scheduler.rs` 的 `list_scheduler_p2p_peers()` | 心跳里的 P2P 端点 | [58 §3.3](58-p2p-artifact-transport.md#33-lookup三级) |
+| `LookupP2pArtifact` | 节点 | `scheduler.rs` 的 `peers_for_key()` | P2P 制品索引（仅 primary 内存） | [58 §3.5](58-p2p-artifact-transport.md#35-scheduler-侧的索引) |
+| `RecordP2pArtifact` | 节点 | `scheduler.rs` 的 `record_key()` | P2P 制品索引 | [58 §3.5](58-p2p-artifact-transport.md#35-scheduler-侧的索引) |
+| `ForgetP2pArtifact` | 节点 | `scheduler.rs` 的 `forget_key()` | P2P 制品索引 | [58 §3.5](58-p2p-artifact-transport.md#35-scheduler-侧的索引) |
+
+gateway 用 6 个、节点用 7 个，两边没有交集；scheduler 从不主动调用任何一方。失败用四个 gRPC 状态码表达，gateway 的 `writeSchedulerError()` 把它们映射成 400 / 404 / 503 / 502（[第 54 篇 §3.3](54-control-plane-overview.md#33-错误码约定)）。
+连接是明文、无认证的（[第 54 篇 §7](54-control-plane-overview.md#7-信任边界)）。
+
+---
+
+## 6. custom extension 的 4 个 hook
+
+方向与节点 API 相反：节点是客户端，扩展服务是服务端。契约是 `src/custom_extension_api/openapi.yml`，生成的客户端在 `src/custom_extension_api/generated/`，
+手写包装是 `src/sandbox/custom_extension/client.rs` 的 `CustomExtensionClient`。`[custom_extension].url` 为空时所有 hook 都跳过；四个 hook 共用 `timeout_ms`（缺省 5000）。
+
+| 方法与路径 | operationId | 包装方法 | 调用时机 | 篇目 |
+|---|---|---|---|---|
+| `POST /sandbox-hook/start-fresh` | `sandboxStartFresh` | `hook_start_fresh()` | 冷启动：分配网络槽位之后、spawn Firecracker 之前；可返回 `extraBootArgs`；失败则启动失败 | [33 §3.1](33-custom-extension-hooks.md#31-start-fresh唯一能影响启动的-hook) |
+| `POST /sandbox-hook/start-resume` | `sandboxStartResume` | `hook_start_resume()` | 恢复：网络槽位与 FC 进程就绪之后、加载快照之前；失败则恢复失败 | [33 §3.2](33-custom-extension-hooks.md#32-start-resume在快照加载之前) |
+| `POST /sandbox-hook/patch-params` | `sandboxPatchParams` | `hook_patch_params()` | `PATCH /sandboxes/{id}/custom-extension-params`；失败返回 400，保留旧值 | [33 §5.3](33-custom-extension-hooks.md#53-patchhook-在锁外) |
+| `POST /sandbox-hook/stop` | `sandboxStop` | `hook_stop()` | 运行时拆除：FC 停止之后、释放网络槽位之前；失败只记日志 | [33 §3.3](33-custom-extension-hooks.md#33-stop拆除序列中间的一步) |
+
+四个 hook 的请求体与响应要点见[第 33 篇 §2](33-custom-extension-hooks.md#2-契约四个-hook)。snapshot 与 fork 的原地捕获不触发任何 hook；模板构建 VM 也会触发 start 与 stop hook。
+
+---
+
+## 7. P2P 门面的 3 个 HTTP 端点
+
+P2P 打开时，`server` 进程在 `127.0.0.1` 的随机端口上起一个 HTTP 服务（`src/overlaybd/p2p/facade.rs` 的 `P2pHttpFacadeServer::start()`），它的调用方是 ublk-daemon 里的 Rust 版 overlaybd，不对外暴露。
+
+| 方法 | 路径 | handler | 行为 | 篇目 |
+|---|---|---|---|---|
+| `GET` | `/p2p-http/{*origin}` | `handle_http_facade()` | 单段 Range 读；先查 P2P，拿到流之前失败则转 origin；拿到流之后出错不回退 | [58 §5.2](58-p2p-artifact-transport.md#52-一次范围读)、[58 §5.3](58-p2p-artifact-transport.md#53-中途出错为什么不回退) |
+| `GET` | `/p2p-uuid/{uuid}` | `handle_uuid_facade()` | 只走 P2P；未命中 404，取数失败 502 | [58 §5.3](58-p2p-artifact-transport.md#53-中途出错为什么不回退) |
+| `POST` | `/p2p-control/publish-layer` | `handle_publish_layer()` | 只接受回环地址，路径须在允许的发布根下，重算大小与 sha256 后发布 | [58 §5.3](58-p2p-artifact-transport.md#53-中途出错为什么不回退) |
+
+第三个端点的地址被一路传进 ublk-daemon 的 `ImageService`，但 v0.2.3 中没有代码调用它。
+
+---
+
+## 8. 小结
+
+- 节点 HTTP 路由由三部分 `merge` 而成：生成的控制面路由、`proxy::router()`（`/proxy` 两条加 fallback）与 BuildKit 隧道的一条 `GET`；`GET /metrics` 是唯一另外手写挂上的控制面路由。Host 名入口不是路由，而是中间件。
+- 生成路由的 handler 都是 `impl <Trait><()> for ApiImpl` 的方法，按 `Sandboxes`、`Templates`、`Snapshots`、`Volumes`、`Admin`、`Default` 六个 trait 分在 `src/api/impls/` 的六个文件里。
+- 按第 18 篇的四类：乙类五个（v2 创建、v2 connect、`PUT /network`、`GET /snapshots/{id}`、`GET /v2/templates`），丙类是冷启动、fork、扩展参数、builder 会话、`/metrics` 与全部代理入口，其余控制面端点为甲类。
+- v1 与 v2 connect 是两个不同的 handler，只有 v2 允许缺省请求体。spec 里没有删除快照的端点。
+- AgentENV 用到的 Firecracker 端点都经 `FirecrackerInstance` 的包装方法发出；其中四处依赖 AENV 补丁版 Firecracker，`load_snapshot_uffd()` 是没有调用者的遗留路径。
+- ublk-daemon 的 14 种请求里 `update_size` 与 `get_features` 在节点侧没有调用者，`prefetch_startup_pack` 恒回 `ok`；超时只在客户端，且不取消 daemon 里的处理。
+- scheduler 的 13 个 gRPC 按调用方严格分成两组：gateway 6 个（放置、绑定、观测查询），节点 7 个（心跳、事件、注销、P2P 四个）；`ReportSandboxEvent` 在服务端只打日志，query-only 服务只实现 `LookupNode`。
+- 节点作为客户端调用扩展的 4 个 hook，除 stop 外失败都会让对应操作失败；P2P 门面的 3 个端点只服务本机的 ublk-daemon，其中 `publish-layer` 无人调用。
+
+---
+
+## 延伸阅读 / 下一篇
+
+- [第 12 篇 · 规范驱动的服务骨架](12-spec-driven-server.md)：生成 trait、路由组装与中间件顺序。
+- [第 18 篇 · E2B 兼容性：矩阵与偏差](18-e2b-compatibility.md)：四类端点的完整划分与丁类端点。
+- [第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列](27-start-pause-resume-sequences.md)、[第 67 篇 · AENV 补丁版 Firecracker 与 guest 内核](67-firecracker-patch-layer.md)：Firecracker 端点的调用顺序与补丁实现。
+- [第 41 篇 · ublk-daemon](41-ublk-daemon.md)、[第 54 篇 · 控制面总览与 proto 契约](54-control-plane-overview.md)：两套 RPC 的协议细节。
+- [第 71 篇 · 配置项、环境变量与端口总表](71-config-env-ports-reference.md)：本篇各监听地址对应的配置键与端口。
+- [第 73 篇 · 持久化制品与磁盘格式总表](73-artifacts-and-formats-reference.md)：接口之外的另一类契约。
+- [Firecracker 手册第 08 篇](../firecracker/08-api-server.md)：上游 API server 怎样把 REST 请求变成 VMM 动作；[Firecracker 手册第 38 篇](../firecracker/38-snapshot-load.md)：上游 `PUT /snapshot/load` 的实现。
