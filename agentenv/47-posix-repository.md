@@ -39,11 +39,11 @@ POSIX 文件系统给的原语很少：`rename()` 原子地替换一个路径；
 这个字段上声明了环境变量 `AENV_SNAPSHOT_STORE`，推论：它不生效。依据是 `BackendConfig::posix_fs` 是一个没有 `#[config(nested)]` 的 `Option`，confique 把整节当作 serde 叶子、不查内层的 env；
 文件里没有这一节时，归一化用 `PosixFsBackendConfig::default()` 补上，而它走的是不带 `.env()` 的加载（[第 11 篇 §4.2](11-configuration.md#42-环境变量)）。要改仓库位置只能写配置文件或改 `home_path`。
 这个缺省目录在节点本地，所以缺省配置只适合单节点；多节点部署必须把它指到所有节点共享的文件系统，或者改用对象存储后端（[第 48 篇](48-object-storage-repository.md)）。
-推论（依据第 60 篇）：仓库自带的 Kubernetes base 清单用缺省配置，每个节点各有一个本地仓库，快照不在节点之间共享（[第 60 篇](60-deployment.md)）。
+仓库自带的 Kubernetes 清单就用缺省配置，每个节点各有一个 hostPath 下的仓库，快照不在节点之间共享（[第 60 篇 §5](60-deployment.md#5-kubernetes)）。
 
 模板构建器自己的快照（BuildKit builder，[第 53 篇](53-buildkit-in-microvm.md)）用同一个后端的私有命名空间：
 `builder_snapshot_config()` 把 `snapshot_store` 改成 `<snapshot_store>/template-build/builder`，仓库根随之变成它下面的 `repository`。
-公共模板 API 看不到也删不掉其中的记录，测试 `builders_share_a_private_catalog_across_node_local_caches()` 锁定了这一点。
+公共模板 API 看不到也删不掉其中的记录（测试 `builders_share_a_private_catalog_across_node_local_caches()`）。
 推论：私有命名空间有自己的 `managed-layers/`，与公共仓库之间不去重。
 
 ---
@@ -128,7 +128,7 @@ sequenceDiagram
 否则先试 `hard_link()`：成功后 `finalize_hard_linked_file()` 去掉写权限并 `fsync`。
 硬链接失败（最常见的原因是 capture 目录与仓库不在同一个文件系统上）时改走 `copy_file_with_sha256()`：
 边拷边算 sha256，写完 `sync_all()`，然后**把目标文件重新读一遍**再算一次 sha256，两者不等就报错。
-注释说明第二遍是有意的：它校验的是落盘后的字节，而不只是写循环在内存里的字节流。拷贝完成后 `sync_dir()` 父目录，最后再比一次大小。
+注释说明第二遍校验的是落盘后的字节，而不只是写循环里的字节流。之后 `sync_dir()` 父目录，再比一次大小。
 
 `firecracker-manifest.json` 走 `persist_firecracker_manifest()`，是一次普通的 `fs::write()`：不经临时文件，也不 `fsync`。
 它与同一目录里其它制品的写法不一致，后果在 §7 讨论。
@@ -214,7 +214,7 @@ record 与 alias 都用 `write_json()` 写：同目录临时文件、`sync_all()
 任一步失败，`commit_publish()` 重新取 alias 锁，**仅当** alias 仍指向自己时删掉它，然后 `cleanup_uncommitted_snapshot_dir()`。
 `publish_sync()` 在提交失败后还会再调一次 `abort_publish()`，它是同一个清理函数，重复调用无害。
 清理函数自带一道保护：`is_committed()` 为真（标记存在且 record 带 committed 负载）时不删目录。
-这道检查防止的是「提交其实已经成功、却在返回路径上报错」时把一个已提交快照的目录删掉。
+它防止「提交已成功、却在返回路径上报错」时删掉已提交快照的目录。
 
 ---
 
@@ -227,13 +227,13 @@ record 与 alias 都用 `write_json()` 写：同目录临时文件、`sync_all()
 **alias 先于 record 写入**，看上去违反了 `SnapshotRepository` trait 文档里的要求（「只在 record 持久之后绑定 alias」）。
 但在 POSIX 实现里这个窗口对正常运行的读者不可见：通过 alias 查找的 `get()` 与 `resolve_alias()` 都要先取同一把 alias 锁，
 而 `commit_publish()` 在整个「写 alias → 写标记 → 写 record」期间都持有它。
-先写 alias 的理由在于冲突检测：AliasConflict 必须在提交点之前判定，否则会出现一条已经可见、alias 却绑定失败的记录。
+先写 alias 是为了冲突检测：AliasConflict 必须在提交点之前判定，否则会出现已经可见、alias 却绑定失败的记录。
 
 窗口只在进程崩溃时暴露：崩在写 alias 之后、写 record 之前，留下一个指向不存在记录的 alias。
 `get()` 与 `resolve_alias()` 在 alias 锁下发现它指向的记录不存在，就**惰性**删除它并返回「不存在」；
 下一次以同名发布时，`commit_publish()` 的冲突检查也把它当陈旧 alias 清掉。这种 alias 无害，只是要等到有人访问时才被清理。
 
-模板记录的创建 `create()` 顺序相反：在 alias 锁下先写 record（Waiting、无 committed 负载）再写 alias。此时 record 本身就是一个合法的「尚未构建」状态，没有理由让它晚于 alias。
+模板记录的创建 `create()` 顺序相反：在 alias 锁下先写 record（Waiting、无 committed 负载）再写 alias，因为这条 record 本身就是合法的「尚未构建」状态。
 
 `list()` 遍历 `records/` 下所有 `.json` 文件，不加锁，按创建时间倒序。临时文件与 `.lock` 文件因扩展名不符被跳过。
 任何一个 record 解析失败都会让整个 `list()` 返回错误，一个损坏的文件会让所有列表请求失败。
@@ -266,9 +266,7 @@ record 与 alias 都用 `write_json()` 写：同目录临时文件、`sync_all()
   `mark_committed()` 也不检查当前状态，一条已标 Error 的记录可能被改回 Ready，反过来，一次已提交的构建也可能被标成 Error 并丢掉 committed 负载。
 - 删除一条模板记录与发布它并发：带 alias 时两者经 alias 锁串行，但若删除先完成，`committed_record_unlocked()` 找不到旧记录，会**新建**一条 Ready 记录，被删的模板随之复活。
 
-**`flock` 的跨节点语义取决于共享文件系统。** 推论：Linux NFS 客户端把 `flock()` 映射为服务器端的字节范围锁，跨客户端互斥依赖锁协议正常工作；
-若以 `local_lock=flock` 或 `local_lock=all` 挂载，锁只在本机有效，多节点之间的互斥就静默地消失了。
-代码没有检测这种情况；POSIX 后端在多节点下的正确性取决于部署者对共享文件系统的选择。另外，即使是按 id 的只读访问也会在锁目录里创建文件，仓库不能以只读方式挂载。
+**`flock` 的跨节点语义取决于共享文件系统。** 推论：Linux NFS 客户端把 `flock()` 映射为服务器端的字节范围锁；若以 `local_lock=flock` 或 `local_lock=all` 挂载，锁只在本机有效，多节点互斥静默消失，代码不检测这种情况。另外，即使是按 id 的只读访问也会在锁目录里创建文件，仓库不能以只读方式挂载。
 
 ---
 
@@ -292,8 +290,7 @@ POSIX 的顺序选择了另一种保证：只要 record 还在，删除就一定
 
 代价是仓库单调增长：删除快照、模板与卷都不释放层占用的空间。运维只能自行扫描记录后手工清理，代码没有提供工具。这一点记入[第 68 篇](68-known-issues-and-debt.md)。
 
-`vm_state.bin` 在快照目录里，会随删除消失。推论：一台正在从该快照恢复的沙箱，若 Firecracker 已经打开了这个文件，
-本地文件系统上已打开的 inode 会保留到关闭；NFS 客户端对已打开文件的删除做「改名而非删除」处理。所以删除快照不会打断已经开始加载的沙箱，但会让尚未开始解析的启动失败。
+`vm_state.bin` 在快照目录里，会随删除消失。推论：Firecracker 已打开的文件，本地文件系统保留 inode 到关闭，NFS 客户端做「改名而非删除」；所以删除快照不打断已开始加载的沙箱，只让尚未解析的启动失败。
 
 ---
 
@@ -328,9 +325,8 @@ POSIX 后端的解析器不复制任何东西（细节见[第 49 篇](49-resolve
 `resolve_local_managed_layer()` 为每个 managed 层生成 `file=` 指向 `managed-layers/` 下仓库文件的 lower，带上 digest、size 与 uuid；External 层保留 `repoBlobUrl`。
 物化出来的 `image.json` 放在节点本地的运行时缓存目录里，层数据本身留在仓库。
 
-这让 POSIX 后端没有下载步骤，也没有节点本地的层副本需要管理。代价是共享文件系统成了运行时的数据路径：
-冷启动读 rootfs、恢复时按需读内存层，读的都是仓库文件。推论：共享文件系统的随机读延迟与吞吐，直接决定从快照启动的沙箱的首次访问性能，
-而且同一个热门模板的所有沙箱在所有节点上都读同一组文件。对象存储后端走的是另一条路：层以 `s3://` 地址按需读取，经节点块缓存（[第 39 篇](39-block-cache-and-background-download.md)）。
+这让 POSIX 后端没有下载步骤，也没有节点本地的层副本需要管理。代价是共享文件系统成了运行时的数据路径：冷启动读 rootfs、恢复时按需读内存层，读的都是仓库文件，
+同一个热门模板的所有沙箱在所有节点上都读同一组文件。对象存储后端则按需远端读层，经节点块缓存（[第 39 篇](39-block-cache-and-background-download.md)）。
 
 ---
 

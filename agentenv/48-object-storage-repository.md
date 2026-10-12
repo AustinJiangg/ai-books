@@ -147,7 +147,7 @@ manifest 序列化后经 `put_bytes()` 写入。第 2 步注释特意说明 star
 ### 4.1 先查后写，内容寻址使竞态无害
 
 每个层最后经 `upload_prepared_layer()` → `upload_managed_layer_if_missing()`：先 `exists(key)`，不存在才 `put_file()`。
-检查与写入之间显然有竞态：两个节点可能都看到不存在，都上传一遍。函数注释给出它无害的理由：键就是内容的 sha256，
+检查与写入之间有竞态：两个节点可能都看到不存在，都上传一遍。函数注释给出它无害的理由：键就是内容的 sha256，
 并发写同一个键的一定是相同的字节，最坏情况是多传一次，不会写坏数据。
 
 为什么不用「若不存在才写」的条件 PUT？注释解释：阿里云 OSS 只在单次 PUT 上支持禁止覆盖的条件头，
@@ -170,7 +170,8 @@ POSIX 后端不压缩。
 从一个对象存储快照恢复的沙箱，其 rootfs 继承层在运行时 `image.json` 里没有本地文件，只有 `repoBlobUrl` 与 digest。
 再次发布时，磁盘层的分流规则把它记为 **External** 引用，`repo_blob_url` 就是本仓库的 `s3://…/managed-layers`；
 测试 `derives_external_layers_from_layer_repo_blob_urls()` 断言了这一点。内存层则相反，同样的情形被记为 Managed。
-推论：这类 External 引用把桶名与 `prefix` 写进了记录，仓库迁移到别的桶或改了前缀后，这些记录的 rootfs 不能再被解析；Managed 引用没有这个问题，因为它的地址由当前配置推出。
+推论：这类 External 引用把桶名与 `prefix` 写死在记录里，仓库迁移到别的桶或改了前缀后，这些记录的 rootfs 不能再被解析，而且链式派生的每一代快照都会把这个地址原样传下去；
+Managed 引用没有这个问题，因为它的地址由当前配置推出。POSIX 后端里同样的继承层带本地 `file=` 与描述符，归为 Managed（[第 47 篇 §3.3](47-posix-repository.md#33-内容寻址的写入)），不存在这种绑定。
 
 ### 4.4 分片上传与凭证
 
@@ -285,6 +286,8 @@ AgentENV 把 catalog 本身放进对象存储，换来的是仓库自包含、�
 | 层去重 | 文件存在即引用，只比大小 | `exists()` 即引用，不比大小；否则无条件 PUT |
 | 层写入 | 硬链接，或临时文件加 `persist_noclobber` | 分片上传，`close()` 时整体出现 |
 | 发布压缩 | 不压缩 | 缺省 LZ4 ZFile，digest 按压缩字节 |
+| 再发布继承的 rootfs 层 | 带描述符的 `file=`，记为 Managed | 只有 `repoBlobUrl`，记为写死桶地址的 External |
+| 多节点前提 | 共享文件系统，且 `flock` 跨节点有效 | 原生共享，一致性见本表各行 |
 | 失败回滚 | 删未提交目录，先确认未提交 | 删 `artifacts/{id}/` 前缀与已推 manifest，不确认提交是否成功 |
 | 删除顺序 | 标记、alias、目录，最后 record | alias、record，最后制品 |
 | 删除中途失败 | 留下可见但不可运行的记录 | 留下无人引用的制品 |

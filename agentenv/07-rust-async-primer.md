@@ -125,10 +125,11 @@ local_set.block_on(&rt, async {
 ### 3.2 `async_trait` 与 `?Send`
 
 trait 里的 async 方法在 AgentENV 里大多用 `async_trait` 宏写成。这个宏把方法改写成返回 `Pin<Box<dyn Future + Send>>`，**默认带 `Send` 约束**；
-写成 `#[async_trait(?Send)]` 则去掉这个约束。代码里有两处有意去掉：
+写成 `#[async_trait(?Send)]` 则去掉这个约束。生产代码里有三处有意去掉（模板测试里的几个桩实现不计）：
 
 - `SandboxExecutor`：注释说明 `FirecrackerSandbox` 持有的 tonic 客户端不是 `Sync`，所以 `&Self` 不是 `Send`，方法返回的 future 也就不能是（[第 25 篇](25-backend-and-firecracker-process.md)）；
-- ublk 的 target handler：它在 queue 线程的 `LocalSet` 上执行，要借用线程局部的 ring（[第 40 篇](40-ublk-library.md)）。
+- ublk 的 target trait `UVMUblkTarget`（`storage/ublk/src/dev.rs`）：`handle_io_request()` 在 queue 线程的 `LocalSet` 上执行，要借用线程局部的 ring（[第 40 篇](40-ublk-library.md)）。
+- `storage/util/src/io_ring/worker.rs` 的 `TlsRing`：它返回线程局部的 `URING` / `URING128`，方法里借用的 ring 只在本线程有效。
 
 ### 3.3 同一份代码，两种 future
 

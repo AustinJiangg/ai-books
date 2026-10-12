@@ -299,7 +299,7 @@ AgentENV 的放置只有阈值过滤加轮询，不看节点健康状态、不�
 - 绑定的真相源是节点心跳名单：`ReconcileNode()` 续期名单内、删除名单外；`RecordAssignment` 只是提前写入，生命周期事件不参与。
 - `binding_ttl` 缺省 30 s，它的作用是让停止心跳的节点自动从路由中消失。
 - 内存实现惰性过期、重启即丢；Redis 实现用两段 Lua 脚本原子维护绑定与反向索引，但脚本访问未声明的键，不兼容 Redis Cluster。
-- static 发现的节点 ID 必须与 `AENV_NODE_ID` 一致；kubernetes 发现以 Pod 名为 ID，Serving 决定是否在表中，Terminating 决定是否 lingering。
+- static 发现的节点 ID 必须与 `AENV_NODE_ID` 一致；kubernetes 发现以 Pod 名为 ID，Serving 决定是否在表中，Terminating 决定是否 lingering；headless Service 的 `publishNotReadyAddresses` 让终止中的 Pod 留在 slice 里，排空期间仍可路由。
 - query-only 副本只回答 `LookupNode`，而绑定只能由 primary 续期，所以它覆盖的是长度不超过 `binding_ttl` 的 primary 停机。
 - 节点表、观测快照、CPU 交集、P2P 索引只在 primary 内存中，任何部署形态下都不在 HA 范围内。
 

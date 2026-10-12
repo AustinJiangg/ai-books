@@ -92,7 +92,7 @@ flowchart TB
 - **ublk-daemon** 集中持有节点上全部 ublk 设备，是唯一持有 `CAP_SYS_ADMIN` 的子进程；Rust 版 overlaybd 在它的 queue 线程里执行读写（[第 40 篇](40-ublk-library.md)、[第 41 篇](41-ublk-daemon.md)）。
   共享设备去重、预热池与下载限流都依赖「所有设备在同一进程」，代价是单点：它退出后不会被重新拉起。
 - **`firecracker`** 在沙箱自己的 netns 里由短命线程 spawn，spawn 前清空能力集（[第 25 篇 §4.2](25-backend-and-firecracker-process.md#42-进入-netns-并清空能力)）。
-  这只在 `server` 以非 root 运行时成立：以 root 运行（Compose 与 DaemonSet 的特权容器）时，exec 会从 bounding 集重新授予能力（[第 59 篇](59-host-setup-and-privileges.md)）。
+  这只在 `server` 以非 root 运行时成立：以 root 运行（Compose 与 DaemonSet 的特权容器）时，exec 会从 bounding 集重新授予能力（[第 59 篇 §5.1](59-host-setup-and-privileges.md#51-回顾能力在-exec-时怎样变化)）。
   它不用 jailer，与 `server` 同 uid，这是最主要的隔离缺口（[第 25 篇 §5](25-backend-and-firecracker-process.md#5-不用-jailer哪些隔离有哪些没有)）。
 
 guest 看到的块设备顺序固定：`/dev/vda` 是只读的 tools 盘（带 envd 与 init），`/dev/vdb` 是用户 rootfs，`/dev/vdc` 起是附加盘与预留的卷槽位；

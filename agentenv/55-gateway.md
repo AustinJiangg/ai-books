@@ -31,10 +31,7 @@ gateway 是 `services/` 里的一个 Go 程序。`services/gateway/cmd/main.go` 
 
 两个 gRPC 客户端分别指向 `scheduler_addr`（primary）与可选的 `query_only_scheduler_addr`。后者未配置时，`NewServer()` 让它退回到 primary。
 gateway 对 scheduler 只用六个 RPC：`Schedule`、`LookupNode`、`RecordAssignment`、`ListNodes`、`ListObservedNodes`、`GetNode`，
-其中只有 `LookupNode` 走 query-only 客户端，其余都走 primary。这个划分决定了 primary 不可用时哪些请求还能工作（[第 56 篇](56-scheduler.md)）。
-
-每个请求要依次回答：要不要验 API key（gateway 不知道沙箱的 ingress 策略，只能按请求形状分类）；送到哪台节点（有 sandbox ID 就查绑定，否则让 scheduler 选）；
-怎样转发（数据面改写成节点认识的入口，新建请求还要从响应里取 ID 写回绑定）。
+其中只有 `LookupNode` 走 query-only 客户端，其余都走 primary。这个划分决定了 primary 不可用时哪些请求还能工作（[第 56 篇 §6.2](56-scheduler.md#62-primary-不可用时)）。
 
 ---
 
@@ -144,20 +141,19 @@ flowchart LR
 
 显式 `/proxy` 前缀还有一处行为值得注意。它被判为数据面，路由来源是 header，而 `upstreamTargetPath()` 对 header 与 host 两类来源**无条件**在路径前加 `/proxy`。
 推论：客户端经 gateway 访问 `/proxy/x`，节点收到的是 `/proxy/proxy/x`，节点只剥一层前缀（[第 17 篇 §2](17-reverse-proxy.md#2-三个入口)），guest 看到的是 `/proxy/x`；
-同一个请求直接发给单节点时，guest 看到的是 `/x`。仓库测试只覆盖了不完整的 `/proxy` 请求被拒，没有覆盖完整请求的上游路径。
-多节点下应当用路由头加原始路径（或 Host 路由），不要再拼 `/proxy`。
+同一个请求直接发给单节点时，guest 看到的是 `/x`。仓库测试没有覆盖完整 `/proxy` 请求的上游路径。多节点下应当用路由头加原始路径（或 Host 路由），不要再拼 `/proxy`。
 
 ---
 
 ## 4. 选节点
 
 有 sandbox ID 时，`handleProxy()` 调 `queryOnlyScheduler.LookupNode()`。注意它不区分数据面与控制面：`handleProxy()` 对 host、path、header 三类来源调用的是同一个 `queryOnlyScheduler`，path 类的 pause、resume、delete 也走 query-only 客户端（测试 `TestLookupNodeUsesQueryOnlySchedulerClient` 只覆盖了 header 类）。
-`services/README.md` 把 query-only 的高可用描述为「只覆盖数据面」，代码实际覆盖的是「一切按已有沙箱路由的请求」，而 fork 的子沙箱绑定、列表与新建仍需要 primary。
+所以 query-only 覆盖的是一切按已有沙箱路由的请求，不只是 `services/README.md` 所说的数据面；新建、列表与 fork 子沙箱的绑定仍需要 primary。
 
 没有 sandbox ID 时，先由 `buildScheduleHint()` 构造一个调度 hint，再调 primary 的 `Schedule()`。hint 只对三个创建路径生成：
 `/sandboxes-cold` 的 hint 带 CPU 数、内存、镜像列表与 metadata，`/sandboxes` 与 `/v2/sandboxes` 的只带 metadata。
 `captureRequestBody()` 最多缓冲 64 KiB，超过时把已读前缀与剩余部分拼回 `prefixedBody`、跳过 hint，请求体仍完整转发；上限防止客户端迫使 gateway 缓冲任意大的 body。
-代价是：两种内置策略都不读 hint（[第 56 篇](56-scheduler.md)），这段缓冲与解析目前只服务于 scheduler 的 debug 日志。
+代价是：两种内置策略都不读 hint（[第 56 篇 §2.3](56-scheduler.md#23-策略)），这段缓冲与解析目前只服务于 scheduler 的 debug 日志。
 
 两个 RPC 都在 `routingCtx` 下进行，它是请求上下文加上 `request_timeout` 的超时。
 gRPC 错误由 `writeSchedulerError()` 映射成 `text/plain` 的 HTTP 响应：
@@ -185,7 +181,7 @@ gRPC 错误由 `writeSchedulerError()` 映射成 `text/plain` 的 HTTP 响应：
 
 - 改写 scheme、host、路径与 query，但 **保留原始 `Host` 头**（`req.Out.Host = req.In.Host`）；
 - `injectForwardedHeaders()` 设置 `X-Forwarded-For`（覆盖而不是追加，只留直接对端的地址）、`X-Forwarded-Host`、`X-Forwarded-Proto`、`X-Forwarded-Method`、`X-Forwarded-URI`；
-- host 路由时把解析结果写成 `x-agentenv-sandbox-id` 与 `x-agentenv-target-port`，覆盖客户端可能带来的同名头；
+- host 路由时把解析结果写成 `x-agentenv-sandbox-id` 与 `x-agentenv-target-port`，覆盖客户端可能带来的同名头，即把 Host 路由转成头路由；
 - 其余请求头原样转发。
 
 这样节点看到的数据面请求永远走 `/proxy` 前缀入口，路由信息永远在头里。节点的 Host 分类器遇到 `/proxy` 开头的路径直接放行（[第 17 篇 §2](17-reverse-proxy.md#2-三个入口)），
@@ -225,7 +221,7 @@ gateway 不重试。创建请求被节点以 5xx 拒绝时原样透传，不会�
 
 ### 6.1 时机与 ID 来源
 
-scheduler 的绑定以节点心跳为真相源（[第 56 篇](56-scheduler.md)），但心跳每 5 s 一次。一台刚创建的沙箱在下一次心跳之前也要能被路由，
+scheduler 的绑定以节点心跳为真相源（[第 56 篇 §3.1](56-scheduler.md#31-接口与写入者)），但心跳每 5 s 一次。一台刚创建的沙箱在下一次心跳之前也要能被路由，
 所以 gateway 在创建成功后**提前**写一条绑定。`shouldRecordAssignment()` 规定了哪些请求需要写：
 
 - 模板构建的两种分配请求；
