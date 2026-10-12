@@ -171,7 +171,7 @@ guest 侧的挂载在 `tools-image/init` 里完成。它在 `pivot_root` 之前�
 这两种情况下 guest 的内存里已经有这些卷的挂载，`start_resume()` 在 `prepare_volume_drive_slots()` 建好占位文件之后、
 `load_snapshot_file()` 之前，就用 `bind_volume_drive_slot()` 把对应槽位换成卷的设备。
 load 时 Firecracker 打开的就是真实设备，guest 恢复后接着使用原来的挂载，宿主不做任何 guest 侧操作。
-这要求新卷的内容与 guest 内存里的文件系统状态一致：恢复出的卷来自同一次捕获，满足这个前提。
+这要求新卷的内容与 guest 内存里的文件系统状态一致。发布沙箱快照时这一点成立：`capture_snapshot()` 经 `pause_to_dir()` 在同一个 Paused 窗口里写内存层并 restack 卷，随后 `snapshot_sandbox_volumes()` 才经 `VolumeManager::snapshot_volume_state()` 发布刚封存的卷层。fork 是例外，见 §5。
 
 ### 4.3 新卷：load 之后热插
 
@@ -258,6 +258,12 @@ needs-recovery 标志还在。只读卷的 overlaybd 设备没有可写 upper（
 fork 时独占卷每个子沙箱克隆一份、只读卷共享，子沙箱只允许**替换**快照里已有的卷 drive、不允许追加
 （`snapshot_config_for_fork()`），细节在[第 51 篇](51-fork.md)。
 
+fork 的卷与内存不在同一个窗口里捕获。`src/api/impls/sandbox.rs` 的 fork 处理函数先调 `Orchestrator::snapshot_volume_mounts()`，
+即上面的 `snapshot_volumes()`：暂停、restack 卷、恢复运行；再克隆卷、调 orchestrator 的 fork，后者才经 `pause_to_dir()` 捕获内存。
+两次暂停之间源沙箱照常运行。推论：这段时间里 guest 写进卷的数据留在源沙箱新的 upper 上，不在子沙箱的卷里，
+而子沙箱的内存（含 guest 页缓存与 ext4 的内存元数据）却来自更晚的时刻；子沙箱的卷与内存因此可能不一致，
+guest 内的文件系统看到的盘比它记得的旧。
+
 ---
 
 ## 6. `VolumeManager`：权威在仓库，本地是缓存
@@ -293,6 +299,8 @@ fork 时独占卷每个子沙箱克隆一份、只读卷共享，子沙箱只允
 ---
 
 ## 7. 代价与边界
+
+**fork 的卷与内存来自两个时刻。** 推论：§5 讲的两次暂停之间若 guest 写了卷，子沙箱的 ext4 内存状态与盘上内容会错开，后果从读到旧数据到文件系统报错不等；要避免它，调用方须在 fork 前让 guest 停止写卷。
 
 **槽位数在第一次冷启动时就定死。** `volume_drive_slots` 写进 vm_state 与 manifest，之后每一代快照都继承它。
 运维把 `volume.max_volume_count` 从 4 调到 8，只影响此后冷启动的模板；旧模板仍然只有 4 个槽位，
@@ -336,7 +344,7 @@ AgentENV 把卷做成块设备，读写路径与 rootfs 共用 overlaybd 与 ubl
 - 只读卷挂载用 `ro,noload`，因为卷快照只是 `sync` 过的崩溃一致状态，只读设备无法回放 ext4 日志。
 - 卷的 upper 封存到卷自己的数据目录、文件名带 UUID；manifest 只记物理附加盘与槽位数，卷内容由 API 层记成卷层。
 - `VolumeManager` 的权威记录在快照仓库，本地缓存只在层列表一致时可用；发布前先标 `Uploading`。
-- 槽位数随第一次冷启动固化、只读属性不在 Firecracker 层体现、两条挂载路径的失败语义不同，是这套设计的主要边界。
+- 槽位数随第一次冷启动固化、只读属性不在 Firecracker 层体现、两条挂载路径的失败语义不同，是这套设计的主要边界；fork 先封存卷、后捕获内存，子沙箱的卷与内存可能来自不同时刻（推论）。
 
 ---
 

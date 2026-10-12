@@ -28,7 +28,7 @@
 要让运行中的沙箱跨过重启，有两条路。一条是把运行态也落盘，重启后重新接管活着的 Firecracker 进程：要记下 API socket、网络槽位、ublk 设备、代理路由，
 还要处理「落盘之后、退出之前」运行态又变了的情况。另一条是只承认一种可以完整落盘的状态，在退出前把所有沙箱都带到这个状态。
 
-AgentENV 走第二条。可以完整落盘的状态就是 Paused：暂停时 vm_state、内存层、rootfs 与附加盘的层栈都已经写进一个目录（[第 27 篇](27-start-pause-resume-sequences.md)），
+AgentENV 走第二条。可以完整落盘的状态就是 Paused：暂停时 vm_state、内存层、rootfs 与附加盘的层栈都已经写进一个目录（[第 27 篇](27-start-pause-resume-sequences.md)、[第 42 篇](42-memory-snapshot-over-ublk.md)），
 VM 已经停掉，没有活着的进程需要接管。于是：
 
 - **只有 Paused 被持久化。** Running、以及所有过渡态都只存在于内存。
@@ -106,7 +106,7 @@ $AENV_HOME/persisted-sandboxes/
 
 `allocate_artifact_root()` 每次暂停都在 `artifacts/<sandbox_id>/` 下新建一个 UUIDv7 命名的子目录。不复用旧目录，是因为 resume 之后运行中的 VM 仍以旧目录里的层作为 lower；
 新的暂停把这些运行期产生的层以硬链接（失败时退化为稀疏复制）带进新目录的 `inherited-layers/`（`overlaybd_snapshot.rs` 的 `link_or_copy_file_blocking()`），新目录因此自足。
-卷的层不在这里，它们写到卷自己的持久目录（[第 21 篇](21-deletion-and-volume-capture.md)）。
+卷的层不在这里，它们写到卷自己的持久目录，且暂停时不发布（[第 21 篇 §7](21-deletion-and-volume-capture.md#7-卷的内容还在哪些时刻被发布)）。
 
 旧的 UUID 子目录**不会**在新的暂停之后删除，而是一直留到沙箱被删除时由 `delete_record_and_artifacts()` 连同整个 `artifacts/<sandbox_id>/` 一起删掉。
 硬链接不额外占数据空间，但每一代的 vm_state 与新生成的层是真实占用，反复暂停与恢复的沙箱会累积目录。这是一处技术债。
@@ -122,7 +122,7 @@ $AENV_HOME/persisted-sandboxes/
 
 1. 用 `protect_image_refs(PausedSandbox)` 钉住运行时引用的镜像层，防止镜像 GC 删掉暂停沙箱要用的 lower。失败则退回 Running。
 2. `allocate_artifact_root()` 分配目录。此时句柄与路由还挂着，分配不改变后端，失败只需退回元数据并解除钉住。
-3. 摘下句柄与路由，调用后端 `pause(artifact_root)` 把产物写进目录（[第 20 篇](20-launch-plan-and-rollback.md) 讲失败的二分）。
+3. 摘下句柄与路由，调用后端 `pause(artifact_root)` 把产物写进目录（[第 20 篇 §7](20-launch-plan-and-rollback.md#7-pause-的失败语义) 讲失败的二分）。
 4. `persist_paused()`：`encode()` 暂停状态，构造 `lifecycle = Paused` 的记录，`put_record()` 同步写入 RocksDB。`encode()` 或写入失败时，它删除这次分配的产物目录。
 5. `store.update()` 把内存元数据改成 Paused。
 6. 后端 `stop()` 释放资源，广播 Pause 事件。
@@ -144,7 +144,7 @@ resume 改变的不只是内存状态。`resume_sandbox_inner()` 在 CAS Paused 
 写入失败就 CAS 回 Paused、返回错误，不启动 VM。之后 `launch_sandbox(LaunchPlan::for_resume(…))` 启动 VM。结局有两种：
 
 - **成功**：VM 就绪、状态 CAS 到 Running、代理路由发布之后，`launch_sandbox()` 调用 `delete_record()`，**只删记录，保留产物**，因为运行中的 VM 还以这些层为 lower。
-- **失败**：`rollback_failed_launch_metadata()` 把内存状态改回 Paused，再 `rollback_resuming()` 把记录改回 Paused。
+- **失败**：`rollback_failed_launch_metadata()` 把内存状态改回 Paused，再 `rollback_resuming()` 把记录改回 Paused。哪些失败点会走到这里、各自先撤销什么，见[第 20 篇 §4.1](20-launch-plan-and-rollback.md#41-三个阶段) 的回滚表：无论失败落在哪个阶段，恢复计划的元数据回滚都以这一对调用结束。
 
 `load_all()` 遇到 `lifecycle == Resuming` 的记录时，`cleanup_invalid_record()` 删掉记录与整个 `artifacts/<sandbox_id>/`，沙箱不再出现。
 代码只留下一条日志 discarding paused sandbox record left in resuming state，没有写明理由。推论：Resuming 记录意味着进程在 resume 进行中退出，此时无法从磁盘判断 VM 是否已经跑过。
@@ -250,11 +250,18 @@ ublk-daemon 的做法不同。`storage/ublk-daemon/src/main.rs` 打开父进程�
 新启动的 `server` 会清理 netns 挂载，孤儿进程所在的网络命名空间失去名字，但只要进程还在，命名空间本身就还在。
 
 这张表说明了「只持久化 Paused」的边界：它保证的是**计划内重启**不丢暂停沙箱，并把运行中的沙箱在关闭时转成暂停沙箱；它不保证崩溃时的资源回收。
-推论：运维上需要一个外部的清理步骤（例如 systemd 单元在 `server` 退出后杀掉其 cgroup 里的残留进程），这一点在[第 59 篇](59-host-setup-and-privileges.md)与[第 60 篇](60-deployment.md)讨论部署时应当说明。
+
+「计划内」本身也有时限。`scripts/install.sh` 写出的 systemd 单元设了 `KillMode=process` 与 `TimeoutStopSec=30`。
+注释说明了前者的理由：缺省的 control-group 模式会在停止时立即 SIGKILL 全部 Firecracker 子进程，`server` 来不及暂停它们。
+`KillMode=process` 让 systemd 只向 `server` 主进程发 SIGTERM；但 30 s 后主进程仍未退出，systemd 就只 SIGKILL 主进程，cgroup 里的其余进程照这个模式不受处理。
+而关闭时的暂停是逐台串行的（[第 10 篇 §3.2](10-node-process-and-object-model.md#32-orchestratorshutdown只把-paused-留到下次)），耗时正比于运行中沙箱的数量与脏页量。
+推论：运行中沙箱足够多时，`systemctl stop` 或 `restart` 会在暂停做完之前杀掉 `server`，尚未暂停的沙箱落入上表的崩溃情形，它们的 Firecracker 进程成为孤儿并留在单元的 cgroup 里，下一次启动不会回收。
+这两个设置在 `KillMode=process` 下互相牵制：放宽 `TimeoutStopSec` 能让暂停做完，却拉长停止时间；而在主进程退出后清理 cgroup 残留进程的步骤，单元里没有。
+部署侧怎样补上这一步，见[第 59 篇](59-host-setup-and-privileges.md)与[第 60 篇](60-deployment.md)。
 
 多节点部署还有一个窗口。关闭序列先停 reporter：`ObservabilityReporter::shutdown()` 调用 `UnregisterNode`，scheduler 的 `UnregisterNode()` 用空列表 `ReconcileNode()`，撤掉这个节点名下的全部绑定；
 然后才暂停沙箱、退出进程。从注销到新进程启动、首个心跳把载入的沙箱 id 重新上报（`list_sandbox_ids()` 包含暂停沙箱）之间，gateway 查不到这些沙箱的绑定，请求返回 404，
-包括本来可以触发自动恢复的数据面请求（[第 57 篇](57-heartbeat-and-cpu-intersection.md)）。
+包括本来可以触发自动恢复的数据面请求（[第 57 篇](57-heartbeat-and-cpu-intersection.md)、[第 55 篇 §8](55-gateway.md#8-gateway-自己产生的状态码)）。
 
 ---
 
@@ -277,7 +284,10 @@ AgentENV 的暂停产物与记录都在节点本地的 `persisted-sandboxes/`，
 - `load_all()` 删除版本不符、解码失败、产物缺失与孤儿目录，保留但不恢复模式不符的记录；它的 I/O 错误会阻止启动。
 - 有 secure 或禁公网流量的暂停记录时，托管种子缺失直接拒绝启动；镜像 GC 先钉住全部暂停沙箱再核对，失败则不启动 GC。
 - SIGKILL 后 Firecracker 子进程成为孤儿、工作目录与卷预留残留，ublk-daemon 经 pidfd 自行退出；代码不负责这些回收。
+- 安装脚本的 systemd 单元用 `KillMode=process` 加 `TimeoutStopSec=30`：串行暂停超过 30 s 时只有 `server` 被杀，余下的 Firecracker 进程成为孤儿。
 - 多节点下关闭先注销节点，重启前后存在暂停沙箱查不到绑定的 404 窗口。
+
+---
 
 ## 延伸阅读 / 下一篇
 
