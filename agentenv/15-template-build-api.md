@@ -123,7 +123,7 @@ handler 经 `repository_error()` 映射为 400。这次检查发生在共享的�
 POSIX 仓库在 record 锁下做这次转换，两个节点只有一个能看到 Waiting（[第 47 篇](47-posix-repository.md)）；
 对象存储仓库的实现是读 record、检查、无条件写回，两个节点同时启动时都能成功，结果是重复构建（[第 48 篇 §6.2](48-object-storage-repository.md#62-模板状态普通的读改写)）。
 
-第 5 步的 `register_template_build()` 只为路由服务。步骤路径的构建 VM 不经过 orchestrator（这一点与 OUTLINE 早期要点「构建 VM 也是 orchestrator 管理的沙箱」不同，以代码为准）：
+第 5 步的 `register_template_build()` 只为路由服务。步骤路径的构建 VM 不经过 orchestrator：
 `src/template/runner.rs` 用 `SandboxId::new()` 另起一个 ID，直接构造 `FirecrackerSandbox`，它不出现在 orchestrator 的 store 里（[第 52 篇](52-template-builder.md)）。
 于是在整个构建期间，节点上报的沙箱 ID 列表（`list_sandbox_ids()`，经 `src/observability/service.rs` 进入心跳）只能通过 `template_build_ids` 带上这个构建 ID，
 gateway 据此把同一构建 ID 的 status、logs 请求路由到本节点（[第 57 篇](57-heartbeat-and-cpu-intersection.md)）。

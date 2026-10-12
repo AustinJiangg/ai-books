@@ -190,10 +190,10 @@ orchestrator 在构造时（`with_file_backed_store_factory_and_volumes()`）、
 - 身份与集群：`AENV_NODE_ID`、`AENV_CLUSTER_ID`、`AENV_SERVICE_INSTANCE_ID`、`AENV_OBSERVABILITY_SCHEDULER_ENDPOINT`、`AENV_SANDBOX_PROXY_DOMAINS`（逗号分隔）；
 - 其它：`AENV_SANDBOX_ACCESS_TOKEN_HASH_SEED`、`AENV_CUSTOM_EXTENSION_URL`、`AENV_UBLK_DAEMON_METRICS_LISTEN_ADDR`。
 
-其中 `AENV_SNAPSHOT_STORE` 声明了却不生效。它标在 `PosixFsBackendConfig::snapshot_store` 上，而 `BackendConfig::posix_fs` 是一个没有 `#[config(nested)]` 的 `Option` 字段，
+推论：其中 `AENV_SNAPSHOT_STORE` 声明了却不生效。依据是代码结构：它标在 `PosixFsBackendConfig::snapshot_store` 上，而 `BackendConfig::posix_fs` 是一个没有 `#[config(nested)]` 的 `Option` 字段，
 confique 把它当作整体由 serde 反序列化的叶子，不会深入其中查环境变量；文件里没有 `[backend.posix_fs]` 节时，归一化补上的缺省节来自 `PosixFsBackendConfig::default()`，
-即 `impl_config_default!` 生成的不带 `.env()` 的 `builder().load()`（均在 `src/cfg.rs`）。本书用同版本 confique 0.4.0 按相同字段形状写了最小复现，
-设置该变量后两条路径得到的都是文件值或 `$AENV_HOME/snapshot-store`。要改 POSIX 仓库位置，只能写 `[backend.posix_fs].snapshot_store`，或者改 `home_path`。
+即 `impl_config_default!` 生成的不带 `.env()` 的 `builder().load()`（均在 `src/cfg.rs`）。用同版本 confique 0.4.0、相同字段形状的最小程序试验，设置该变量后得到的也只是文件值或 `$AENV_HOME/snapshot-store`；
+但这不是对 `server` 本身的运行验证，所以这里仍记为推论。稳妥的做法是写 `[backend.posix_fs].snapshot_store`，或者改 `home_path`。
 
 挑选的原则看得出来：凡是随部署实例变化（每个节点不同的身份、每套集群不同的 scheduler 地址）或者属于机密（令牌种子）的项，都能用环境变量注入，
 使同一份 TOML 可以被一个集群的所有节点共用。Kubernetes DaemonSet（`deploy/k8s/base/agentenv-daemonset.yaml`）就用 `fieldRef` 把 Pod 名注入为 `AENV_NODE_ID`。
@@ -278,7 +278,7 @@ scheduler 用它防止旧进程迟到的 `UnregisterNode` 删掉新进程记录�
 
 ## 7. 小结
 
-- 优先级是环境变量 > 文件 > 代码默认；只有声明了 `env` 的二十一个字段能被环境变量覆盖，其中 `AENV_SNAPSHOT_STORE` 因所在节不是 nested 而实际不生效。配置文件路径的次序是 `--config` > `AENV_CONFIG_PATH` > 编译期源码路径。
+- 优先级是环境变量 > 文件 > 代码默认；只有声明了 `env` 的二十一个字段能被环境变量覆盖，其中 `AENV_SNAPSHOT_STORE` 推论不生效（所在节不是 nested）。配置文件路径的次序是 `--config` > `AENV_CONFIG_PATH` > 编译期源码路径。
 - 配置文件不存在不报错，节点会静默地按代码默认值运行，而代码默认与 `default.toml` 在内核命令行、缓存上限、节点 ID 等项上不同。
 - 相对路径与 `$AENV_HOME` 展开后的路径都以配置文件所在目录为基准；`$AENV_RUNTIME` 只用于 daemon socket。只改 `home_path` 就能整体搬迁节点目录。
 - 归一化会改写语义：PVM 下强制关闭脏页跟踪，清洗 scheduler 地址与代理域名，补全 POSIX 仓库节。校验在启动时拒绝地址池重叠、生成配置路径重名、限流值越界等组合。

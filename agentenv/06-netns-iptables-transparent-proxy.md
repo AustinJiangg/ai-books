@@ -104,7 +104,7 @@ flowchart TB
 之后任何人打开这个文件得到的 fd 都可以交给 `setns`。
 
 拆除时要反过来：`umount` 这个文件（同一个文件可能被挂载多次，所以要循环到 `EINVAL`），再删文件。
-只要还有别的引用——比如一个没被杀掉的 Firecracker 进程——命名空间就不会消失，这是第 29 篇 §6.5「残留接口永久占位」的根源。
+只要还有别的引用——比如一个没被杀掉的 Firecracker 进程——命名空间就不会消失，这是[第 29 篇 §6.5](29-network-slots.md#65-残留接口永久占位)「残留接口永久占位」的根源。
 同理，出站代理的监听线程身在命名空间里，`Slot::cleanup()` 必须先停它。
 
 ### 2.4 需要哪些权限
@@ -129,7 +129,7 @@ Firecracker 的 virtio-net 设备就是这样工作的：guest 发出的帧被 F
 ### 3.2 veth：跨命名空间的一根网线
 
 veth 总是成对创建，从一端发进去的包从另一端出来，像一根网线。关键能力是**一端可以移到另一个命名空间**：
-netlink 建接口时带上目标命名空间的 fd（`IFLA_NET_NS_FD`）即可。AgentENV 的做法是在沙箱命名空间里建出一对，再把其中一端移回宿主（第 29 篇 §4.2）。
+netlink 建接口时带上目标命名空间的 fd（`IFLA_NET_NS_FD`）即可。AgentENV 的做法是在沙箱命名空间里建出一对，再把其中一端移回宿主（[第 29 篇 §4.2](29-network-slots.md#42-步骤)）。
 删除任一端，整对一起消失，所以清理时只删宿主一端就够了。
 
 guest、tap、veth、宿主之间于是形成一条链：guest 的 `eth0` 经 virtio-net 到 tap，tap 与 veth 在同一个命名空间里由转发连起来，veth 的另一端在宿主上。
@@ -196,7 +196,7 @@ flowchart LR
 
 - `ACCEPT` 放行，`DROP` 静默丢弃，`REJECT` 丢弃并回一个错误（默认是 ICMP 端口不可达，TCP 连接方会立刻看到连接被拒绝）。AgentENV 的拒绝一律用 `REJECT`，guest 里的程序因此能快速失败而不是等超时。
 - `-j <自定义链>` 跳进一条用户建的链（`-N` 创建）；那条链走完没有命中，就回到跳转处的下一条继续。AgentENV 用这种方式把出站策略组织成 `AGENTENV-EGRESS` 与 `AGENTENV-USER-EGRESS` 两级，替换策略时只清空（`-F`）用户链。
-- `-I <链> 1` 插到链头，`-A` 追加到链尾。位置决定优先级：AgentENV 把自己的入口插到内置链第一位，宿主全局规则则是追加，后者在宿主已有更早的 DROP 时不会被走到（第 29 篇 §6.1）。
+- `-I <链> 1` 插到链头，`-A` 追加到链尾。位置决定优先级：AgentENV 把自己的入口插到内置链第一位，宿主全局规则则是追加，后者在宿主已有更早的 DROP 时不会被走到（[第 29 篇 §6.1](29-network-slots.md#61-依赖宿主防火墙的前提)）。
 
 ### 4.3 地址转换
 
@@ -227,7 +227,7 @@ conntrack 为每条连接（按五元组）维护一个条目，记录它的状�
 宿主 INPUT 上这条规则加一条 REJECT，效果就是「宿主可以连沙箱，沙箱不能主动连宿主」；出站链的第一条让宿主发起的 envd 连接的回包不受出站策略影响。
 
 conntrack 表也是命名空间级的，条目按超时老化，**不随规则变化而清空**。这是一把双刃剑：替换规则不会切断已有连接，
-但一个被复用的命名空间里留着上一位使用者的条目（第 30 篇 §6.4）。宿主上 conntrack 表的容量由 `nf_conntrack_max` 限制，第 29 篇 §5.4 的容量参数里有它。
+但一个被复用的命名空间里留着上一位使用者的条目（[第 30 篇 §6.4](30-egress-policy-and-proxy.md#64-预热槽位的跨租户残留)）。宿主上 conntrack 表的容量由 `nf_conntrack_max` 限制，[第 29 篇 §5.4](29-network-slots.md#54-宿主容量) 的容量参数里有它。
 
 ### 4.5 `iptables-restore` 与原子性
 
@@ -246,9 +246,9 @@ COMMIT
 ```
 
 每个 `*表名` 到 `COMMIT` 之间的内容在内核里一次替换，要么全部生效，要么全部不生效。不带参数时它会先清空脚本里出现的每张表，
-`--noflush` 则保留表里已有的规则、只施加脚本里的增删。AgentENV 的 `iptables_util.rs` 把一组 `IptablesRestoreCommand` 渲染成这样的脚本，以 `--noflush` 一次写入（第 29 篇 §4.3）。
+`--noflush` 则保留表里已有的规则、只施加脚本里的增删。AgentENV 的 `iptables_util.rs` 把一组 `IptablesRestoreCommand` 渲染成这样的脚本，以 `--noflush` 一次写入（[第 29 篇 §4.3](29-network-slots.md#43-iptables-的提交方式)）。
 
-原子性的边界是**单张表**：一份脚本里的 filter 与 nat 是两次独立提交，前一个成功、后一个失败时，内核里留下的是一半新规则。第 30 篇 §5.2 末尾讨论的不一致窗口就出在这里。
+原子性的边界是**单张表**：一份脚本里的 filter 与 nat 是两次独立提交，前一个成功、后一个失败时，内核里留下的是一半新规则。[第 30 篇 §5.2](30-egress-policy-and-proxy.md#52-代理的两阶段状态) 末尾讨论的不一致窗口就出在这里。
 另外，现代发行版的 `iptables-restore` 常常是 iptables-nft 前端，规则实际落在 nftables 的兼容表里；对写规则的一方这是透明的，但用 `nft` 查看时会看到另一种表示。
 
 ---
@@ -273,7 +273,7 @@ libc::getsockopt(fd, libc::SOL_IP, SO_ORIGINAL_DST,
 ```
 
 `SO_ORIGINAL_DST`（值 80，定义在内核头文件 `linux/netfilter_ipv4.h`）返回一个 `sockaddr_in`，即 DNAT / REDIRECT 之前的目的地址与端口。
-它只有 IPv4 版本；IPv6 要用另一个选项，这是 AgentENV 的代理只支持 IPv4 的原因之一（第 30 篇 §3.2）。
+它只有 IPv4 版本；IPv6 要用另一个选项，这是 AgentENV 的代理只支持 IPv4 的原因之一（[第 30 篇 §3.2](30-egress-policy-and-proxy.md#32-只处理-ipv4)）。
 内核还提供另一种透明代理机制 TPROXY，不改写目的地址、由代理用 `IP_TRANSPARENT` socket 直接接收；AgentENV 没有用它。
 
 这个设计还有一个前提：REDIRECT 发生在命名空间的 `PREROUTING` 上，连接对内核来说是「发给本机」的，走 `INPUT`，不再走 `FORWARD`；
@@ -298,7 +298,7 @@ ClientHello 可能被拆进多个 TLS 记录，所以解析器要先拆记录、
 
 读到域名之后，代理已经从 guest 那里收了一段字节（preface）。它判定放行后连上游，**先把这段 preface 原样写过去**，再开始双向转发；
 对上游来说，这条连接与 guest 直连没有区别，TLS 会话在 guest 与上游之间端到端。
-代价是代理只在连接开头做一次判定：同一条连接上之后发生的事——HTTP keep-alive 上的下一个请求、TLS 内层的 `Host`、HTTP/2 的连接复用、加密的 ECH——它都看不见（第 30 篇 §6.2）。
+代价是代理只在连接开头做一次判定：同一条连接上之后发生的事——HTTP keep-alive 上的下一个请求、TLS 内层的 `Host`、HTTP/2 的连接复用、加密的 ECH——它都看不见（[第 30 篇 §6.2](30-egress-policy-and-proxy.md#62-按连接授权)）。
 
 ---
 
