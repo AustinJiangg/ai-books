@@ -381,3 +381,76 @@ P2P 子系统的校验链有一个共同的锚点：descriptor 来自对端本�
 | S-17 | `aenv` 保存凭据先 `fs::write` 再 chmod 0600 | `crates/aenv/` | 按 umask 可读的短窗口 | [第 62 篇 §2](62-aenv-cli.md#2-分层) |
 
 ---
+
+## 6. 供应链与构建
+
+这一类条目关心的是「同一个 tag 能否得到同一份产物、产物能否被验证」。AgentENV 在主路径上做了固定：openapi-generator 的包装器与 jar 版本、Rust 工具链、`Cargo.lock`、依赖 manifest 都是钉住的。
+未固定或未校验的环节集中在旁路——protoc、Go 镜像、tools 盘镜像的引用方式、安装脚本、文档站与测试用的第三方镜像。
+其中「生成代码无漂移检查」影响面最大：OpenAPI 产物与 Go 的 `.pb.go` 都入库，CI 不重新生成比较，而 Rust 侧的 gRPC 代码每次构建生成；spec、proto 与入库产物三者的一致性只靠评审。
+
+| 编号 | 现象 | 位置 | 后果 | 详讲 |
+|---|---|---|---|---|
+| B-01 | OpenAPI 产物与 `.pb.go` 入库，CI 没有「重新生成并比较」的检查；Rust 侧只生成客户端、每次构建生成 | `adev/src/codegen.rs`、`services/Makefile`、`build.rs` | spec、proto 与产物可能静默不一致 | [第 64 篇 §3](64-build-codegen-release.md#3-生成代码)、[第 54 篇 §5.3](54-control-plane-overview.md#53-不对称的后果) |
+| B-02 | server 后处理 `fix_duplicate_auth_trait()` 是逐字正则；生成的 `new()` 中 `ApiKeyAuthHeader` 约束重复四次 | `adev/src/codegen.rs` | 生成器格式一变，后处理静默失效 | [第 12 篇 §2](12-spec-driven-server.md#2-生成管线) |
+| B-03 | protoc 版本三处不一致：CI `33.4`、release 用 apt 包、入库 `.pb.go` 头为 `3.21.12` | `Makefile` 的 `ci-deps`；`.github/workflows/release.yml` | 推论：proto 用新语法时发布构建先失败 | [第 64 篇 §3](64-build-codegen-release.md#3-生成代码) |
+| B-04 | `adev` 下载 protoc 不校验，文件非空即跳过 | `adev/src/` | 半截或被替换的二进制不会被发现 | [第 64 篇 §2.3](64-build-codegen-release.md#23-adev开发与-ci-工具) |
+| B-05 | release 流水线不依赖 CI 测试 | `.github/workflows/release.yml` | 未通过测试的提交也能打包发布 | [第 64 篇 §4](64-build-codegen-release.md#4-发布流水线) |
+| B-06 | gateway / scheduler 镜像不随版本发布，仓库清单只引用本地 `:latest`；Go 镜像不注入版本与提交号 | `services/`、`deploy/` | 集群组件版本不可追溯 | [第 64 篇 §4.5](64-build-codegen-release.md#45-节点镜像) |
+| B-07 | 节点镜像与 release bundle 是两次独立构建：镜像内不带 `--locked`、不用 vendored-openssl | `Dockerfile` 与 release workflow | 同一版本号的两种产物依赖可能不同 | [第 64 篇 §4.5](64-build-codegen-release.md#45-节点镜像) |
+| B-08 | 推论：`.dockerignore` 排除 `.git`，镜像里的提交号为 `unknown` | `build.rs` 的提交号注入 | 镜像无法对应到提交 | [第 64 篇 §2.4](64-build-codegen-release.md#24-buildrs构建时生成与提交号) |
+| B-09 | 推论：Dockerfile 的 `RUSTUP_TOOLCHAIN=${RUST_VERSION}` 无对应 `ARG` | `Dockerfile` | 工具链变量可能为空，退回 `rust-toolchain.toml` | [第 60 篇 §3](60-deployment.md#3-docker-镜像) |
+| B-10 | `install.sh` 用 GitHub API 返回的资产摘要而不用 `SHA256SUMS`；两个安装脚本本身不在 `SHA256SUMS` 里 | `scripts/install.sh`、`scripts/install-cli.sh` | 校验链依赖 API 而非发布物自身 | [第 64 篇 §4.4](64-build-codegen-release.md#44-github-release) |
+| B-11 | 依赖下载只有传输层保证；`OverlaybdInstalledRelease.digest` 恒为 None | `src/setup/deps.rs` | 已安装依赖无法事后校验 | [第 59 篇 §3.3](59-host-setup-and-privileges.md#33-下载只有传输层的保证) |
+| B-12 | `publish-tools-image.yml` 的 `tools_version` 缺省 `0.1.0`，其它处为 `0.1.1`；manifest 按 tag 而非 digest 引用 tools 盘镜像 | `.github/workflows/`、`config/deps_manifest.toml` | tag 被重推时节点拿到不同内容 | [第 64 篇 §5](64-build-codegen-release.md#5-tools-盘镜像) |
+| B-13 | `[envd] version` 只声明不核对；`runtime_versions` 只核对 tools 盘版本 | `src/sandbox/envd.rs`、`src/orchestrator/` | guest 内 envd 版本与声明不符时无人发现 | [第 28 篇 §3.1](28-mmds-and-envd.md#31-来源与拉起)、[第 61 篇 §5.1](61-pvm.md#51-为什么模式要跟着状态走) |
+| B-14 | `thirdparty/firecracker-client` 版本号写 `1.15.1`，描述的却是 AENV 补丁版 Firecracker 的 API | `thirdparty/firecracker-client/Cargo.toml` | 版本号不说明 API 来自补丁版 | [第 64 篇 §3](64-build-codegen-release.md#3-生成代码) |
+| B-15 | mdBook 版本未固定 | `docs/book.toml` 与文档 workflow | 文档站构建不可复现 | [第 64 篇 §6](64-build-codegen-release.md#6-文档站) |
+| B-16 | 测试依赖未固定：`test_envd.sh` 用第三方 `envd-debug:latest`；E2B 基准克隆未固定版本的个人 fork；兼容性套件的 SDK 版本不固定 | `scripts/tests/`、`crates/benchmarks/` | 测试结果随外部仓库漂移 | [第 63 篇 §2.5](63-testing-and-benchmarks.md#25-外围对象)、[第 63 篇 §6](63-testing-and-benchmarks.md#6-基准) |
+| B-17 | zstd 层先经 `zstd -dc` 管道解压再交给工具，绕开工具缺陷 | `src/image/` 的层转换 | 依赖宿主 `zstd` 二进制，且多一次拷贝 | [第 45 篇 §4.4](45-oci-to-overlaybd.md#44-一层的转换) |
+
+---
+
+## 7. 文档漂移
+
+AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不是依据。本书各篇读代码时记下了它们与代码不一致的地方；
+漂移的方向大多是「文档描述的是设计意图或旧版本」，而不是笔误。读文档时，凡涉及行为的句子都应以代码为准。
+
+### 7.1 startup pack 的版本称呼
+
+内存 startup manifest 的称呼在代码里不统一：仓库里的文件名是 `memory-startup.pack`，内容却是 manifest 而不是打包的页数据；记录里的描述符字段 `index_sha256` 实为整个 manifest 的 sha256；
+魔数是 `AENVMF01`、版本字段为 4，而注释里 `default.toml` 与 `startup_pack.rs` 称 v4，`src/cfg.rs`、`src/sandbox/ublk/device.rs`、`startup_pack_task.rs` 称 v3，`oss/resolver.rs` 称 v2。
+本书统一称它为 startup manifest（`AENVMF01`，格式版本 4）。旧格式在消费端一律被拒绝、退回按需加载，所以混用不影响行为，只影响阅读（[第 43 篇 §3.3](43-startup-pack-and-prefetch.md#33-名字的混用)）。
+
+### 7.2 条目表
+
+| 编号 | 现象 | 位置 | 实际行为 | 详讲 |
+|---|---|---|---|---|
+| D-01 | host interaction 地址写「/31 per slot」 | `docs/src/internals/networking.md` | host interaction 地址不是每槽位一个 /31 | [第 29 篇 §2.2](29-network-slots.md#22-地址计划) |
+| D-02 | 「移除策略或槽位时关闭所有被跟踪的连接」 | `networking.md` | `deactivate()` 不断开已有连接 | [第 30 篇 §5.2](30-egress-policy-and-proxy.md#52-代理的两阶段状态) |
+| D-03 | `host_ns_fd` 注释写 `/proc/1/ns/net`；`Slot::cleanup()` 注释仍说删除 MASQUERADE | `src/sandbox/network/slot.rs` | 注释描述的是旧实现 | [第 29 篇 §4.1](29-network-slots.md#41-为什么要开线程)、[第 29 篇 §5.3](29-network-slots.md#53-清理) |
+| D-04 | `/dev/vda` 标成 rootfs；状态列表只有 Creating、Running、Pausing、Paused、Resuming、Killing | `docs/src/internals/architecture.md` | `/dev/vda` 是 tools 盘；漏列 Snapshotting、Forking | [第 26 篇 §2.1](26-sandbox-block-devices.md#21-命名)、[第 19 篇 §2](19-state-machine-and-concurrency.md#2-八个状态) |
+| D-05 | 「AutoReg zero-copy, kernel 6.8+」；README 与部署文档写 6.8+ | `architecture.md`、`README.md` | `UPDATE_SIZE` 与 `AUTO_BUF_REG` 都在 6.16 首次出现 | [第 04 篇 §5.2](04-io-uring-and-ublk.md#52-分级表) |
+| D-06 | `zero_copy` 日志字段按 `UBLK_F_SUPPORT_ZERO_COPY` 判断 | `storage/ublk/src/dev.rs` | 实际设置的是 `UBLK_F_AUTO_BUF_REG`，日志恒为假 | [第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债) |
+| D-07 | 设备号「allocated in the daemon」；把 `/dev/ublkcN` 称作 control 设备 | `architecture.md` | 设备号由内核分配；控制命令走 `/dev/ublk-control` | [第 41 篇 §7](41-ublk-daemon.md#7-技术债与文档漂移) |
+| D-08 | 查询「dirty/present memory ranges」 | `architecture.md` | 缺省路径报告写过的页，present 只在关闭脏页跟踪时成立 | [第 42 篇 §6](42-memory-snapshot-over-ublk.md#6-代价边界与技术债) |
+| D-09 | `fetch_byte_range` 返回 `Result<Bytes>` | `docs/src/internals/p2p-design.md` | 代码返回 `Result<P2pByteStream>` | [第 58 篇 §2](58-p2p-artifact-transport.md#2-抽象keydescriptorprovider) |
+| D-10 | 三处与代码不符：模板构建暂存位置、记录文件名、「image-cache 没有统一 GC」 | `docs/src/internals/persistence-artifact-inventory.md` | 见详讲 | [第 46 篇 §5](46-snapshot-object-model.md#5-三层存储) |
+| D-11 | 三个链接指向不存在的 `docs/src/concepts/custom-extension.md`、`snapshots.md`、`volumes.md` | `CLAUDE.md`（即 `AGENTS.md`） | 链接失效 | [第 01 篇 §6.3](01-repo-map-and-versions.md#63-go部署与周边) |
+| D-12 | query-only HA「只覆盖数据面」 | `services/README.md` | 覆盖一切按已有沙箱路由的请求，但时间上受绑定 TTL 限制 | [第 56 篇 §6.2](56-scheduler.md#62-primary-不可用时)、[第 55 篇 §5](55-gateway.md#5-转发) |
+| D-13 | 称 gateway 使用 P2P scheduler API；写 Go 1.21+；限额列表漏 `including_paused` 三项 | `services/README.md` | gateway 不调 P2P RPC；`go.mod` 为 1.25.0 | [第 54 篇 §2](54-control-plane-overview.md#2-三个角色与调用方向)、[第 56 篇 §2.2](56-scheduler.md#22-资源上限) |
+| D-14 | proto 状态表「无心跳 → CONNECTING」 | `services/api/proto/scheduler.proto` | 代码里没有对应 | [第 57 篇 §3.3](57-heartbeat-and-cpu-intersection.md#33-节点状态由谁推导) |
+| D-15 | `boot_args` 默认值写的是文件里的值；`remote_blocks.max_size_gb` 写 100 | `docs/src/configuration/reference.md` | 代码默认是 `DEFAULT_BOOT_ARGS` 与 10 | [第 11 篇 §6.3](11-configuration.md#63-没有配置文件时) |
+| D-16 | 称扩展 `timeout_ms` 不管 stop | `config/default.toml` | stop 同样受这个超时限制 | [第 33 篇 §2](33-custom-extension-hooks.md#2-契约四个-hook) |
+| D-17 | 称 `credential_process` 优先于静态凭证 | `config/default.toml` | 两者同配直接报错 | [第 48 篇 §4.4](48-object-storage-repository.md#44-分片上传与凭证) |
+| D-18 | 安装 `target/debug/aenv-snapshot-image` | `docs/src/concepts/snapshots/use.md` | 文档让用户装调试构建 | [第 50 篇 §3.1](50-rootfs-as-oci-image.md#31-工具的形状) |
+| D-19 | `Snapshot()` 注释「filtered by their derived status」 | `services/scheduler/internal/node_registry.go` | 只过滤 lingering | [第 56 篇 §2.4](56-scheduler.md#24-不排除-unhealthy-节点) |
+| D-20 | `src/cfg.rs` 注释写 startup pack「OSS backend only」 | `src/cfg.rs` | POSIX 后端同样使用 | [第 43 篇 §6](43-startup-pack-and-prefetch.md#6-代价与边界) |
+| D-21 | `bind_alias()` 注释称阿里云 OSS 不支持条件写头，与层上传注释、卷代码的条件写自相矛盾 | `oss/repository.rs` | 卷记录已在用 `if_match` / `if_none_match` | [第 48 篇 §6.4](48-object-storage-repository.md#64-同一个文件里的真-cas) |
+| D-22 | 注释「stop 恰好送达一次」 | `src/custom_extension_api/` 的 hook guard | 实为恰好发出一次 | [第 33 篇 §4.2](33-custom-extension-hooks.md#42-guard先记-id再发请求) |
+| D-23 | warm-pool 模块文档提到「进程退出 hook」；daemon 侧 `startup_prewarm` 名不副实 | `crates/warm-pool/`；`storage/ublk-daemon/` | 该 hook 不存在 | [第 32 篇 §7](32-warm-pools.md#7-代价与边界) |
+| D-24 | `validate_mount_path` 注释里的示例不成立 | `src/sandbox/extra_drive.rs` | 示例路径会被拒绝或接受，与注释相反 | [第 31 篇 §2.1](31-extra-drives-and-volumes.md#21-入口校验) |
+| D-25 | `FirecrackerSandbox::pause()` 文档注释的根目录层级与代码不符 | `src/sandbox/firecracker/sandbox.rs` | 注释描述的目录结构不存在 | [第 51 篇 §2.3](51-fork.md#23-后端停一次起-n-台) |
+| D-26 | `buckets.go` 的同步注释指向已不含桶定义的文件 | `services/` | 改桶时找不到另一侧 | [第 57 篇 §6](57-heartbeat-and-cpu-intersection.md#6-共用的直方图桶) |
+| D-27 | 遗留 CLI 注释「NOTE: why we use fork」，代码里没有 fork | `storage/ublk/src/main.rs` | 注释与代码无关 | [第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债) |
+
+---
