@@ -34,8 +34,7 @@ AgentENV 的回答分成三部分：
 - **产物**：镜像不推送到 registry，留在 buildkitd 的 content store 里，由服务端经 BuildKit 的 gRPC 接口读出、转换成 overlaybd，
   再交给模板构建器（[第 52 篇](52-template-builder.md)）做成一份普通的模板快照。
 
-代价同样有三处：每次构建至少启动两台 VM（builder 与最终的模板构建 VM）；缓存的粒度是 BuildKit 自己的，而不是可以直接恢复的快照层；
-并发构建之间的缓存不合并（第 5 节）。
+代价有三处：每次构建至少启动两台 VM（builder 与最终的模板 VM）；缓存粒度是 BuildKit 自己的，不是可直接恢复的快照层；并发构建的缓存不合并（第 5 节）。
 
 ---
 
@@ -138,14 +137,15 @@ POSIX 后端在 alias 锁内完成检查、写 alias 与写 record（[第 47 篇
 事先没有 Waiting 记录，恰好落在[第 48 篇 §6.1](48-object-storage-repository.md#61-alias读-写-回读) 描述的窗口里。
 推论：两个节点可能都发布成功、各用自己的快照，alias 只指向其中一个，另一条记录无人引用也不回收；
 并发的 `load_runnable(&alias)` 还可能把正在提交的 alias 当作陈旧删掉，下一次构建再首建一遍。
-两份快照输入相同、功能等价，这些交错只带来重复工作与仓库残留。
+两份快照输入相同、功能等价，只带来重复工作与仓库残留。
 
 ---
 
 ## 4. 一次构建的阶段
 
 受理之后（预留名额、`try_start_build()`、写 journal，见[第 15 篇](15-template-build-api.md#4-dockerfile-与-buildkit-路径)），
-后台任务 `run_image_build()` 依次完成三个阶段：
+后台任务 `run_image_build()` 依次完成三个阶段。`try_start_build()` 排除别的节点重复启动同一构建，这只在 POSIX 仓库上成立（record 锁内检查 Waiting）；
+OSS 上它是普通读改写，两个节点可能都写成 Building、各起一台 builder（推论，[第 48 篇 §6.2](48-object-storage-repository.md#62-模板状态普通的读改写)）。
 
 ```mermaid
 flowchart LR
@@ -314,8 +314,7 @@ B 的工作卷派生自 S0，不含 A 写入的缓存；B 成为头之后，A �
 - OSS：`oss/repository.rs` 的 `update_build_cache()` 用 ETag 做条件写：读出时带 ETag，写回时 `put_bytes_conditionally()` 带 `if-match`（对象不存在时是 `if-none-match`），
   失败就重读重试，最多 `MAX_VOLUME_CAS_ATTEMPTS` 次；读不到 ETag 直接拒绝。
 
-这与同一后端里模板状态的 `try_start_build()` 形成对照：后者在 OSS 上是普通的读改写（[第 48 篇](48-object-storage-repository.md)）。
-头指针用的是真正的条件写，所以并发发布不会把对方的退役记录覆盖掉，否则被覆盖的旧种子会永远留在仓库里。
+这与 OSS 上 `try_start_build()` 的普通读改写（§4）不同：头指针用真正的条件写，并发发布不会覆盖对方的退役记录，否则被覆盖的旧种子会永远留在仓库里。
 
 ### 5.5 退役与回收
 

@@ -52,13 +52,13 @@
 
 | 类别 | 条目数 | 表外重点条目 |
 |---|---|---|
-| 正确性 | 38 | 对象存储仓库的弱一致 catalog；持久记录的两阶段标记 |
+| 正确性 | 39 | 对象存储仓库的弱一致 catalog；持久记录的两阶段标记 |
 | 可用性 | 41 | Firecracker REST 调用无超时；ublk-daemon 无崩溃恢复；`Schedule()` 不排除 UNHEALTHY |
 | 可运维性 | 72 | managed layers 无 GC |
-| 安全与信任边界 | 17 | P2P 信任边界；控制面 gRPC 无认证 |
+| 安全与信任边界 | 18 | P2P 信任边界；控制面 gRPC 无认证 |
 | 供应链与构建 | 20 | 生成代码无漂移检查 |
 | 文档漂移 | 30 | `docs/src/internals/*` 的几处主要偏差；startup pack 的版本称呼 |
-| 合计 | 218 | 其中 43 条标为推论 |
+| 合计 | 220 | 其中 45 条标为推论 |
 
 ---
 
@@ -98,7 +98,7 @@ resume 先把盘上记录标成 Resuming（`mark_resuming()`），成功后删�
 | C-08 | 错误分类缺省 `Recoverable`；pause 失败不删已分配的产物目录 | `src/orchestrator/` 错误约定 | 未分类的失败按可恢复处理；产物目录累积 | [第 20 篇 §7.1](20-launch-plan-and-rollback.md#71-两类错误的约定) |
 | C-09 | 推论：fork 先封存卷、后捕获内存，期间源沙箱仍在运行 | `src/orchestrator/service.rs` 的 fork 路径 | 子沙箱的卷与内存可能来自不同时刻 | [第 51 篇 §4](51-fork.md#4-卷克隆独占卷共享只读卷) |
 | C-10 | 显式传 `{}` 会覆盖从快照继承的扩展参数 | 扩展参数合并逻辑 | 与「absent 等价于 `{}`」的契约不符 | [第 33 篇 §5.2](33-custom-extension-hooks.md#52-随快照持久化与继承) |
-| C-11 | `SnapshotRecord::mark_committed()` 不检查原状态 | `src/snapshot/types/snapshot.rs` | Error 状态的模板记录可直接变成 Ready | [第 46 篇 §2.2](46-snapshot-object-model.md#22-来源与模板状态) |
+| C-11 | `SnapshotRecord::mark_committed()` 不检查原状态 | `src/snapshot/types/snapshot.rs` | Error 状态的模板记录可直接变成 Ready；POSIX 仓库的 `committed_record_unlocked()` 在记录不存在且来源是模板时直接造一条 Ready 记录，推论：可复活已删除的模板 | [第 46 篇 §2.2](46-snapshot-object-model.md#22-来源与模板状态)、[第 47 篇 §3.4](47-posix-repository.md#34-提交) |
 | C-12 | 推论：基于模板的构建未覆盖 startup 时，继承的 `start_cmd` 会被再启动一次 | `src/template/builder.rs` | 构建 VM 里出现重复的启动进程 | [第 52 篇 §4.3](52-template-builder.md#43-启动命令与就绪命令) |
 | C-13 | 推论：Waiting 记录里的资源与基础模板的 cpu / mem 必须一致 | `src/template/runner.rs` | 基础模板规格非默认时构建失败 | [第 52 篇 §2.2](52-template-builder.md#22-模板-base从快照恢复) |
 
@@ -136,6 +136,7 @@ resume 先把盘上记录标成 Resuming（`mark_resuming()`），成功后删�
 | C-36 | 推论：对象存储下从快照创建的沙箱在暂停时重读内存层 `image.json` | `LocalArtifactCache` | 若已被 LRU 驱逐，pause 失败 | [第 49 篇 §6.2](49-resolve-and-artifact-cache.md#62-lease-只覆盖启动窗口) |
 | C-37 | 跨重启复用制品只看文件是否存在 | `LocalArtifactCache` | 仓库路径变化后复用陈旧文件 | [第 49 篇 §6.3](49-resolve-and-artifact-cache.md#63-重启取消与多实例) |
 | C-38 | CPU 交集：`intersectionSent` 先于 `ReconcileNode` 置位；崩溃重启的节点再也拿不到交集；交集随节点加入收窄 | `services/scheduler/internal/node_registry.go` | 早先的快照不在新交集覆盖内，跨节点恢复可能因 CPU 特性不符失败 | [第 57 篇 §5.5](57-heartbeat-and-cpu-intersection.md#55-边界与失效模式) |
+| C-39 | 推论：fork 先 `snapshot_volume_mounts()` 暂停封存卷、恢复，再暂停捕获内存；两次之间源沙箱照常运行 | `src/api/impls/sandbox.rs` 的 fork 处理 | 子沙箱的卷与内存可能来自不同时刻 | [第 31 篇 §5](31-extra-drives-and-volumes.md#5-暂停与快照时卷去了哪里) |
 
 ---
 
@@ -385,6 +386,7 @@ P2P 子系统的校验链有一个共同的锚点：descriptor 来自对端本�
 | S-15 | 宿主会改写 guest 的 `/etc/passwd` | `src/sandbox/envd/user.rs` 与 `/init` 流程 | guest 内用户数据库被宿主修改 | [第 28 篇 §4.3](28-mmds-and-envd.md#43-数字-user两次-init) |
 | S-16 | 500 响应原样返回内部错误链 | `src/api/impls/` 的错误映射 | 内部路径与依赖信息泄露给调用方 | [第 12 篇 §5](12-spec-driven-server.md#5-错误映射) |
 | S-17 | `aenv` 保存凭据先 `fs::write` 再 chmod 0600 | `crates/aenv/` | 按 umask 可读的短窗口 | [第 62 篇 §2](62-aenv-cli.md#2-分层) |
+| S-18 | 块设备池回收时 `clear_page_cache()` 失败只告警，设备照常进池 | `src/sandbox/ublk/` 的块设备池 | 推论：旧租户的页可能残留在页缓存里 | [第 32 篇 §4](32-warm-pools.md#4-块设备池) |
 
 ---
 
@@ -514,7 +516,7 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 - 一个部署是一个信任域：单 API key 无租户，集群内节点、scheduler 与 P2P 对端互信，宿主防火墙被当作数据面鉴权的前提；开启 P2P 时，制品完整性取决于集群里最弱的节点。
 - 构建链的主路径是钉住的，未固定的是旁路：protoc、Go 镜像、tools 盘镜像引用、安装脚本的校验来源；入库的生成代码没有漂移检查。
 - 文档与注释的漂移多数指向旧设计；行为以代码为准，startup manifest 的称呼以 `AENVMF01` / 格式版本 4 为准。
-- 218 条里有 43 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
+- 220 条里有 45 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
 
 ---
 
