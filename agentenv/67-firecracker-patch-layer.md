@@ -202,7 +202,7 @@ File 后端的另一条上游限制被原样保留：`src/vmm/src/persist.rs` �
 **快照状态。** `src/vmm/src/devices/virtio/block/virtio/persist.rs` 的 `VirtioBlockState` 加了 `direct` 字段，恢复时据此重新以 O_DIRECT 打开后端。
 字段带 `#[serde(default)]`，注释称是为了兼容旧快照。推论：状态文件由 bitcode 编码（`src/vmm/src/snapshot/mod.rs`），这种格式不自描述字段，`serde(default)` 只在自描述格式里能补缺失字段；
 而补丁没有提升 `SNAPSHOT_VERSION`（仍是 9.0.0），所以上游 Firecracker v1.15.1 写出的状态文件与补丁版写出的状态文件互相读不了，报出的是反序列化错误，不是版本不符。
-AgentENV 只用补丁版自己写的快照，这一点在它的路径上不构成问题；但它意味着补丁版的快照不能交给上游工具（如 `snapshot-editor`）以外的同版本二进制处理。
+AgentENV 只用补丁版自己写的快照，这一点在它的路径上不构成问题；但它意味着补丁版的状态文件只能由同一份源码构建的二进制读取，不能拿上游 v1.15.1 的 Firecracker 或工具去解析。
 
 **补丁 ⑥。** 提交说明是「rebase onto v1.15.1」，内容主要是让异步引擎适配上游 v1.15.1 的接口。其中有一处行为修正：
 反弹缓冲拷回 guest 内存失败时，原先只记一条错误日志、请求照常报告成功；修正后 `mark_dirty_mem_and_unwrap()` 返回错误，`pop()` 以 `-EFAULT` 完成这个请求。
@@ -275,7 +275,7 @@ AgentENV 仓库里没有内核配置，也没有内核构建脚本；补丁版 F
 前四行之外，`init=/init` 要求 tools 盘的文件系统能被内核直接挂载为根（上游配置有 `CONFIG_EXT4_FS=y`）；balloon 的 free page reporting 与 DAMON reclaim 怎样配合把内存还给宿主，见[第 03 篇 §5](03-firecracker-for-agentenv.md#5-balloon-与-damon把内存还给宿主)。
 
 第四行是一处矛盾。上游 6.1 CI 配置启用了 DAMON 本体、虚拟地址与物理地址两种监控，但明确写着 `# CONFIG_DAMON_RECLAIM is not set`。
-若 `vmlinux-6.1.175` 真按上游配置构建，`damon_reclaim.*` 是一组内核不认识的参数，内核启动时只打一条「未知参数」的提示，guest 内的冷页回收不会发生，AgentENV 没有任何地方检查这一点。
+若 `vmlinux-6.1.175` 真按上游配置构建，`damon_reclaim.*` 就是一组指向未编入模块的参数，推论：内核会忽略这类带点的未知参数而照常启动，guest 内的冷页回收不会发生，AgentENV 没有任何地方检查这一点。
 推论：要么这个内核在上游配置之上额外打开了 `CONFIG_DAMON_RECLAIM`，要么 DAMON reclaim 在默认内核上静默失效；仅凭两个仓库无法区分。
 上游 `ci.config` 打开了 `CONFIG_IKCONFIG_PROC`，若下载的内核也带着它，在 guest 里读 `/proc/config.gz` 或检查 `/sys/module/damon_reclaim/` 即可核实（推论）。
 
