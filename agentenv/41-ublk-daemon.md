@@ -180,7 +180,7 @@ daemon 里并存两套互不相交的设备表（`storage/ublk-daemon/src/server
 
 - **managed 表** `devices: DashMap<u32, ManagedDevice>`：`create_overlaybd` 建的设备，以及池关闭时的运行时设备。只有 `delete` 能拆它们。
 - **`PoolState`**（池开启时才存在）：`idle`（一个 `WarmPool<PooledDevice>`）、`active_exclusive`（按 `dev_id`）、`active_shared`（key 是 `(image_config, global_config)`，带 `refcount`），
-  以及反向索引 `shared_by_dev_id`。节点对一代共享设备只 acquire 一次，所以 `refcount` 正常为 1，只在并发竞争或同一镜像配上不同全局配置时才大于 1（[第 26 篇 §4.3](26-sandbox-block-devices.md#43-daemon-一级activesharedrefcount)）。注释说明加这个索引的原因：release、update、restack 若用 `iter_mut` 扫 `active_shared` 找 `dev_id`，并发 release 时可能死锁。
+  以及反向索引 `shared_by_dev_id`。节点对一代共享设备只 acquire 一次，所以 `refcount` 正常为 1，只在并发竞争时短暂大于 1（节点去重 key 只有 image.json 路径，同一路径不会以不同全局配置再 acquire）（[第 26 篇 §4.3](26-sandbox-block-devices.md#43-daemon-一级activesharedrefcount)）。注释说明加这个索引的原因：release、update、restack 若用 `iter_mut` 扫 `active_shared` 找 `dev_id`，并发 release 时可能死锁。
 
 请求按各自的规则查表：`delete` 只查 managed；`release_overlaybd` 与 `update_size` 只查池；`restack_snapshot` 先查 managed、再查 exclusive、最后经反向索引查 shared；
 录制只接受 managed 表里的设备，所以录制用的内存设备由节点的 `create_dedicated_mem_device()` 经 `create_overlaybd` 创建、不走池，因为共享页缓存会掩盖首触（第 43 篇）。

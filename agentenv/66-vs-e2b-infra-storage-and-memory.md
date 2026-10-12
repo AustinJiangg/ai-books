@@ -30,7 +30,7 @@
 - **共享基底**：同一模板的大量沙箱共用只读的基础数据，节点上不为每台沙箱复制一份。
 
 上游 Firecracker 的快照接口把「写状态」与「写内存文件」绑在一次调用里，产物是与 guest 内存等大的扁平文件（[第 03 篇 §2](03-firecracker-for-agentenv.md#2-快照状态文件加内存)）。
-两个系统都认为这一步不合用，各自给 Firecracker 打了补丁。e2b 定制版基于上游 v1.12.1，28 个提交里四个是功能提交（见 Firecracker 手册第 49 篇）；
+两个系统都为此给 Firecracker 打了补丁。e2b 定制版基于上游 v1.12.1，28 个提交里四个是功能提交（见 Firecracker 手册第 49 篇）；
 AENV 补丁版 Firecracker 基于上游 v1.15.1，七个提交，其中四个行为被 AgentENV 用到（[第 03 篇 §4](03-firecracker-for-agentenv.md#4-aenv-补丁版-firecracker-的四个被用到的行为)、[第 67 篇](67-firecracker-patch-layer.md)）。
 
 ---
@@ -73,7 +73,7 @@ flowchart LR
 
 e2b 定制版把「地址」与「判据」拆成独立端点：`GET /memory/mappings` 给每个区域的宿主虚拟地址与扁平偏移，`GET /memory` 与 `GET /memory/dirty` 各给位图，集合运算与地址换算由 orchestrator 做（见 Firecracker 手册第 49–52 篇）。
 AENV 补丁版只给一个端点：`GET /vm/dirty-memory-ranges` 在 Firecracker 内部把脏页位图合并成区间，每个区间直接带 HVA、镜像偏移与长度（[第 42 篇 §2.2](42-memory-snapshot-over-ublk.md#22-dirtymemoryranges-的语义)）。
-前者把更多决定留给调用方，例如冷启动与恢复用不同的位图；后者把换算放在 Firecracker 里，调用方拿到的区间可以直接变成 LSMT 段映射（`moffset` 存 HVA 的扇区数）。
+前者把更多决定留给调用方（例如冷启动与恢复用不同的位图）；后者把换算放在 Firecracker 里，区间可以直接变成 LSMT 段映射（`moffset` 存 HVA 的扇区数）。
 两边的坐标系相同：都是「所有内存区域首尾相接」的扁平偏移，MMIO 空洞不占位，与上游内存文件布局一致。
 
 ### 2.3 差别二：脏页判据
@@ -171,7 +171,7 @@ e2b infra 的每一代产物是 `snapfile`、`memfile` 与 `rootfs.ext4` 的数�
 暂停时新 diff 与上一代 header 合并，祖先 build ID 直接写进新表，diff 链被压平：读一块只查一张表，读代价与代数无关，也没有层数上限；代价是老产物不能删、表随代数变长。
 
 AgentENV 的每一代是一个 sealed LSMT 层，层栈保留逐层索引、打开时合并（[第 34 篇](34-lsmt-format-and-index.md)）。内存与 rootfs 用同一套层数预算：运行时后缀超预算时 compact 成一层（[第 37 篇 §5](37-seal-restack-compact.md#5-运行时层数预算)、[第 42 篇 §3](42-memory-snapshot-over-ublk.md#3-层栈的演进)）。
-每层都是标准格式的独立文件，可以单独上传、经 P2P 分发、在块缓存里按层共享；代价是需要预算与偶发的整段重写。
+每层是独立文件，可以单独上传、经 P2P 分发、按层共享；代价是需要预算与偶发的整段重写。
 
 全零数据两边都不占字节：e2b 用全零 UUID 表示空洞；LSMT 用零段与未映射区间。
 差别在检测：e2b 的磁盘 diff 做全零块检测，恢复路径的内存 diff 不做（见 e2b 手册第 37 篇）；AgentENV 的内存层直接写 dirty 区间里的数据，不检测全零（推论：依据 `convert_dirty_memory_to_overlaybd()` 生成的映射 `zeroed` 恒为假）。
@@ -214,7 +214,7 @@ e2b infra 自己解释构建步骤，把构建切成 base → user → steps →
 
 AgentENV 有两条前端。步骤路径在一台临时 microVM 里逐条执行全部步骤，跑起启动命令、等就绪命令通过，只捕获一次（[第 52 篇](52-template-builder.md)）：省掉了逐层暂停与上传，代价是没有步骤级缓存（[第 52 篇 §7](52-template-builder.md#7-没有逐步缓存取舍)）。
 Dockerfile 路径把语义整个交给 builder microVM 里的 BuildKit，缓存是 BuildKit 自己的，以一块卷的形式在仓库里逐代传递，产物经 content API 取出、转成 overlaybd 层后再走一次步骤路径（[第 53 篇](53-buildkit-in-microvm.md)）。
-缓存命中只省 BuildKit 内部的工作，省不掉最终模板 VM 的启动与捕获。
+缓存命中省不掉最终模板 VM 的启动与捕获。
 
 ---
 
@@ -229,7 +229,7 @@ POSIX 后端的提交点是一次 `rename`；对象存储后端的提交点是 r
 对象存储后端恢复时只下载 vm_state，层留在远端按需读（[第 49 篇 §4](49-resolve-and-artifact-cache.md#4-对象存储后端只下载小的层留在远端)）；节点之间可经 iroh 直接交换 vm_state 与层，由 scheduler 维护「谁有什么」的索引（[第 58 篇](58-p2p-artifact-transport.md)）。
 暂停的沙箱则不进仓库：产物留在节点本地的 `$AENV_HOME/persisted-sandboxes/`，只能在原节点恢复（[第 22 篇](22-persistence-across-restarts.md)）。
 
-两边的回收也都不完整：e2b 的构建缓存桶没有回收路径，旧代产物因 header 引用不能删；AgentENV 的 `managed-layers/` 从不回收（[第 47 篇](47-posix-repository.md)）。
+两边的回收都不完整：e2b 的构建缓存桶没有回收路径；AgentENV 的 `managed-layers/` 从不回收（[第 47 篇](47-posix-repository.md)）。
 
 ---
 
