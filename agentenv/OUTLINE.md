@@ -65,7 +65,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 00 | `00-overview.md` | 全书导读与 AgentENV 总览 | ○ |
+| 00 | `00-overview.md` | 全书导读与 AgentENV 总览 | ● |
 | 01 | `01-repo-map-and-versions.md` | 仓库地图、版本与依赖 | ● |
 
 **00 · 全书导读与 AgentENV 总览**（最后写，全书完成后）
@@ -74,7 +74,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 - 四个设计目标（来自 README，正文要落到机制）：镜像多样性靠 overlaybd 按需加载；空闲便宜靠快照暂停恢复；原生快照与 fork；长期运行的密度靠 ublk + 共享页缓存 + balloon
 - 一个沙箱的一生（压缩版第 09 篇）：create → running → pause → resume → kill
 - 三条主线：控制面（API → orchestrator → backend）、数据面（反向代理 → envd / 用户端口）、状态面（overlaybd 层栈 + 快照仓库）
-- 与 e2b infra 的关系：同一套 SDK 契约，实现路线不同（NBD vs ublk、uffd vs 块设备 File 后端、Go 单体 vs Rust 节点 + Go 控制面），各一句话，指向第 65、66 篇
+- 与 e2b infra 的关系：同一套 SDK 契约，实现路线不同（NBD vs ublk、uffd vs 块设备 File 后端、按负载拆分的 Go 服务 vs Rust 节点 + Go 控制面），各一句话，指向第 65、66 篇
 - 分读者的阅读路径（与 README 一致）
 - 图：一张节点内部结构图（server 进程、ublk-daemon 进程、FC 进程、内核 ublk、存储）；一张多节点拓扑图
 
