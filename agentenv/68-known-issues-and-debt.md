@@ -57,8 +57,8 @@
 | 可运维性 | 72 | managed layers 无 GC |
 | 安全与信任边界 | 18 | P2P 信任边界；控制面 gRPC 无认证 |
 | 供应链与构建 | 20 | 生成代码无漂移检查 |
-| 文档漂移 | 30 | `docs/src/internals/*` 的几处主要偏差；startup pack 的版本称呼 |
-| 合计 | 220 | 其中 45 条标为推论 |
+| 文档漂移 | 31 | `docs/src/internals/*` 的几处主要偏差；startup pack 的版本称呼 |
+| 合计 | 221 | 其中 45 条标为推论 |
 
 ---
 
@@ -466,6 +466,7 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 | D-28 | 环境变量表漏列 `AGENTENV_MEMORY_SNAPSHOT_TRACK_DIRTY_PAGES`（只在 `reference.md` 的说明文字里出现）与编译期的 `AENV_GIT_COMMIT` | `docs/src/configuration/env-vars.md` | 两个变量都被代码读取 | [第 71 篇 §7](71-config-env-ports-reference.md#7-不一致与技术债) |
 | D-29 | 补丁版 `CHANGELOG.md` 只列补丁 ⑦，PR 号写成 `#XXXX` 占位，且放在已发布的 `[1.15.1]` 节 | 补丁版 Firecracker 的 `CHANGELOG.md` | 其余六个补丁在变更记录里不可见 | [第 67 篇 §2](67-firecracker-patch-layer.md#2-七个提交) |
 | D-30 | swagger 称 `GET /vm/dirty-memory-ranges` 面向已暂停、已启动的 VM | 补丁版 Firecracker 的 `firecracker.yaml` | 代码不检查 Paused，运行中的 VM 也能调用，结果只代表某一刻 | [第 67 篇 §3.2](67-firecracker-patch-layer.md#32-get-vmdirty-memory-ranges补丁-⑦) |
+| D-31 | `aenv` 的模块注释称 envd「forked from e2b-dev」 | `crates/aenv/src/grpc/mod.rs` | guest 内 envd 由 `tools-image/Makefile` 按 `ENVD_REF` 从 e2b-dev/infra 原样编译，仓库内 `thirdparty/envd` 只是 host 侧客户端 | [第 18 篇 §3](18-e2b-compatibility.md#3-兼容手段清单) |
 
 ---
 
@@ -516,7 +517,7 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 - 一个部署是一个信任域：单 API key 无租户，集群内节点、scheduler 与 P2P 对端互信，宿主防火墙被当作数据面鉴权的前提；开启 P2P 时，制品完整性取决于集群里最弱的节点。
 - 构建链的主路径是钉住的，未固定的是旁路：protoc、Go 镜像、tools 盘镜像引用、安装脚本的校验来源；入库的生成代码没有漂移检查。
 - 文档与注释的漂移多数指向旧设计；行为以代码为准，startup manifest 的称呼以 `AENVMF01` / 格式版本 4 为准。
-- 220 条里有 45 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
+- 221 条里有 45 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
 
 ---
 
