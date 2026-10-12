@@ -71,7 +71,7 @@
 | 节点块缓存 | block cache | 远端层按块落在节点磁盘上的缓存，带位图与 `meta.bin`（魔数 `OBCH`），双水位按条目 LRU 驱逐。 | [第 39 篇 §2](39-block-cache-and-background-download.md#2-缓存在读链上的位置与条目组织) |
 | cache_fd | `cache_fd` | 节点为共享只读设备保留的一个打开句柄，防止最后一个打开者关闭时内核清掉块设备页缓存。 | [第 26 篇 §4.4](26-sandbox-block-devices.md#44-cache_fd保住页缓存的那个打开者) |
 | 压实 | compact | 按合并后的映射把多层重写成一层；首次出现后可用 compact。 | [第 37 篇 §4](37-seal-restack-compact.md#4-compact按映射重写成单层) |
-| ublk-daemon | `uvm-ublk-daemon`（daemon） | 持有全部 ublk 设备的独立进程，经 Unix socket RPC 为 `server` 建删设备、restack、写内存层。 | [第 41 篇](41-ublk-daemon.md) |
+| ublk-daemon | daemon（`uvm-ublk-daemon`） | 持有全部 ublk 设备的独立进程，经 Unix socket RPC 为 `server` 建删设备、restack、写内存层。 | [第 41 篇](41-ublk-daemon.md) |
 | discard | discard | 块设备的「这段不再需要」请求，Rust 版 overlaybd 记为零映射。 | [第 36 篇 §5](36-read-write-paths-and-rw-layouts.md#5-discard) |
 | 下载准入 | `download_gate` | 节点级的前台 / 后台下载准入闸门，envd 就绪前压住后台下载。 | [第 39 篇 §6.1](39-block-cache-and-background-download.md#61-download_gate) |
 | 附加盘 | extra drive | 冷启动时随沙箱创建的块设备，生命期随沙箱。 | [第 31 篇 §2](31-extra-drives-and-volumes.md#2-两类盘附加盘与卷) |
@@ -136,7 +136,7 @@
 | lease | lease | 本地制品缓存发给一次启动的租约，只覆盖启动窗口。 | [第 49 篇 §6.2](49-resolve-and-artifact-cache.md#62-lease-只覆盖启动窗口) |
 | 本地制品缓存 | `LocalArtifactCache` | 对象存储后端在节点上缓存小制品（vm_state、manifest 等）的组件。 | [第 49 篇 §6](49-resolve-and-artifact-cache.md#6-localartifactcache) |
 | 托管层 | `managed-layers/` | 仓库里按 digest 命名的层存放位置；两种后端都不回收。 | [第 47 篇 §3.2](47-posix-repository.md#32-导入层按-lower-的形态分流)、[第 48 篇 §7](48-object-storage-repository.md#7-不回收的层) |
-| 快照 manifest | Firecracker manifest | `firecracker-manifest.json`：快照的形状信息（设备、内存、盘），不含节点本地路径。 | [第 46 篇 §3](46-snapshot-object-model.md#3-manifest形状进仓库路径留在节点) |
+| 快照 manifest | manifest（`firecracker-manifest.json`） | 快照的形状信息（设备、内存、盘），不含节点本地路径。 | [第 46 篇 §3](46-snapshot-object-model.md#3-manifest形状进仓库路径留在节点) |
 | OCI 镜像 | OCI image | 标准容器镜像（manifest + tar 层）；AgentENV 逐层转换成 overlaybd 层。 | [第 05 篇 §3.2](05-overlaybd-and-lazy-loading.md#32-标准-oci逐层转换)、[第 45 篇 §4](45-oci-to-overlaybd.md#4-标准-oci逐层转换) |
 | overlaybd-native 镜像 | overlaybd-native image | 层本身已是 overlaybd 格式的 OCI 镜像，可直接远端按需读，不下载 blob。 | [第 05 篇 §3.1](05-overlaybd-and-lazy-loading.md#31-overlaybd-native直接读远端层)、[第 45 篇 §3](45-oci-to-overlaybd.md#3-overlaybd-native不下载任何-blob) |
 | 暂停沙箱产物 | persisted sandbox | 暂停沙箱的记录与产物，存在 `$AENV_HOME/persisted-sandboxes`，只能在原节点恢复。 | [第 22 篇 §3.3](22-persistence-across-restarts.md#33-产物目录) |
@@ -159,7 +159,7 @@
 | 术语 | 英文 / 标识符 | 定义 | 详讲 |
 |---|---|---|---|
 | 部署级 API key | API key | 控制面请求携带的部署级密钥，常数时间比较。 | [第 13 篇 §2](13-authentication.md#2-部署级-api-key) |
-| 驱逐 | eviction（auto-eviction） | TTL 到期后由回收任务执行 pause 或 delete。 | [第 23 篇 §4](23-auto-eviction-and-ttl.md#4-回收任务) |
+| 驱逐 | auto-eviction（eviction） | TTL 到期后由回收任务执行 pause 或 delete。 | [第 23 篇 §4](23-auto-eviction-and-ttl.md#4-回收任务) |
 | 自动恢复 | auto-resume | 数据面请求命中暂停沙箱时，反向代理先把它恢复再转发。 | [第 17 篇 §4](17-reverse-proxy.md#4-自动恢复) |
 | 取消安全 | cancellation safety | future 在任意 `await` 点被丢弃时不留下不一致状态的性质；orchestrator 把操作 spawn 出去以免随请求一起死。 | [第 07 篇 §5](07-rust-async-primer.md#5-取消与取消安全)、[第 19 篇 §6](19-state-machine-and-concurrency.md#6-取消安全操作不随请求一起死) |
 | CAS | compare-and-swap | 元数据存储上「状态等于期望值才转换」的原子原语，所有状态转换经它。 | [第 19 篇 §4](19-state-machine-and-concurrency.md#4-cas-原语) |
@@ -170,11 +170,11 @@
 | 删除进度 | `DeleteProgress` | 删除操作可重入的进度记录，捕获、停止、释放分步推进。 | [第 21 篇 §3](21-deletion-and-volume-capture.md#3-deleteprogress可重入的进度) |
 | E2B 兼容 | E2B compatibility | 让 E2B SDK 可以直接指向 AgentENV 的 API 形状与行为；偏差逐项列在矩阵里。 | [第 18 篇](18-e2b-compatibility.md) |
 | 冻结 | freeze（`fsfreeze`） | 删除时在 guest 里冻结卷的文件系统，使封存下来的 upper 干净且不再有写入。 | [第 21 篇 §4.1](21-deletion-and-volume-capture.md#41-为什么是冻结) |
-| 沙箱句柄 | sandbox handle | orchestrator 句柄表里指向活着 VM 的对象；回滚按句柄身份只撤销自己的东西。 | [第 20 篇 §4.2](20-launch-plan-and-rollback.md#42-句柄身份只回滚自己的东西) |
+| 沙箱句柄 | handle（sandbox handle） | orchestrator 句柄表里指向活着 VM 的对象；回滚按句柄身份只撤销自己的东西。 | [第 20 篇 §4.2](20-launch-plan-and-rollback.md#42-句柄身份只回滚自己的东西) |
 | hook guard | hook guard | 把一个运行时实例的扩展 hook 生命周期包成 RAII 的对象：先记实例 id 再发 start，保证 stop 能配对。 | [第 33 篇 §4.2](33-custom-extension-hooks.md#42-guard先记-id再发请求) |
 | launch plan | `LaunchPlan` | 冷启动与恢复共用的启动流水线描述，分阶段带检查点与回滚。 | [第 20 篇 §2](20-launch-plan-and-rollback.md#2-launchplan一条流水线两种计划) |
 | 生命周期事件 | lifecycle event | orchestrator 发布的 Create 等五类沙箱事件，订阅者是 guest 指标采样任务与心跳上报器。 | [第 24 篇 §4](24-metrics-and-events.md#4-生命周期事件) |
-| orchestrator | `Orchestrator` | 节点内的沙箱状态机与操作编排者，持有元数据存储、句柄表与路由表。 | [第 10 篇 §4.1](10-node-process-and-object-model.md#41-orchestratorsfp-的字段) |
+| orchestrator | `Orchestrator` | 节点内的沙箱状态机与操作编排者，持有元数据存储、句柄表与路由表。 | [第 10 篇 §4.1](10-node-process-and-object-model.md#41-orchestrator-的字段) |
 | 暂停状态 | `PausedSandboxState` | 后端交给 orchestrator 的不透明暂停状态 trait 对象。 | [第 10 篇 §4.4](10-node-process-and-object-model.md#44-pausedsandboxstate不透明的暂停状态) |
 | 持久化器 | persister | 把暂停沙箱的记录写进 RocksDB 并在重启时 `load_all()` 的组件。 | [第 22 篇 §2](22-persistence-across-restarts.md#2-持久化器接口) |
 | 可恢复 / 终止错误 | `Recoverable` / `Terminal` | 捕获错误的两类：前者保证 VM 已恢复运行，后者表示 VM 已被改动、不能再当作可运行。 | [第 20 篇 §7.1](20-launch-plan-and-rollback.md#71-两类错误的约定) |
@@ -182,7 +182,7 @@
 | 反向代理 | reverse proxy | 节点内 `/proxy` 与 Host 路由入口，以及多节点的 gateway，把数据面流量转进 guest。 | [第 17 篇](17-reverse-proxy.md) |
 | 运行时路由表 | route table | orchestrator 维护的沙箱 id 到上游地址映射，`/init` 之后才发布。 | [第 17 篇 §3.1](17-reverse-proxy.md#31-运行时路由表) |
 | 沙箱 | sandbox | 一台 microVM 及其附属资源（netns 槽位、块设备、进程）；API 与代码里的 sandbox。 | [第 25 篇 §3](25-backend-and-firecracker-process.md#3-firecrackersandbox一份资源清单) |
-| 沙箱级 token | envd / traffic access token | 以部署级 seed 为密钥、对沙箱 id 做 HMAC 派生的无状态凭据，不落盘。 | [第 13 篇 §3](13-authentication.md#3-沙箱级-token无状态派生) |
+| 沙箱级 token | sandbox token（envd / traffic access token） | 以部署级 seed 为密钥、对沙箱 id 做 HMAC 派生的无状态凭据，不落盘。 | [第 13 篇 §3](13-authentication.md#3-沙箱级-token无状态派生) |
 | 实例身份 | `SandboxInstanceId` | 同一沙箱每次运行时实例的 id，用于让 stop hook 与 start 配对。 | [第 33 篇 §4](33-custom-extension-hooks.md#4-实例身份sandboxinstanceid-与-hook-guard) |
 | 沙箱状态 | `SandboxState` | 八个状态：Creating、Resuming、Running、Snapshotting、Forking、Pausing、Paused、Killing；只有 Running 与 Paused 稳定。 | [第 19 篇 §2](19-state-machine-and-concurrency.md#2-八个状态) |
 | 规范驱动 | spec-driven server | 由 `openapi.yml` 生成 trait 与 handler、手写实现填进去的服务骨架。 | [第 12 篇 §2](12-spec-driven-server.md#2-生成管线) |
@@ -196,16 +196,16 @@
 
 | 术语 | 英文 / 标识符 | 定义 | 详讲 |
 |---|---|---|---|
-| /31 与 link-local | `/31`, link-local | 槽位内两端点地址的分配方式；VM 地址在所有槽位里相同。 | [第 06 篇 §3.3](06-netns-iptables-transparent-proxy.md#33-31-与-link-local-地址)、[第 29 篇 §2.2](29-network-slots.md#22-地址计划) |
+| /31 与 link-local | `/31`, link-local | `/31` 用于 veth 点对点链路；guest 与 tap 之间固定用 link-local 段 `169.254.0.20/30`，所有槽位相同，是快照 ABI 的一部分。 | [第 06 篇 §3.3](06-netns-iptables-transparent-proxy.md#33-31-与-link-local-地址)、[第 29 篇 §2.3](29-network-slots.md#23-为什么-vm-地址必须固定) |
 | conntrack | conntrack | 内核的连接跟踪表，状态匹配与 NAT 依赖它。 | [第 06 篇 §4.4](06-netns-iptables-transparent-proxy.md#44-conntrack-与状态匹配) |
 | 出站策略 | egress policy | 每个沙箱的出站规则（CIDR 与域名的放行 / 拒绝，加未命中时的缺省去向），`SandboxNetworkPolicy` 表示。 | [第 30 篇 §2](30-egress-policy-and-proxy.md#2-策略对象与-api-映射) |
 | iptables | iptables / netfilter | 内核包过滤框架及其规则工具；槽位规则用 `iptables-restore` 原子提交。 | [第 06 篇 §4](06-netns-iptables-transparent-proxy.md#4-netfilter-与-iptables)、[第 29 篇 §4.3](29-network-slots.md#43-iptables-的提交方式) |
-| 地址转换 | NAT | 改写包的源或目的地址；槽位用它把固定的 VM 地址映射到唯一的宿主侧地址。 | [第 06 篇 §4.3](06-netns-iptables-transparent-proxy.md#43-地址转换) |
+| 地址转换 | NAT | 改写包的源或目的地址；槽位在命名空间里用 SNAT / DNAT 在固定的 VM 地址与每槽位唯一的 host interaction IP 之间转换。 | [第 06 篇 §4.3](06-netns-iptables-transparent-proxy.md#43-地址转换) |
 | 网络命名空间 | netns（network namespace） | 内核隔离网络栈的单位，每个槽位一个。 | [第 06 篇 §2](06-netns-iptables-transparent-proxy.md#2-网络命名空间) |
 | NetworkManager | `NetworkManager` | 槽位的分配、复用与清理单例。 | [第 29 篇 §5](29-network-slots.md#5-networkmanager分配复用与清理) |
 | REDIRECT | REDIRECT / `SO_ORIGINAL_DST` | 把连接改送本机端口的 iptables 目标；代理再用 `SO_ORIGINAL_DST` 取回原目的地。 | [第 06 篇 §5.1](06-netns-iptables-transparent-proxy.md#51-redirect-之后原目的地在哪里) |
 | 槽位 | slot | 网络槽位：一个预建的 netns 加 tap、veth 与规则；块设备语境下另有卷槽位。 | [第 29 篇 §4](29-network-slots.md#4-创建一个槽位) |
-| Host 与 SNI | Host / SNI | 透明代理从 HTTP Host 头或 TLS SNI 读出域名，按域名授权。 | [第 06 篇 §5.2](06-netns-iptables-transparent-proxy.md#52-看见域名host-与-sni) |
+| Host 与 SNI | SNI / Host | 透明代理从 HTTP Host 头或 TLS SNI 读出域名，按域名授权。 | [第 06 篇 §5.2](06-netns-iptables-transparent-proxy.md#52-看见域名host-与-sni) |
 | tap | tap | 一端是网卡、一端是文件描述符的虚拟接口，Firecracker 经它收发 guest 的包。 | [第 06 篇 §3.1](06-netns-iptables-transparent-proxy.md#31-tap一端是网卡一端是文件描述符) |
 | 透明代理 | transparent proxy | guest 不知情时截住出站连接、按域名判定后转发的 egress 代理。 | [第 06 篇 §5](06-netns-iptables-transparent-proxy.md#5-透明代理)、[第 30 篇 §4](30-egress-policy-and-proxy.md#4-透明代理) |
 | veth | veth | 跨命名空间的一对虚拟网卡，连接槽位与宿主。 | [第 06 篇 §3.2](06-netns-iptables-transparent-proxy.md#32-veth跨命名空间的一根网线) |
@@ -219,7 +219,6 @@
 | 绑定 | binding | scheduler 里 sandbox → node 的映射，内存或 Redis 存储。 | [第 56 篇 §3](56-scheduler.md#3-绑定) |
 | CPU 模板交集 | CPU template intersection | scheduler 对集群节点 CPU 特性求交，下发给节点作为冷启动的 CPU 模板。 | [第 57 篇 §5](57-heartbeat-and-cpu-intersection.md#5-cpu-模板交集) |
 | EndpointSlice | EndpointSlice | Kubernetes 的服务端点对象，scheduler 的 kubernetes 发现模式据它找节点。 | [第 56 篇 §4.2](56-scheduler.md#42-kubernetes) |
-| HTTP 门面 | P2P HTTP facade | 节点本地的 HTTP 服务，让 Rust 版 overlaybd 按范围读 P2P 制品。 | [第 58 篇 §5](58-p2p-artifact-transport.md#5-overlaybd-的-http-门面) |
 | gateway | gateway | 多节点的无状态入口：认证分界、路由判定、反向代理与写绑定。 | [第 55 篇](55-gateway.md) |
 | 心跳 | heartbeat | 节点定期向 scheduler 报告的节点快照，scheduler 据此推导节点状态。 | [第 57 篇 §3](57-heartbeat-and-cpu-intersection.md#3-心跳循环) |
 | iroh | iroh | AgentENV P2P 制品传输使用的点对点库。 | [第 58 篇 §3](58-p2p-artifact-transport.md#3-iroh-后端) |
@@ -227,6 +226,7 @@
 | 节点快照 | node snapshot | 心跳携带的节点容量、沙箱名单与主机指标。 | [第 57 篇 §2](57-heartbeat-and-cpu-intersection.md#2-节点快照) |
 | 节点状态 | `NodeStatus` | READY、CONNECTING、UNHEALTHY 等，由发现状态与心跳情况推导。 | [第 54 篇 §4](54-control-plane-overview.md#4-节点状态) |
 | P2P 制品 | P2P key / descriptor / provider | P2P 传输的三个抽象：消费者编码的 key、查找结果 descriptor、本地或对等节点 provider。 | [第 58 篇 §2](58-p2p-artifact-transport.md#2-抽象keydescriptorprovider) |
+| HTTP 门面 | P2P HTTP facade | 节点本地的 HTTP 服务，让 Rust 版 overlaybd 按范围读 P2P 制品。 | [第 58 篇 §5](58-p2p-artifact-transport.md#5-overlaybd-的-http-门面) |
 | 放置 | placement | scheduler 为新沙箱选节点：资源过滤后按策略选择。 | [第 56 篇 §2](56-scheduler.md#2-放置) |
 | primary 与 query-only | primary / query-only | scheduler 的两种角色：primary 维护节点表与放置，query-only 只从 Redis 查绑定。 | [第 56 篇 §6.1](56-scheduler.md#61-两种角色) |
 | Redis | Redis | 绑定的可选持久存储，primary 与 query-only 共享。 | [第 56 篇 §3.3](56-scheduler.md#33-redis-实现) |
@@ -244,15 +244,15 @@
 | 节点目录 | `$AENV_HOME` / `$AENV_RUNTIME` | 节点的持久目录（缺省 `/var/lib/aenv`）与运行期目录（缺省 `/run/aenv`）。 | [第 10 篇 §5](10-node-process-and-object-model.md#5-节点磁盘布局) |
 | async_trait | `async_trait` / `?Send` | 让 trait 方法返回 boxed future 的宏；`?Send` 变体允许 `!Send` future。 | [第 07 篇 §3.2](07-rust-async-primer.md#32-async_trait-与-send) |
 | 能力 | capability | Linux capability；常驻 `server` 只以「可委派」形式持有 `CAP_NET_ADMIN` 与 `CAP_SYS_ADMIN`。 | [第 59 篇 §5.2](59-host-setup-and-privileges.md#52-契约两项能力以可委派的形式持有)、[第 06 篇 §2.4](06-netns-iptables-transparent-proxy.md#24-需要哪些权限) |
-| 生成代码 | generated code | 由 `openapi.yml`、`firecracker.yaml`、`envd.yaml`、`scheduler.proto` 生成并入库的代码；讲行为时引用来源。 | [第 64 篇 §3](64-build-codegen-release.md#3-生成代码)、[第 01 篇 §5](01-repo-map-and-versions.md#5-生成代码) |
 | 配置单例 | `ConfigManager` | 用 `OnceLock` 持有的全局配置单例。 | [第 11 篇 §3.1](11-configuration.md#31-configmanager-与-oncelock) |
 | DaemonSet | DaemonSet / preStop | Kubernetes 部署节点的方式；preStop 给关闭序列留出 3600 s。 | [第 60 篇 §5.2](60-deployment.md#52-节点-daemonset)、[第 60 篇 §5.3](60-deployment.md#53-prestop-与-3600-s) |
 | 依赖清单 | `deps_manifest.toml` | 编进二进制的外部依赖版本表（Firecracker、内核、tools 盘、overlaybd 工具）。 | [第 01 篇 §3](01-repo-map-and-versions.md#3-外部依赖configdeps_manifesttoml)、[第 59 篇 §3.1](59-host-setup-and-privileges.md#31-manifest编进二进制的版本表) |
 | 环境补齐 | `ensure_environment()` | 普通启动时对宿主只校验、对 `$AENV_HOME` 补齐依赖与配置的步骤。 | [第 10 篇 §2.4](10-node-process-and-object-model.md#24-ensure_environment校验加补齐) |
+| 生成代码 | generated code | 由 `openapi.yml`、`firecracker.yaml`、`envd.yaml`、`scheduler.proto` 生成并入库的代码；讲行为时引用来源。 | [第 64 篇 §3](64-build-codegen-release.md#3-生成代码)、[第 01 篇 §5](01-repo-map-and-versions.md#5-生成代码) |
 | linux-cap | `linux-cap` | 读取与委派 Linux 能力集合的小 crate。 | [第 59 篇 §5.4](59-host-setup-and-privileges.md#54-linux-cap-crate) |
 | LocalSet | `LocalSet` / `spawn_local` | tokio 在单线程上运行 `!Send` 任务的机制。 | [第 07 篇 §2.2](07-rust-async-primer.md#22-localset-与-spawn_local) |
 | 能力委托脚本 | `run-with-capabilities.sh` | 以委派能力运行需要特权的测试的脚本。 | [第 63 篇 §3](63-testing-and-benchmarks.md#3-能力委托run-with-capabilitiessh) |
-| 运行时 | runtime | 两种语境：tokio runtime（执行 future 的线程池），或「运行时目录 / 运行时层」（沙箱运行期产生的文件）。 | [第 07 篇 §2.3](07-rust-async-primer.md#23-一个进程里的多个-runtime)、[第 37 篇 §5.2](37-seal-restack-compact.md#52-预算公式) |
+| 运行时 | runtime | 两种语境：tokio runtime（调度并执行 future 的执行器），或「运行时目录 / 运行时层」（沙箱运行期产生的文件）。 | [第 07 篇 §2.3](07-rust-async-primer.md#23-一个进程里的多个-runtime)、[第 37 篇 §5.2](37-seal-restack-compact.md#52-预算公式) |
 | Send 与 !Send future | `Send` / `!Send` future | 能否在线程间移动的 future；决定它能交给多线程 runtime 还是只能 `spawn_local`。 | [第 07 篇 §3](07-rust-async-primer.md#3-send-与-send-future) |
 | 宿主准备 | `--setup-host` / `--setup-only` | `server` 的两种一次性模式：以 root 准备宿主，或只下载依赖与生成配置。 | [第 59 篇 §2](59-host-setup-and-privileges.md#2-三种模式的分工) |
 | spawn_blocking | `spawn_blocking` | 把阻塞操作移到 tokio 阻塞线程池的接口。 | [第 07 篇 §4.2](07-rust-async-primer.md#42-spawn_blocking-的两个约束) |
