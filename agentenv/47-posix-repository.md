@@ -35,8 +35,11 @@ POSIX 文件系统给的原语很少：`rename()` 原子地替换一个路径；
 
 后端由 `[snapshot] repository_backend = "posix_fs"` 选择（缺省就是它），根目录是 `<snapshot_store>/repository`
 （`src/snapshot/repository/backends/mod.rs` 的 `build_snapshot_backend_from_config()`）。
-`[backend.posix_fs] snapshot_store` 的代码缺省值是 `$AENV_HOME/snapshot-store`，也可以用环境变量 `AENV_SNAPSHOT_STORE` 覆盖（`src/cfg.rs` 的 `PosixFsBackendConfig`）。
+`[backend.posix_fs] snapshot_store` 的代码缺省值是 `$AENV_HOME/snapshot-store`（`src/cfg.rs` 的 `PosixFsBackendConfig`）。
+这个字段上声明了环境变量 `AENV_SNAPSHOT_STORE`，推论：它不生效。依据是 `BackendConfig::posix_fs` 是一个没有 `#[config(nested)]` 的 `Option`，confique 把整节当作 serde 叶子、不查内层的 env；
+文件里没有这一节时，归一化用 `PosixFsBackendConfig::default()` 补上，而它走的是不带 `.env()` 的加载（[第 11 篇 §4.2](11-configuration.md#42-环境变量)）。要改仓库位置只能写配置文件或改 `home_path`。
 这个缺省目录在节点本地，所以缺省配置只适合单节点；多节点部署必须把它指到所有节点共享的文件系统，或者改用对象存储后端（[第 48 篇](48-object-storage-repository.md)）。
+推论（依据第 60 篇）：仓库自带的 Kubernetes base 清单用缺省配置，每个节点各有一个本地仓库，快照不在节点之间共享（[第 60 篇](60-deployment.md)）。
 
 模板构建器自己的快照（BuildKit builder，[第 53 篇](53-buildkit-in-microvm.md)）用同一个后端的私有命名空间：
 `builder_snapshot_config()` 把 `snapshot_store` 改成 `<snapshot_store>/template-build/builder`，仓库根随之变成它下面的 `repository`。
@@ -202,8 +205,10 @@ self.with_alias_lock(alias, |store| {
 
 没有 alias 时跳过锁与前三步，直接写标记与 record。
 
-`committed_record_unlocked()` 区分两种情况。模板构建在开始时已经 `create()` 了一条 Waiting 记录，这里读出它，
-调用 `SnapshotRecord::mark_committed()` 把状态改成 Ready、填入 committed 负载；沙箱快照没有预先存在的记录，这里新建一条。
+`committed_record_unlocked()` 区分两种情况。记录已存在时（模板构建在开始时 `create()` 的那条），读出它，
+调用 `SnapshotRecord::mark_committed()` 把状态改成 Ready、填入 committed 负载，**不检查**它原来是 Waiting、Building 还是 Error。
+记录不存在时直接新建：沙箱来源建一条沙箱快照记录；模板来源则**直接造一条 Ready 记录**，不要求此前有过 Waiting。
+这两点都意味着提交路径信任调用方给出的元数据与层描述符（§3.2 的「信任 digest」同理），状态机的合法性由调用方保证；§5 的两个并发缝隙都源于此。
 record 与 alias 都用 `write_json()` 写：同目录临时文件、`sync_all()`、`persist()`（即 `rename`）。commit 标记用同样的临时文件加改名，但不 `fsync`。
 
 任一步失败，`commit_publish()` 重新取 alias 锁，**仅当** alias 仍指向自己时删掉它，然后 `cleanup_uncommitted_snapshot_dir()`。

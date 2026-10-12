@@ -96,7 +96,7 @@ flowchart TB
 
 ### 2.4 不排除 UNHEALTHY 节点
 
-`scheduler.proto` 的 `NodeStatus` 注释给出了一张状态推导表，并说明 READY 是「接受新沙箱」的状态。推导由 `node_registry.go` 的 `deriveObservedNodeViewLocked()` 完成：
+`scheduler.proto` 的 `NodeStatus` 注释给出了一张状态推导表，并说明 READY 是「接受新沙箱」的状态。推导表与实现的出入见[第 54 篇 §4](54-control-plane-overview.md#4-节点状态)；推导由 `node_registry.go` 的 `deriveObservedNodeViewLocked()` 完成：
 距上次心跳超过 `report_ttl`（缺省 30 s）为 UNHEALTHY；不在发现列表中为 CONNECTING；lingering 为 LINGERING；否则用节点自报的状态（节点恒报 READY）。
 
 但 `Schedule()` 不用这个推导。它调的 `Snapshot(false)` 只按 `lingeringIDs` 过滤，注释「filtered by their derived status」与实现不符；
@@ -177,6 +177,11 @@ Redis Cluster 要求脚本访问的键都在 `KEYS` 里声明且落在同一个 
 - `Terminating` 为真的 endpoint 进入 **lingering**：仍在节点表里、仍能被列表与按 ID 路由访问，但 `Schedule()` 不再选它。
 - 匹配 `ignore_pod_selector` 的 Pod 整个忽略；匹配 `no_schedule_pod_selector` 的 Pod 强制算 lingering，可用来手动排空一台节点。
 
+只看 `Serving` 是与部署清单配合的。headless Service `agentenv-nodes`（`deploy/k8s/base/agentenv-headless-service.yaml`）设置了 `publishNotReadyAddresses: true`，
+未就绪与终止中的 Pod 都留在 EndpointSlice 里，由 scheduler 自己筛选。推论（依据 Kubernetes EndpointSlice 控制器的语义，不在本仓库代码里）：
+这个设置下 `Ready` 条件恒为真、不再反映探针；`Serving` 跟随 readiness 探针，Pod 终止时也不被强制置假。于是 `/health` 不通的 Pod 被剔除，
+终止中但仍健康的 Pod 留在表里，以 lingering 身份只接收已有沙箱的请求；若改用 `Ready`，或去掉 `publishNotReadyAddresses`，终止中的节点会立刻从表里消失，它上面的已有沙箱也无法路由。
+
 lingering 与 DaemonSet 的 `preStop` 配合完成排空：Pod 进入 Terminating 后不再接新沙箱，`preStop` 轮询节点的沙箱数直到为零，`terminationGracePeriodSeconds` 为 3600（[第 60 篇 §5.3](60-deployment.md#53-prestop-与-3600-s)）。
 
 `Set()` 替换节点表时，删除不再存在的节点的观测记录并使相应集群的 CPU 交集失效（[第 57 篇](57-heartbeat-and-cpu-intersection.md)），但**不碰绑定**：消失节点的绑定靠 TTL 自然过期。
@@ -226,7 +231,7 @@ gateway 写绑定失败只记警告（[第 55 篇 §6](55-gateway.md#6-写绑定
 ### 6.1 两种角色
 
 `scheduler --query-only` 启动的进程只注册 `QueryOnlyService`：它只实现 `LookupNode`，其余 RPC 返回 `Unimplemented`，不建节点表、不需要发现配置，但要求配置 `redis_addr`。
-它与 primary 共享同一个 Redis，从里面读绑定。gateway 用 `query_only_scheduler_addr` 指向它，所有按已有沙箱路由的请求都经它查节点（[第 55 篇 §4](55-gateway.md#4-选节点)）。
+它与 primary 共享同一个 Redis，从里面读绑定；proto 本身不区分两种服务，见[第 54 篇 §3.4](54-control-plane-overview.md#34-query-only-服务)。gateway 用 `query_only_scheduler_addr` 指向它，所有按已有沙箱路由的请求都经它查节点（[第 55 篇 §4](55-gateway.md#4-选节点)）。
 
 primary 之外的一切都只在 primary 的内存里：节点表与观测快照、CPU 交集、P2P 制品索引（`InMemoryArtifactStore`，LRU 容量缺省 100 万条，[第 58 篇](58-p2p-artifact-transport.md)）。
 primary 只能有一个：两个 primary 各自维护节点表与 round-robin 计数器，彼此不知道对方。

@@ -172,7 +172,7 @@ flowchart LR
 
 ## 5. balloon 与 DAMON：把内存还给宿主
 
-第 02 篇的要求四要求 guest 不再需要的内存回到宿主。这需要 guest 内核与 Firecracker 两侧配合。
+[第 02 篇](02-why-agentenv.md#2-四条要求)的要求四要求 guest 不再需要的内存回到宿主。这需要 guest 内核与 Firecracker 两侧配合。
 
 **guest 一侧**：内核命令行启用 DAMON reclaim。`src/sandbox/firecracker/config.rs` 的 `DEFAULT_BOOT_ARGS` 与 `config/default.toml` 的 `boot_args` 都带有一组 `damon_reclaim.*` 参数：
 `enabled=Y`、`min_age=100000`（微秒）、每 500 ms 最多花 20 ms 回收不超过 1 GiB、水位 990 / 990 / 200（千分比），以及 `skip_anon=Y` —— 只回收文件页，不碰匿名页。

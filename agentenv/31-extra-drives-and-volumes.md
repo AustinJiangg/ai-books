@@ -68,6 +68,7 @@ AgentENV 里，tools 盘（vda）与用户 rootfs（vdb）之外的块设备都�
 - `validate_mount_path()`：必须是绝对路径、不是 `/`、不含空白 / 逗号 / 冒号 / `..`，且不与保留路径
   `/proc`、`/sys`、`/dev`、`/run`、`/agentenv`、`/opt/agentenv` 互为前缀。「互为前缀」意味着 `/opt` 也被拒绝，
   因为把盘挂在 `/opt` 上会遮住 `/opt/agentenv`。`/tmp` 故意不保留：它属于 guest 文件系统，遮住它不会藏起 AgentENV 的控制文件。
+  「前缀」按路径分量比较（`Path::starts_with()`），所以代码注释里举的例子「`/p` 遮住 `/proc`」并不成立：`/p` 会被放行，它本来也遮不住 `/proc`。
 - `validate_sub_path()`：必须是相对路径，同样不含空白、逗号、冒号与 `..`。
 
 禁止逗号与冒号不是出于文件系统的限制，而是因为挂载表要拼进内核命令行（§4.1）：`agentenv_drives=vdc:/mnt/a,vdd:/mnt/b:sub`
