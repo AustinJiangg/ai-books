@@ -119,9 +119,11 @@ sequenceDiagram
 
 第 2、3 步全部发生在第 4 步之前。步骤非法的请求得到 400，而记录仍是 Waiting，客户端改正后可以用同一个 ID 再次启动。
 反过来，一旦 `try_start_build()` 成功，记录就只能走向 Ready 或 Error；对非 Waiting 的记录再次启动，仓库返回 `InvalidRequest`，
-handler 经 `repository_error()` 映射为 400。因为条件写发生在共享的快照仓库里，它同时挡住了来自其它节点的重复启动。
+handler 经 `repository_error()` 映射为 400。这次检查发生在共享的快照仓库里，能否挡住来自其它节点的重复启动取决于后端：
+POSIX 仓库在 record 锁下做这次转换，两个节点只有一个能看到 Waiting（[第 47 篇](47-posix-repository.md)）；
+对象存储仓库的实现是读 record、检查、无条件写回，两个节点同时启动时都能成功，结果是重复构建（[第 48 篇 §6.2](48-object-storage-repository.md#62-模板状态普通的读改写)）。
 
-第 5 步的 `register_template_build()` 只为路由服务。步骤路径的构建 VM 不经过 orchestrator：
+第 5 步的 `register_template_build()` 只为路由服务。步骤路径的构建 VM 不经过 orchestrator（这一点与 OUTLINE 早期要点「构建 VM 也是 orchestrator 管理的沙箱」不同，以代码为准）：
 `src/template/runner.rs` 用 `SandboxId::new()` 另起一个 ID，直接构造 `FirecrackerSandbox`，它不出现在 orchestrator 的 store 里（[第 52 篇](52-template-builder.md)）。
 于是在整个构建期间，节点上报的沙箱 ID 列表（`list_sandbox_ids()`，经 `src/observability/service.rs` 进入心跳）只能通过 `template_build_ids` 带上这个构建 ID，
 gateway 据此把同一构建 ID 的 status、logs 请求路由到本节点（[第 57 篇](57-heartbeat-and-cpu-intersection.md)）。
@@ -146,6 +148,9 @@ gateway 据此把同一构建 ID 的 status、logs 请求路由到本节点（[�
 
 另外，任何步骤只要 `filesHash` 非空就返回 400。三处限制合起来，意味着 E2B SDK 里向模板复制本地文件的能力不可用：
 e2b infra 那条「按 hash 上传文件、构建器按 hash 取用」的通道在这里没有对应实现。
+
+`USER` 只改构建上下文：RUN 用的 envd 执行器不带用户字段，命令始终以构建 VM 启动时的默认用户执行。
+推论：构建中途的 `USER foo` 不会让之后的 RUN 换成 `foo` 执行，这与 Dockerfile 的语义不同（[第 52 篇 §4.1](52-template-builder.md#41-逐步执行)）。
 
 `ARG` 被当成 `ENV` 处理：构建参数会留在模板的环境变量里，被之后从这个模板启动的每台沙箱看到，这与 Dockerfile 里 ARG 只在构建期可见的语义不同。
 步骤上的 `force` 与请求级的 `force` 字段被接受但不读取，这条路径本来就没有逐步缓存可以跳过（[第 52 篇](52-template-builder.md)）。
@@ -210,7 +215,7 @@ sequenceDiagram
    如果 HTTP 调用方在此期间断开，`sender.send()` 失败，任务会接着调用 `cancel_image_build()` 回收已分配的资源。
    这与 orchestrator 的 `run_cancellation_safe()` 是同一种思路（[第 19 篇 §6](19-state-machine-and-concurrency.md#6-取消安全操作不随请求一起死)）：操作不随请求一起死，但放弃的请求要负责收尾。
 3. `allocate_image_build()` 校验 `cache_size_mb` 不超过卷大小上限、记录处于 Waiting，然后 `try_start_build()`；
-   仓库返回 `InvalidRequest`（记录已不在 Waiting）时这里映射成 409，而步骤路径映射成 400。代码注释说明这次条件写同时排除了另一节点上的启动与经步骤 API 的启动。
+   仓库返回 `InvalidRequest`（记录已不在 Waiting）时这里映射成 409，而步骤路径映射成 400。代码注释说这次条件写同时排除了另一节点上的启动与经步骤 API 的启动；这只在 POSIX 仓库上严格成立，对象存储仓库上是普通的读改写（§3.1）。
 4. 把 `BuildJournal { cache: "aenv-buildkit-work-<id>", parent }` 写进 `$AENV_HOME/template-builds` 下的本地 RocksDB（`LocalKvStore`，Sync 持久性），键为 `build/<id>`。
    写失败则立即把记录标为 Error。
 5. 注册 `template_build_ids`，spawn `run_image_build()`，返回 202、响应头 `x-agentenv-build-id` 与 `TemplateBuilder { imageName }`。
