@@ -182,8 +182,8 @@ sequenceDiagram
 
 **转换层复用**。key 是 `LayerConversionKey`（源层 digest、转换器 ID、虚拟大小、是否 mkfs、父层 commit digest、预期层 uuid）序列化后的 sha256，
 表达的是「同样的输入、同样的转换器会产出同样的层」。`lookup_remote_converted_layer()`（`src/image/cache/service.rs`）找到 descriptor 后，以 `advertise = false` 下载到临时目录，
-重算 sha256 与大小并与 metadata 比较，再读出 sealed 层的 uuid 与预期值比较，全部通过才持久化进 image cache，然后由 image cache 以 `Reference` 方式重新发布并记下 key 的归属；
-之后 image cache GC 删除这个层时会 unpublish 它。三类消费者里只有这一类在 P2P 发布与本地 GC 之间建立了闭环。
+重算 sha256 与大小并与 metadata 比较，再读出 sealed 层的 uuid 与预期值比较，全部通过才持久化进 image cache。本地转换完成与远端取回两条路径都经 `publish_converted_layer()` 发布：先 `add_hard_commit_p2p_key()` 把 key 记进层的缓存元数据，再以 `Reference` 方式发布。
+注释给出的理由是：先记归属，崩溃时就不会留下一个 GC 不知道怎样撤销的 catalog 条目；之后 image cache GC 删除这个层时按记下的 key unpublish 它。三类消费者里只有这一类在 P2P 发布与本地 GC 之间建立了闭环。
 
 ---
 
@@ -195,7 +195,8 @@ Rust 版 overlaybd 跑在 ublk-daemon 进程里，它读 registry 层时发出�
 让它直接链接 P2P 传输，就要把 iroh 端点、catalog 与 scheduler 客户端都搬进 daemon。AgentENV 选择在 `server` 进程里起一个只监听 `127.0.0.1` 随机端口的 HTTP 门面
 （`src/overlaybd/p2p/facade.rs` 的 `P2pHttpFacadeServer::start()`），把地址写进 overlaybd 全局配置作为「加速地址」：daemon 的请求变成 `GET <门面>/p2p-http/<origin URL>`，
 门面决定从对端还是从 origin 取。门面启动失败时 `OverlaybdP2pRuntime::start_from_app_config()` 只记 warn，overlaybd 照常运行、不走 P2P。
-门面可达时仓库 blob 以 `Direct` 模式打开、不再经过节点块缓存，由门面背后的 P2P 存储充当缓存，这一取舍在[第 39 篇 §2.1](39-block-cache-and-background-download.md#21-位置) 已说明。
+门面可达时 `enable_acceleration()` 把 registry 层 blob 切到 `Direct` 模式、不再经过节点块缓存，由门面背后的 P2P 存储充当缓存；OSS 对象不受影响，总是经过块缓存（`image_service.rs` 的 `open_remote_blob_with_size()`）。
+`/p2p-uuid` 门面经 `open_source_blob_with_size()` 直接打开，同样不经块缓存。这一取舍见[第 39 篇 §2.1](39-block-cache-and-background-download.md#21-位置)。
 
 ### 5.2 一次范围读
 
@@ -204,7 +205,7 @@ Rust 版 overlaybd 跑在 ublk-daemon 进程里，它读 registry 层时发出�
 1. 拒绝任何 `If-*` 条件请求头（412）；从路径还原 origin URL，只接受 http / https；只接受单段 Range。
 2. `CanonicalBlobIdentity::from_origin_url()` 从 URL 路径里抽出 `sha256:<64 位十六进制>`，得到 key `overlaybd-layer/v1/sha256:…`；
    抽不出时退化为 scheme + host + path 的哈希，去掉查询串，使同一对象的不同预签名 URL 落到同一个 key。
-   key 只取决于 digest、与 registry 的主机名无关，因此不同 registry 上的同一层在 P2P 这一层是共享的。
+   key 只取决于 digest、与 registry 的主机名无关，因此不同 registry 上的同一层在 P2P 这一层是共享的；这与节点块缓存按完整 URL 作键（[第 39 篇 §2.2](39-block-cache-and-background-download.md#22-条目与键)）不同。
 3. `lookup_descriptor()`：先查 descriptor 缓存（命中 TTL 5 min，未命中 TTL 5 s，上限 16K 条）；没有则调 `transport.lookup()`，整体限时 `p2p_lookup_timeout_ms`（缺省 300 ms）。
    查找出错按未命中缓存 5 s；**超时不缓存**，下一次读再试；metadata 校验不过的 descriptor 不进缓存。
 4. 命中则 `fetch_p2p_range()`：校验 metadata，按层大小截断请求长度，在 `p2p_fetch_range_timeout_ms`（缺省 2 s）内拿到字节流，作为 206 响应体返回。
