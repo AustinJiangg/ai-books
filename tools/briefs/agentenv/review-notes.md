@@ -204,3 +204,7 @@
 - 72 → 14：§2 把 v1 / v2 connect 合写成 `sandboxes_sandbox_id_connect_post()`，v2 实为 `v2_sandboxes_sandbox_id_connect_post()`。
 - 72 → 03：§7 端点表漏了 `PUT /logger`。
 - 72 → 68：daemon `shutdown` RPC 不检查返回结果。
+- 67：上游 6.1 CI 内核配置写 `# CONFIG_DAMON_RECLAIM is not set`，与 AgentENV 缺省开启的 `damon_reclaim.*` 参数矛盾 —— 若内核真按上游 CI 配置构建，guest 内 DAMON 回收静默失效（推论）；03 §5 补一句引用 67 §7.2。
+- 67：补丁 ② 跳过 `mark_virtio_queue_memory_dirty` 不致漏页（`Queue::initialize()` 已标脏、位图不重置）；补丁 ⑦ 不检查 Paused，`page_size` 取宿主页大小。
+- 67 → 68：内核配置不可追溯；补丁版 CHANGELOG 有 `#XXXX` 占位、只列 ⑦ 且放在已发布的 [1.15.1] 节；推论：补丁 ③ 的 `serde(default)` 在 bitcode 下无效、`SNAPSHOT_VERSION` 未变，补丁版与上游状态文件互不兼容；swagger 称面向已暂停 VM 而代码不检查；`firecracker_version` 只记录不核对。
+- 66：延伸阅读里指向不存在的 `65-vs-e2b-infra-architecture-and-api.md` 已由主编改正。
