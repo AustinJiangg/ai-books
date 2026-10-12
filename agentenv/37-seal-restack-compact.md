@@ -85,6 +85,7 @@ Sparse 没有 index 文件，它的映射来自对数据文件做 `seek_data` / 
 sealed 层的读端只看 trailer。Rust 版的 `verify_ht()`（`lsmt/file/helper.rs`）要求 trailer 的魔数正确、
 是 trailer、是 data file、已 sealed；上游 overlaybd `file.cpp` 中同名的 `verify_ht()` 检查的是同样四项。
 seal 从 header 复制 trailer 时没有清掉 RW 布局位，所以 Sparse 或 Hybrid upper 封出来的层，trailer 里仍带着 bit4 或 bit5。
+bit5（Hybrid RW）并非 AgentENV 独有：上游默认分支同样把它定义为 `FLAG_HYBRID_RW`，两边同位同义（[第 34 篇 §6](34-lsmt-format-and-index.md#6-与上游的兼容边界)）。
 两边的只读打开路径都不检查这两位，于是封出来的层可以按普通 sealed 层打开。
 推论：只读路径对这两位不敏感是一个隐含依赖，如果将来某一端在只读路径上校验 RW 布局位，这些层会被拒绝。
 
@@ -99,8 +100,11 @@ seal 追加的 index、补齐与 trailer 同样喂给它，所以 seal 结束时
 这只对 LogStructured 成立。`initial_append_digest()` 只为 `LSMTFileType::ReadWrite`（即 LogStructured）建追踪器，
 注释说明 Sparse 与 Hybrid 会原地改写已有数据块，顺序追加的前提不成立。
 而节点配置 `[ublk.overlaybd] runtime_upper_mode` 的代码默认值与 `default.toml` 都是 `hybridLogStructured`（`src/cfg.rs`）。
-所以**默认配置下 restack 返回的 descriptor 是 `None`**：`create_snapshot_and_restack()` 写进 lowers 的 `digest` 为空，
-`size` 退回到文件元数据长度。推论：摘要要在发布时另行计算，增量 digest 的收益只在显式选用 `logStructured` 时兑现。
+冷启动的 rootfs 也不例外：`FirecrackerSandboxFactory::build()` 写下的 `UpperMode::LogStructured` 随即被 `from_app_config_with_user_image()` 用全局配置覆盖，
+运行中的 upper 实际是 Hybrid 布局（[第 36 篇 §4.4](36-read-write-paths-and-rw-layouts.md#44-agentenv-用哪一种)）。
+所以**默认配置下 `close_seal()` 不返回增量 digest，restack 返回的 descriptor 是 `None`**：`create_snapshot_and_restack()` 写进 lowers 的 `digest` 为空，
+`size` 退回到文件元数据长度。摘要要在发布时另算一遍：例如对象存储上传路径的 `recontainerize.rs` 里，`passthrough()` 在没有可信描述符时用 `FileDigest::describe()` 整体读一遍文件求 sha256，
+开启发布压缩时则对重封装后的 ZFile 重新求值（[第 35 篇 §7.1](35-zfile-compression.md#71-本地-raw发布时压缩)）。增量 digest 的收益只在显式选用 `logStructured` 时兑现。
 
 ### 2.4 seal 不做的事
 
@@ -184,7 +188,7 @@ sequenceDiagram
 一旦进入第 3 步，磁盘上的状态就开始不可逆地变化：sealed 标志已置位、数据文件末尾多了 index 与 trailer；
 第 4 步之后 upper 的数据文件已经不在原路径；第 5 步之后旧 index 文件已被截断重建。
 要回滚，就得截掉 trailer、把 rename 反过来、再从数据文件里重建 index 文件，而这几步本身也可能失败。
-代码的选择是**不尝试回滚**，只如实报告「live 运行时可能已被改动」，由上层把这台沙箱当作不可安全恢复处理。
+代码的选择是**不尝试回滚**，只如实报告「live 运行时可能已被改动」，由上层停掉这台沙箱、不再从这个运行时恢复它。
 
 这个信号沿调用链原样传递：daemon 的连接处理把 `RestackSnapshotTerminalFailure` 映射成 `DaemonResponse::TerminalError`（`server.rs`）；
 客户端 `UblkDaemonClient::restack_snapshot()`（`client.rs`）把它还原成客户端侧定义的同名类型 `RestackSnapshotTerminalFailure`。
@@ -194,7 +198,9 @@ sequenceDiagram
 
 两类错误的区别在 `FirecrackerSandbox::recover_capture_failure()`：Recoverable 错误会让 VM `resume()` 后把错误返回，沙箱照常运行；
 Terminal 错误不恢复 VM。orchestrator 收到 Terminal 后停掉沙箱、对它挂载的卷执行 `finalize_terminal_volumes()`、
-从元数据里删除记录（`src/orchestrator/service.rs` 的 pause、fork 与快照失败分支）。卷的处理细节见[第 21 篇](21-deletion-and-volume-capture.md)。
+从元数据里删除记录（`src/orchestrator/service.rs` 的 pause、fork 与快照失败分支）。
+`finalize_terminal_volumes()` 并不把卷标成「不可安全恢复」：它先调 `VolumeManager::recover_and_publish_backings()`（`src/volume.rs`）恢复并发布卷的备份，
+再用 `replace_owner_for(owner, None, …)` 释放卷的占用，两步失败都只记 warn。卷的处理细节见[第 21 篇](21-deletion-and-volume-capture.md)。
 
 ### 3.4 节点侧的收尾
 
@@ -289,7 +295,7 @@ flowchart LR
 
 ### 5.1 硬上限从哪来
 
-映射的 tag 只有 8 位，`open_files_ro()` 的输入检查把 lowers 限制在 `MAX_STACK_LAYERS = 255`（`lsmt/file/stack.rs`）。
+映射的 tag 只有 8 位，`open_files_ro()`（`lsmt/file/stack.rs`）的输入检查把 lowers 限制在 `MAX_STACK_LAYERS = 255`（常量定义在 `lsmt/file/types.rs`）。
 每次暂停或快照都会多出一个 rootfs 层与一个内存层；一台沙箱反复「暂停、恢复」，层栈就一直长。
 层越多，打开时要合并的索引越多（premerged index 缓存缓解的正是这件事，见[第 34 篇](34-lsmt-format-and-index.md)），
 最终会撞上 255。
@@ -336,10 +342,10 @@ AgentENV 保留逐层的索引、在打开时合并，用层数预算与 compact
 ## 7. 小结
 
 - seal 原地封口：在数据文件 EOF 追加合并后的索引与由 header 复制的 trailer，数据块不动；代价是死数据不回收。
-- 增量 sha256 只在 LogStructured upper 上有效；默认 `runtime_upper_mode = hybridLogStructured`，restack 返回的 descriptor 为 `None`。
+- 增量 sha256 只在 LogStructured upper 上有效；默认 `runtime_upper_mode = hybridLogStructured`，冷启动 rootfs 也是 Hybrid，`close_seal()` 不返回增量 digest，发布时另算。
 - seal 出来的层保留 RW 布局位，Rust 与上游的只读打开都不检查这两位。
 - restack = 写锁下 seal、rename、在原路径重建空 upper、重开只读栈、换入；从 seal 开始的任何失败都是 `RestackSnapshotTerminalFailure`。
-- 不回滚是因为 seal 之后磁盘状态不可逆；RPC 超时或回复丢失也按 Terminal 处理，Terminal 会让沙箱被停掉并删除。
+- 不回滚是因为 seal 之后磁盘状态不可逆；RPC 超时（360 s）或回复丢失也按 Terminal 处理，Terminal 会让沙箱被停掉并删除，挂载的卷先恢复发布、再释放。
 - 跨文件系统时 daemon 在 upper 所在目录 restack，节点再原子拷贝；这是 restack 唯一拷贝数据的情形。
 - `compact_to()` 只需要 `VirtualFile` 数组与映射，所以层合并、ZFile 重封装、原始盘打包与内存脏页成层共用一个实现；零块检测关闭。
 - 运行时后缀的层数预算是 `32 − 稳定前缀 / 4`（至少 1），超出则压成一层，否则硬链接进快照目录。

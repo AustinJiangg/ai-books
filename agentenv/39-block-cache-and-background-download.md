@@ -50,6 +50,10 @@
 - registry 对象只在 `RemoteOpenMode::Cached` 下经过缓存。`enable_acceleration()` 在 P2P 门面可用时把模式切到 `Direct`，
   此时 P2P 门面自己充当缓存，Rust 侧不再套 `CachedFile`。
 
+本地层根本不进入这条路径。OCI 镜像转换出的层由 `image.json` 的 `dir` 指向 image-cache 的 `commits/<digest>` 目录
+（`src/image/cache/service.rs` 里的 `OverlaybdLayerLocation::CacheDir`，目录由 `commit_index.rs` 的 `commit_dir()` 算出），
+`open_lower_layer()` 在这个目录里找到 `overlaybd.commit` 就按本地文件打开（[第 38 篇 §3.1](38-virtualfile-chain-and-remote-io.md#31-一次远端读穿过的栈)），不经过块缓存。
+
 `CachedFile` 之上依次是 tar 适配、`SwitchFile`（识别 ZFile）、LSMT。所以缓存里存的是**远端对象的原始字节**：
 ZFile 层在缓存里仍是压缩的，每次命中仍要解压。代价是 CPU，收益是缓存体积与远端对象一一对应，
 后台下载可以按对象偏移直接填，不必懂层格式。
@@ -61,7 +65,7 @@ ZFile 层在缓存里仍是压缩的，每次命中仍要解压。代价是 CPU�
 
 ```text
 <cacheDir>/                            例：$IMAGE_CACHE_ROOT/remote-blocks
-├── premerged-index/                   LSMT 合并索引缓存，与本缓存共用根目录（见第 34 篇），加载时跳过
+├── premerged-index/                   LSMT 预合并索引缓存，与本缓存共用根目录（第 34 篇 §5），加载时跳过
 ├── 3f9a…e1/                           sha256(cache_key)
 │   ├── data                           稀疏文件，长度 = 源对象长度，整体 mmap
 │   └── meta.bin                       OBCH 头 + key + roaring 位图 + CRC32C
@@ -371,7 +375,7 @@ flowchart TB
 ## 7. 与 e2b infra 的对照
 
 e2b infra 的 chunker 同样是「稀疏文件 + mmap + 位图」，但以固定 4 MiB 分片按需回源、用 `WaitMap` 去重，
-没有独立的后台整层下载（见 e2b 手册第 30 篇）；它的模板缓存用 TTL 加磁盘水位、延迟 60 s 删除，不做引用计数（第 34 篇）。
+没有独立的后台整层下载（见 e2b 手册第 30 篇）；它的模板缓存用 TTL 加磁盘水位、延迟 60 s 删除，不做引用计数（见 e2b 手册第 34 篇）。
 AgentENV 把前台粒度降到 256 KiB、把大请求交给带准入闸门的后台调度器，并用 `open_count` 钉住在用条目；
 代价是驱逐只能整条目进行，且闸门把正确性绑在单进程假设上。
 

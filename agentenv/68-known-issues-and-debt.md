@@ -22,7 +22,7 @@
 
 ### 1.1 来源与纳入原则
 
-条目来自第 01–66 篇正文中指出的问题，以及各篇编写时记下、要求本篇汇总的事项。汇总时做了三件事：
+条目来自第 01–67 篇与附录第 71、72 篇正文中指出的问题，以及各篇编写时记下、要求本篇汇总的事项。汇总时做了三件事：
 
 - **去重合并。** 同一处代码在几篇里从不同角度被提到（例如 ublk-daemon 的故障模型在第 04、08、40、41 篇都出现），这里合成一条，链接到讲得最完整的那一篇。
 - **保留推论标记。** 原文标为「推论」的条目在这里仍标「推论：」。这类条目的现象由代码结构推出，没有在运行环境中复现，读者应当把它们当作待验证的假设。
@@ -54,11 +54,11 @@
 |---|---|---|
 | 正确性 | 38 | 对象存储仓库的弱一致 catalog；持久记录的两阶段标记 |
 | 可用性 | 41 | Firecracker REST 调用无超时；ublk-daemon 无崩溃恢复；`Schedule()` 不排除 UNHEALTHY |
-| 可运维性 | 66 | managed layers 无 GC |
+| 可运维性 | 72 | managed layers 无 GC |
 | 安全与信任边界 | 17 | P2P 信任边界；控制面 gRPC 无认证 |
-| 供应链与构建 | 17 | 生成代码无漂移检查 |
-| 文档漂移 | 27 | `docs/src/internals/*` 的几处主要偏差；startup pack 的版本称呼 |
-| 合计 | 206 | 其中 38 条标为推论 |
+| 供应链与构建 | 20 | 生成代码无漂移检查 |
+| 文档漂移 | 30 | `docs/src/internals/*` 的几处主要偏差；startup pack 的版本称呼 |
+| 合计 | 218 | 其中 43 条标为推论 |
 
 ---
 
@@ -287,20 +287,26 @@ scheduler 的 `services/scheduler/internal/node_registry.go` 有一套状态推�
 | O-31 | `docker-setup.sh` 与 `--setup-host` 都写 `/etc/sysctl.d/99-aenv.conf`，只有后者含 `ip_forward` | `scripts/`、`src/setup/` | 先后运行可能丢掉转发，节点拒绝启动 | [第 59 篇 §4.2](59-host-setup-and-privileges.md#42-容器宿主docker-setupsh) |
 | O-32 | k8s base 清单：每个节点各有自己的快照仓库；无 Redis、query-only、生产 token seed；hostPath 盖住镜像里预烘焙的依赖；不经 `run.sh` 直接 apply 得到空 key 而启动失败 | `deploy/k8s/` | 清单不能直接用于多节点生产 | [第 60 篇 §5.5](60-deployment.md#55-清单里没有的部件) |
 | O-33 | 槽位容量要算上网络池与进程池的占用；`--setup-host` 不设 `ublks_max`、不改 `/dev/kvm` 权限 | `src/setup/` | 实际可用槽位少于配置值 | [第 59 篇 §4.1](59-host-setup-and-privileges.md#41---setup-host-做了什么) |
+| O-34 | `[pool.block].maintenance_enabled` 不起作用 | `src/cfg.rs` 的 `block_pool_config()` 恒写 `false` | 设置这个键没有任何效果 | [第 71 篇 §7](71-config-env-ports-reference.md#7-不一致与技术债) |
+| O-35 | 省略 `[pool.block].enabled` 时 `server` 与 daemon 的缺省不同；配置文件不存在时 `server` 仍把编译期缺省路径作为 `--config` 传给 daemon | `src/cfg.rs`；`storage/ublk-daemon/src/main.rs` | 推论：两个进程对「池是否开着」看法不一；没有配置文件时 daemon 读文件失败而起不来，与 `server` 的静默回退相反 | [第 71 篇 §3](71-config-env-ports-reference.md#3-ublk-daemon-读的键) |
+| O-36 | `BackendConfig::posix_fs` 是 `Option` 且无 `#[config(nested)]`，内层的 `env = "AENV_SNAPSHOT_STORE"` 不参与加载 | `src/cfg.rs` 的 `PosixFsBackendConfig` | 推论：设置 `AENV_SNAPSHOT_STORE` 不改变仓库根，而 `env-vars.md` 称它可以覆盖 | [第 71 篇 §7](71-config-env-ports-reference.md#7-不一致与技术债) |
+| O-37 | gateway 与 scheduler 的 `-config` 文件不存在即启动失败；JSON 里的时长字段必须写成字符串 | `services/shared/config/config.go` 的 `load()` | 与节点「文件缺失静默回退」的行为相反；写成数字的时长直接报错 | [第 71 篇 §4.1](71-config-env-ports-reference.md#41-加载顺序) |
+| O-38 | `[custom_extension].url` 的示例端口 9090 与 scheduler 缺省 gRPC 端口相同；gateway 9102、scheduler 9101 指标端口在 Compose 与 k8s 清单里未发布；`[tools].control_plane_port` 只改宿主一侧，`aenv` 写死 `ENVD_PORT_STR = "49983"` | `config/default.toml`；`deploy/`；`crates/aenv/src/grpc/mod.rs` | 照抄示例会与 scheduler 冲突；控制面指标需另行暴露；改 envd 端口后连不上 guest | [第 71 篇 §6.2](71-config-env-ports-reference.md#62-部署清单里的映射) |
+| O-39 | `UblkDaemonClient::shutdown()` 丢弃 `Shutdown` RPC 的结果，随后等待 daemon 退出不设上限 | `storage/ublk-daemon/src/client.rs`；调用方 `src/sandbox/ublk/device.rs` 的 `shutdown_daemon()` | 推论：daemon 收到请求后卡住时，节点关闭随之挂起，直到外部超时 | [第 72 篇 §4](72-api-reference.md#4-ublk-daemon-的-14-种-rpc) |
 
 ### 4.5 观测
 
 | 编号 | 现象 | 位置 | 后果 | 详讲 |
 |---|---|---|---|---|
-| O-34 | Terminal 失败移除沙箱不发 Delete 事件；删除沙箱不清指标样本；按 `dev_id` 的 gauge 不移除 | `src/observability/` | 事件流与指标里残留幽灵沙箱与设备 | [第 24 篇 §4.1](24-metrics-and-events.md#41-谁发发什么) |
-| O-35 | route 标签把 connect / timeout / refreshes 归为 `unmatched`；stage 计时不覆盖 delete、驱逐与关闭时的暂停 | `src/observability/` | 这些操作的延迟分布不可见 | [第 24 篇 §5.2](24-metrics-and-events.md#52-指标一览) |
-| O-36 | `ReportSandboxEvent` 在 scheduler 端只记 debug 丢弃 | `src/observability/reporter.rs` 与 scheduler | 节点事件对集群不可见，同步全靠心跳 | [第 24 篇 §4.1](24-metrics-and-events.md#41-谁发发什么) |
-| O-37 | gateway 的 `RecordAssignment` 失败只记 warn | `services/gateway/internal/server.go` | 绑定缺失要到数据面 404 时才暴露 | [第 55 篇 §6.2](55-gateway.md#62-失败时的两种处理) |
-| O-38 | gateway 的 404 不区分沙箱不存在与绑定缺失，且是纯文本；hint 只为 debug 日志缓冲 | `server.go` | 排障时无法区分两类问题 | [第 55 篇 §4](55-gateway.md#4-选节点) |
-| O-39 | 没有指标区分「没有 startup pack」与「pack 失败」；`PackRecordingStatus` / `PrefetchStartupPack` RPC 总是返回 Ok | `storage/ublk-daemon/src/server.rs` | 预取失效不可见 | [第 43 篇 §6](43-startup-pack-and-prefetch.md#6-代价与边界) |
-| O-40 | `FG_REMOTE_INFLIGHT` 统计所有读而非只远端读 | `storage/overlaybd/src/download_gate.rs` | 前台优先的判断基于偏大的计数 | [第 39 篇 §6.1](39-block-cache-and-background-download.md#61-download_gate) |
-| O-41 | 集群沙箱列表每翻一页都向所有节点拉全量 | gateway 本地聚合 | 列表开销正比于页数乘节点数 | [第 55 篇 §7.1](55-gateway.md#71-集群沙箱列表) |
-| O-42 | 主机 CPU% 是距任何调用者上次读 `/proc/stat` 的差值，`GET /nodes` 与心跳共享基线 | `src/observability/` | 两个读者互相扰动读数 | [第 57 篇 §2.2](57-heartbeat-and-cpu-intersection.md#22-主机指标) |
+| O-40 | Terminal 失败移除沙箱不发 Delete 事件；删除沙箱不清指标样本；按 `dev_id` 的 gauge 不移除 | `src/observability/` | 事件流与指标里残留幽灵沙箱与设备 | [第 24 篇 §4.1](24-metrics-and-events.md#41-谁发发什么) |
+| O-41 | route 标签把 connect / timeout / refreshes 归为 `unmatched`；stage 计时不覆盖 delete、驱逐与关闭时的暂停 | `src/observability/` | 这些操作的延迟分布不可见 | [第 24 篇 §5.2](24-metrics-and-events.md#52-指标一览) |
+| O-42 | `ReportSandboxEvent` 在 scheduler 端只记 debug 丢弃 | `src/observability/reporter.rs` 与 scheduler | 节点事件对集群不可见，同步全靠心跳 | [第 24 篇 §4.1](24-metrics-and-events.md#41-谁发发什么) |
+| O-43 | gateway 的 `RecordAssignment` 失败只记 warn | `services/gateway/internal/server.go` | 绑定缺失要到数据面 404 时才暴露 | [第 55 篇 §6.2](55-gateway.md#62-失败时的两种处理) |
+| O-44 | gateway 的 404 不区分沙箱不存在与绑定缺失，且是纯文本；hint 只为 debug 日志缓冲 | `server.go` | 排障时无法区分两类问题 | [第 55 篇 §4](55-gateway.md#4-选节点) |
+| O-45 | 没有指标区分「没有 startup pack」与「pack 失败」；`PackRecordingStatus` / `PrefetchStartupPack` RPC 总是返回 Ok | `storage/ublk-daemon/src/server.rs` | 预取失效不可见 | [第 43 篇 §6](43-startup-pack-and-prefetch.md#6-代价与边界) |
+| O-46 | `FG_REMOTE_INFLIGHT` 统计所有读而非只远端读 | `storage/overlaybd/src/download_gate.rs` | 前台优先的判断基于偏大的计数 | [第 39 篇 §6.1](39-block-cache-and-background-download.md#61-download_gate) |
+| O-47 | 集群沙箱列表每翻一页都向所有节点拉全量 | gateway 本地聚合 | 列表开销正比于页数乘节点数 | [第 55 篇 §7.1](55-gateway.md#71-集群沙箱列表) |
+| O-48 | 主机 CPU% 是距任何调用者上次读 `/proc/stat` 的差值，`GET /nodes` 与心跳共享基线 | `src/observability/` | 两个读者互相扰动读数 | [第 57 篇 §2.2](57-heartbeat-and-cpu-intersection.md#22-主机指标) |
 
 ### 4.6 遗留代码与无调用者的路径
 
@@ -308,35 +314,35 @@ scheduler 的 `services/scheduler/internal/node_registry.go` 有一套状态推�
 
 | 编号 | 现象 | 位置 | 后果 | 详讲 |
 |---|---|---|---|---|
-| O-43 | 遗留 CLI `uvm-ublk`：一进程一设备，`Recovery` 分支 `unimplemented!()` | `storage/ublk/src/main.rs` | 与 daemon 并存，易被当作恢复工具 | [第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债) |
-| O-44 | `spawn_data_io_ring_worker()` 无调用者；`UserBuffer` 的 fixed 注册未被使用；`slot_task()` 两处 EINTR FIXME | `storage/ublk/src/lib.rs` | 死代码与未决的错误处理 | [第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债) |
-| O-45 | `update_size` 与 `get_features` RPC 只有测试使用；`get_features` 在池关闭时恒为 0 | `storage/ublk-daemon/src/client.rs` | 接口面大于实际使用面 | [第 41 篇 §7](41-ublk-daemon.md#7-技术债与文档漂移) |
-| O-46 | `load_snapshot_uffd()` 以 `#[allow(dead_code)]` 保留，`resume_vm=true` | `src/sandbox/firecracker/instance.rs` | 若重新启用会跳过新卷、MMDS 与限流的补发 | [第 44 篇 §6](44-uffd-alternative.md#6-遗留状态) |
-| O-47 | 非 ublk rootfs 分支不可达，且会 `copy_cow()` 复制 tools 盘链接 | `sandbox.rs` 的 `snapshot_to_dir()` | 误导；若被走到会复制错误的盘 | [第 27 篇 §8](27-start-pause-resume-sequences.md#8-遗留路径与技术债) |
-| O-48 | `TemplateBuildRootfsBase::Ext4` 与 `TemplateBuildSpec::from_existing_rootfs()` 只有测试使用 | `src/template/` | 生产路径直接报错 | [第 52 篇 §8](52-template-builder.md#8-技术债与边界) |
-| O-49 | `OrchestratorError::InvalidTimeout` 从未构造，匹配它的分支是死代码 | `src/orchestrator/mod.rs`、`src/api/impls/sandbox.rs` | TTL 校验看似存在而实际不在这一层 | [第 14 篇 §4](14-sandbox-api.md#4-四个改-ttl-的入口) |
-| O-50 | `RecordingVerdict::Fail` 从未构造，注释描述的录制质量守卫不存在；`pack_planner` 的 v2 预算模型已失效（传 `u64::MAX`） | `storage/ublk/src/impls/startup_pack_recorder.rs`；`storage/overlaybd/src/backend/cache/startup_pack_task.rs` | 劣质 trace 不会被拒绝 | [第 43 篇 §6](43-startup-pack-and-prefetch.md#6-代价与边界) |
-| O-51 | `WaitPending` 分支不可达且注释不符；`DEFAULT_MAX_REFILLING` 不真正限制并发 | `storage/overlaybd/src/backend/cache/bk_download.rs`、`cache_store.rs` | 后台下载并发不受名字暗示的约束 | [第 39 篇 §5.5](39-block-cache-and-background-download.md#55-下载完成之后) |
-| O-52 | `CachedFs` 在 crate 外无调用者，移植自上游的 basename 键变换只在这里生效 | `storage/overlaybd/src/backend/cache/cached_fs.rs` | 「按 digest 跨 registry 共享缓存」不成立 | [第 39 篇 §2.2](39-block-cache-and-background-download.md#22-条目与键) |
-| O-53 | `set_switch_file()` 除测试外无调用者，SwitchFile 只做 ZFile 识别 | `storage/overlaybd/src/backend/switch.rs` | 「后台下载完成后切到本地文件」不发生 | [第 38 篇 §3.3](38-virtualfile-chain-and-remote-io.md#33-tar-适配与-switchfile) |
-| O-54 | `/p2p-control/publish-layer` 无调用者，daemon 下载的层从不发布 | `src/overlaybd/p2p/` | 层只能经转换路径进入 P2P | [第 58 篇 §5.3](58-p2p-artifact-transport.md#53-中途出错为什么不回退) |
-| O-55 | group commit 在生产中从未打开；upper 索引重放两遍；每次写后都刷新大小 | `storage/overlaybd/src/` 的 RW 布局 | 代码路径多于运行路径 | [第 36 篇 §6.2](36-read-write-paths-and-rw-layouts.md#62-其它值得记下的点) |
-| O-56 | ZFile `level` 不被读取；本地与远端两套 digest，重封装后 uuid 为 nil | ZFile 发布 | 配置项无效；同一层两种身份 | [第 35 篇 §7.1](35-zfile-compression.md#71-本地-raw发布时压缩) |
-| O-57 | 两份 `ProcessVmReader`（现行与 `uffd-core`）实现不一致；`uffd-core` 不在 workspace、不受 clippy 检查 | `src/sandbox/firecracker/process_vm_reader.rs`、`storage/uffd-core/` | 修一处漏一处 | [第 44 篇 §6](44-uffd-alternative.md#6-遗留状态) |
-| O-58 | 同一概念的重复定义：`RestackSnapshotTerminalFailure` 两份；两套 registry 客户端（regctl 与 `AcrClient`）；`schedule_hint.go` 手工镜像 openapi 字段 | `src/sandbox/ublk/device.rs` 与 `storage/overlaybd/`；`acr/client.rs`；`services/` | 两侧可能静默分叉 | [第 37 篇 §3.3](37-seal-restack-compact.md#33-terminal-分界与不回滚的理由)、[第 54 篇 §6](54-control-plane-overview.md#6-契约之外的耦合) |
-| O-59 | 槽位命名误导：drive id `rootfs` 与文件名 `rootfs.ext4` 实指 tools 盘 | `src/sandbox/firecracker/` | 读代码与日志时易误判哪块盘出了问题 | [第 26 篇 §2.1](26-sandbox-block-devices.md#21-命名) |
-| O-60 | `src/snapshot/mock.rs` 是 `pub` 模块，编进生产库 | `src/snapshot/mod.rs` | 测试替身成为公开接口 | [第 63 篇 §4.1](63-testing-and-benchmarks.md#41-trait-替身) |
-| O-61 | 约 50 处 `SAFETY` 注释对约 117 处 `unsafe`，无工具强制；`build_restore_script()` 的 `debug_assert` 实际要求表名字典序 | 全仓库；`src/sandbox/network/iptables_util.rs` | 不变量只靠人工维护 | [第 07 篇 §8](07-rust-async-primer.md#8-代码组织纪律)、[第 29 篇 §4.3](29-network-slots.md#43-iptables-的提交方式) |
+| O-49 | 遗留 CLI `uvm-ublk`：一进程一设备，`Recovery` 分支 `unimplemented!()` | `storage/ublk/src/main.rs` | 与 daemon 并存，易被当作恢复工具 | [第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债) |
+| O-50 | `spawn_data_io_ring_worker()` 无调用者；`UserBuffer` 的 fixed 注册未被使用；`slot_task()` 两处 EINTR FIXME | `storage/ublk/src/lib.rs` | 死代码与未决的错误处理 | [第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债) |
+| O-51 | `update_size` 与 `get_features` RPC 只有测试使用；`get_features` 在池关闭时恒为 0 | `storage/ublk-daemon/src/client.rs` | 接口面大于实际使用面 | [第 41 篇 §7](41-ublk-daemon.md#7-技术债与文档漂移) |
+| O-52 | `load_snapshot_uffd()` 以 `#[allow(dead_code)]` 保留，`resume_vm=true` | `src/sandbox/firecracker/instance.rs` | 若重新启用会跳过新卷、MMDS 与限流的补发 | [第 44 篇 §6](44-uffd-alternative.md#6-遗留状态) |
+| O-53 | 非 ublk rootfs 分支不可达，且会 `copy_cow()` 复制 tools 盘链接 | `sandbox.rs` 的 `snapshot_to_dir()` | 误导；若被走到会复制错误的盘 | [第 27 篇 §8](27-start-pause-resume-sequences.md#8-遗留路径与技术债) |
+| O-54 | `TemplateBuildRootfsBase::Ext4` 与 `TemplateBuildSpec::from_existing_rootfs()` 只有测试使用 | `src/template/` | 生产路径直接报错 | [第 52 篇 §8](52-template-builder.md#8-技术债与边界) |
+| O-55 | `OrchestratorError::InvalidTimeout` 从未构造，匹配它的分支是死代码 | `src/orchestrator/mod.rs`、`src/api/impls/sandbox.rs` | TTL 校验看似存在而实际不在这一层 | [第 14 篇 §4](14-sandbox-api.md#4-四个改-ttl-的入口) |
+| O-56 | `RecordingVerdict::Fail` 从未构造，注释描述的录制质量守卫不存在；`pack_planner` 的 v2 预算模型已失效（传 `u64::MAX`） | `storage/ublk/src/impls/startup_pack_recorder.rs`；`storage/overlaybd/src/backend/cache/startup_pack_task.rs` | 劣质 trace 不会被拒绝 | [第 43 篇 §6](43-startup-pack-and-prefetch.md#6-代价与边界) |
+| O-57 | `WaitPending` 分支不可达且注释不符；`DEFAULT_MAX_REFILLING` 不真正限制并发 | `storage/overlaybd/src/backend/cache/bk_download.rs`、`cache_store.rs` | 后台下载并发不受名字暗示的约束 | [第 39 篇 §5.5](39-block-cache-and-background-download.md#55-下载完成之后) |
+| O-58 | `CachedFs` 在 crate 外无调用者，移植自上游的 basename 键变换只在这里生效 | `storage/overlaybd/src/backend/cache/cached_fs.rs` | 「按 digest 跨 registry 共享缓存」不成立 | [第 39 篇 §2.2](39-block-cache-and-background-download.md#22-条目与键) |
+| O-59 | `set_switch_file()` 除测试外无调用者，SwitchFile 只做 ZFile 识别 | `storage/overlaybd/src/backend/switch.rs` | 「后台下载完成后切到本地文件」不发生 | [第 38 篇 §3.3](38-virtualfile-chain-and-remote-io.md#33-tar-适配与-switchfile) |
+| O-60 | `/p2p-control/publish-layer` 无调用者，daemon 下载的层从不发布 | `src/overlaybd/p2p/` | 层只能经转换路径进入 P2P | [第 58 篇 §5.3](58-p2p-artifact-transport.md#53-中途出错为什么不回退) |
+| O-61 | group commit 在生产中从未打开；upper 索引重放两遍；每次写后都刷新大小 | `storage/overlaybd/src/` 的 RW 布局 | 代码路径多于运行路径 | [第 36 篇 §6.2](36-read-write-paths-and-rw-layouts.md#62-其它值得记下的点) |
+| O-62 | ZFile `level` 不被读取；本地与远端两套 digest，重封装后 uuid 为 nil | ZFile 发布 | 配置项无效；同一层两种身份 | [第 35 篇 §7.1](35-zfile-compression.md#71-本地-raw发布时压缩) |
+| O-63 | 两份 `ProcessVmReader`（现行与 `uffd-core`）实现不一致；`uffd-core` 不在 workspace、不受 clippy 检查 | `src/sandbox/firecracker/process_vm_reader.rs`、`storage/uffd-core/` | 修一处漏一处 | [第 44 篇 §6](44-uffd-alternative.md#6-遗留状态) |
+| O-64 | 同一概念的重复定义：`RestackSnapshotTerminalFailure` 两份；两套 registry 客户端（regctl 与 `AcrClient`）；`schedule_hint.go` 手工镜像 openapi 字段 | `src/sandbox/ublk/device.rs` 与 `storage/overlaybd/`；`acr/client.rs`；`services/` | 两侧可能静默分叉 | [第 37 篇 §3.3](37-seal-restack-compact.md#33-terminal-分界与不回滚的理由)、[第 54 篇 §6](54-control-plane-overview.md#6-契约之外的耦合) |
+| O-65 | 槽位命名误导：drive id `rootfs` 与文件名 `rootfs.ext4` 实指 tools 盘 | `src/sandbox/firecracker/` | 读代码与日志时易误判哪块盘出了问题 | [第 26 篇 §2.1](26-sandbox-block-devices.md#21-命名) |
+| O-66 | `src/snapshot/mock.rs` 是 `pub` 模块，编进生产库 | `src/snapshot/mod.rs` | 测试替身成为公开接口 | [第 63 篇 §4.1](63-testing-and-benchmarks.md#41-trait-替身) |
+| O-67 | 约 50 处 `SAFETY` 注释对约 117 处 `unsafe`，无工具强制；`build_restore_script()` 的 `debug_assert` 实际要求表名字典序 | 全仓库；`src/sandbox/network/iptables_util.rs` | 不变量只靠人工维护 | [第 07 篇 §8](07-rust-async-primer.md#8-代码组织纪律)、[第 29 篇 §4.3](29-network-slots.md#43-iptables-的提交方式) |
 
 ### 4.7 测试缺口
 
 | 编号 | 现象 | 位置 | 后果 | 详讲 |
 |---|---|---|---|---|
-| O-62 | `TestScheduleOnlyConsidersReadyNodes` 只验证不选 lingering，从未构造心跳超时的节点 | `services/scheduler/internal/service_test.go` | 测试名掩盖了 A-12 | [第 56 篇 §2.4](56-scheduler.md#24-不排除-unhealthy-节点) |
-| O-63 | E2E 跳过的 suite 记为 pass；`09_e2b_compat.sh` 缺工具时记 pass | `scripts/tests/` 的 E2E 脚本 | 绿色结果不代表被执行 | [第 63 篇 §2.4](63-testing-and-benchmarks.md#24-http-端到端套件) |
-| O-64 | 三个 ignored 用例没有任何入口运行；覆盖率不含它们 | `tests/` 与 CI | 这些路径实际无人验证 | [第 63 篇 §2.1](63-testing-and-benchmarks.md#21-单元测试与能力测试) |
-| O-65 | 覆盖率与变异测试 `continue-on-error`；基准无基线与阈值；snapshot 基准冒烟失败时静默跳过；OCI 转换基准手抄生产流水线 | `.github/workflows/`、`crates/benchmarks/` | 回归不会让 CI 失败 | [第 63 篇 §5](63-testing-and-benchmarks.md#5-ci-矩阵)、[第 63 篇 §6](63-testing-and-benchmarks.md#6-基准) |
-| O-66 | PVM 没有任何测试 | 全仓库 | PVM 路径的行为只能推论 | [第 61 篇 §4.3](61-pvm.md#43-pvm-下的语义只能推论) |
+| O-68 | `TestScheduleOnlyConsidersReadyNodes` 只验证不选 lingering，从未构造心跳超时的节点 | `services/scheduler/internal/service_test.go` | 测试名掩盖了 A-12 | [第 56 篇 §2.4](56-scheduler.md#24-不排除-unhealthy-节点) |
+| O-69 | E2E 跳过的 suite 记为 pass；`09_e2b_compat.sh` 缺工具时记 pass | `scripts/tests/` 的 E2E 脚本 | 绿色结果不代表被执行 | [第 63 篇 §2.4](63-testing-and-benchmarks.md#24-http-端到端套件) |
+| O-70 | 三个 ignored 用例没有任何入口运行；覆盖率不含它们 | `tests/` 与 CI | 这些路径实际无人验证 | [第 63 篇 §2.1](63-testing-and-benchmarks.md#21-单元测试与能力测试) |
+| O-71 | 覆盖率与变异测试 `continue-on-error`；基准无基线与阈值；snapshot 基准冒烟失败时静默跳过；OCI 转换基准手抄生产流水线 | `.github/workflows/`、`crates/benchmarks/` | 回归不会让 CI 失败 | [第 63 篇 §5](63-testing-and-benchmarks.md#5-ci-矩阵)、[第 63 篇 §6](63-testing-and-benchmarks.md#6-基准) |
+| O-72 | PVM 没有任何测试 | 全仓库 | PVM 路径的行为只能推论 | [第 61 篇 §4.3](61-pvm.md#43-pvm-下的语义只能推论) |
 
 ---
 
@@ -407,6 +413,9 @@ P2P 子系统的校验链有一个共同的锚点：descriptor 来自对端本�
 | B-15 | mdBook 版本未固定 | `docs/book.toml` 与文档 workflow | 文档站构建不可复现 | [第 64 篇 §6](64-build-codegen-release.md#6-文档站) |
 | B-16 | 测试依赖未固定：`test_envd.sh` 用第三方 `envd-debug:latest`；E2B 基准克隆未固定版本的个人 fork；兼容性套件的 SDK 版本不固定 | `scripts/tests/`、`crates/benchmarks/` | 测试结果随外部仓库漂移 | [第 63 篇 §2.5](63-testing-and-benchmarks.md#25-外围对象)、[第 63 篇 §6](63-testing-and-benchmarks.md#6-基准) |
 | B-17 | zstd 层先经 `zstd -dc` 管道解压再交给工具，绕开工具缺陷 | `src/image/` 的层转换 | 依赖宿主 `zstd` 二进制，且多一次拷贝 | [第 45 篇 §4.4](45-oci-to-overlaybd.md#44-一层的转换) |
+| B-18 | guest 内核配置不可追溯：两个仓库都没有 `vmlinux-6.1.175` 的配置与构建脚本；上游 6.1 CI 配置写着 `# CONFIG_DAMON_RECLAIM is not set` | `config/deps_manifest.toml` 的 `[kernel.kvm]`；补丁版 Firecracker 的 `resources/guest_configs/` | 推论：若内核按上游配置构建，`damon_reclaim.*` 参数被忽略，guest 内冷页回收静默失效 | [第 67 篇 §7.2](67-firecracker-patch-layer.md#72-boot-args-隐含的要求) |
+| B-19 | 补丁版 `VirtioBlockState` 新增 `direct` 字段靠 `#[serde(default)]` 兼容旧快照，而状态文件是 bitcode 编码，`SNAPSHOT_VERSION` 未提升 | 补丁版 Firecracker 的 `src/vmm/src/devices/virtio/block/virtio/persist.rs` | 推论：补丁版与上游 v1.15.1 的状态文件互相读不了，报的是反序列化错误而不是版本不符 | [第 67 篇 §4](67-firecracker-patch-layer.md#4-drive-的-direct补丁-③-与-⑥) |
+| B-20 | 快照元数据记录 `firecracker_version`，恢复时只核对 tools 盘版本 | `SnapshotRuntimeVersions` 与恢复路径 | 换 Firecracker 二进制后旧快照能否恢复要到 load 时才知道 | [第 67 篇 §6](67-firecracker-patch-layer.md#6-补丁栈的后续) |
 
 ---
 
@@ -452,6 +461,9 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 | D-25 | `FirecrackerSandbox::pause()` 文档注释的根目录层级与代码不符 | `src/sandbox/firecracker/sandbox.rs` | 与 `pause_to_dir()` 实际创建的层级不同 | [第 51 篇 §2.3](51-fork.md#23-后端停一次起-n-台) |
 | D-26 | `buckets.go` 的同步注释指向已不含桶定义的文件 | `services/` | 改桶时找不到另一侧 | [第 57 篇 §6](57-heartbeat-and-cpu-intersection.md#6-共用的直方图桶) |
 | D-27 | 遗留 CLI 注释「NOTE: why we use fork」，代码里没有 fork | `storage/ublk/src/main.rs` | 注释与代码无关 | [第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债) |
+| D-28 | 环境变量表漏列 `AGENTENV_MEMORY_SNAPSHOT_TRACK_DIRTY_PAGES`（只在 `reference.md` 的说明文字里出现）与编译期的 `AENV_GIT_COMMIT` | `docs/src/configuration/env-vars.md` | 两个变量都被代码读取 | [第 71 篇 §7](71-config-env-ports-reference.md#7-不一致与技术债) |
+| D-29 | 补丁版 `CHANGELOG.md` 只列补丁 ⑦，PR 号写成 `#XXXX` 占位，且放在已发布的 `[1.15.1]` 节 | 补丁版 Firecracker 的 `CHANGELOG.md` | 其余六个补丁在变更记录里不可见 | [第 67 篇 §2](67-firecracker-patch-layer.md#2-七个提交) |
+| D-30 | swagger 称 `GET /vm/dirty-memory-ranges` 面向已暂停、已启动的 VM | 补丁版 Firecracker 的 `firecracker.yaml` | 代码不检查 Paused，运行中的 VM 也能调用，结果只代表某一刻 | [第 67 篇 §3.2](67-firecracker-patch-layer.md#32-get-vmdirty-memory-ranges补丁-⑦) |
 
 ---
 
@@ -466,8 +478,8 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 | Hybrid RW（flags bit5）是 AgentENV 扩展 | 上游 overlaybd 默认分支 `lsmt/file.cpp` 已定义 `FLAG_HYBRID_RW = 5` | 与上游同位同义，`ReuseZero` 为 Rust 版独有（[第 34 篇 §6](34-lsmt-format-and-index.md#6-与上游的兼容边界)） |
 | 上游 overlaybd 只有 TCMU 前端 | 上游默认分支已带 ublk 前端 `src/ublk/` | 「TCMU」只对经典前端成立 |
 | `ReloadableIDAllocator` 是死代码 | `AsyncIoRing` 用它分配 sparse 表下标 | 不是技术债（[第 40 篇 §8](40-ublk-library.md#8-遗留代码与技术债)） |
-| SwitchFile 在后台下载完成后切到本地文件 | 这是规划笔记对代码的误读，不是代码的缺陷 | 改记为 O-53（`set_switch_file()` 无调用者） |
-| 节点块缓存按 digest 跨 registry 共享 | 同上，属笔记误读 | 改记为 O-52（`CachedFs` 无调用者） |
+| SwitchFile 在后台下载完成后切到本地文件 | 这是规划笔记对代码的误读，不是代码的缺陷 | 改记为 O-59（`set_switch_file()` 无调用者） |
+| 节点块缓存按 digest 跨 registry 共享 | 同上，属笔记误读 | 改记为 O-58（`CachedFs` 无调用者） |
 | gateway `request_timeout` 的 90 s 只写在 `local.json` | 90 s 写在三份部署配置里，代码缺省 30 s | 只保留 A-20 的超时差异 |
 | `services/README.md` 的 Limitations 节称绑定全在内存 | v0.2.3 的 README 没有这一节，正文写的是可选 Redis | 不列 |
 | `sandbox-testing.md` 的 `[firecracker]` 写法、`template-builder-testing.md` 的记录路径与方法名 | 规划阶段的条目，正文各篇未展开，抽查未能定位不一致之处 | 不列，留待复核 |
@@ -479,15 +491,17 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 
 - A-01：`src/sandbox/firecracker/socket.rs` 的 `UnixSocketClient::request()` 直接 `self.client.request(req).await`，无超时包装。
 - A-02：`storage/ublk-daemon/src/client.rs` 的 `spawn_watchdog()` 只置 `daemon_dead`；`src/sandbox/ublk/device.rs` 的 `is_available()` 只返回 `self.client.is_some()`。
-- A-12 / O-62 / D-19：`node_registry.go` 的 `Snapshot()` 只按 `lingeringIDs` 过滤，注释仍写「filtered by their derived status」；`service_test.go` 的 `TestScheduleOnlyConsidersReadyNodes` 只构造 active 与 lingering 两个节点。
+- A-12 / O-68 / D-19：`node_registry.go` 的 `Snapshot()` 只按 `lingeringIDs` 过滤，注释仍写「filtered by their derived status」；`service_test.go` 的 `TestScheduleOnlyConsidersReadyNodes` 只构造 active 与 lingering 两个节点。
 - O-01：`oss/repository.rs` 的 `delete()` 不触及 `managed-layers/`，两处注释写「require separate GC」；POSIX catalog 的删除只移除 record、alias、commit 标记与日志。
 - C-20：`bind_alias()` 以 `MAX_ALIAS_BIND_ATTEMPTS = 5` 做读-写-回读。
 - C-11：`SnapshotRecord::mark_committed()` 不检查原状态，直接把模板构建置为 Ready。
 - S-01：`src/p2p/iroh/transport.rs` 以 `BlobsProtocol::new(&store, None)` 注册 blobs 协议。
 - S-10：daemon 的 metrics 地址缺省 `0.0.0.0:9103`。
 - O-10：`FirecrackerInstance::stop()` 忽略 kill 与 wait 的结果，恒返回 `Ok(())`。
-- O-49、O-50：`OrchestratorError::InvalidTimeout` 与 `RecordingVerdict::Fail` 只在定义与 match 中出现，没有构造点。
+- O-55、O-56：`OrchestratorError::InvalidTimeout` 与 `RecordingVerdict::Fail` 只在定义与 match 中出现，没有构造点。
 - D-06：`storage/ublk/src/dev.rs` 的日志按 `UBLK_F_SUPPORT_ZERO_COPY` 判断，`ctrl.rs` 设置的是 `UBLK_F_AUTO_BUF_REG`。
+- O-34、O-39：`src/cfg.rs` 的 `block_pool_config()` 恒写 `maintenance_enabled: false`；`UblkDaemonClient::shutdown()` 以 `let _ =` 丢弃 `Shutdown` RPC 的结果，再无上限地等待 `daemon_exited`。
+- O-37：`services/shared/config/config.go` 的 `load()` 在给了路径而 `os.ReadFile` 失败时直接返回错误。
 - D-09、D-11、D-13、D-18、D-24：分别对照 `p2p-design.md` 与 `src/p2p/transport.rs`、`CLAUDE.md` 的链接目标、`services/README.md` 与 `go.mod`、`snapshots/use.md`、`extra_drive.rs` 的比较方式。
 
 ---
@@ -500,14 +514,14 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 - 一个部署是一个信任域：单 API key 无租户，集群内节点、scheduler 与 P2P 对端互信，宿主防火墙被当作数据面鉴权的前提；开启 P2P 时，制品完整性取决于集群里最弱的节点。
 - 构建链的主路径是钉住的，未固定的是旁路：protoc、Go 镜像、tools 盘镜像引用、安装脚本的校验来源；入库的生成代码没有漂移检查。
 - 文档与注释的漂移多数指向旧设计；行为以代码为准，startup manifest 的称呼以 `AENVMF01` / 格式版本 4 为准。
-- 206 条里有 38 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
+- 218 条里有 43 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
 
 ---
 
 ## 延伸阅读 / 下一篇
 
 - [第 65 篇 · 与 e2b infra 的对照（一）](65-vs-e2b-infra-architecture.md)、[第 66 篇 · 与 e2b infra 的对照（二）](66-vs-e2b-infra-storage-and-memory.md)：本篇许多取舍在 e2b infra 里有不同的答案。
-- [第 67 篇 · AENV 补丁版 Firecracker 与 guest 内核](67-firecracker-patch-layer.md)：C-30、O-07 依赖的补丁行为。
-- [第 71 篇 · 配置项、环境变量与端口总表](71-config-env-ports-reference.md)：O-24 至 O-33 涉及的键与默认值。
+- [第 67 篇 · AENV 补丁版 Firecracker 与 guest 内核](67-firecracker-patch-layer.md)：C-30、O-07 依赖的补丁行为，以及 B-18 至 B-20 涉及的内核与状态文件。
+- [第 71 篇 · 配置项、环境变量与端口总表](71-config-env-ports-reference.md)：O-24 至 O-39 涉及的键与默认值。
 - [第 73 篇 · 持久化制品与磁盘格式总表](73-artifacts-and-formats-reference.md)：各制品「谁删、有没有 GC」一栏与 §4.2 对应。
 - [e2b 手册第 37 篇 · 暂停与快照](../e2b-infra/37-pause-and-snapshot.md)：同一类系统在暂停路径上的失败处理。

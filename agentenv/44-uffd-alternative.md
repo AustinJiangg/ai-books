@@ -55,7 +55,7 @@ crate 名 `uvm-uffd-core`，约 780 行，分五个模块：`handler.rs`（`Uffd
 `UffdHandle::new()` 绑定一个 Unix socket，spawn 后台任务后立即返回。后台任务 `sync_with_fc()` 做四件事：
 
 1. `accept()` 等 Firecracker 连接，用 `peer_cred()` 取对端 pid，留给快照时的 `process_vm_readv` 使用。
-2. `get_mappings_and_uffd()` 用 `recv_with_fd()`（`scm.rs`）收一条带 `SCM_RIGHTS` 的消息：缓冲 1 KiB，收到空消息最多重试 5 次，
+2. `get_mappings_and_uffd()` 用 `recv_with_fd()`（`scm.rs`）收一条带 `SCM_RIGHTS` 的消息：缓冲 1 KiB，收到不带 fd 的消息时重试，最多 5 次，
    一条消息里带两个以上 fd 时全部关闭并报错。
 3. 把消息体按 JSON 解析成 `Vec<GuestRegionUffdMapping>`：每个区域的宿主虚拟地址（HVA）、大小、在内存镜像中的偏移、页大小。
    注释强调偏移不是 guest 物理地址：区域之间的 MMIO 空洞已经去掉，偏移是连续的。
@@ -97,7 +97,8 @@ Remove 的处理有两条来自内核的约束，注释写得很清楚。其一�
 源层只有一个 `ProcessVmReader`——它实现 `VirtualFile`，`read_at_into()` 的「偏移」就是 HVA，内部调 `process_vm_readv` 从 Firecracker 进程读内存。
 新层的 uuid 新生成，parent uuid 取当前镜像最上层的 uuid，`compact_to()` 并发度 64。
 
-这正是第 42 篇讲的「把 moffset 字段借来存 HVA、把对方进程的地址空间当作第 0 层」。现行的 `src/sandbox/firecracker/overlaybd_snapshot.rs`
+这正是现行路径用的同一套 HVA 技巧：把 `moffset` 字段借来存 HVA（[第 42 篇 §2.4](42-memory-snapshot-over-ublk.md#24-区间到段映射moffset-存-hva)），
+把对方进程的地址空间当作第 0 层交给 `compact_to()`（[第 42 篇 §2.5](42-memory-snapshot-over-ublk.md#25-processvmreader-与-compact_to)）。现行的 `src/sandbox/firecracker/overlaybd_snapshot.rs`
 与 `process_vm_reader.rs` 沿用了同一结构。推论：现行方案的快照路径就是从这里演化来的，换掉的只是「哪些页要写」的来源。两份代码的差别：
 
 | 维度 | `uffd-core` | 现行路径 |

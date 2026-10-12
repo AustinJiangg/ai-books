@@ -45,7 +45,7 @@ AgentENV 的做法是同步回调：节点在生命周期的几个点上向外�
 | `POST /sandbox-hook/start-fresh` | 冷启动：分配网络槽位之后、spawn Firecracker 之前 | sandboxId、sandboxInstanceId、netns 路径、宿主交互地址、参数 | 可选 `extraBootArgs` | 启动失败 |
 | `POST /sandbox-hook/start-resume` | 恢复：网络槽位与 FC 进程就绪之后、加载快照之前 | 同上 | 无 | 恢复失败 |
 | `POST /sandbox-hook/patch-params` | 用户 PATCH 扩展参数 | sandboxId、原样透传的 patch | 新的完整参数 | 返回 400，保留旧值 |
-| `POST /sandbox-hook/stop` | 运行时拆除：FC 停止之后、释放网络槽位之前 | sandboxId、sandboxInstanceId | 无 | 只记日志 |
+| `POST /sandbox-hook/stop` | 运行时拆除：FC 停止、块设备释放之后，网络槽位释放之前 | sandboxId、sandboxInstanceId | 无 | 只记日志 |
 
 配置只有两项（`src/cfg.rs` 的 `CustomExtensionConfig`）：`[custom_extension].url`（环境变量 `AENV_CUSTOM_EXTENSION_URL`）与 `timeout_ms`（缺省 5000）。
 `CustomExtensionClient::global()` 用一个 `OnceLock` 在第一次调用时按全局配置构建客户端；`url` 为空则返回 `None`，此后所有 hook 调用点都直接跳过。
@@ -113,6 +113,7 @@ hook 返回的 `extraBootArgs` 去掉空白后若非空，就原样拼到 boot a
 `FirecrackerSandbox::stop()` 的顺序是：取消预取 → 停 FC 进程 → 作废 envd → 释放 rootfs 设备、tools 共享设备、录制专用内存设备、附加盘设备
 → **stop hook** → 释放网络槽位 → 停预取 reader → 释放共享内存设备（各步的理由见[第 25 篇](25-backend-and-firecracker-process.md)）。
 stop hook 放在释放网络槽位之前，是为了让扩展在 netns 还属于这台沙箱时完成清理；放在 FC 停止之后，是为了让扩展清理时 guest 已经不再发包。
+除共享内存设备外，块设备在 hook 之前都已归还；stop 请求也只带 sandboxId 与 sandboxInstanceId，扩展要清理的 netns 路径须在 start 时自己记下。
 
 pause 也会触发 stop。`service.rs` 的 pause 路径在快照落盘、`persist_paused()` 成功、元数据更新为 Paused 之后，调用 `sandbox.stop()` 释放资源，stop hook 就在其中。
 snapshot 与 fork 的捕获则不同：`snapshot()` 调用 `pause_to_dir()` 后原地 `resume()`，同一个运行时继续服务，不经过 `stop()`，不触发任何 hook，实例 id 也不变。
@@ -233,7 +234,7 @@ AgentENV 也不串行化同一沙箱的并发 patch。两个 patch 同时调用 
 
 **网络槽位的复用。** `NetworkManager::release()` 在未关闭时把槽位原样放回预热池，不重建 netns（[第 32 篇](32-warm-pools.md)）。
 推论：扩展通过 `networkNamespacePath` 在 netns 里加的接口、路由或 iptables 规则，若没有在 stop 中撤销，会随槽位被下一台沙箱继承；
-而 stop 恰恰是 best-effort 的。扩展在 start hook 里先把 netns 恢复到已知状态再布置，比只依赖 stop 清理稳妥。
+而 stop 恰恰是 best-effort 的。扩展在 start hook 里先把 netns 恢复到已知状态再布置，比只依赖 stop 清理稳妥。槽位复位时 AgentENV 自己清掉什么、留下什么，见[第 30 篇 §6.4](30-egress-policy-and-proxy.md#64-预热槽位的跨租户残留)。
 同理，`hostInteractionIp` 随槽位变化，pause / resume 之后可能不同，扩展要以当前 start hook 里的值为准。
 
 **信任边界。** 扩展返回的启动参数不经过滤直接进入内核命令行，扩展拿到的 netns 路径意味着它通常以足够的权限运行在宿主上。

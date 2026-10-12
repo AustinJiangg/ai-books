@@ -76,7 +76,7 @@ flowchart TB
 
 buildkitd 的启动参数在 `image_build/worker.rs` 的 `START_BUILDKIT` 脚本里：`--root /var/lib/buildkit`、监听 `tcp://0.0.0.0:1234`、
 只开 OCI worker（`--containerd-worker=false`），并且 `--oci-worker-net host`，即 `RUN` 容器直接用 VM 的网络栈。
-VM 本身就是隔离边界，容器内再做一层网络命名空间的收益不大，这里换来的是更简单的出站路径。
+VM 本身就是隔离边界，这里省掉容器内的网络命名空间，换来更简单的出站路径。
 
 ---
 
@@ -111,7 +111,7 @@ alias 是内容寻址的，所以它也是跨节点的协调键：哪个节点�
 `src/snapshot/repository/backends/mod.rs` 的 `build_builder_snapshot_backend()` 用同一套持久后端，但改写了位置：
 POSIX 后端的 `snapshot_store` 下加一级 `template-build/builder`，OSS 后端的前缀后面追加同样的路径，本地制品缓存也分开一个子目录，
 并且不传 P2P transport。函数注释说明了目的：builder 有自己的 catalog，不能经公共模板 API 列出或删除。
-用户的模板名空间与内部 builder 因此不会冲突，`GET /templates` 也看不到这些快照。
+用户模板与内部 builder 因此不会重名，`GET /templates` 也看不到它们。
 
 ### 3.3 首建与并发首建
 
@@ -132,7 +132,13 @@ buildkitd 必须在那之后启动才会把状态写进卷里。推论：步骤�
 
 两个节点可能同时为第一次构建准备 builder 模板。发布时后到的一方会在提交 alias 时得到 `RepositoryError::AliasConflict`；
 `initialize_builder_template()` 沿错误链查找这个变体，找到就当作对方已经赢了，转而 `load_runnable(&alias)` 加载对方的快照。
-这是一个乐观并发：两边都可能完整做一遍镜像转换与 VM 构建，只是输的一方的结果被丢弃，正确性由仓库的 alias 提交保证（[第 47 篇](47-posix-repository.md)、[第 48 篇](48-object-storage-repository.md)）。
+这是一个乐观并发：两边都可能完整做一遍镜像转换与 VM 构建，只是输的一方的结果被丢弃。判定输赢的强度取决于后端。
+POSIX 后端在 alias 锁内完成检查、写 alias 与写 record（[第 47 篇 §5](47-posix-repository.md#5-锁按名字加不设全局锁)），后到者一定得到 `AliasConflict`。
+对象存储后端的 `bind_alias()` 是无锁的读-写-回读，用「alias 指向的记录是否存在」判断陈旧；而 builder 模板由 `build_and_publish()` 生成新 id 直接发布，
+事先没有 Waiting 记录，恰好落在[第 48 篇 §6.1](48-object-storage-repository.md#61-alias读-写-回读) 描述的窗口里。
+推论：两个节点可能都发布成功、各用自己的快照，alias 只指向其中一个，另一条记录无人引用也不回收；
+并发的 `load_runnable(&alias)` 还可能把正在提交的 alias 当作陈旧删掉，下一次构建再首建一遍。
+两份快照输入相同、功能等价，这些交错只带来重复工作与仓库残留。
 
 ---
 
@@ -178,8 +184,8 @@ flowchart LR
 构造一个经 envd 下发命令的 `Executor`，在 90 s 上限内执行 `START_BUILDKIT`：后台拉起 buildkitd，最多 60 次、每秒一次用 `buildctl debug workers` 探测，
 进程提前退出就把日志打到 stderr 并失败。
 
-这里有一个细节：`prepare_builder()` 在 spawn 出的任务里执行，并持有会话的 `cleanup` 互斥锁。注释的意思是，即使调用方此时取消，
-缓存卷也要挂完；清理流程会在同一把锁上等待，然后才删除 worker、释放卷。这样就不会出现「卷已被清理、VM 还在挂它」的中间态。
+`prepare_builder()` 在 spawn 出的任务里执行，并持有会话的 `cleanup` 互斥锁：即使调用方此时取消，缓存卷也要挂完；
+清理流程在同一把锁上等待之后才删除 worker、释放卷，不会出现「卷已被清理、VM 还在挂它」的中间态。
 
 ### 4.2 在 history 里认出自己
 
@@ -207,7 +213,7 @@ flowchart LR
 manifest 必须是标准 OCI 层（不接受 overlaybd-native），层数不超过 1024、压缩后总大小不超过 64 GiB，每层 digest 合法；
 config 的 `os` 与 `architecture` 必须是 linux 与宿主架构。
 
-这一步的安全含义是：builder VM 运行着用户代码，content store 里的字节不可信，但它们经过 digest 校验，服务端拿到的就是 BuildKit 历史记录里声明的那个镜像。
+builder VM 运行着用户代码，content store 里的字节不可信；digest 校验保证服务端拿到的就是历史记录里声明的那个镜像。
 推论：历史记录本身也来自 VM 内部，被攻破的 VM 可以声明任意镜像；这不会越权，因为产出的模板本来就属于发起构建的用户。
 
 ### 4.4 只转缺失的层
@@ -244,9 +250,8 @@ buildkitd 先正常退出、再冻结文件系统，是为了让缓存卷里的 
 - 就绪命令：请求的 `readyCmd`，否则 `dockerfile_ready_command()` 从镜像 config 的 `Healthcheck.Test` 推导。
   `CMD-SHELL` 形式用镜像的 `Shell`（缺省 `/bin/sh -c`）包裹；`CMD` 形式直接使用参数；`NONE` 或空表示没有就绪命令；其它形式报错。
 
-步骤路径在 `src/template/runner.rs` 的 `prepare_startup()` 里禁用了从 ENTRYPOINT / CMD 推导启动命令，注释给出的原因是 start_cmd 经 `/bin/sh -c` 执行，
-要求自己是 PID 1 的镜像（如 s6-overlay）会失败。BuildKit 路径没有同步这一改动。推论：`aenv build` 构建这类镜像时，未显式给 `startCmd` 就会在模板构建阶段失败。
-两条前端在这一点上的不一致在[第 52 篇](52-template-builder.md)也有说明，汇总在[第 68 篇](68-known-issues-and-debt.md)。
+回顾：步骤路径已禁用这一推导，因为启动命令经 `/bin/sh -c` 执行，要求自己是 PID 1 的镜像会失败（[第 52 篇 §4.3](52-template-builder.md#43-启动命令与就绪命令)）。
+BuildKit 路径没有同步这一改动。推论：`aenv build` 构建这类镜像时，未显式给 `startCmd` 就会在模板构建阶段失败；这处不一致汇总在[第 68 篇](68-known-issues-and-debt.md)。
 
 ---
 
@@ -275,7 +280,7 @@ buildkitd 先正常退出、再冻结文件系统，是为了让缓存卷里的 
    函数注释说明它不会先发布父卷未改变的 backing。
 5. 任何一步失败都退回空缓存：释放租约、把 journal 里的 `parent` 清掉，创建一块无父的工作卷。
 
-缓存的任何故障都不会让构建失败，只会让它变慢。这是这条路径上反复出现的取舍。
+缓存的任何故障都不让构建失败，只让它变慢。
 
 ### 5.3 发布与替换
 
@@ -283,7 +288,7 @@ buildkitd 先正常退出、再冻结文件系统，是为了让缓存卷里的 
 以它为源创建一块 ReadOnly 的种子卷，再调 `replace_build_cache_head(&seed.id)`。`BuildCacheState::replace()` 把新种子放进 `current`，
 把旧的 `current` 放进 `retired`，并拒绝把已退役的 ID 再次设为头。这一步失败只打 warn，构建仍算成功，头指针保持旧值。
 
-由于模板记录在缓存发布之前就已是 Ready，第 15 篇讲过 status 接口会在会话仍处于 Publishing 时报 Building，让顺序执行的下一次构建拿到新种子。
+模板记录在缓存发布之前就已是 Ready；status 接口在会话仍处于 Publishing 时报 Building（第 15 篇），让顺序执行的下一次构建拿到新种子。
 
 并发构建的结果是线性的「最后成功者胜出」。下图中两次构建 A、B 都从种子 S0 派生，A 先完成：
 
@@ -329,7 +334,7 @@ B 的工作卷派生自 S0，不含 A 写入的缓存；B 成为头之后，A �
 
 ## 6. 失败与取消的边界
 
-取消、超时与重启恢复的流程在第 15 篇；从本篇的数据流看，失败点与后果如下：
+取消、超时与重启恢复的流程在第 15 篇；本篇数据流上的失败点与后果如下：
 
 | 失败点 | 后果 | 缓存 |
 |---|---|---|
@@ -358,7 +363,7 @@ AgentENV 把 Dockerfile 语义整个交给 microVM 里的 BuildKit，构建只�
 
 - buildkitd 跑在从快照热启动的 builder microVM 里，`RUN` 容器用 VM 的网络（`--oci-worker-net host`），隔离边界是 VM 本身。
 - builder 模板的 alias 是镜像、规格、就绪命令与虚拟化模式的 SHA-256；放在 `template-build/builder` 私有命名空间，公共模板 API 看不到；旧配置的 builder 模板不回收。
-- 并发首建靠 alias 提交的 `AliasConflict` 判输赢，输的一方复用赢家的快照；进程内用 `OnceCell` 共享初始化，且不随单个请求取消。
+- 并发首建靠 alias 提交的 `AliasConflict` 判输赢，输的一方复用赢家的快照；这只在 POSIX 后端严格成立，对象存储后端可能两方都发布成功（推论），代价是重复工作与孤儿 builder 记录。进程内用 `OnceCell` 共享初始化，且不随单个请求取消。
 - builder 模板不运行 buildkitd，buildkitd 在缓存卷热插到 `/var/lib/buildkit` 之后才启动。
 - 服务端按导出器名 `aenv-build:{build_id}` 在重放的 history 里认领记录，按导出器下标取镜像 digest；缓存种子里的旧历史因此不会被误认。
 - 镜像经 containerd content API 逐块校验 offset、上限与 SHA-256 后读出，不经 registry；只有未命中转换缓存的层才会被下载与转换。

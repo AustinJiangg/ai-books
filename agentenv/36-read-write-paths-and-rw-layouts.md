@@ -23,15 +23,15 @@
 
 ## 1. 问题：一个块设备，一叠文件
 
-guest 看到的 `/dev/vdX` 背后是一个 ublk 设备（第 40 篇），ublk queue 线程把每个读写请求交给一个 `ImageFile`。
+guest 看到的 `/dev/vdX` 背后是一个 ublk 设备（[第 40 篇](40-ublk-library.md)），ublk queue 线程把每个读写请求交给一个 `ImageFile`。
 这个对象要同时满足几件事：
 
 - 读要在几十个只读层与一个可写层之间找到「最新的那份数据」，没写过的地方读出 0；
 - 写只能落在可写层（upper），而且 upper 的增长要可控 —— 一个长期运行的沙箱会反复覆盖同一批块；
-- 暂停时整个层栈要能原子地换成「旧 upper 封存成只读层 + 新的空 upper」（restack，第 37 篇），换栈期间 I/O 不能看到半新半旧的状态；
-- 远端层的读不能被后台下载抢走带宽（第 39 篇）。
+- 暂停时整个层栈要能原子地换成「旧 upper 封存成只读层 + 新的空 upper」（restack，[第 37 篇 §3](37-seal-restack-compact.md#3-restack封存并换上新-upper)），换栈期间 I/O 不能看到半新半旧的状态；
+- 远端层的读不能被后台下载抢走带宽（[第 39 篇 §6](39-block-cache-and-background-download.md#6-前台与后台的准入)）。
 
-上游 overlaybd 用 C++ 与 tcmu 做这件事；Rust 版 overlaybd 保留了它的配置格式与层文件格式，把对象结构与并发控制重新设计了一遍。
+上游 overlaybd 用 C++ 做这件事，经典前端是 tcmu，默认分支也已带 ublk 前端（`src/ublk/`）；Rust 版 overlaybd 保留了它的配置格式与层文件格式，把对象结构与并发控制重新设计了一遍。
 
 ---
 
@@ -172,7 +172,8 @@ Sparse upper 只有 data 文件，创建时 `truncate` 到 `virtual_size + 4096`
 
 ### 4.3 Hybrid：能原地就原地，不能就追加
 
-Hybrid 是 AgentENV 的扩展（header flags bit5，第 34 篇）：文件形态与 LogStructured 相同（data + index），
+Hybrid 不是 AgentENV 的扩展：header flags bit5 在上游 overlaybd 默认分支里同样定义为 `FLAG_HYBRID_RW`，写入策略也相同，与上游默认分支同位同义；
+只有下文的 `ReuseZero` 是 Rust 版独有（[第 34 篇 §6](34-lsmt-format-and-index.md#6-与上游的兼容边界)）。文件形态与 LogStructured 相同（data + index），
 但写之前先由 `plan_hybrid_write()` 在 **upper 自己的** `MutableIndex` 里查这一片覆盖的映射，把写拆成三类 fragment（`types.rs` 的 `WriteFragment`）：
 
 | fragment | 条件 | 物理写 | 索引 |
@@ -203,9 +204,14 @@ upper 现有映射   ----  [ D: phys 40..42 ]  [Z+phys 9..10] ----
 `InPlace` 不追加映射，是 Hybrid 控制增长的关键：覆盖已写过的块既不加数据也不加索引，upper 的大小正比于**写过的不同块数**，而不是写入总量。
 `ReuseZero` 必须追加一条非零映射 —— `types.rs` 的注释写道，只写数据不发布映射的话，这段在重新打开后仍会读成零。
 
+`ReuseZero` 的前提是「zeroed 映射的物理段归这条映射所有」。Rust 版自己写出的 backed zero 满足这一点；上游 RW 层 `discard()` 写的 zeroed 映射却不满足：
+它的 `moffset` 是 discard 时数据文件 EOF 的占位值，之后的追加会写到同一位置。Rust 版重放 RW 索引时保留 zeroed 映射的 `moffset`，会把这个占位值当作 backed zero，
+推论：在这样一个由上游写过 discard 的 upper 上，`ReuseZero` 可能覆盖上游之后追加的数据。反方向是安全的，上游对 zeroed 映射一律追加。
+这一单向覆盖风险的完整论证在[第 34 篇 §6](34-lsmt-format-and-index.md#6-与上游的兼容边界)；在 AgentENV 里会改 upper 的 C++ 程序只有 `overlaybd-resize`（[第 41 篇](41-ublk-daemon.md)）。
+
 代价写在同一处注释里：原地写与 Sparse 有相同的持久性语义，覆盖的是 upper 里**唯一**的物理副本，宿主机崩溃后可能暴露撕裂的块；
-快照的正确性依赖暂停前对 upper 的 quiesce 与 sync。Hybrid 也不启用 `AppendDigestTracker`，封存时 `close_seal()` 返回的描述符为空，由调用者另行计算 digest。
-封存后的产物是标准格式的 sealed 层（第 37 篇），上游能读；未封存的 Hybrid upper 上游打不开。
+快照的正确性依赖暂停前对 upper 的 quiesce 与 sync。Hybrid 也不启用 `AppendDigestTracker`（`initial_append_digest()` 只对 LogStructured 返回跟踪器），封存时 `close_seal()` 返回的描述符为 `None`，由调用者在发布时另行计算 digest。
+封存后的产物是标准格式的 sealed 层（[第 37 篇 §2](37-seal-restack-compact.md#2-seal原地封口)），上游能读；未封存的 Hybrid upper 上游默认分支也能按 hybrid 打开，差别只在上面的零段处理。
 
 整个 Hybrid 分支在索引写锁下完成：多个 `Append` fragment 在一片之内用局部变量 `next_append_offset` 连续分配物理位置，所有新映射在物理写全部完成后才插入内存索引。
 
@@ -214,6 +220,10 @@ upper 现有映射   ----  [ D: phys 40..42 ]  [Z+phys 9..10] ----
 `[ublk.overlaybd] runtime_upper_mode` 的代码缺省与 `default.toml` 都是 `hybridLogStructured`（`src/cfg.rs` 的 `UblkOverlaybdTomlConfig`），
 它决定**新物化**的可写镜像用什么布局；已有 upper 保持自己的格式。
 另一处缺省 `OverlaybdConfig::runtime_upper_mode`（`src/sandbox/ublk/overlaybd.rs`）是 serde 层面的 `LogStructured`，只在反序列化旧记录、字段缺失时生效。
+
+冷启动的 rootfs 也是 Hybrid，这一点读代码时容易看错。`FirecrackerSandboxFactory::build()`（`src/sandbox/firecracker/factory.rs`）构造 `OverlaybdConfig` 时写的是 `UpperMode::LogStructured`，
+但它随即调用 `FirecrackerSandboxConfig::from_global_config_with_user_image()`，后者在 `from_app_config_with_user_image()` 里用全局配置的 `runtime_upper_mode` 覆盖这个字段（[第 26 篇](26-sandbox-block-devices.md)）。
+于是在缺省配置下，运行中沙箱的 upper 都是 Hybrid，`close_seal()` 不返回增量 digest：封存出的层在发布前要另算一遍 sha256（[第 37 篇 §2.3](37-seal-restack-compact.md#23-增量-digest-与它的适用范围)）。
 
 | 维度 | LogStructured | Sparse | Hybrid |
 |---|---|---|---|
@@ -224,7 +234,7 @@ upper 现有映射   ----  [ D: phys 40..42 ]  [Z+phys 9..10] ----
 | 映射恢复 | 重放 index | 扫描 extent | 重放 index |
 | 增量 digest | 新建 upper 时有 | 无 | 无 |
 | 读是否持锁到 I/O 结束 | 否 | 否 | 读到当前 upper 时是 |
-| 与上游 | 兼容 | 兼容（flags bit4） | AgentENV 扩展（flags bit5） |
+| 与上游 | 兼容 | 兼容（flags bit4） | 与上游默认分支同位同义（flags bit5）；`ReuseZero` 为 Rust 版独有 |
 
 ---
 
@@ -285,7 +295,8 @@ sequenceDiagram
 - 写在三种布局下都持索引写锁完成物理 I/O，单个镜像的写是串行的；读通常查完索引就放锁。
 - LogStructured 只追加，最安全、能增量算 digest，但 upper 随写入总量增长。
 - Sparse 写到逻辑偏移、不写索引，靠 extent 扫描恢复映射，只在空洞报告可靠的平台允许；它的 discard 在重新打开后不持久（推论）。
-- Hybrid 是 AgentENV 扩展、也是缺省布局：`InPlace` / `ReuseZero` / `Append` 让 upper 只随写过的不同块数增长；代价是原地写可能撕裂、快照依赖 quiesce、没有增量 digest。
+- Hybrid 与上游默认分支同位同义，是缺省布局，冷启动 rootfs 也用它：`InPlace` / `ReuseZero` / `Append` 让 upper 只随写过的不同块数增长；代价是原地写可能撕裂、快照依赖 quiesce、`close_seal()` 不返回增量 digest。
+- `ReuseZero` 是 Rust 版独有；遇到上游 `discard()` 留下的占位 `moffset` 时可能覆盖上游追加的数据（推论，单向风险）。
 - 为防撕裂读，Hybrid 读到当前 upper 时持锁到 I/O 结束，同一分片里的远端 lower 读也因此挡住写。
 - `write_at()` 等入口在持有 `state` 读锁时再取一次读锁，与排队中的 restack 写锁可能互相等待（推论，未见测试）。
 

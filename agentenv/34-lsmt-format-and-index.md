@@ -289,6 +289,7 @@ key 只覆盖层的元数据。推论：两层 UUID 与各项大小都相同而�
 
 ## 6. 与上游的兼容边界
 
+上游 overlaybd 是 C++ 实现，经典前端是 tcmu，默认分支也已带 ublk 前端（`src/ublk/`）；无论哪个前端，层文件格式都是同一套。
 这一层的格式要和两类 C++ 程序互相读写。第一类是 overlaybd 工具：OCI 层经 `overlaybd-apply` / `overlaybd-commit` 转成的 sealed 层由 Rust 版 overlaybd 读取；
 第二类方向相反，ublk-daemon 扩容运行时镜像时调用 `overlaybd-resize`（`storage/ublk-daemon/src/runtime.rs` 的 `run_resize_tool()`），由 C++ 去读写 Rust 创建的 upper 与 sealed 层。
 扩容之后，daemon 用 `validate_rw_header_pair_paths()` 检查被外部工具原地改过的 upper 的头部与物理布局，再重新打开。
@@ -299,13 +300,13 @@ key 只覆盖层的元数据。推论：两层 UUID 与各项大小都相同而�
 | `HeaderTrailer` 字段、magic、bit0–bit2、bit4 | 与上游一致 | 上游 `src/overlaybd/lsmt/file.cpp` 的 `HeaderTrailer` 字段顺序与 flag 位 |
 | `SegmentMapping` 的 50 / 14 / 55 / 1 / 8 位域 | 与上游一致 | 上游 `src/overlaybd/lsmt/index.h` |
 | compact 的索引补齐与 `index_size` 计数 | 与上游一致 | 上游 compact 用 invalid mapping 补到 4 KiB 并计入 `index_size` |
-| bit5 hybrid RW | 上游默认分支也有定义，需逐项核实 | 上游 `file.cpp` 的 `FLAG_HYBRID_RW = 5`；零段处理不同，见下文 |
+| bit5 hybrid RW | 与上游默认分支同位同义；ReuseZero 为 Rust 版独有 | 上游 `file.cpp` 的 `FLAG_HYBRID_RW = 5`；零段处理不同，见下文 |
 | backed zero、`NO_PHYSICAL_OFFSET` 哨兵 | AgentENV 扩展 | `ReadOnlyIndex::new()` 的规范化注释 |
 | 预合并索引缓存 `PMIDX001` | AgentENV 扩展 | 只在本地缓存目录，不进入任何层文件 |
 
 bit5 不能简单归为「AgentENV 扩展」。上游 containerd/overlaybd 默认分支（本书取的是 2026-10-01 的浅 clone，commit `e2a2ef3`）的 `src/overlaybd/lsmt/file.cpp` 里，
 `HeaderTrailer` 同样把 bit5 定义为 `FLAG_HYBRID_RW`（注释「1:hybrid rw 0:append rw」）。浅 clone 没有历史，无法确定上游从哪个版本开始有这一位，
-因此 Hybrid RW 在格式层面的兼容只能逐项核实。对照 `file.cpp` 与 Rust 版的结果如下。
+因此只能对照默认分支逐项核实。结论是：bit5 与上游默认分支同位同义，ReuseZero 是 Rust 版独有的行为。对照 `file.cpp` 与 Rust 版的结果如下。
 
 - **一致的部分**。位号相同；bit4 与 bit5 同时置位在两边都被拒绝（上游报「sparse_rw and hybrid_rw flags are both set」）；
   hybrid 写入都是「已映射到本可写层的非零区间原地改写，空洞与下层区间追加」，上游在 `pwrite` 原地改写时同样不追加映射。
@@ -328,7 +329,7 @@ bit5 不能简单归为「AgentENV 扩展」。上游 containerd/overlaybd 默�
 - `ReadOnlyIndex` 二分查找、`MutableIndex` 插入时切掉重叠、`ComboIndex` 先查 upper 再补空隙；合并后 tag 0 最新，upper 却在 layers 末尾，优先级由 `ComboIndex` 而不是 tag 保证。
 - 255 层上限来自 8 位 tag，节点靠运行时层预算加压实远离它。
 - 预合并索引缓存以各层元数据的 SHA-256 为 key，带完整性校验与进程内去重；清理按写入时间而非访问时间。
-- LSMT 头尾、映射位域与 compact 补齐与上游一致；backed zero、哨兵与 `PMIDX001` 是 AgentENV 扩展；bit5 在上游默认分支也有定义、主体语义相同，零段复用（ReuseZero）是 Rust 版独有，读上游写出的 hybrid upper 有覆盖风险（推论）。
+- LSMT 头尾、映射位域与 compact 补齐与上游一致；backed zero、哨兵与 `PMIDX001` 是 AgentENV 扩展；bit5 与上游默认分支同位同义，零段复用（ReuseZero）是 Rust 版独有，读上游写出的 hybrid upper 有覆盖风险（推论）。
 - `LinearizedBptree` / `IndexLBPT` 只有测试引用，是死代码。
 
 ---

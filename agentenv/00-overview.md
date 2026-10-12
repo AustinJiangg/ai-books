@@ -91,8 +91,9 @@ flowchart TB
   orchestrator 维护沙箱状态机（[第 19 篇](19-state-machine-and-concurrency.md)）；Firecracker 后端管一台 VM 的全部资源：网络槽位、块设备、MMDS、envd 客户端（[第 25 篇](25-backend-and-firecracker-process.md)）。
 - **ublk-daemon** 集中持有节点上全部 ublk 设备，是唯一持有 `CAP_SYS_ADMIN` 的子进程；Rust 版 overlaybd 在它的 queue 线程里执行读写（[第 40 篇](40-ublk-library.md)、[第 41 篇](41-ublk-daemon.md)）。
   共享设备去重、预热池与下载限流都依赖「所有设备在同一进程」，代价是单点：它退出后不会被重新拉起。
-- **`firecracker`** 在沙箱自己的 netns 里由短命线程 spawn，不带任何 Linux 能力（[第 25 篇](25-backend-and-firecracker-process.md)、[第 59 篇](59-host-setup-and-privileges.md)）。
-  它不用 jailer，与 `server` 同 uid，这是最主要的隔离缺口。
+- **`firecracker`** 在沙箱自己的 netns 里由短命线程 spawn，spawn 前清空能力集（[第 25 篇 §4.2](25-backend-and-firecracker-process.md#42-进入-netns-并清空能力)）。
+  这只在 `server` 以非 root 运行时成立：以 root 运行（Compose 与 DaemonSet 的特权容器）时，exec 会从 bounding 集重新授予能力（[第 59 篇](59-host-setup-and-privileges.md)）。
+  它不用 jailer，与 `server` 同 uid，这是最主要的隔离缺口（[第 25 篇 §5](25-backend-and-firecracker-process.md#5-不用-jailer哪些隔离有哪些没有)）。
 
 guest 看到的块设备顺序固定：`/dev/vda` 是只读的 tools 盘（带 envd 与 init），`/dev/vdb` 是用户 rootfs，`/dev/vdc` 起是附加盘与预留的卷槽位；
 内存设备不是 virtio-blk，而是 File 后端 mmap 的对象（[第 26 篇](26-sandbox-block-devices.md)）。

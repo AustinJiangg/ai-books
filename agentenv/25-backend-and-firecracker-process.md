@@ -174,7 +174,12 @@ euid 为 0 的进程在 `execve` 时会由内核从 bounding 集重新授予 per
 所以在 root 下测试只能断言 inheritable 与 ambient 为空。生产部署由 `scripts/install.sh` 生成的 systemd 单元承担这个前提：
 `User=aenv`、`AmbientCapabilities` 与 `CapabilityBoundingSet` 都只有那两个能力、`NoNewPrivileges=true`、`SupplementaryGroups=kvm`。
 在这套部署下 Firecracker 是一个普通的非特权进程，靠 `kvm` 组访问 `/dev/kvm`，靠 udev 规则（`src/setup/ublk.rs` 把 `ublkb*` 设为 server 所在组可读写）访问块设备。
-开发时直接以 root 运行 server，Firecracker 就会带着完整的能力集。
+
+反过来，凡是 server 以 root 运行的部署，这个结论都不成立。开发时直接以 root 启动是一种；
+仓库自带的两种容器部署是另一种：`deploy/docker-compose.yml` 与 `deploy/k8s/base/agentenv-daemonset.yaml` 都以 `privileged: true` 运行节点容器，
+镜像 `deploy/docker/Dockerfile.agentenv` 不切换用户，server 在容器里就是 root（[第 60 篇 §4.3](60-deployment.md#43-为什么只是模拟)）。
+此时 launcher 线程清空的能力会在 exec 时被内核从 bounding 集重新授予，Firecracker 拿到容器的完整能力集（[第 59 篇 §6](59-host-setup-and-privileges.md#6-边界与代价)）。
+能力清空在这些部署下只剩 inheritable 与 ambient 两组为空这一点，真正的边界退回到 KVM 与 seccomp 两层。
 
 ### 4.3 等 socket 出现
 
@@ -299,7 +304,10 @@ flowchart LR
 推论：进程退出之前它仍持有已被删除的文件的句柄，数据要等进程退出后才释放。
 
 更极端的情况是 server 自己被 SIGKILL：`Drop` 不会运行，`kill_on_drop` 也就不起作用；systemd 的 `KillMode=process` 只杀主进程，
-Firecracker 子进程留在宿主上。重启后谁来处理这些孤儿进程，见[第 22 篇](22-persistence-across-restarts.md)。
+Firecracker 子进程留在宿主上。这种情况在正常的 `systemctl stop` 下也会出现：关闭序列逐台串行暂停沙箱，
+而单元里的 `TimeoutStopSec=30` 不随沙箱数量伸缩，超时后 systemd 向主进程发 SIGKILL，由于 `KillMode=process`，
+尚未暂停的 Firecracker 进程不会收到任何信号（[第 60 篇 §2.3](60-deployment.md#23-systemd-单元逐项)）。
+重启后谁来处理这些孤儿进程，见[第 22 篇 §7](22-persistence-across-restarts.md#7-崩溃一致性边界)。
 
 ---
 
@@ -316,12 +324,12 @@ AgentENV 用一个短命线程完成 `setns` 与能力清空、直接 spawn，�
 - `SandboxBackend` 的实现被放在一把互斥锁后面；`stop()`、`resume()` 必须幂等，Recoverable 失败必须先恢复运行，这几条约定是回滚与关闭路径能重复调用后端的前提。
 - `FirecrackerSandbox` 是一份资源清单：进程、工作目录、网络槽位、四类块设备、envd 客户端与扩展 hook；工作目录里的相对路径符号链接是 drive 配置的寻址方式。
 - Firecracker 由一个短命 launcher 线程拉起：先 `setns` 进沙箱 netns，再清空三组能力与 ambient，然后 spawn；调用线程的命名空间与能力不受影响。
-- 「Firecracker 不带能力」只在 server 非 root 时成立；生产的 systemd 单元以 `aenv` 用户、受限 bounding 集与 `NoNewPrivileges` 保证这一点。
+- 「Firecracker 不带能力」只在 server 非 root 时成立：`install.sh` 的 systemd 单元以 `aenv` 用户、受限 bounding 集与 `NoNewPrivileges` 保证这一点；Compose 与 DaemonSet 的 privileged root 容器里，Firecracker 拿到完整能力集。
 - 不用 jailer 的结果是：有降权与无能力，没有 chroot、mount 命名空间、PID 命名空间与 cgroup；Firecracker 与 server 同 uid，是最主要的隔离缺口。
 - MMDS 与 API 负载上限一起提到 1 MiB，以容纳透传的镜像配置；超过时 server 在发送前报错。
 - Firecracker 客户端是手写的 UDS hyper 客户端，只复用生成的模型；它没有请求超时，卡住的调用会让沙箱停在过渡态，直到外部杀掉进程。
 - `stop()` 的顺序由使用关系决定：先停进程再还设备，扩展 hook 在网络槽位回池之前，持有共享设备引用的预取读者退出之后才释放共享内存设备。
-- 不经 `stop()` 的析构会把 rootfs 与附加盘设备留在 daemon 里；server 被 SIGKILL 时 Firecracker 子进程成为孤儿。
+- 不经 `stop()` 的析构会把 rootfs 与附加盘设备留在 daemon 里；server 被 SIGKILL（包括 `TimeoutStopSec=30` 到期）时，尚未暂停的 Firecracker 子进程成为孤儿。
 
 ## 延伸阅读 / 下一篇
 

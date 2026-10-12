@@ -126,8 +126,10 @@ SDK 执行命令、读写文件时访问的是 guest 内 envd 的 49983 端口�
 运行期间有两个后台任务关注这台沙箱。过期回收任务每秒检查一次 TTL，到期后按 `timeout_action` 暂停或删除它（[第 23 篇](23-auto-eviction-and-ttl.md)）；
 指标任务周期性地从 envd 的 `/metrics` 采样（[第 24 篇](24-metrics-and-events.md)）。
 guest 写磁盘的数据落在 rootfs 的可写 upper 里，由 ublk-daemon 中的 Rust 版 overlaybd 处理（[第 36 篇](36-read-write-paths-and-rw-layouts.md)）；
-guest 写内存时，共享的内存设备本身不被修改。推论：File 后端以私有映射打开内存文件，被写的页在宿主上复制成匿名页，
-这些页就是下一次暂停时的脏页；这一点取决于 AENV 补丁版 Firecracker 的内存映射方式，由[第 42 篇](42-memory-snapshot-over-ublk.md)核实。
+guest 写内存时，共享的内存设备本身不被修改：Firecracker 的 File 后端只读打开内存文件，并以 `MAP_PRIVATE` 映射它
+（`src/vmm/src/vstate/memory.rs` 的 `snapshot_file()`，上游 Firecracker v1.15.1 与 AENV 补丁版 Firecracker 相同），
+被写的页在宿主上写时复制成这个进程私有的匿名页，开启 `track_dirty_pages` 时这些页也就是下一次暂停时的脏页（[第 03 篇 §3.2](03-firecracker-for-agentenv.md#32-file-后端)）。
+它们怎样被写成一层新的内存层，在[第 42 篇 §2](42-memory-snapshot-over-ublk.md#2-暂停从脏页到层)。
 
 ---
 

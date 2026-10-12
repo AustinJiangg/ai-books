@@ -91,7 +91,7 @@ lowers 不变，只把镜像级下载覆盖设成 `enable: false`。录制时允
   `src/sandbox/firecracker/sandbox.rs` 的注释给出理由：与别的沙箱共享设备（或共享它背后的块设备页缓存），首次触达就会被页缓存吃掉，录制器看不见。
 - 在 `PUT /snapshot/load` **之前**调 `start_pack_recording()` 布防，使 load 期间与 guest 最初的缺页全部被记录。
 
-注意录制发生在发布节点上，且时机在 capture 之后、层上传期间。此时内存层大多还在本地，录制 VM 跑得快，十秒预算足够。
+注意录制发生在发布节点上，且时机在 capture 之后、层上传期间。推论：此时新写的内存层还在本地，只有链式快照的父层可能要远端读，缺省 10 s 的预算（§2.5）是按这种情形定的。
 
 ### 2.3 `StartupPackRecorder`
 
@@ -208,7 +208,7 @@ POSIX 运行时解析（`posixfs/runtime.rs`）在 manifest 文件确实存在�
 ### 4.2 对象存储来源：交给 daemon 回填块缓存
 
 OSS 来源时，节点在**取共享内存设备之前**调 `UblkDeviceManager::prefetch_startup_pack()`，发 `PrefetchStartupPack` RPC。
-daemon 的 `handle_prefetch_startup_pack()` 无论成败都回 `Ok`：恢复从不依赖预取。下图中 `sb` 是节点上的 `FirecrackerSandbox`，`ublkd` 是 ublk-daemon，`sched` 是 daemon 里该全局配置对应的后台下载调度器，
+daemon 的 `handle_prefetch_startup_pack()` 无论成败都回 `ok`：恢复从不依赖预取（录制状态 RPC 也从不报错，见[第 41 篇 §3.2](41-ublk-daemon.md#32-请求一览)）。下图中 `sb` 是节点上的 `FirecrackerSandbox`，`ublkd` 是 ublk-daemon，`sched` 是 daemon 里该全局配置对应的后台下载调度器，
 `oss` 是对象存储，`fc` 是 Firecracker 进程（它的缺页经内核块层到达 daemon，图中简化为一条消息）：
 
 ```mermaid
@@ -237,7 +237,7 @@ sequenceDiagram
 每层的 URL 与缺页路径的拼法一致，保证命中同一个缓存条目。manifest 对象本身绕过块缓存读取，它只用一次。
 
 `BkDownloadScheduler::submit_startup_pack()` 以 `startup-pack:<sha256>` 为键去重，并发恢复同一快照的多台沙箱共享一个任务。
-startup 任务有自己的队列，调度循环先看它；它最多占 file slot 预算的四分之一，正在运行的普通后台任务在 chunk 边界让出名额
+startup 任务有自己的队列，调度循环先看它；它的并发名额是 `max(file slots / 4, 1)`（`bk_download.rs` 的 `startup_slots`），正在运行的普通后台任务在 chunk 边界让出名额
 （[第 39 篇 §5.4](39-block-cache-and-background-download.md#54-超时重发与任务重试)）。
 
 执行阶段（`startup_pack_task.rs` 的 `execute()`）先读 64 字节探测魔数，再读余下部分，校验 sha256 与内存大小，然后调

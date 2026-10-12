@@ -243,14 +243,14 @@ ublk 把块设备的生死交给了一个用户进程，于是必须回答「这
 
 ### 5.1 AgentENV 看的三个特性位
 
-ADD_DEV 时 server 在 `flags` 里声明要用的特性；内核会清掉它不认识的位（`ublk_ctrl_add_dev()` 里 `flags &= UBLK_F_ALL`），所以声明了不等于生效。GET_FEATURES 则直接告诉 server 内核支持哪些。
+ADD_DEV 时 server 在 `flags` 里声明要用的特性；内核会静默清掉它不认识的位（`ublk_ctrl_add_dev()` 里 `flags &= UBLK_F_ALL`），ADD_DEV 本身并不因此失败，所以声明了不等于生效。GET_FEATURES 则直接告诉 server 内核支持哪些。
 与本书有关的是三个：
 
 - **`UBLK_F_UPDATE_SIZE`**（bit 10）：允许用 `UPDATE_SIZE` 命令在线改容量。所用的 libublk-rs-sys 版本没有这个命令的定义，
   `storage/ublk/src/ublk_caps.rs` 按 uapi 手工编码为 `_IOWR('u', 0x15, struct ublksrv_ctrl_cmd)`，即 `0xC0207515`，并用单元测试固定。
   ublk-daemon 启动时由 `detect_ublk_features()` 查询；有这一位时，预热池可以把一台空闲设备改成任意容量再交出去，没有时只能复用容量恰好相同的设备，
   `startup_prewarm` 的缺省值也随之取假（`storage/ublk-daemon/src/main.rs`）。
-- **`UBLK_F_AUTO_BUF_REG`**：请求到达时，内核自动把这个请求的页注册进 queue ring 稀疏缓冲表的某个下标，
+- **`UBLK_F_AUTO_BUF_REG`**（bit 11）：请求到达时，内核自动把这个请求的页注册进 queue ring 稀疏缓冲表的某个下标，
   server 用 `ReadFixed` / `WriteFixed` 加这个下标让后端文件与请求页直接传输，省掉那一次拷贝。下标经 SQE 的 `addr` 字段传递，命令负载里的 `addr` 必须为 0。
   `uvm-ublk` 支持它（`UVMUblkCtrlBuilder::zero_copy(true)`），但生产路径从不打开（[第 40 篇 §6.2](40-ublk-library.md#62-零拷贝只停留在库层面)）。
 - **`UBLK_F_USER_RECOVERY`**（bit 3）：[§4.3](#43-server-退出时设备会怎样)的恢复能力，未使用。
@@ -305,8 +305,8 @@ Linux 上把块设备逻辑交给用户态，主要有三种做法。下表只�
 
 这三条路分别有人走：e2b infra 用 NBD 把 rootfs 交给 Firecracker（见 e2b 手册第 33 篇）；
 上游 overlaybd 的经典前端是 TCMU，进程名就是 `overlaybd-tcmu`（上游 `README.md`）。
-本书所拉取的上游 overlaybd 默认分支另有一个基于 libublksrv 的 ublk 前端（`src/ublk/`），README 称其「不经过 TCMU / SCSI」；
-它的引入版本无法从浅 clone 确定，本书也不讨论它。
+本书所拉取的上游 overlaybd 默认分支（`e2a2ef3`）另有一个基于 libublksrv 的 ublk 前端（`src/ublk/`），README 称其「不经过 TCMU / SCSI」；
+所以「上游 overlaybd = TCMU」只对经典前端成立。它的引入版本无法从浅 clone 确定，AgentENV 不用它，分工见[第 05 篇 §4.1](05-overlaybd-and-lazy-loading.md#41-谁做什么)。
 
 推论（依据 AgentENV 的实际用法）：选 ublk 的理由有三。第一，server 只需理解块操作，不必实现 SCSI 或 NBD 协议，
 `OverlaybdTarget` 的全部工作就是把一个 `ublksrv_io_desc` 翻译成 `ImageFile` 的读写。第二，请求描述走共享内存、命令走 io_uring，

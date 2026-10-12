@@ -254,12 +254,16 @@ iptables 的替换是一次 `iptables-restore`：flush 用户链与代理链、�
 ### 6.4 预热槽位的跨租户残留
 
 网络槽位回到预热池时不拆命名空间（[第 32 篇](32-warm-pools.md)），下一位租户得到的是同一个命名空间、同一个 host interaction IP、同一个 guest 地址。
-复位只做两件事：`user_egress_rules_present` 为真时 flush 用户链与代理链；代理按新策略 activate 或 deactivate。没有复位的有三样：
+复位只做两件事：`user_egress_rules_present` 为真时 flush 用户链与代理链；代理按新策略 activate 或 deactivate。没有复位的有四样：
 
 - **conntrack 表**。`src/sandbox/network/` 下没有任何 conntrack 操作。推论：新租户的连接若恰好与旧条目五元组相同，会被判定链第 1 条当作已建立连接放行，跳过后面的拒绝；nat 表的转换也按旧条目执行。五元组碰撞依赖源端口巧合，概率不高但不为零。
 - **邻居表**。`tap0` 上指向 `169.254.0.21` 的表项仍是旧 VM 的 MAC，要等失效后重新解析（[第 29 篇](29-network-slots.md)讲的 ARP 重传调优与此相关）。
 - **代理的旧连接**。推论：`stop()` 只把槽位 `release()` 回池，不调用 `teardown()`；若下一位租户的策略不用代理，`deactivate()` 也不断开已有连接。
   于是上一位租户经代理建立、上游尚未关闭的 relay 线程会一直存活到槽位真正被清理，占用线程与 256 条的连接额度；上游再发来的数据被写往新 VM 的同一地址，通常只会换来一个 RST。
+- **自定义扩展的改动**。扩展经 start hook 拿到 netns 路径，可以在里面加接口、路由或规则；AgentENV 的复位只碰自己的两条链，不认识这些对象。
+  推论：扩展若没有在 stop hook 里撤销，而 stop 又是 best-effort 的，这些改动会随槽位交给下一位租户（[第 33 篇 §6](33-custom-extension-hooks.md#6-代价与边界)）。
+
+以上四项都只在槽位回池时出现：池满或节点关闭时 `cleanup_slot_and_release_bit()` 删掉整个命名空间，conntrack、邻居表、代理连接与扩展的改动随之消失。
 
 ---
 
@@ -282,7 +286,7 @@ AgentENV 只在有域名规则时才为 80 / 443 启动命名空间内的代理�
 - 替换策略用 pending / active 两阶段；每条连接持有接受时的策略快照，取消代理不断开已有连接。
 - 授权按 TCP 连接：keep-alive、TLS 内层 Host、HTTP/2 复用都不再检查；DNS 53 端口始终放行。
 - 线程模型是每命名空间一个 5 ms 轮询的监听线程加每连接两个线程，每代理最多 256 条连接。
-- 预热槽位复用时不清 conntrack、邻居表与代理旧连接，存在理论上的跨租户残留。
+- 预热槽位复用时不清 conntrack、邻居表、代理旧连接与扩展在 netns 里的改动，存在跨租户残留；只有槽位真正被清理时才一并消失。
 
 ---
 

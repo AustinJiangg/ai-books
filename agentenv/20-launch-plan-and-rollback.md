@@ -25,7 +25,7 @@
 
 一次成功的启动会留下七类状态：一个 Firecracker 子进程；daemon 里为 rootfs、内存与附加盘创建的 ublk 设备；一个网络槽位；
 镜像缓存里的引用保护；orchestrator 句柄表 `sandboxes` 里的一项；`MetadataStore` 里的一条记录；路由表 `proxy_routes` 里的一条路由。
-恢复还要多碰一处：节点本地持久化器里那条暂停记录（[第 22 篇](22-persistence-across-restarts.md)）。
+恢复还要多碰一处：节点本地持久化器里那条暂停记录（[第 22 篇 §3](22-persistence-across-restarts.md#3-记录与目录)）。
 
 这些状态由不同的部件持有，任何一步都可能失败：快照文件读不到、envd 迟迟不就绪、进程收到关闭信号、元数据写入出错。
 数据库事务那种「全做或全不做」在这里不存在，因为杀掉一个进程、释放一个 ublk 设备都没法和写一条记录一起提交。
@@ -54,7 +54,7 @@
 代价是两处按计划类型分支的代码不能消除：流水线末尾只有恢复要 `persister.delete_record()`（用 `matches!(plan, LaunchPlan::Resume(_))` 判断），
 回滚时创建要删记录、恢复要退回 Paused（`rollback_failed_launch_metadata()` 里的 `match plan`）。
 另外，沙箱 ID 与 envd token 在计划构造之前就已确定：创建由 `create_sandbox()` 生成 ID、`create_sandbox_inner()` 派生 token，
-恢复由 `resume_sandbox_inner()` 用同一个 seed 重新派生出与暂停前相同的 token（[第 13 篇](13-authentication.md)）。
+恢复由 `resume_sandbox_inner()` 用同一个 seed 重新派生出与暂停前相同的 token（[第 13 篇 §3.1](13-authentication.md#31-派生)）。
 
 ---
 
@@ -113,6 +113,7 @@ TTL 在第二列最后一步才写入：`update_if_state()` 把状态从过渡�
 
 `rollback_failed_launch_metadata()` 做三件事：释放 `StartingSandbox` 的镜像引用保护；创建计划无条件 `store.remove()`；
 恢复计划以期望状态为条件把记录 CAS 回 Paused，并调用 `persister.rollback_resuming()` 把持久记录的生命周期标记从 Resuming 改回 Paused。
+这个标记由 `resume_sandbox_inner()` 在 CAS 到 Resuming 之后以 `mark_resuming()` 写入，它在崩溃重启时的含义见[第 22 篇 §5](22-persistence-across-restarts.md#5-两阶段-resume-标记)；`rollback_resuming()` 失败只记 warn，不影响内存里的回滚。
 注意创建计划的删除不看期望状态，是无条件的 `remove()`。在前两个阶段这没有问题：Creating 不在任何其它操作的 CAS 期望集合里，没有别的写者能改动这条记录。
 `RunningPersisted` 阶段记录已经是 Running，而 delete 的期望集合是 `[Running, Paused]`。推论：在这个阶段的回滚窗口内，一个并发的 delete 理论上可以先把状态改成 Killing，
 随后记录被这里直接删除，delete 再按「记录已不存在」收尾；这个窗口只在「就绪却没有 interaction IP」这种不应出现的情形下才会打开。
@@ -142,7 +143,7 @@ TTL 在第二列最后一步才写入：`update_if_state()` 把状态从过渡�
 
 ## 5. 镜像引用保护的交接
 
-本地镜像缓存有一个周期维护任务，会按水位回收不再被引用的层（[第 45 篇](45-oci-to-overlaybd.md)）。
+本地镜像缓存有一个周期维护任务，会按水位回收不再被引用的层（[第 45 篇 §5.3](45-oci-to-overlaybd.md#53-三类持有者)、[§5.5](45-oci-to-overlaybd.md#55-宁可不删的-gc)）。
 一台正在启动的沙箱要打开的层，必须在它被打开之前就受到保护，否则维护任务可能恰好在这时把它删掉。
 `RuntimeImageRefs`（`src/image/cache/store.rs`）提供三种保护来源：
 
@@ -180,12 +181,12 @@ CAS 成功却在句柄表里找不到句柄时，判定为不一致，直接摘�
 `finish_snapshot_operation()` 只做 CAS。`capture_snapshot_inner()` 与 `snapshot_volume_mounts_inner()` 都由这三个函数拼成。
 
 与 pause 不同，这里**不摘路由**：快照期间代理仍会把数据面请求转给一台被暂停的 VM，推论：这些请求会挂起到 VM 恢复运行，而不是被拒绝。
-另外，`capture_snapshot()` 在 VM 恢复、状态回到 Running 之后才返回 `CapturedSandboxSnapshot`，把制品发布到快照仓库是 API 层随后调用 `publish_captured()` 完成的（[第 46 篇](46-snapshot-object-model.md)），
+另外，`capture_snapshot()` 在 VM 恢复、状态回到 Running 之后才返回 `CapturedSandboxSnapshot`，把制品发布到快照仓库是 API 层随后调用 `publish_captured()` 完成的（[第 16 篇 §3.1](16-snapshot-and-volume-api.md#31-三个阶段)、[第 46 篇 §6](46-snapshot-object-model.md#6-snapshotmanager一层薄门面)），
 发布期间沙箱是 Running，可以被 pause 或 delete；`CapturedSandboxSnapshot` 持有临时制品目录的守卫，保证目录活到发布结束。
 
 `fork_sandbox_inner()` 没有调用这组辅助函数，但写的是同一个模式：CAS 到 Forking，调后端 `fork()`，外层错误为 `Terminal` 时拆除源沙箱，为 `Recoverable` 时 CAS 回 Running。
 它与启动流水线有三点不同：子沙箱不经过 Creating，后端返回就绪的子 VM 后直接以 Running `add()` 进 store；
-子沙箱逐个登记，某个子沙箱失败只影响它自己的结果项（部分成功语义，[第 51 篇](51-fork.md)）；
+子沙箱逐个登记，某个子沙箱失败只影响它自己的结果项（部分成功语义，[第 51 篇 §5](51-fork.md#5-失败语义)）；
 这段代码里没有关闭检查点，也没有为子沙箱调用 `protect_image_refs()`，子 VM 的层只在登记进句柄表之后才由运行集保护。推论：后者依赖子 VM 共享源沙箱的层，源沙箱的句柄一直在表里。
 
 ---
@@ -223,7 +224,7 @@ CAS 成功却在句柄表里找不到句柄时，判定为不一致，直接摘�
 先持久化、后改内存元数据，是为了让「store 显示 Paused」蕴含「磁盘上有可恢复的记录」。
 持久化失败时，VM 仍处在「已暂停、未停止」的状态，`SandboxBackend::resume()` 正是为这种情形准备的（文档要求它幂等），所以能原地救回。
 
-`Terminal` 与「删记录」路径都会调用 `finalize_terminal_volumes()`：先把卷的 backing 发布出去、再释放卷的 owner，尽量保住卷里已经落盘的数据（[第 21 篇](21-deletion-and-volume-capture.md)）。
+`Terminal` 与「删记录」路径都会调用 `finalize_terminal_volumes()`：先把卷的 backing 发布出去、再释放卷的 owner，尽量保住卷里已经落盘的数据（[第 21 篇 §7](21-deletion-and-volume-capture.md#7-卷的内容还在哪些时刻被发布)）。
 从调用方看，这条路径的结果是沙箱凭空消失：pause 返回错误，随后的查询是 404。
 
 两处值得记下的行为。其一，pause 失败时已分配的产物目录 `artifacts/<id>/<uuidv7>/` 不被删除，推论：它会留到这台沙箱被删除时随整个 `artifacts/<id>/` 一起清掉，或在重启时作为孤儿目录被清理。

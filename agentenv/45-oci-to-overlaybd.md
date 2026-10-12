@@ -306,9 +306,10 @@ image-cache 因此只对节点上**此刻**运行或暂停的沙箱负责。
 
 ## 6. 调用 regctl 的两条约束
 
-所有 registry 访问都经 `regctl`：注释给的理由是它逐字节保留 manifest，并接受带 OCI mediaType 的 Docker schema2 manifest。
+本篇这条解析与转换路径上的 registry 访问都经 `regctl`：注释给的理由是它逐字节保留 manifest，并接受带 OCI mediaType 的 Docker schema2 manifest。
+这不是全部的 registry 访问：快照发布时把 rootfs 推回源 registry 的路径用进程内基于 reqwest 的 `AcrClient`（`src/snapshot/repository/backends/common/acr/client.rs`），不经 regctl（[第 50 篇 §4](50-rootfs-as-oci-image.md#4-发布时推回源-registry)）。
 `regctl_command()` 给每个子进程设 `GOMAXPROCS=4`：Go 运行时缺省按宿主 CPU 数起线程，AgentENV 高并发地为每次镜像操作 fork 一个 regctl，
-在多核宿主上会耗尽进程数上限，而 regctl 的工作受网络限制，少几个线程不影响吞吐。
+在多核宿主上可能耗尽进程数上限；注释认为 regctl 的工作受网络与 I/O 限制，限制线程数不影响它的吞吐。
 `run_regctl()` 对失败做 5 次、500 ms 起的指数退避重试，但 stderr 里带 `[http 404]` 时立即返回 `NotFound`，不消耗重试预算。
 
 ---

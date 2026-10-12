@@ -35,7 +35,7 @@
 | balloon 设备 | balloon | guest 内的 virtio 内存气球，宿主经它请 guest 归还空闲页。 | [第 03 篇 §5](03-firecracker-for-agentenv.md#5-balloon-与-damon把内存还给宿主) |
 | 内核命令行 | boot args | 冷启动时传给 guest 内核的参数串，由配置默认值、扩展 hook 与 API 的 `extraBootArgs` 拼成。 | [第 27 篇 §2.1](27-start-pause-resume-sequences.md#21-boot-args-的拼装) |
 | CPU 模板 | CPU template | 向 guest 暴露的 CPUID / MSR 集合；快照记住了它，所以恢复节点必须能提供同一组特性。 | [第 03 篇 §6](03-firecracker-for-agentenv.md#6-cpu-模板与跨节点恢复)、[第 57 篇 §5.1](57-heartbeat-and-cpu-intersection.md#51-问题快照记住了-cpu) |
-| DAMON | DAMON | Linux 的数据访问监视框架，可据冷热把宿主内存回收；本书在内存归还的语境下提到。 | [第 03 篇 §5](03-firecracker-for-agentenv.md#5-balloon-与-damon把内存还给宿主) |
+| DAMON | DAMON | Linux 的数据访问监视框架；AgentENV 经 guest 内核命令行的 `damon_reclaim.*` 让 guest 回收长期未访问的页缓存，空闲页再经 balloon 的 free page reporting 还给宿主。 | [第 03 篇 §5](03-firecracker-for-agentenv.md#5-balloon-与-damon把内存还给宿主) |
 | 脏页区间 | dirty memory ranges | AENV 补丁版 Firecracker 新增的 `GET /vm/dirty-memory-ranges` 返回的区间列表，每项给出 HVA、内存镜像偏移与长度；暂停时据此只写脏页。 | [第 42 篇 §2.2](42-memory-snapshot-over-ublk.md#22-dirtymemoryranges-的语义) |
 | 脏页 | dirty page | 自上次快照以来被 guest 写过的内存页；KVM 的脏页位图与 File 后端私有映射下的 COW 页是两种判据。 | [第 03 篇 §2.3](03-firecracker-for-agentenv.md#23-脏页从哪里来)、[第 42 篇 §2.3](42-memory-snapshot-over-ublk.md#23-两种-vm-上的脏页) |
 | O_DIRECT 盘 | drive `direct` | AENV 补丁版 Firecracker 给 drive 加的选项：以 `O_DIRECT` 打开后端文件，绕过宿主页缓存；可写盘用它，tools 盘不用。 | [第 26 篇 §6](26-sandbox-block-devices.md#6-o_direct哪些盘绕过宿主页缓存) |

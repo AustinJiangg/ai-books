@@ -82,7 +82,8 @@ flowchart LR
 `normalize()` 的第二部分会改动语义上的值，运维需要知道它们的存在：
 
 - **PVM 模式关闭脏页跟踪。** `virtualization_mode` 为 `pvm` 时，`memory_snapshot.track_dirty_pages` 被强制设为 `false`，放在校验之前，
-  这样一份为 KVM 写的配置切到 PVM 时不需要额外改动。脏页跟踪依赖 AENV 补丁版 Firecracker 新增的 `GET /vm/dirty-memory-ranges`（[第 42 篇](42-memory-snapshot-over-ublk.md)、[第 61 篇](61-pvm.md)）。
+  这样一份为 KVM 写的配置切到 PVM 时不需要额外改动。这个开关只传给 Firecracker 的 machine-config 与 snapshot load 参数（`src/sandbox/firecracker/instance.rs`）：
+  暂停时 AENV 补丁版 Firecracker 新增的 `GET /vm/dirty-memory-ranges` 总是被调用，开关只决定补丁版用 KVM dirty log 还是退回 `mincore()` 过估计（[第 03 篇 §3.2](03-firecracker-for-agentenv.md#32-file-后端)、[第 61 篇 §4](61-pvm.md#4-脏页跟踪为什么关关了之后怎样)）。
 - **`[cluster].scheduler_endpoint`** 去掉首尾空白，空串变成未设置（`ClusterConfig::normalize()`）。
 - **`[sandbox_proxy].domains`** 逐个去空白、去尾部的点、按 DNS 名规范化并去重，非法域名直接报错；保持原顺序，因为第一个域名会作为对外通告的沙箱域名（`SandboxProxyConfig::normalize()`，见[第 17 篇](17-reverse-proxy.md)）。
 - **POSIX 快照仓库**：`repository_backend = "posix_fs"` 而文件里没有 `[backend.posix_fs]` 节时，自动补上一个缺省节，`snapshot_store` 落在 `$AENV_HOME/snapshot-store`。
@@ -189,6 +190,11 @@ orchestrator 在构造时（`with_file_backed_store_factory_and_volumes()`）、
 - 身份与集群：`AENV_NODE_ID`、`AENV_CLUSTER_ID`、`AENV_SERVICE_INSTANCE_ID`、`AENV_OBSERVABILITY_SCHEDULER_ENDPOINT`、`AENV_SANDBOX_PROXY_DOMAINS`（逗号分隔）；
 - 其它：`AENV_SANDBOX_ACCESS_TOKEN_HASH_SEED`、`AENV_CUSTOM_EXTENSION_URL`、`AENV_UBLK_DAEMON_METRICS_LISTEN_ADDR`。
 
+其中 `AENV_SNAPSHOT_STORE` 声明了却不生效。它标在 `PosixFsBackendConfig::snapshot_store` 上，而 `BackendConfig::posix_fs` 是一个没有 `#[config(nested)]` 的 `Option` 字段，
+confique 把它当作整体由 serde 反序列化的叶子，不会深入其中查环境变量；文件里没有 `[backend.posix_fs]` 节时，归一化补上的缺省节来自 `PosixFsBackendConfig::default()`，
+即 `impl_config_default!` 生成的不带 `.env()` 的 `builder().load()`（均在 `src/cfg.rs`）。本书用同版本 confique 0.4.0 按相同字段形状写了最小复现，
+设置该变量后两条路径得到的都是文件值或 `$AENV_HOME/snapshot-store`。要改 POSIX 仓库位置，只能写 `[backend.posix_fs].snapshot_store`，或者改 `home_path`。
+
 挑选的原则看得出来：凡是随部署实例变化（每个节点不同的身份、每套集群不同的 scheduler 地址）或者属于机密（令牌种子）的项，都能用环境变量注入，
 使同一份 TOML 可以被一个集群的所有节点共用。Kubernetes DaemonSet（`deploy/k8s/base/agentenv-daemonset.yaml`）就用 `fieldRef` 把 Pod 名注入为 `AENV_NODE_ID`。
 集群里所有节点必须使用同一个 `AENV_SANDBOX_ACCESS_TOKEN_HASH_SEED`，否则一个节点签发的访问令牌到另一个节点验证不过（[第 13 篇](13-authentication.md)）。
@@ -261,15 +267,18 @@ daemon 侧它是 `Option<bool>`，文件里不写时按内核是否支持 `UBLK_
 | `[image.cache.remote_blocks].max_size_gb` | 10 | 100 | 100 |
 | `[node_identity].node_id` | 未设置，退回主机名 | `node-a` | 主机名派生 |
 | `[node_identity].cluster_id` | 未设置，nil UUID | 全零 UUID | nil UUID |
+| `[node_identity].service_instance_id` | 未设置，每次启动生成 UUIDv7 | `service-instance-a` | 生成的 UUID |
 
 其中 `node_id` 一项在多节点部署里有实际后果：直接拿默认文件给多个节点用、又不设 `AENV_NODE_ID` 时，它们都会以 `node-a` 的身份向 scheduler 注册。
 仓库的 Compose 与 DaemonSet 都显式设置了 `AENV_NODE_ID`，规避了这一点。
+`service_instance_id` 则相反：Compose 与 DaemonSet 都不覆盖它，于是每个进程都报同一个 `service-instance-a`，
+scheduler 用它防止旧进程迟到的 `UnregisterNode` 删掉新进程记录的那道校验在缺省部署下不起作用（[第 57 篇 §4.1](57-heartbeat-and-cpu-intersection.md#41-unregisternode)）。
 
 ---
 
 ## 7. 小结
 
-- 优先级是环境变量 > 文件 > 代码默认；只有声明了 `env` 的二十一个字段能被环境变量覆盖。配置文件路径的次序是 `--config` > `AENV_CONFIG_PATH` > 编译期源码路径。
+- 优先级是环境变量 > 文件 > 代码默认；只有声明了 `env` 的二十一个字段能被环境变量覆盖，其中 `AENV_SNAPSHOT_STORE` 因所在节不是 nested 而实际不生效。配置文件路径的次序是 `--config` > `AENV_CONFIG_PATH` > 编译期源码路径。
 - 配置文件不存在不报错，节点会静默地按代码默认值运行，而代码默认与 `default.toml` 在内核命令行、缓存上限、节点 ID 等项上不同。
 - 相对路径与 `$AENV_HOME` 展开后的路径都以配置文件所在目录为基准；`$AENV_RUNTIME` 只用于 daemon socket。只改 `home_path` 就能整体搬迁节点目录。
 - 归一化会改写语义：PVM 下强制关闭脏页跟踪，清洗 scheduler 地址与代理域名，补全 POSIX 仓库节。校验在启动时拒绝地址池重叠、生成配置路径重名、限流值越界等组合。

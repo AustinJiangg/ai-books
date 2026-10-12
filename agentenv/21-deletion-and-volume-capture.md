@@ -22,7 +22,7 @@
 
 ## 1. 问题：删除是卷的提交点
 
-AgentENV 的卷（volume）是一个 overlaybd 层栈（[第 31 篇](31-extra-drives-and-volumes.md)）。沙箱运行时，guest 对卷的写入落在节点本地的可写层（upper）里；
+AgentENV 的卷（volume）是一个 overlaybd 层栈（[第 31 篇 §6](31-extra-drives-and-volumes.md#6-volumemanager权威在仓库本地是缓存)、[第 16 篇 §5](16-snapshot-and-volume-api.md#5-卷对象)）。沙箱运行时，guest 对卷的写入落在节点本地的可写层（upper）里；
 快照仓库里只记着这块卷**上一次发布**时的层列表。换句话说，在沙箱删除之前，卷的最新内容只存在于这一个节点上。
 只要不把 upper 封存并上传，别的节点、甚至同一节点上下一个挂载它的沙箱，看到的都是旧内容。
 
@@ -55,7 +55,7 @@ HTTP 调用方断开不会打断删除（[第 19 篇 §6](19-state-machine-and-c
   遇到 Killing 也等，等到的结果若是回滚到了稳定态，同样重试 CAS（[第 19 篇 §7](19-state-machine-and-concurrency.md#7-同一沙箱上的并发操作)）。
   CAS 返回的先前状态（Running 或 Paused）决定后面是否需要冻结。若 store 报沙箱不存在，顺手把 `deletions` 里的空条目移除。
 
-过期回收（[第 23 篇](23-auto-eviction-and-ttl.md)）用的是**同一把锁**。`evict_expired_sandboxes()` 对每台过期的 Running 沙箱先取 `deletion_progress()` 并加锁，
+过期回收（[第 23 篇 §4.2](23-auto-eviction-and-ttl.md#42-一轮做什么)）用的是**同一把锁**。`evict_expired_sandboxes()` 对每台过期的 Running 沙箱先取 `deletion_progress()` 并加锁，
 再用 `claim_expired_running_sandbox()` 在 CAS 回调里二次确认过期、认领为 Pausing 或 Killing；认领为 Killing 时直接调用 `delete_sandbox_impl(…, Running, &mut progress)`。
 显式删除与回收因此不会同时推进同一台沙箱的删除进度，后到者在锁上排队，拿到锁后按进度续做或直接成功。
 
@@ -102,7 +102,7 @@ flowchart TB
 
 几个细节值得注意。
 
-**进度只在内存里。** `DeleteProgress` 不持久化。`server` 进程退出后它随 `deletions` 表一起消失；运行中沙箱本来也不持久化（[第 22 篇](22-persistence-across-restarts.md)），
+**进度只在内存里。** `DeleteProgress` 不持久化。`server` 进程退出后它随 `deletions` 表一起消失；运行中沙箱本来也不持久化（[第 22 篇 §1](22-persistence-across-restarts.md#1-问题重启之后什么还在)），
 暂停沙箱的删除若停在 Release，重启后它会作为 Paused 重新出现，再次删除时从 Capture 开始。
 对暂停沙箱而言 Capture 只做发布，不涉及冻结，重做的代价是一次重复上传。
 
@@ -121,7 +121,7 @@ flowchart TB
 ## 4. Capture：冻结、封存、发布
 
 捕获段做两件事：若先前状态是 Running 且挂了卷，调用后端的 `freeze_and_snapshot_volumes()`；然后无论先前状态如何，都调用 `publish_sandbox_volume_backings()`。
-先前是 Paused 的沙箱已经没有 VM，卷的 upper 在暂停时已经 restack 过（[第 27 篇](27-start-pause-resume-sequences.md)），这里只剩发布。
+先前是 Paused 的沙箱已经没有 VM，卷的 upper 在暂停时已经 restack 过（[第 31 篇 §5](31-extra-drives-and-volumes.md#5-暂停与快照时卷去了哪里)），这里只剩发布。
 
 下图是运行中沙箱的捕获时序，消息 1 即 `freeze_and_snapshot_volumes()`，消息 8 即 `recover_and_publish_backings()`。参与者：`orch` 为 orchestrator，`sb` 为 `FirecrackerSandbox` 后端，`envd` 为 guest 内的 envd，`ublkd` 为 ublk-daemon，`vm` 为 `VolumeManager`，`repo` 为快照仓库。
 
@@ -153,7 +153,7 @@ sequenceDiagram
 一台即将被停掉的 VM，它页缓存里没有写回的数据在 VM 停止时就丢了。要让封存下来的 upper 是一块干净的文件系统，需要两个保证：
 所有脏数据已经落到块设备上，并且此后不再有新的写入。`fsfreeze` 正好同时给出这两个保证：它让文件系统把脏数据与日志刷到设备，然后挂起所有新的写操作，直到解冻。
 
-运行中的另一条卷捕获路径 `snapshot_volumes()`（供 `snapshot_volume_mounts()` 使用）选了不同的做法：先在 guest 里 `sync`，再 `PATCH /vm Paused` 暂停 VM，restack 之后立即恢复 VM。
+运行中的另一条卷捕获路径 `snapshot_volumes()`（供 fork 之前的 `snapshot_volume_mounts()` 使用）选了不同的做法：先在 guest 里 `sync`，再 `PATCH /vm Paused` 暂停 VM，restack 之后立即恢复 VM。
 推论：两者的差别来自 VM 之后的命运。`snapshot_volumes()` 之后 VM 继续运行，`sync` 与暂停之间漏掉的写入会在恢复后写进新的 upper，不会丢；
 删除之后 VM 不再运行，任何没落盘的写入都会丢，所以要用冻结把「刷写」与「禁止新写」合成一个原子的边界。
 
@@ -212,7 +212,7 @@ for mount in mounts {
 
 全部冻结之后，`snapshot_persistent_volume_drives()` 对每个可写卷调用 `restack_snapshot_overlaybd_device()`：把当前 upper 封存成卷输出目录下的 `snapshot-<uuidv7>.commit`，
 让 ublk-daemon 把运行中的设备切换到「封存层为最新 lower、换上新 upper」的层栈，再把新的层列表写进卷目录的 image config。
-文件名带 UUIDv7，是为了不覆盖仍被别的快照引用的旧层。restack 的机制在[第 37 篇](37-seal-restack-compact.md)详讲。
+文件名带 UUIDv7，是为了不覆盖仍被别的快照引用的旧层。restack 的机制在[第 37 篇 §3](37-seal-restack-compact.md#3-restack封存并换上新-upper)详讲。
 
 这一步的失败也分两种。`overlaybd_snapshot.rs` 的 `LiveOverlaybdSnapshotState::finish_staging()` 规定：设备已经 restack、但后续写 image config 失败时，错误被包装成 Terminal，
 因为运行中的设备与盘上的配置已经不一致；restack 发生之前的失败是普通错误，`From<anyhow::Error>` 把它映射为 Recoverable。
@@ -279,7 +279,7 @@ Release 段依次做三件事：
 
 次序的道理在于「谁失败了还能重试」。卷的预留在仓库里，是跨节点可见的状态；元数据在 store 里，是重试删除的入口。
 先释放预留、后删元数据，释放失败时沙箱仍以 Killing 留在 store 里，下一次删除能从 Release 续做；反过来，元数据先没了，残留的预留就再也没有人去释放。
-第 3 步里持久记录的删除失败只记 warn，不阻止删除完成：记录残留的后果由下次启动的 `load_all()` 兜底（[第 22 篇](22-persistence-across-restarts.md)）。
+第 3 步里持久记录的删除失败只记 warn，不阻止删除完成：记录残留的后果由下次启动的 `load_all()` 兜底（[第 22 篇 §6.1](22-persistence-across-restarts.md#61-清理规则)）。
 
 ---
 
@@ -290,11 +290,12 @@ Release 段依次做三件事：
 | 时刻 | 调用 | 捕获方式 | 失败时卷的状态 |
 |---|---|---|---|
 | 删除 | `delete_sandbox_impl()` | 冻结加 restack，或暂停时已 restack | 可恢复则回滚；不可恢复则 `fail_backings()` 标为 Failed |
-| 对卷做快照 | `VolumeManager::snapshot_volume_state()` | 由先前的 `snapshot_volume_mounts()` 完成 restack | 发布失败标为 Failed |
+| 给沙箱打快照（`POST /sandboxes/{id}/snapshots`） | `VolumeManager::snapshot_volume_state()` | 由同一次捕获里的 `pause_to_dir()` 完成 restack | 发布失败标为 Failed |
+| fork 时克隆独占卷 | `VolumeManager::create_child_for_owner()` | 由先前的 `snapshot_volume_mounts()` 完成 restack | 推论：发布的是新建的子卷，源卷记录不变 |
 | 暂停、快照、fork 的不可恢复失败 | `finalize_terminal_volumes()` | 不再捕获，照现有 image config 发布 | 发布失败只记 warn，然后释放预留 |
 
 暂停**不**发布卷。一台暂停的沙箱，卷的 upper 已经在暂停时 restack 进了卷目录，但仓库里的层列表仍是上一次发布时的；这些内容只在原节点上，直到删除时才被发布。
-推论：暂停期间若节点磁盘丢失，卷自上次发布以来的写入随之丢失；这与暂停沙箱本身只能在原节点恢复（[第 22 篇](22-persistence-across-restarts.md)）是同一个约束。
+推论：暂停期间若节点磁盘丢失，卷自上次发布以来的写入随之丢失；这与暂停沙箱本身只能在原节点恢复（[第 22 篇 §1](22-persistence-across-restarts.md#1-问题重启之后什么还在)）是同一个约束。
 
 第三行与删除的口径不同。`pause_sandbox_impl()`、`fail_snapshot_operation()` 与 fork 的不可恢复失败分支都在停掉 VM 之后调用 `finalize_terminal_volumes()`，
 它直接 `recover_and_publish_backings()`，没有区分 restack 是否完整。删除路径的注释明确说不完整的 restack 不能发布，这三处却会发布。
@@ -306,7 +307,7 @@ Release 段依次做三件事：
 
 - **冻结的持续时间**。成功路径上，卷从冻结一直保持到 VM 停止，中间包括 restack 与发布上传。guest 里的写操作在这段时间内全部挂起；由于 VM 马上要被停掉，这对用户不可见。
   但在发布失败的回滚路径上，解冻发生在一次失败的上传之后，这段挂起时间对一台继续运行的沙箱是真实的停顿。
-- **串行的捕获**。冻结与 restack 都按卷逐个进行；挂了多个卷的沙箱，删除时长正比于卷的数量与各自 upper 的大小。过期回收在持锁状态下串行处理每台过期沙箱，这一代价在[第 23 篇](23-auto-eviction-and-ttl.md)讨论。
+- **串行的捕获**。冻结与 restack 都按卷逐个进行；挂了多个卷的沙箱，删除时长正比于卷的数量与各自 upper 的大小。过期回收在持锁状态下串行处理每台过期沙箱，这一代价在[第 23 篇 §8](23-auto-eviction-and-ttl.md#8-失败与串行的代价)讨论。
 - **进度不跨重启**。`DeleteProgress` 只在内存里。一台运行中沙箱的删除若在进程崩溃时停在中途，重启后它不会再出现（运行中沙箱不持久化），卷的独占预留仍挂在一个已不存在的沙箱 id 名下。
   推论：`VolumeManager` 在打开时只建空缓存，代码中未见启动时回收无主预留的逻辑，这样的卷无法被再次预留或删除，需要人工清理。
 - **Killing 可能长期停留**。Stop 或 Release 一再失败时，沙箱停在 Killing，`wait_for_transition()` 的等待者在 60 s 后超时（[第 19 篇 §5](19-state-machine-and-concurrency.md#5-等待一次转换结束)）；没有后台任务替用户重试删除。
@@ -332,6 +333,8 @@ AgentENV 的卷是块设备上的 overlaybd 层栈，写入先进入节点本地
 - 卷的发布协议是 `Uploading` → 上传 → `Ready`，失败为 `Failed`；`Failed` 只能经 `Uploading` 离开，两种状态都不可被预留。
 - 释放先撤销仓库里的卷预留、后删元数据，保证释放失败时仍有重试入口。
 - 暂停、快照与 fork 的不可恢复失败路径会直接发布卷，与删除路径的口径不一致；进度不跨重启，崩溃会留下无主的卷预留。
+
+---
 
 ## 延伸阅读 / 下一篇
 

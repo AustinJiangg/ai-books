@@ -63,7 +63,8 @@ Go 侧有自己的 `services/Makefile`（`build`、`test`、`fmt-check`、`vet`�
   推论：debug 构建下层摘要计算与 RocksDB 太慢，会拖慢开发循环与测试；这些包被单独优化，其余代码仍保留调试友好的 debug 构建。
 - `rust-toolchain.toml` 只写 `channel = "stable"`、`profile = "minimal"` 与 clippy、rustfmt 两个组件，**不锁具体版本**。
   rustup 在每台机器上取当时最新的 stable；发布流水线用 `dtolnay/rust-toolchain@stable`，节点镜像的构建阶段用 `rust:1-bookworm`。
-  三处都是「当时的 stable」，同一个 commit 在不同日期构建可能用不同的编译器。依赖版本则由入库的 `Cargo.lock` 与发布构建的 `--locked` 固定。
+  三处都是「当时的 stable」，同一个 commit 在不同日期构建可能用不同的编译器。
+  `deploy/docker/Dockerfile.agentenv` 还写了 `ENV RUSTUP_TOOLCHAIN=${RUST_VERSION}`，但文件里没有对应的 `ARG RUST_VERSION`；推论：这个变量展开为空，镜像构建实际用的是基础镜像自带的工具链。依赖版本则由入库的 `Cargo.lock` 与发布构建的 `--locked` 固定。
 - 仓库没有 `[lints]` / `[workspace.lints]` 表，也没有 `clippy.toml` 或 `rustfmt.toml`：lint 规则完全由 `make clippy` 的命令行（`-D warnings`）决定，格式用 rustfmt 缺省值。不在 workspace 里的 `storage/uffd-core` 因此也不受 clippy 检查。
 - `.cargo/config.toml` 只定义一个别名：`adev = "run --package adev --"`，所以 `cargo adev …` 会先编译再运行 `adev` crate。
 

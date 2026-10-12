@@ -312,8 +312,8 @@ E2E 矩阵在 single-node 下直接跑 `make test-e2e`；在 docker-compose 下�
 
 ## 8. 与 e2b infra 的对照
 
-e2b infra 把需要 root 的测试写成普通 Go 测试，运行时 `t.Skip`，在开发机上会静默少跑一批；AgentENV 用 `#[ignore]` 让这类测试必须显式选中，选中后缺能力即失败。
-e2b infra 的集成测试要一台准备好 uffd、NBD 与大页的机器，AgentENV 则用 composite action 把 GitHub 托管机就地改造成沙箱宿主。
+e2b infra 把需要 root 的测试写成普通 Go 测试、非 root 时 `t.Skip`，CI 再以 `sudo -E go test` 让整个测试进程以 root 运行；AgentENV 用 `#[ignore]` 让这类测试必须显式选中，经能力 runner 以「非 root + 两项能力」运行，选中后缺能力即失败。
+e2b infra 的单元测试矩阵跑在自建 runner 上，作业开头配好 userfaultfd、hugetlbfs 与 NBD；AgentENV 用 composite action 把 GitHub 托管机就地改造成沙箱宿主。
 两边都没有性能回归门槛；AgentENV 另有覆盖率与变异测试，但都不阻塞。
 
 ---

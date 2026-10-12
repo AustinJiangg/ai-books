@@ -121,6 +121,11 @@ envd 由 `busybox runsv` 监管，崩溃或被杀后自动重启；最后 `exec`
 `host_interaction_ip` 是网络槽位分配给宿主侧的地址，宿主经 netns 里的 DNAT 到达 guest 的 eth0（[第 29 篇](29-network-slots.md)）。
 `start_fresh()` 与 `start_resume()` 都在拿到槽位后用这个地址构造 `EnvdInstance`，此时 guest 还没有开始运行。
 
+这个端口名义上可配，实际上改不动。宿主侧的 `control_plane_port` 只决定**宿主去连哪个端口**；guest 侧的 `tools-image/pivot-init` 在 runsv 的 run 脚本里只写 `exec /agentenv/envd`，
+不传任何端口参数，envd 于是监听它自己的缺省端口 49983。CLI 一侧同样写死：`crates/aenv/src/grpc/mod.rs` 的 `ENVD_PORT_STR = "49983"` 被放进
+`x-agentenv-target-port` 头里，经反向代理指向 guest。推论：把 `[tools] control_plane_port` 改成别的值，宿主的 `/health` 探测会连不上，每台沙箱都在 `init_timeout_secs` 后启动失败。
+这个配置项的实际作用只是让宿主代码不在多处写死同一个数字。
+
 ---
 
 ## 4. 就绪与 `/init`
@@ -271,7 +276,7 @@ envd 在 e2b infra 里随模板 rootfs 构建，在 AgentENV 里随 tools 盘分
 - 身份注入有两条通道：MMDS 是 Firecracker 提供的带外元数据，`/init` 是宿主经网络推给 envd 的初始化请求；前者为后者提供可信的令牌哈希。
 - `MmdsMetadata` 的四个字段名与 e2b infra 相同，`accessTokenHash` 是 SHA-512，无令牌时是空串的哈希；`address` 恒为空；`imageConfigs` 以 flatten 方式附加，不能覆盖保留字段。
 - MMDS 上限与 API 请求体上限一起提到 1 MiB；冷启动在 `InstanceStart` 前写，恢复时在 load 后、`Resumed` 前重写，因为快照不保存 MMDS 数据。
-- envd 来自 tools 盘，由 `/init` → `pivot-init` → `runsv` 拉起并监管；`[envd] version` 只是声明，模板构建时才实际探测。
+- envd 来自 tools 盘，由 `/init` → `pivot-init` → `runsv` 拉起并监管；`[envd] version` 只是声明，模板构建时才实际探测；guest 内 envd 不接收端口参数，`[tools] control_plane_port` 实际不可改。
 - 就绪判定是 `/health` 轮询（3 ms 间隔、单次 1 s、总计 60 s），之后通知 ublk-daemon、发 `/init`、挂新卷；这一切发生在代理路由发布之前。
 - 每次启动与恢复都发 `/init`，用于校时、换入令牌与环境变量；数字或 `uid:gid` 形式的 `USER` 需要先以 root 引导一次、解析 passwd，必要时追加 `aenv-<uid>-<gid>` 条目。
 - 宿主侧客户端假定「同一个 IP 不一定是同一台 VM」：引导 HTTP 客户端不保留连接，`EnvdInstance` 停机后通过共享标志让所有克隆失效。

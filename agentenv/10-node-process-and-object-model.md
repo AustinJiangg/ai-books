@@ -79,7 +79,7 @@ flowchart LR
 ### 2.2 能力检查为什么在最前面
 
 `privileges::require_runtime_capabilities()` 检查 `CAP_NET_ADMIN` 与 `CAP_SYS_ADMIN`：以 root 运行时要求它们在 effective 集合里，
-以普通用户运行时要求它们处于「可委派」状态（同时在 inheritable 与 permitted 集合里）。缺任何一个就带着提示退出。
+以普通用户运行时要求它们处于「可委派」状态，即同时在 inheritable、permitted 与 effective（I、P、E）三个集合里（`crates/linux-cap/src/lib.rs` 的 `CapabilitySets::is_delegable()`）。缺任何一个就带着提示退出。
 随后 `privileges::clear_ambient_capabilities()` 清空 ambient 集合，使 `server` 之后 spawn 的普通程序不会顺带继承网络与命名空间权限。
 
 这一步放在下载依赖、拉起 daemon 之前，是为了让权限配置错误在最便宜的时候暴露：
@@ -98,10 +98,11 @@ P2P 传输层与 `OverlaybdP2pRuntime` 在 `ensure_environment()` **之前**启�
 
 ### 2.4 `ensure_environment()`：校验加补齐
 
-`src/setup/mod.rs` 的 `ensure_environment()` 依次做六件事：创建 `runtime_path` 并清理上次残留的 netns 挂载（`prepare_network_runtime()`）；
+`src/setup/mod.rs` 的 `ensure_environment()` 依次做七件事：创建 `runtime_path` 并清理上次残留的 netns 挂载（`prepare_network_runtime()`）；
 检查运行期需要的系统包；按虚拟化模式检查 KVM / PVM 与 `/dev/kvm`；检查 ublk 模块与权限；
 下载缺失的依赖并重新生成 overlaybd 全局配置；把 `RLIMIT_NOFILE` 软上限抬到 65536（不超过硬上限）；
 读 `/proc/sys/net/ipv4/ip_forward`，不为 1 就退出并提示去跑 `--setup-host`。
+最后 `network_capacity::check()` 估算网络槽位容量，不足时只记警告、不退出。
 
 它对宿主状态只校验、不修改（修改留给需要 root 的 `--setup-host`），但对 `$AENV_HOME` 下的依赖与生成文件是**补齐**的：
 缺 Firecracker 二进制或内核就下载，overlaybd 全局配置每次启动都重写。这样节点可以在无特权的构建机上预先 `--setup-only`，
@@ -148,14 +149,16 @@ P2P 传输层与 `OverlaybdP2pRuntime` 在 `ensure_environment()` **之前**启�
 |---|---|---|---|
 | 1 | 停止新的 startup manifest 后续任务，排空在途的，最多 15 s | `snapshot::drain_startup_manifest_tasks()` | 在途 manifest 落地而不是被取消；上限防止卡在即将关闭的 daemon 上 |
 | 2 | 中止模板构建清理任务 | `start_image_build_cleanup()` 的句柄 | 后台清理不应与关闭争用资源 |
-| 3 | 停止 reporter，向 scheduler 注销节点 | `ObservabilityReporter::shutdown()` | 让 gateway 停止把新请求送到本节点 |
+| 3 | 停止 reporter，向 scheduler 注销节点 | `ObservabilityReporter::shutdown()` | 撤掉本节点的观测记录与全部绑定（见下文） |
 | 4 | 暂停所有运行中的沙箱，然后清理网络 | `Orchestrator::shutdown()` | 见 §3.2 |
 | 5 | 清理 Firecracker 进程池 | `FirecrackerPool::shutdown()` | 预热进程不承载状态，直接回收 |
 | 6 | 关闭 ublk-daemon | `UblkDeviceManager::shutdown_daemon()` | 所有沙箱已停，块设备不再被使用 |
 | 7 | 关闭 overlaybd P2P 与 P2P 传输 | `OverlaybdP2pRuntime::shutdown()` 等 | 最底层的制品传输最后关 |
 
-第 3 步先于第 4 步，意味着节点在暂停沙箱的这段时间里已经不在 scheduler 的节点表中；
-对这些沙箱的请求在节点重新注册之前会落空。这个窗口与它对多节点路由的影响在[第 22 篇](22-persistence-across-restarts.md)与[第 57 篇](57-heartbeat-and-cpu-intersection.md)讨论。
+注销的效果要看 scheduler 的节点发现方式。`UnregisterNode` 只删掉这个节点的心跳观测记录与名下绑定，不改发现列表（[第 57 篇 §4.1](57-heartbeat-and-cpu-intersection.md#41-unregisternode)）：
+Kubernetes 发现模式下，终止中的 Pod 由 EndpointSlice 发现标为 lingering，`Schedule()` 不再选它，这是发现层的作用而不是注销的作用；
+静态发现模式（缺省）下，节点仍在配置的节点表里，关闭期间仍可能被选中承接新建请求（[第 56 篇 §2.4](56-scheduler.md#24-不排除-unhealthy-节点)）。
+两种模式下有一点相同：第 3 步先于第 4 步，绑定已被撤掉，对本节点上沙箱的请求在节点重启并重新心跳之前会得到 404。这个窗口与它对多节点路由的影响在[第 22 篇](22-persistence-across-restarts.md)与[第 57 篇](57-heartbeat-and-cpu-intersection.md)讨论。
 
 ### 3.2 `Orchestrator::shutdown()`：只把 Paused 留到下次
 

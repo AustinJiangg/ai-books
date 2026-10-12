@@ -194,9 +194,9 @@ flowchart TB
 - **① 指标最外层**。`prometheus::http_metrics_middleware()` 要记下所有响应，包括 ② 拒绝的 401；
   它还从响应的 extension 里读 `HttpRouteSource`（`ProxyHost`、`ProxyHeader`、`ProxyPrefix`，缺省 `ControlPlane`），这个标记由内层的代理 handler 写入，只有在最外层才能看到。
 - **② 鉴权在分类器之外**。Host 形如 `{port}-{sandboxID}.{domain}` 的请求会被 ③ 直接代理走，不经过任何路由 handler；
-  鉴权放在 ③ 外面，这类请求才不会绕过鉴权。`require_auth()` 自己调用 `proxy::is_sandbox_proxy_request()` 判断一个请求属于控制面还是数据面（[第 13 篇](13-authentication.md)）。
+  鉴权放在 ③ 外面，这类请求才不会绕过鉴权。`require_auth()` 自己调用 `proxy::is_sandbox_proxy_request()` 判断一个请求属于控制面还是数据面（[第 13 篇 §4.1](13-authentication.md#41-控制面还是数据面)）。
 - **③ 分类器在路由 handler 之外**。Host 路由的优先级高于路径：一个发往 `8080-<id>.<domain>/sandboxes` 的请求虽然匹配了生成路由 `/sandboxes`，
-  也必须送进 guest 而不是创建沙箱。`sandbox_proxy_classifier()` 在 handler 之前把它截走，并把解析出的沙箱 id 与端口写成路由头，交给代理（[第 17 篇](17-reverse-proxy.md)）。
+  也必须送进 guest 而不是创建沙箱。`sandbox_proxy_classifier()` 在路由匹配之后、handler 之前把它截走，并把解析出的沙箱 id 与端口写成路由头，交给代理（[第 17 篇 §2](17-reverse-proxy.md#2-三个入口)）。
 
 手写的隧道与 `/proxy` 路由是在 `layer` 之前 `merge` 进来的，所以同样受 ② 保护，不需要各自再写鉴权。
 
@@ -223,6 +223,10 @@ flowchart TB
 | 快照仓库 | `ApiImpl::repository_error()` | `InvalidRequest` → 400；`SnapshotNotFound` 等五种 NotFound → 404；`AliasConflict`、`VolumeNameConflict`、`IntegrityMismatch` → 409；`Unsupported` → 500；`Backend` → 500（带 cause 链） |
 | anyhow 链 | `ApiImpl::snapshot_manager_error()` | 沿 `chain()` 找第一个 `RepositoryError`，找到按上一行映射，否则 500 |
 | orchestrator | `impl From<OrchestratorError> for models::Error` | `ShuttingDown` → 503；`SandboxNotFound` → 404；`InvalidSandboxState` → 400；`SandboxOperationConflict` → 409；`SandboxOperationFailed` → 500 并拼接 cause；其余 → 500 |
+
+表中的数字是响应体 `Error.code` 的取值，不是 HTTP 状态码：HTTP 状态码仍由 handler 选的变体决定（§3.1）。
+多数 handler 的兜底分支是 `Status500_ServerError(err.into())`，于是 `ShuttingDown` 得到的是 HTTP 500、body 里 `code` 为 503；
+一个错误要得到与 `code` 一致的 HTTP 状态码，handler 必须像 pause 对 `SandboxNotFound` 那样先显式 `match` 出它，再选对应的变体。
 
 `internal_error()` 沿 `source()` 链拼接每一层的消息，与上一层相同的跳过，避免 anyhow 包装造成的重复文本。
 这意味着 500 响应会把内部错误链原样交给客户端：便于排查，但也把路径、文件名等内部信息暴露给持有 API key 的调用方。

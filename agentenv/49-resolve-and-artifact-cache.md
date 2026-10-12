@@ -33,7 +33,7 @@ committed 记录 `CommittedSnapshot` 只保存这些东西的逻辑描述：层�
 输入一条 committed 记录，输出本机可直接使用的路径；可以生成节点本地的派生文件，但**不得修改仓库里的真相**；
 同一节点上的并发 resolve 应当用原子写，使读者看不到写了一半的派生配置。
 
-有一个前提让这件事变得简单：committed 记录在提交后不再改变层与制品（唯一的例外是后补的 startup manifest 描述符，见第 6 节）。
+有一个前提让这件事变得简单：committed 记录在提交后不再改变层与制品（唯一的例外是后补的 startup manifest 描述符，见第 7 节）。
 因此派生文件可以用快照 id 做键长期复用，不需要失效协议。下文会看到，这个前提也被用来跨进程重启复用派生文件。
 
 ---
@@ -76,7 +76,7 @@ resolve 的结果是 `RunnableSnapshot`（`src/snapshot/types/snapshot.rs`），
    `file = <仓库根>/managed-layers/<digest>.overlaybd.commit`，文件不存在即 `ArtifactNotFound`；External 层保留 digest 与 `repoBlobUrl`。
    内存层允许为空，rootfs 与附加盘不允许。
 4. 若开启了 `[snapshot.memory_startup_pack] consume_enabled`、记录带描述符且仓库里确有 `memory-startup.pack` 文件，
-   生成一个指向该文件的本地引用（第 6 节）。
+   生成一个指向该文件的本地引用（第 7 节）。
 5. 把物化过程中拿到的缓存句柄装进 `CacheArtifactLease`，与记录、manifest 一起构成 `RunnableSnapshot`。
 
 这里没有任何字节被搬到节点本地。Rust 版 overlaybd 打开 rootfs 时，每一层都直接读共享文件系统上的仓库文件；
@@ -108,6 +108,12 @@ POSIX resolver 也不消费 P2P：仓库本身可达，缺文件直接报错，�
 两个细节值得注意。其一，层存在性检查放在 `ensure_cached_at()` 的取数闭包里，只在 `image.json` 第一次物化时执行；
 之后再 resolve 同一快照，`image.json` 已在磁盘上，检查被跳过。其二，层虽然不下载，读到的字节最终还是会经节点块缓存落盘（第 39 篇），
 只是那份缓存属于 ublk-daemon，不属于这里的 `LocalArtifactCache`。
+
+还有一处与「层留在远端」相关的取舍发生在发布侧。从对象存储快照创建的沙箱再次发布时，`repository.rs` 的
+`derive_and_upload_disk_image_layers()` 把 rootfs 与附加盘里那些「没有本地文件、带 `repoBlobUrl`」的继承层记成 `OverlaybdLayerRef::External`，
+`repo_blob_url` 原样写成 `s3://<bucket>/<prefix>/managed-layers`；内存层走 `derive_and_upload_memory_layers()`，被识别回 Managed。
+resolve 对 Managed 层每次用当前配置重新拼 URL，对 External 层则照抄记录里的地址。于是桶地址被写死进了新记录：
+换桶或修改 prefix 之后，这类快照的 rootfs 层仍指向旧位置，打开时读不到；而且 External 层不做存在性检查，失败要等到 overlaybd 真正读层时才暴露。
 
 下图对照两条路径。
 
@@ -288,6 +294,7 @@ AgentENV 把层的按需读交给 ublk-daemon 里的 overlaybd，resolve 只下�
 - committed 记录只存逻辑层引用，resolve 把它翻译成本机路径与三类 `image.json`；记录不可变，使派生文件可以按快照 id 长期复用。
 - POSIX 后端不复制任何字节：vm_state 与 Managed 层都直接指向共享文件系统上的仓库文件，读性能由共享文件系统决定，且不经节点块缓存。
 - 对象存储后端只下载 vm_state（先 P2P 后对象存储），manifest 每次读入内存，层只在首次物化时并发校验存在，运行时按需读 `s3://` URL。
+- 从对象存储快照继承的 rootfs 与附加盘层再次发布时被记成带桶地址的 External 引用（内存层仍是 Managed），换桶或改 prefix 后无法解析。
 - 能从远端恢复的层一律写 `dir=`，使本地副本可被镜像缓存 GC 回收；只有本地唯一副本才写 `file=`。规则由镜像缓存定义，不在快照模块里。
 - `LocalArtifactCache` 保证同键单 in-flight、句柄即钉住、超限后按 LRU 降到 80%；失败结果广播给所有等待者。
 - lease 只覆盖启动窗口；推论：对象存储后端上，从快照创建的沙箱在暂停时要重读的内存 `image.json` 可能已被驱逐。
