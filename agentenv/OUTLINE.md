@@ -835,6 +835,6 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
    编写者交付说明里给其它篇目的建议汇总到 `tools/briefs/agentenv/review-notes.md`，审校时逐条处理。
 4. **图**：`tools/figcheck.sh agentenv` 全 PASS；WARN 的图按 `tools/briefs/FIGURE-FIXER-BRIEF.md` 返工。
 5. **验收**：主编逐部抽读，跑 `tools/mdlinks.py agentenv`、`tools/mdmermaid.mjs agentenv/*.md`、`tools/figcheck.sh agentenv`，
-   打包 `dist/agentenv.html`，用 chromium 截图看排版，更新 README 的版本行与版本表，提交、打 tag、发 Release。
+   生成网页版 `html/agentenv.html`，用 chromium 截图看排版，在根目录 README 与 `index.html` 的书目里加链接，提交。
 
 每篇完成后把本文件状态列改为 `●`，审校后改为 `◎`。

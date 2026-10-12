@@ -6,11 +6,10 @@
 
 | 项 | 状态 |
 |---|---|
-| 脚手架 | 完成：`agentenv/{README,OUTLINE,STYLE,FIGURE-GUIDE}.md`、`tools/briefs/agentenv/{WRITER-BRIEF,REVIEWER-BRIEF,review-notes}.md`、调研笔记 `survey/` |
-| 编写环境 | 完成：`tools/fetch-sources.sh`（代码基线拉到不入库的 `.src/`）、`tools/package.json`（mermaid / jsdom / playwright-chromium） |
-| 正文 | **9 / 74**：第 08–15、19 篇初稿 `●`（2026-10-11 第 1 批完成 08–15）。下一批从 HANDOFF 批次表第 2 批开始 |
-| 已知待修 | 第 19 篇第 2 张图 figcheck WARN（边标签重叠 4 处），审校时按 FIGURE-GUIDE 改成编号边 + 图下表 |
-| 审校 / 打包 / 发布 | 未开始 |
+| 正文 | **74 / 74**，全部审校完成（OUTLINE 状态 `◎`）；约 30 万汉字（不含代码块与表格）、129 张图 |
+| 检查 | `tools/figcheck.sh agentenv` 129 张全部 PASS；`tools/mdlinks.py agentenv` 0 错误；正文篇（00–68）汉字数都在 3000–5000 |
+| 网页版 | `html/agentenv.html`，已加进根目录 `README.md` 与 `index.html` 的书目；正文改动后按「恢复环境」一节的命令重新生成 |
+| 已知待办 | 基线升级（见下文「基线升级待办」）；`tools/figcheck.mjs` 对左右并排 subgraph 的「标签压线」检查可能误报（65、66 审校时靠减少边标签绕过）；01 / 70 的代码行数统计口径未与 `git ls-files` 实测统一（`src/api`、`thirdparty/envd` 两行） |
 
 下文的批次表与提示词模板保留，供基线升级后重写受影响篇目时复用。
 
@@ -23,7 +22,11 @@ tools/fetch-sources.sh                                   # 拉 .src/agentenv、.
 tools/figcheck.sh agentenv/19-state-machine-and-concurrency.md   # 验证图检查可用
 ```
 
-打包需要 `pip install markdown-it-py`（或在 venv 里装），命令见根目录 `README.md`。
+生成网页版需要 `pip install markdown-it-py`（或在 venv 里装）：
+
+```bash
+python3 tools/build_docs_html.py agentenv tools/node_modules/mermaid/dist/mermaid.min.js html/agentenv.html
+```
 
 ## 剩余篇目与建议批次
 
