@@ -153,3 +153,36 @@ Host 名入口在路由匹配之后运行，所以它会截走本来匹配到控
 | 数据面（Host 名、路由头、`/proxy`） | Host 转成路由头、改写成 `/proxy` 前缀后转发 | [55](55-gateway.md)、[17 §2](17-reverse-proxy.md#2-三个入口) |
 
 ---
+
+## 3. AgentENV 调用的 Firecracker 端点
+
+AgentENV 经 Firecracker 的 API socket（UDS）手写 REST 请求：包装方法都在 `src/sandbox/firecracker/instance.rs` 的 `FirecrackerInstance` 上，
+底层是 `socket.rs` 的 `UnixSocketClient`，请求没有超时（[第 25 篇 §6](25-backend-and-firecracker-process.md#6-和-firecracker-说话手写的-uds-客户端)）。
+调用位置除特别注明外都是 `src/sandbox/firecracker/sandbox.rs` 里 `FirecrackerSandbox` 的方法。「来源」一栏与[第 27 篇 §7](27-start-pause-resume-sequences.md#7-端点调用表)、[第 03 篇 §7](03-firecracker-for-agentenv.md#7-本书用到的-firecracker-端点)同一口径。
+
+| 端点 | 包装方法 | 调用位置 | 来源 | 篇目 |
+|---|---|---|---|---|
+| `PUT /logger` | `set_logger()` | `configure_logger()`：配了 `firecracker.log_level` 时，冷启动与恢复都调 | 上游 | [27 §3](27-start-pause-resume-sequences.md#3-冷启动的配置序列) |
+| `PUT /machine-config` | `set_machine_config()` | `configure_microvm()`（冷启动） | 上游 | [27 §3](27-start-pause-resume-sequences.md#3-冷启动的配置序列) |
+| `PUT /cpu-config` | `set_cpu_config()` | `configure_microvm()`，有集群 CPU 配置时 | 上游 | [27 §3](27-start-pause-resume-sequences.md#3-冷启动的配置序列)、[57 §5](57-heartbeat-and-cpu-intersection.md#5-cpu-模板交集) |
+| `PUT /boot-source` | `set_boot_source()` | `configure_microvm()` | 上游 | [27 §2.1](27-start-pause-resume-sequences.md#21-boot-args-的拼装) |
+| `PUT /drives/{id}` | `add_drive()` | `configure_microvm()`（tools 盘、rootfs）、`configure_extra_drives()` | 上游；`direct` 字段为补丁新增 | [27 §3](27-start-pause-resume-sequences.md#3-冷启动的配置序列)、[26 §6.1](26-sandbox-block-devices.md#61-补丁做了什么) |
+| `PATCH /drives/{id}`（路径） | `patch_drive_path()` | `start_resume()`：load 之后给新卷槽位换后端路径 | 上游 | [31 §4.3](31-extra-drives-and-volumes.md#43-新卷load-之后热插) |
+| `PATCH /drives/{id}`（限流） | `patch_drive_rate_limiter()` | `start_resume()`：调和 rootfs 限流 | 上游 | [27 §4.2](27-start-pause-resume-sequences.md#42-load-与-load-之后) |
+| `PUT /network-interfaces/eth0` | `add_network_interface()` | `configure_microvm()`；恢复时由 load 的 `network_overrides` 代替 | 上游 | [27 §3](27-start-pause-resume-sequences.md#3-冷启动的配置序列) |
+| `PUT /mmds/config` | `set_mmds_config()` | `configure_microvm()` | 上游 | [28](28-mmds-and-envd.md) |
+| `PUT /mmds` | `set_mmds()` | `configure_microvm()`、`start_resume()` | 上游 | [28](28-mmds-and-envd.md) |
+| `PUT /balloon` | `set_balloon()` | `configure_microvm()` | 上游 | [27 §3](27-start-pause-resume-sequences.md#3-冷启动的配置序列) |
+| `PUT /actions`（InstanceStart） | `start()` | `start_fresh()` | 上游 | [27 §3](27-start-pause-resume-sequences.md#3-冷启动的配置序列) |
+| `PATCH /vm`（Paused） | `pause()` | `pause_to_dir()`、`snapshot_volumes()` | 上游 | [27 §5.1](27-start-pause-resume-sequences.md#51-序列) |
+| `PATCH /vm`（Resumed） | `resume()` | `start_resume()`；capture 后由 `FirecrackerSandbox::resume()` 调用 | 上游 | [27 §4.2](27-start-pause-resume-sequences.md#42-load-与-load-之后)、[27 §6](27-start-pause-resume-sequences.md#6-capture-与-pause同一段代码四种收尾) |
+| `PUT /snapshot/create` | `create_state_only_snapshot()` | `snapshot_memory_to_overlaybd()` | 上游；不带 `mem_file_path` 依赖补丁 | [27 §5.1](27-start-pause-resume-sequences.md#51-序列)、[03 §4](03-firecracker-for-agentenv.md#4-aenv-补丁版-firecracker-的四个被用到的行为) |
+| `GET /vm/dirty-memory-ranges` | `get_dirty_memory_ranges()` | `snapshot_memory_to_overlaybd()` | 补丁新增 | [42 §2.2](42-memory-snapshot-over-ublk.md#22-dirtymemoryranges-的语义) |
+| `PUT /snapshot/load`（File 后端） | `load_snapshot_file()` | `start_resume()` | 上游；内存文件为块设备时取大小靠补丁的 seek | [27 §4.2](27-start-pause-resume-sequences.md#42-load-与-load-之后)、[42 §4.1](42-memory-snapshot-over-ublk.md#41-取设备) |
+| `PUT /snapshot/load`（Uffd 后端） | `load_snapshot_uffd()` | 无调用者，`#[allow(dead_code)]` 保留 | 上游 | [44](44-uffd-alternative.md)、[27 §8](27-start-pause-resume-sequences.md#8-遗留路径与技术债) |
+
+补丁行为的实现与完整补丁清单在[第 67 篇](67-firecracker-patch-layer.md)。表中四处依赖补丁 —— drive `direct`、可选 `mem_file_path`、`dirty-memory-ranges`、seek 取内存文件大小 —— 与第 03 篇 §4 列出的四个行为一一对应。
+`[memory_snapshot] track_dirty_pages` 关闭时 `GET /vm/dirty-memory-ranges` 照样被调用，差别只在 Firecracker 内部用 KVM dirty log 还是 `mincore`（[第 42 篇 §5](42-memory-snapshot-over-ublk.md#5-关闭脏页跟踪时)）。
+`socket.rs` 测试里出现的 `GET /vm` 等请求只用于测试 `UnixSocketClient`，生产路径不调用。
+
+---
