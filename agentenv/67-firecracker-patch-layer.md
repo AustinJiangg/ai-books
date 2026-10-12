@@ -141,7 +141,7 @@ AgentENV 的 `create_state_only_snapshot()` 发出的请求只带 `snapshot_path
 
 ```mermaid
 flowchart TB
-    A["GET /vm/dirty-memory-ranges"] --> B{"槽位有<br/>用户态位图"}
+    A["GET /vm/<br/>dirty-memory-ranges"] --> B{"槽位有<br/>用户态位图"}
     B -->|"有"| C["KVM_GET_DIRTY_LOG<br/>读出即清零"]
     B -->|"无"| D["mincore<br/>驻留即脏"]
     C --> E["store_dirty_bitmap<br/>写回用户态位图"]

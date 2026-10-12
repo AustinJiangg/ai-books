@@ -272,7 +272,7 @@ POSIX 后端的提交点是一次 `rename`；对象存储后端的提交点是 r
 ## 延伸阅读 / 下一篇
 
 - 下一篇：[第 67 篇 · AENV 补丁版 Firecracker 与 guest 内核](67-firecracker-patch-layer.md) —— 本篇第 2 节涉及的补丁的完整清单与实现。
-- 上一篇：[第 65 篇 · 与 e2b infra 的对照（一）](65-vs-e2b-infra-architecture-and-api.md)：架构、控制面与 API。
+- 上一篇：[第 65 篇 · 与 e2b infra 的对照（一）](65-vs-e2b-infra-architecture.md)：架构、控制面与 API。
 - [第 42 篇 · 内存快照](42-memory-snapshot-over-ublk.md)、[第 44 篇 · uffd 方案与对比](44-uffd-alternative.md)：AgentENV 两种内存方案的细节。
 - [Firecracker 手册第 49 篇 · 为什么分叉](../firecracker/49-why-e2b-forked.md)、[第 50 篇 · /memory/mappings](../firecracker/50-memory-mappings-api.md)、[第 51 篇 · /memory](../firecracker/51-memory-resident-empty-api.md)、[第 52 篇 · /memory/dirty](../firecracker/52-memory-dirty-api.md)、[第 53 篇 · uffd 写保护](../firecracker/53-uffd-write-protection.md)、[第 54 篇 · 可选 memfile](../firecracker/54-optional-memfile-snapshot.md)。
 - [e2b 手册第 05 篇 · userfaultfd](../e2b-infra/05-userfaultfd.md)、[第 06 篇 · 块设备、NBD 与写时复制](../e2b-infra/06-block-devices-nbd-cow.md)、[第 29 篇 · 模板产物格式](../e2b-infra/29-template-artifact-format.md)、[第 30 篇 · block 包](../e2b-infra/30-block-layer.md)。

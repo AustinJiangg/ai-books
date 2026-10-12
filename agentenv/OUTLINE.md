@@ -768,7 +768,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 65 | `65-vs-e2b-infra-architecture.md` | 与 e2b infra 的对照（一）：架构、控制面与 API | ● |
 | 66 | `66-vs-e2b-infra-storage-and-memory.md` | 与 e2b infra 的对照（二）：存储、内存恢复与模板 | ● |
-| 67 | `67-firecracker-patch-layer.md` | AENV 补丁版 Firecracker 与 guest 内核 | ○ |
+| 67 | `67-firecracker-patch-layer.md` | AENV 补丁版 Firecracker 与 guest 内核 | ● |
 | 68 | `68-known-issues-and-debt.md` | 已知问题与技术债 | ○ |
 
 **65 · 与 e2b infra 的对照（一）：架构、控制面与 API**
