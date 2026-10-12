@@ -7,7 +7,7 @@
 |---|---|---|---|
 | e2b 服务端基础设施技术手册 | [`e2b-infra/`](e2b-infra/) | [e2b-dev/infra](https://github.com/e2b-dev/infra) tag `2026.09` 及其 aarch64（鲲鹏 / openEuler）适配版；入口 [`e2b-infra/README.md`](e2b-infra/README.md) | `dist/e2b-infra.html` |
 | Firecracker 技术手册 | [`firecracker/`](firecracker/) | 上游 Firecracker v1.12.1、e2b 定制版、ARM 适配版与 checkpoint / restore 扩展四层的代码讲解；入口 [`firecracker/README.md`](firecracker/README.md) | `dist/firecracker.html` |
-| AgentENV 技术手册 | [`agentenv/`](agentenv/) | [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) tag `v0.2.3` 及其依赖的 AENV 补丁版 Firecracker（`aenv-deps`），并与 e2b infra 逐项对照；入口 [`agentenv/README.md`](agentenv/README.md)（编写中：已写 9 / 74 篇，续写见 `tools/briefs/agentenv/HANDOFF.md`） | `dist/agentenv.html` |
+| AgentENV 技术手册 | [`agentenv/`](agentenv/) | [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) tag `v0.2.3` 及其依赖的 AENV 补丁版 Firecracker（`aenv-deps`），并与 e2b infra 逐项对照；入口 [`agentenv/README.md`](agentenv/README.md)（v0.1.0：74 篇，基线升级见 `tools/briefs/agentenv/HANDOFF.md`） | `dist/agentenv.html` |
 
 每本书的目录里固定有四个编写用文件：`README.md`（导读、目录、版本）、`OUTLINE.md`（编写计划与每篇要点）、
 `STYLE.md`（写作规约）、`FIGURE-GUIDE.md`（图的规约）。正文是 `NN-xxx.md`。

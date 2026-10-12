@@ -54,11 +54,11 @@
 |---|---|---|
 | 正确性 | 39 | 对象存储仓库的弱一致 catalog；持久记录的两阶段标记 |
 | 可用性 | 41 | Firecracker REST 调用无超时；ublk-daemon 无崩溃恢复；`Schedule()` 不排除 UNHEALTHY |
-| 可运维性 | 72 | managed layers 无 GC |
+| 可运维性 | 73 | managed layers 无 GC |
 | 安全与信任边界 | 18 | P2P 信任边界；控制面 gRPC 无认证 |
 | 供应链与构建 | 20 | 生成代码无漂移检查 |
 | 文档漂移 | 31 | `docs/src/internals/*` 的几处主要偏差；startup pack 的版本称呼 |
-| 合计 | 221 | 其中 45 条标为推论 |
+| 合计 | 222 | 其中 45 条标为推论 |
 
 ---
 
@@ -260,6 +260,7 @@ scheduler 的 `services/scheduler/internal/node_registry.go` 有一套状态推�
 | O-13 | `volume-restore-*` 卷在沙箱删除后只释放不删除 | `src/volume.rs` | 恢复出来的卷累积 | [第 16 篇 §8](16-snapshot-and-volume-api.md#8-从快照恢复卷) |
 | O-14 | 节点块缓存：被打开文件钉住的条目使容量上限变软；未 checkpoint 的条目重启后丢失；sandbox-ready 集合不清理；`CachedFile::evict_range` 退化为整文件驱逐 | `storage/overlaybd/src/backend/cache/` | 磁盘占用可超过配置；重启后重新下载 | [第 39 篇 §4.2](39-block-cache-and-background-download.md#42-驱逐按条目按-lru跳过忙条目) |
 | O-15 | `deps/` 只增不减 | `src/setup/deps.rs` | 升级后旧版本依赖留在磁盘 | [第 59 篇 §3.2](59-host-setup-and-privileges.md#32-版本化路径与存在即已安装) |
+| O-73 | 离线导出的镜像不写进任何记录 | `aenv-snapshot-image` 工具 | 删除快照时不清理，registry 里留下无人认领的镜像 | [第 50 篇 §3](50-rootfs-as-oci-image.md#3-离线导出aenv-snapshot-image) |
 
 ### 4.3 关闭、重启与持久记录
 
@@ -517,7 +518,7 @@ AgentENV 的 `docs/src/**`、README、`CLAUDE.md` 与配置注释是参考，不
 - 一个部署是一个信任域：单 API key 无租户，集群内节点、scheduler 与 P2P 对端互信，宿主防火墙被当作数据面鉴权的前提；开启 P2P 时，制品完整性取决于集群里最弱的节点。
 - 构建链的主路径是钉住的，未固定的是旁路：protoc、Go 镜像、tools 盘镜像引用、安装脚本的校验来源；入库的生成代码没有漂移检查。
 - 文档与注释的漂移多数指向旧设计；行为以代码为准，startup manifest 的称呼以 `AENVMF01` / 格式版本 4 为准。
-- 221 条里有 45 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
+- 222 条里有 45 条标「推论：」，是从代码结构推出、未经运行验证的假设，判断优先级之前应先复现。
 
 ---
 

@@ -160,7 +160,7 @@ flowchart LR
 
 ### 3.4 `registryfs_v2`
 
-`RegistryFsV2`（`backend/registryfs_v2.rs`，名字沿用上游的 registryfs_v2）用 Range GET 读仓库 blob：
+`RegistryFsV2`（`backend/registryfs_v2.rs`，名字沿用上游的 registryfs_v2）用 Range GET 读 registry blob：
 
 - **解析实际 URL。** 第一次读某个 blob 时，`resolve_actual_url_once()` 发一个 `Range: bytes=0-0` 的 GET，HTTP 客户端关闭了自动重定向。
   返回重定向就记下 `Location`（多为对象存储的签名 URL，`UrlMode::Redirect`），之后直接读它，不再带仓库凭据；
@@ -171,7 +171,7 @@ flowchart LR
 
 加速地址就是 P2P HTTP 门面 `/p2p-http/<origin>`。`ImageService::create_image_file()` 每次打开镜像前调用 `enable_acceleration()`：
 P2P 启用且门面地址能在 1 s 内建立 TCP 连接，就切到 `RemoteOpenMode::Direct` 并设置加速地址；否则回到 `Cached`。
-`Direct` 模式下仓库 blob **不经过节点块缓存**，`open_remote_blob_with_size()` 的注释说明此时 P2P 门面自己充当缓存。
+`Direct` 模式下 registry 层 blob **不经过节点块缓存**，`open_remote_blob_with_size()` 的注释说明此时 P2P 门面自己充当缓存。
 这个探测是同步的 `TcpStream::connect_timeout()`，在 async 函数里阻塞调用线程最多 1 s；推论：门面不可达时，每次打开镜像都要付这笔等待。
 
 ### 3.5 OSS
@@ -277,7 +277,7 @@ rootfs 与内存设备用不同的全局配置（[第 41 篇](41-ublk-daemon.md)
 - 远端 lower 的栈自下而上是 registryfs_v2 或 OSS、`RuntimeDispatchFile`、`CachedFile`、tar 适配、`SwitchFile`、可选 prefetch、LSMT、`ImageFile`。
 - `LocalFile` 的借用缓冲读写在当前线程同步执行，原因是 `spawn_blocking` 的 `'static` 约束与不可取消；ctx 路径用普通 fd 走 io_uring，不用 fixed file 或 fixed buffer。
 - `SwitchFile` 的切换能力在 v0.2.3 没有调用者，实际只用于自动识别 ZFile；后台下载经节点块缓存生效。
-- P2P 门面可达时仓库 blob 走 `Direct` 模式、不经节点块缓存；OSS 来源总是经过缓存。
+- P2P 门面可达时 registry 层 blob 走 `Direct` 模式、不经节点块缓存；OSS 来源总是经过缓存。
 - reqwest / opendal 把连接任务绑到当前 runtime；`RuntimeDispatchFile` 把打开、读与大小查询全部投递到每个 `ImageService` 一个的 `obd-remote-io` runtime。
 - 代价是每次远端读多一次拷贝与一次跨线程交接，且调用方取消不会中止已投递的请求。
 - 该 runtime 必须用 `shutdown_background()` 关闭，否则在 async 上下文中析构会 panic。

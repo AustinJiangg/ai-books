@@ -1,6 +1,6 @@
 # AgentENV 技术手册
 
-> **v0.0.1** · 2026-10-04 · 江路路（j30059180）
+> **v0.1.0** · 2026-10-12 · 江路路（j30059180）
 
 一本关于 **AgentENV**（[kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV)，tag `v0.2.3`）的教材式技术手册，
 并讲解它依赖的 **AENV 补丁版 Firecracker**（kvcache-ai/firecracker `aenv-deps`，上游 v1.15.1 之上 7 个提交）
@@ -15,8 +15,6 @@ AgentENV 是为 agentic RL 训练大规模运行 agent 环境的沙箱平台，�
 
 未特别说明处，全书讲的都是 **AgentENV v0.2.3**。版本称谓与术语见 [`STYLE.md`](STYLE.md)，
 图的画法见 [`FIGURE-GUIDE.md`](FIGURE-GUIDE.md)，编写计划见 [`OUTLINE.md`](OUTLINE.md)。
-
-> **编写进度**：74 篇中已完成 9 篇初稿（第 08–15、19 篇），其余未写。续写方法见 `tools/briefs/agentenv/HANDOFF.md`。
 
 ---
 
@@ -186,6 +184,7 @@ AgentENV 是为 agentic RL 训练大规模运行 agent 环境的沙箱平台，�
 | 版本 | 日期 | 说明 |
 |---|---|---|
 | v0.0.1 | 2026-10-04 | 脚手架：README、OUTLINE（74 篇要点）、STYLE、FIGURE-GUIDE 与编写 / 审校简报；正文未写 |
+| v0.1.0 | 2026-10-12 | 初版：74 篇（00–73），约 30 万汉字（不含代码块与表格）、129 张图；全书审校完成，图全部通过 figcheck |
 
 修订规则：每次改动默认修订号加一（最后一位），日期精确到日；正文有实质改动才升次版本号（v0.1.0 为 74 篇齐、审校完成）。
 版本与日期只在本文件顶部的信息行维护一处，打包脚本从这里读取。
