@@ -809,7 +809,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 |---|---|---|---|
 | 69 | `69-glossary.md` | 术语表 | ○ |
 | 70 | `70-code-map.md` | 代码地图：crate、模块与篇目 | ○ |
-| 71 | `71-config-env-ports-reference.md` | 配置项、环境变量与端口总表 | ○ |
+| 71 | `71-config-env-ports-reference.md` | 配置项、环境变量与端口总表 | ● |
 | 72 | `72-api-reference.md` | 接口总表：HTTP、Firecracker、daemon RPC 与 gRPC | ● |
 | 73 | `73-artifacts-and-formats-reference.md` | 持久化制品与磁盘格式总表 | ● |
 
