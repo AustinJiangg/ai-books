@@ -95,7 +95,7 @@ fork 的子沙箱也是在写入 Running 元数据时调用 `update_timeout(new_
 
 这样做的收益是：冷启动拉镜像、等 envd 就绪、从仓库下载层所花的时间都不计入用户的租约，
 一台 15 s TTL 的沙箱不会因为创建花了 10 s 而只剩 5 s 可用。代价是 TTL 不能约束「卡在 Creating 的沙箱」，
-那要靠 [第 20 篇](20-launch-plan-and-rollback.md) 的失败回滚与 envd 就绪超时。
+那要靠[第 20 篇 §4](20-launch-plan-and-rollback.md#4-失败阶段与回滚)的失败回滚与 envd 就绪超时。
 
 ### 2.4 谁在构造 `NewTimeout`
 
@@ -110,6 +110,9 @@ fork 的子沙箱也是在写入 Running 元数据时调用 `update_timeout(new_
 | fork | `Set(timeout)` 或 `UseExisting` | 继承源沙箱的 TTL 长度 |
 | 代理自动恢复 | `EnsureMinimum(300 s)` | — |
 | BuildKit builder VM | `Set(请求 timeout + 3900 s)`，动作 `Delete` | 请求 timeout 缺省 3600 s |
+
+全书统一的口径是三个数：**缺省 15 s**（`[orchestrator].default_sandbox_timeout_secs`，v1 创建、冷启动与显式 resume 不给 `timeout` 时用它）、**v2 300 s**（v2 创建与 v2 connect 的缺省）、**auto-resume 至少 300 s**（`auto_resume_min_sandbox_timeout_secs`，只作下限）。
+显式 resume 用的是 `Set` 而不是 `EnsureMinimum`：`sandboxes_sandbox_id_resume_post()` 在 `body.timeout` 缺省时取 `default_sandbox_timeout()`，所以一个以 300 s 创建的沙箱，`POST /resume` 传 `{}` 后 TTL 会缩成 15 s。
 
 `NewTimeout::None` 在 v0.2.3 里只出现在测试中，API 层没有任何入口能创建或恢复出一台永不过期的沙箱；
 `sandbox_model()` 里把 `expires_at = None` 映射成「一百年后」的 `end_at` 分支，对 API 创建的沙箱实际不会走到。
@@ -181,7 +184,8 @@ inner.by_expiry
 1. 取 `eviction_cutoff = SystemTime::now()`，调用 `store.list_expired(eviction_cutoff)`。
 2. 逐条遍历：状态不是 Running 的跳过。
 3. 按 `timeout_action` 决定要认领成的状态：`Pause` 对应 Pausing，`Delete` 对应 Killing。
-4. 取这台沙箱的 `deletion_progress` 锁，与显式删除共用同一把（[第 21 篇](21-deletion-and-volume-capture.md)）。
+4. 取这台沙箱的 `deletion_progress` 锁，与显式删除共用同一把（[第 21 篇 §2](21-deletion-and-volume-capture.md#2-入口与互斥)）。
+   `Delete` 动作在持锁期间走完整的删除：挂了可写卷的沙箱同样要冻结、封存并发布卷，锁要持到这些都做完。
 5. `claim_expired_running_sandbox()` 用 CAS 认领；认领成功后直接调用 `pause_sandbox_impl()`，
    或以 `previous_state = Running` 调用 `delete_sandbox_impl()`。
 6. 成功的 ID 记入返回值；失败只记一条 warn，继续下一台。
@@ -217,7 +221,7 @@ flowchart TB
 认领时发现已被续期，沙箱也留在 Running（[§5](#5-列出与认领之间)）。
 
 图里有一条不对称值得注意：TTL 只管 Running。暂停之后的沙箱没有第二个 TTL，它的记录与制品会一直留在节点上，
-直到有人显式删除（[第 22 篇](22-persistence-across-restarts.md)）。到期即暂停在内存上释放了资源，在磁盘上则把成本转成了长期占用。
+直到有人显式删除（[第 22 篇 §3.3](22-persistence-across-restarts.md#33-产物目录)）。到期即暂停在内存上释放了资源，在磁盘上则把成本转成了长期占用。
 
 ---
 
@@ -301,7 +305,7 @@ template builder 是另一类使用者。BuildKit builder VM 以 `Delete` 动作
 ## 7. 与代理自动恢复的联动
 
 `timeout_action = Pause` 加 `auto_resume = true` 组成一种「按需运行」的模式：没人访问时沙箱到期暂停，
-有请求进来时由反向代理把它拉起（[第 17 篇](17-reverse-proxy.md)）。
+有请求进来时由反向代理把它拉起（[第 17 篇 §4](17-reverse-proxy.md#4-自动恢复)）。
 
 `resolve_proxy_request()`（`src/api/proxy.rs`）先查运行时路由表；查不到时 `proxy_lookup_for()` 读元数据，
 状态为 Paused 时返回 `ProxyLookupResult::Paused { auto_resume }`。允许自动恢复时，
@@ -316,6 +320,7 @@ template builder 是另一类使用者。BuildKit builder VM 以 `Delete` 动作
 另一个容易误会的点是：**数据面流量不续期**。代理路径上没有任何地方调用 `keep_alive_for()`，
 一台正被持续访问的沙箱到期时照样会被暂停；暂停期间到达的请求得到 410，暂停完成后的请求再触发自动恢复。
 推论：经代理建立的长连接（例如 WebSocket）会在暂停时被切断。需要「有流量就不过期」的用户，必须在客户端定期调用 connect 或 `/refreshes`。
+两者合起来的效果是：自动恢复把 TTL 抬到至少 300 s 并从恢复时刻起算，此后流量再多也不推迟这个时刻；到期时若客户端没有续期，沙箱再次暂停，下一个请求再次唤醒它。
 这里的取舍是代理热路径上只读路由表、不写元数据。
 
 ---
@@ -329,9 +334,9 @@ template builder 是另一类使用者。BuildKit builder VM 以 `Delete` 动作
 
 `Delete` 动作的失败分两种。卷捕获的可恢复失败把状态退回 Running，下一轮同样重试；
 stop 或 release 阶段的失败让沙箱停在 Killing、保留删除进度，而回收任务只看 Running，不会再碰它，
-需要一次显式 delete 从断点继续（[第 21 篇](21-deletion-and-volume-capture.md)）。
+需要一次显式 delete 从断点继续（[第 21 篇 §3](21-deletion-and-volume-capture.md#3-deleteprogress可重入的进度)）。
 
-**串行执行放大延迟。** 一轮里的沙箱逐个 `await`，没有并发。暂停一台沙箱的成本正比于它的脏页量（[第 42 篇](42-memory-snapshot-over-ublk.md)），
+**串行执行放大延迟。** 一轮里的沙箱逐个 `await`，没有并发。暂停一台沙箱的成本正比于它的脏页量（[第 42 篇](42-memory-snapshot-over-ublk.md)），删除一台挂卷沙箱的成本还要加上卷的上传，
 N 台同时到期时，排在最后的那台要等前面 N−1 次暂停全部完成；这一轮跑多久，下一轮就推迟多久，
 期间新到期的沙箱也在等。TTL 因此只保证「不早于到期时刻回收」，不保证「到期时刻附近回收」。
 批量创建、相同 TTL 的工作负载最容易撞上这一点：它们几乎同时到期，资源释放被拉成一条长尾。

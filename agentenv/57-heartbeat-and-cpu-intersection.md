@@ -30,8 +30,7 @@ AgentENV 选择推：每个节点的 `server` 进程定期调用 scheduler 的 `
 [第 24 篇 §4.3](24-metrics-and-events.md#43-为什么这样也能工作) 把这称为电平触发：丢一次心跳，下一次自然补齐。
 代价是感知滞后最多一个心跳周期，以及每次都要传整份名单。
 
-心跳装着四样东西：容量与主机指标（供放置过滤，[第 56 篇](56-scheduler.md)）、沙箱 ID 名单（供绑定自愈，同上）、
-P2P 端点（供对端发现，[第 58 篇](58-p2p-artifact-transport.md)），以及只在首次成功心跳里出现的本机 CPU 配置（§5）。
+心跳装着四样东西：容量与主机指标、沙箱 ID 名单、P2P 端点（[第 58 篇](58-p2p-artifact-transport.md)），以及只在首次成功心跳里出现的本机 CPU 配置（§5）。
 
 ---
 
@@ -64,14 +63,14 @@ P2P 端点（供对端发现，[第 58 篇](58-p2p-artifact-transport.md)），�
   所以 CPU% 是「自上一次有人调用以来」的平均值，而不是一个固定窗口。`GET /nodes` 与心跳共用同一个 `ObservabilityService`，也就共用同一个基线：
   有人频繁调 `GET /nodes` 时，心跳里的 CPU% 只覆盖最近这次调用之后的一小段时间。
 - **首次调用**：没有基线，`collect_host_metrics()` 先采一次，`std::thread::sleep()` 100 ms（`FIRST_REQUEST_CPU_SAMPLE_WINDOW`），再采一次。
-  这是在 async 函数里做同步睡眠，会占住一个 tokio worker 线程 100 ms；只发生一次，影响有限，但属于异步代码里的阻塞调用。
+  这是 async 函数里的同步睡眠，会占住一个 tokio worker 线程，只发生一次。
 - **CPU 数与内存**：CPU 数取 `available_parallelism()`，若进程所在 cgroup 的 `cpu.max` 有配额，取 `quota / period`（至少 1）与之取小；
   内存优先用 cgroup 的 `memory.max` 与 `memory.current`（限制不超过主机总量时才采用），否则用 `/proc/meminfo` 的 `MemTotal − MemAvailable`。
 - **磁盘**：遍历 `/proc/self/mounts`，只保留 ext2/3/4、xfs、btrfs、overlay 与 tmpfs，逐个 `statvfs()`。
 
 这里有一处口径不一致：CPU 数与内存按 cgroup 收窄，CPU 使用率却读的是整机 `/proc/stat`。
 推论：在容器里运行、cgroup 配额小于整机时，scheduler 看到的 `cpu_percent` 反映的是整台宿主的繁忙程度，而不是本节点配额内的使用率，
-`max_cpu_used_percent` 这类过滤（[第 56 篇](56-scheduler.md)）据此做出的判断会偏离配额语义。
+`max_cpu_used_percent` 这类过滤（[第 56 篇 §2.2](56-scheduler.md#22-资源上限)）据此做出的判断会偏离配额语义。
 
 ---
 
@@ -125,7 +124,8 @@ sequenceDiagram
 `Service.Heartbeat()` 先检查 `node_id` 与 `service_instance_id` 非空，然后做两件事：
 
 - **写观测记录**：`AtomicNodeRegistry.Heartbeat()` 要求节点 ID 在发现列表 `nodesByID` 里，否则返回 `ErrNodeNotInRegistry`，被映射成上面那个 InvalidArgument。
-  发现列表来自 static 配置或 Kubernetes 发现（[第 56 篇](56-scheduler.md)），心跳本身不能让一个新节点「加入」集群。
+  发现列表来自 static 配置或 Kubernetes 发现（[第 56 篇 §4](56-scheduler.md#4-节点发现)），心跳本身不能让一个新节点「加入」集群。
+  心跳只发往 primary，query-only 副本不实现 `Heartbeat`（[第 54 篇 §3.4](54-control-plane-overview.md#34-query-only-服务)）。
   通过检查后，它用请求内容整体替换该节点的 `observedNodeRecord`：快照、机器信息、P2P 端点、`LastSeenUnixMs = now`。
   CPU 交集的计算也在这里，见 §5.3。
 - **刷新绑定**：`ReconcileNode(node, sandbox_ids)` 让绑定表与名单一致——名单内的续期，名单外的删除。这就是「心跳名单即真相」，它与 gateway 提前写入之间的竞态见[第 56 篇 §5](56-scheduler.md#5-一致性心跳与提前写入的交错)。
@@ -142,7 +142,7 @@ sequenceDiagram
 | 节点在发现列表中、标记为 lingering（Kubernetes 中 Pod 正在终止） | LINGERING |
 | 其它 | 节点自报的状态，即 READY |
 
-`scheduler.proto` 的 `NodeStatus` 注释给了一张六行的推导表，其中「active + no heartbeat → CONNECTING」与「lingering + no heartbeat → CONNECTING」两行在代码里没有对应：
+`scheduler.proto` 注释里那张六行推导表见[第 54 篇 §4](54-control-plane-overview.md#4-节点状态)，其中两行「从未心跳 → CONNECTING」在代码里没有对应：
 从未心跳过的节点没有观测记录，`ListObserved()` 不列出它，`GetNode` 返回 NotFound，`GET /nodes` 里就看不到它。
 反过来，表里没有的「不在发现列表中」分支实际几乎不可达：`Heartbeat()` 拒绝不在列表里的节点，`Set()` 替换发现列表时会删掉消失节点的观测记录。
 

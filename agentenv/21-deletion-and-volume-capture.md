@@ -34,8 +34,7 @@ AgentENV 的卷（volume）是一个 overlaybd 层栈（[第 31 篇 §6](31-extr
 一旦这个新层已经发布，重试删除时再捕获一次，就会多出一个空层，或者在 VM 已经停掉之后去冻结一个不存在的文件系统。
 第三，**部分失败**。捕获、停 VM、释放预留、删记录，每一步都可能失败；失败之后，系统必须知道已经走到哪里，下一次从哪里继续。
 
-若删除失败后从头重试，会重复捕获；若失败后放弃卷，写入就丢了；若捕获失败也照常发布，仓库里会出现指向半新半旧层栈的卷。
-`delete_sandbox_impl()` 围绕这三种错误设计。
+`delete_sandbox_impl()` 围绕这三个难处设计。
 
 ---
 
@@ -113,8 +112,7 @@ flowchart TB
 **失败返回错误，但删除可能已经完成。** 捕获不可恢复地失败、而停止与释放都成功时，函数在最后仍返回 `SandboxOperationFailed`，此时沙箱已经从 store 移除。
 调用方看到的是删除失败，再查却是 404。推论：这样做是为了把「卷没有被成功捕获」这件事报告给调用方，代价是错误码不再表示「沙箱还在」。
 
-`src/orchestrator/tests.rs` 的 `volume_deletion_stop_failure_preserves_runtime_for_retry()` 覆盖了 ④：让 `stop()` 连续失败两次，断言两次删除都返回错误、状态停在 Killing、句柄仍在表中、没有发生解冻，第三次删除成功。
-`delete_when_stop_fails_returns_error_and_allows_retry()` 覆盖不挂卷时的同一路径。
+`src/orchestrator/tests.rs` 的 `volume_deletion_stop_failure_preserves_runtime_for_retry()` 覆盖了 ④：让 `stop()` 连续失败两次，断言两次删除都返回错误、状态停在 Killing、句柄仍在表中、没有发生解冻，第三次删除成功。不挂卷时的同一路径由 `delete_when_stop_fails_returns_error_and_allows_retry()` 覆盖。
 
 ---
 
@@ -305,7 +303,7 @@ Release 段依次做三件事：
 
 ## 8. 代价与边界
 
-- **冻结的持续时间**。成功路径上，卷从冻结一直保持到 VM 停止，中间包括 restack 与发布上传。guest 里的写操作在这段时间内全部挂起；由于 VM 马上要被停掉，这对用户不可见。
+- **冻结的持续时间**。成功路径上，卷从冻结一直保持到 VM 停止，中间包括 restack 与发布上传。guest 里的写操作在这段时间内全部挂起，但 VM 马上要停，用户看不到。
   但在发布失败的回滚路径上，解冻发生在一次失败的上传之后，这段挂起时间对一台继续运行的沙箱是真实的停顿。
 - **串行的捕获**。冻结与 restack 都按卷逐个进行；挂了多个卷的沙箱，删除时长正比于卷的数量与各自 upper 的大小。过期回收在持锁状态下串行处理每台过期沙箱，这一代价在[第 23 篇 §8](23-auto-eviction-and-ttl.md#8-失败与串行的代价)讨论。
 - **进度不跨重启**。`DeleteProgress` 只在内存里。一台运行中沙箱的删除若在进程崩溃时停在中途，重启后它不会再出现（运行中沙箱不持久化），卷的独占预留仍挂在一个已不存在的沙箱 id 名下。

@@ -42,8 +42,8 @@ AENV 补丁版 Firecracker 基于上游 v1.15.1，七个提交，其中四个行
 两个分叉做了同一个关键决定：把 `PUT /snapshot/create` 的 `mem_file_path` 改成可选。不给路径时，Firecracker 只写状态文件，guest 内存由宿主上的另一个进程用 `process_vm_readv` 从 Firecracker 的地址空间直接读走。
 AgentENV 的暂停管线是 `create_state_only_snapshot()` → `get_dirty_memory_ranges()` → `convert_dirty_memory_to_overlaybd()`（[第 42 篇 §2.1](42-memory-snapshot-over-ublk.md#21-管线)）；
 e2b 的顺序是暂停 → 不带 memfile 的 create → 查映射 → 查位图 → 直读（见 Firecracker 手册第 54 篇 §5）。
-两条流程的顺序约束相同：保存设备状态时 Firecracker 还会往 guest 内存写队列，所以必须等 create 返回再读内存；读内存时 Firecracker 进程必须还活着。
-两边因此都放弃了上游「状态与内存出自同一次原子操作」的保证，正确性转移到调用方遵守这个顺序上。
+两条流程的顺序约束相同：必须等 create 返回再读内存（保存设备状态时还会写 guest 内存里的队列），读内存时 Firecracker 进程必须还活着。
+两边都放弃了上游「状态与内存出自同一次原子操作」的保证，正确性转由调用方遵守这个顺序。
 
 ### 2.2 差别一：地址与判据怎样交出
 
@@ -78,7 +78,7 @@ AENV 补丁版只给一个端点：`GET /vm/dirty-memory-ranges` 在 Firecracker
 
 ### 2.3 差别二：脏页判据
 
-这是两个分叉最深的分歧，因为它决定了另一半系统 —— 恢复路径 —— 的形状。
+这是两个分叉最深的分歧，它与恢复路径的形状互为因果。
 
 - **e2b 定制版**：从快照恢复的沙箱，判据是 `/proc/self/pagemap` 里「present 且 uffd 写保护位已被清」。uffd 处理器填读缺页时带写保护，guest 第一次写这一页时内核以异步写保护（宿主内核 6.7 起）清位放行，事后读 pagemap 即得写过的页。冷启动的沙箱没有 uffd，改用 `GET /memory` 的「常驻且非全零」（见 Firecracker 手册第 51–53 篇）。
 - **AENV 补丁版**：判据是 KVM dirty log 与 Firecracker 用户态位图的并集，冷启动与恢复用同一个端点。它只要求 `track_dirty_pages` 打开，不依赖 uffd（[第 03 篇 §2.3](03-firecracker-for-agentenv.md#23-脏页从哪里来)）。
@@ -114,14 +114,14 @@ flowchart LR
         EG["guest 首次访问"] --> EU["uffd 事件"]
         EU --> EH["orchestrator 里<br/>本沙箱的 uffd 处理器"]
         EH --> ED["header 查映射<br/>DiffStore 本地缓存"]
-        ED -->|"未命中"| EO["对象存储<br/>4 MiB 范围读"]
+        ED --> EO["本地未命中时<br/>对象存储 4 MiB 范围读"]
         EH --> EC["UFFDIO_COPY 进<br/>私有匿名内存"]
     end
     subgraph A["AgentENV"]
         direction TB
         AG["guest 首次访问"] --> AK["内核私有文件映射"]
         AK --> AP["只读 ublk 设备的页缓存<br/>同快照沙箱共用"]
-        AP -->|"未命中"| AD["ublk-daemon<br/>Rust 版 overlaybd"]
+        AP --> AD["页缓存未命中时<br/>ublk-daemon 读层栈"]
         AD --> AL["本地层 块缓存<br/>远端"]
     end
     E ~~~ A
@@ -130,7 +130,7 @@ flowchart LR
 ```
 
 e2b infra 的恢复走 Firecracker 的 Uffd 后端：guest 内存是匿名映射，Firecracker 把 uffd 交给 orchestrator，每台沙箱一个 Go 处理器，每个缺页一个 goroutine，按映射表取块后 `UFFDIO_COPY` 填进去（见 e2b 手册第 31 篇）。
-「这一页从哪来」完全由用户态决定，包括失败时宁可叫停沙箱也不给 guest 一页垃圾。
+「这一页从哪来」完全由用户态决定。
 
 AgentENV 走 File 后端：内存层栈经 ublk-daemon 暴露成只读的 `/dev/ublkbN`，Firecracker 以 `MAP_PRIVATE` 把它当内存文件映射，缺页由内核按文件映射规则处理（[第 03 篇 §3.2](03-firecracker-for-agentenv.md#32-file-后端)）。
 用户态只在页缓存未命中时出场，而且出场的是全节点共用的 ublk-daemon，不是每台沙箱的处理器（[第 42 篇 §4.2](42-memory-snapshot-over-ublk.md#42-一次缺页)）。
@@ -183,7 +183,7 @@ AgentENV 的每一代是一个 sealed LSMT 层，层栈保留逐层索引、打�
 ### 5.1 内核接口与服务进程
 
 e2b infra 用 NBD 让用户态代码扮演一块磁盘：经 netlink 建设备、socketpair 连接、默认 4 条连接，NBD server 是 orchestrator 进程里的一段 Go 代码，设备池也在同一个进程里（见 e2b 手册第 06、33 篇）。
-AgentENV 用 ublk：请求描述经共享内存到达，命令与后端文件 I/O 在同一个 io_uring 里提交；全部设备归一个独立的 ublk-daemon 进程，只有它持有 `CAP_SYS_ADMIN`（[第 40 篇](40-ublk-library.md)、[第 41 篇](41-ublk-daemon.md)）。
+AgentENV 用 ublk：请求描述经共享内存到达，命令与后端文件 I/O 在同一个 io_uring 里提交；全部设备归一个独立的 ublk-daemon 进程，ublk 控制命令只由它发出（[第 40 篇](40-ublk-library.md)、[第 41 篇](41-ublk-daemon.md)）。
 这里的选择是 AgentENV 自己的：上游 overlaybd 的经典前端是 TCMU，但本书所取的上游默认分支也另带一个 ublk 前端（`src/ublk/`）；AgentENV 不用它，而是用 Rust 重写了数据面与 ublk server（[第 05 篇 §4.1](05-overlaybd-and-lazy-loading.md#41-谁做什么)）。
 
 两种接口的取舍在[第 04 篇 §6](04-io-uring-and-ublk.md#6-为什么是-ublk)：NBD 的 server 理论上可以在远端，ublk 只能在本机；ublk 换来的是不必实现网络协议、可以合批提交，以及一个能被 O_DIRECT 打开、也能被当作内存文件映射的本机块设备 —— 后一点正是第 3 节内存路径的前提。
@@ -215,8 +215,6 @@ e2b infra 自己解释构建步骤，把构建切成 base → user → steps →
 AgentENV 有两条前端。步骤路径在一台临时 microVM 里逐条执行全部步骤，跑起启动命令、等就绪命令通过，只捕获一次（[第 52 篇](52-template-builder.md)）：省掉了逐层暂停与上传，代价是没有步骤级缓存（[第 52 篇 §7](52-template-builder.md#7-没有逐步缓存取舍)）。
 Dockerfile 路径把语义整个交给 builder microVM 里的 BuildKit，缓存是 BuildKit 自己的，以一块卷的形式在仓库里逐代传递，产物经 content API 取出、转成 overlaybd 层后再走一次步骤路径（[第 53 篇](53-buildkit-in-microvm.md)）。
 缓存命中只省 BuildKit 内部的工作，省不掉最终模板 VM 的启动与捕获。
-
-两边都在构建 VM 里经 envd 执行命令；e2b 的 RUN 可以逐步指定用户，AgentENV 的 RUN 身份是构建 VM 启动时的默认用户（推论，见[第 52 篇](52-template-builder.md)）。
 
 ---
 

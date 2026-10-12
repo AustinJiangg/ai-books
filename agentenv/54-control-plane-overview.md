@@ -87,7 +87,7 @@ flowchart TB
 与 `src/p2p/discovery/scheduler.rs`（四个 P2P 方法）。
 
 这张表里有一个空心的 RPC：`ReportSandboxEvent`。节点订阅 orchestrator 的生命周期广播，把 CREATE、DELETE、PAUSE、RESUME、FORK 事件批量上报，
-而 `service.go` 的实现只打一条 debug 日志「scheduler ignored sandbox event batch」就返回。绑定的同步完全靠心跳名单（[第 57 篇](57-heartbeat-and-cpu-intersection.md)）。
+而 `service.go` 的实现只打一条 debug 日志「scheduler ignored sandbox event batch」就返回，事件在 scheduler 端被丢弃（[第 24 篇 §4](24-metrics-and-events.md#4-生命周期事件)）。绑定的同步完全靠心跳名单（[第 56 篇 §3.1](56-scheduler.md#31-接口与写入者)）。
 proto 为将来的事件驱动调度留了接口，现在它只是网络与日志开销。
 
 ### 3.2 消息设计里的几个决定
@@ -137,7 +137,8 @@ scheduler 用四个 gRPC 状态码表达失败，gateway 的 `writeSchedulerErro
 scheduler 进程带 `--query-only` 启动时（`services/scheduler/cmd/main.go`），注册的不是 `Service` 而是 `QueryOnlyService`。
 它嵌入生成代码里的 `UnimplementedSchedulerServer`，只覆盖 `LookupNode`，其余 12 个 RPC 返回 Unimplemented；它只读 Redis 里的绑定，不需要发现配置，也不接收心跳。
 gateway 用单独的 `query_only_scheduler_addr` 连接它，只把按沙箱定位的 `LookupNode` 发过去，未配置时回落到 primary。
-proto 本身没有区分这两种服务，「哪些 RPC 在副本上可用」是部署约定，不是契约的一部分。高可用的边界在[第 56 篇](56-scheduler.md)。
+proto 本身没有区分这两种服务，「哪些 RPC 在副本上可用」是部署约定，不是契约的一部分。
+副本不实现 `Heartbeat` 与 `RecordAssignment`，Redis 里的绑定只能由 primary 续期，所以 primary 停机后副本只能撑到绑定过期；高可用的边界在[第 56 篇 §6](56-scheduler.md#6-haprimary-与-query-only)。
 
 ---
 
@@ -159,7 +160,7 @@ proto 本身没有区分这两种服务，「哪些 RPC 在副本上可用」是
 
 这张表与实现有两处出入，[第 57 篇 §3.3](57-heartbeat-and-cpu-intersection.md#33-节点状态由谁推导)已逐条核对：
 「从未心跳 → CONNECTING」的两行没有对应代码，因为没有心跳就没有观测记录，这样的节点不出现在 `ListObservedNodes` 里；
-推导出的状态只用于展示、指标与 P2P 对端过滤，`Schedule` 并不按它排除 UNHEALTHY 节点（[第 56 篇](56-scheduler.md)）。
+推导出的状态只用于展示、指标与 P2P 对端过滤，`Schedule` 并不按它排除 UNHEALTHY 节点（[第 56 篇 §2.4](56-scheduler.md#24-不排除-unhealthy-节点)）。
 读者读 proto 时应当把这张表当作意图，而不是行为。
 
 ---

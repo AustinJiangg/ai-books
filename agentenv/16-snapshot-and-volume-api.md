@@ -119,7 +119,6 @@ Firecracker 后端的 `snapshot()`（`src/sandbox/firecracker/sandbox.rs`）先 
 
 fork 走的是另一条时序。`sandboxes_sandbox_id_fork_post()` 先调用 `Orchestrator::snapshot_volume_mounts()`：一次单独的暂停，只 sync 与封存卷，随即恢复；
 之后 orchestrator 的 fork 才第二次暂停、捕获内存。推论：两次暂停之间源沙箱在运行，子沙箱拿到的卷内容早于它拿到的内存，期间 guest 写进卷的数据只在内存的页缓存里（[第 51 篇 §2.1](51-fork.md#21-api-层参数与卷的预处理)）。
-快照端点没有这个窗口，因为卷与内存在同一次暂停内封存。
 
 两点细节：
 
@@ -157,7 +156,6 @@ fork 走的是另一条时序。`sandboxes_sandbox_id_fork_post()` 先调用 `Or
 - 首页游标是 `(当前时间, SnapshotId::max())`，只保留严格早于游标的记录。推论：多节点共享仓库时，若另一节点时钟偏快，它刚写入的快照在本节点的首页里暂时看不到。
 
 和沙箱列表一样，不带 `limit` 时 `paginate_sorted()` 不截断，一次返回全部（[第 14 篇 §8](14-sandbox-api.md#8-列表状态折叠与分页)）。
-每次列表都要读出仓库里的全部记录（包括模板），成本随记录总数线性增长。
 
 `snapshots_snapshot_id_get()` 接受 ID 或别名，命中模板记录时返回 404。代码注释给出的理由是与列表接口保持一致：模板记录通过模板 API 暴露。
 响应体 `SnapshotInfo` 包含 `snapshotID`、`names`（有别名时一个元素）、资源规格、创建与更新时间，以及可选的 `imageRef`——快照 rootfs 已被发布成 OCI 镜像时的引用（[第 50 篇](50-rootfs-as-oci-image.md)）。

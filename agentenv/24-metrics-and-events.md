@@ -22,7 +22,7 @@
 
 ## 1. 问题：三种观测需求
 
-**容量**是给调度器用的。scheduler 根据每个节点报告的运行沙箱数、已分配 CPU 与内存过滤候选节点（[第 56 篇](56-scheduler.md)），
+**容量**是给调度器用的。scheduler 根据每个节点报告的运行沙箱数、已分配 CPU 与内存过滤候选节点（[第 56 篇 §2.2](56-scheduler.md#22-资源上限)），
 数字偏高会让节点空着却不接活，偏低会让节点超卖。这类数字必须与节点的真实状态一致，但可以容忍几秒的滞后。
 
 **guest 资源**是给用户看的。E2B 兼容的 API 提供 `GET /sandboxes/metrics` 与 `GET /sandboxes/{id}/metrics`，
@@ -87,8 +87,8 @@ scheduler 的 `withinLimit()`（`services/scheduler/internal/filter.go`）因此
 它有两个消费者：`GET /nodes` 的处理函数（`src/api/impls/admin.rs`）与心跳上报（`src/observability/reporter.rs`，[第 57 篇](57-heartbeat-and-cpu-intersection.md)）。
 心跳里的 `sandbox_count` 是 `running_sandbox_count`，不含 starting；`sandbox_ids` 是存储里的全部 ID 加上正在构建的模板 ID（`list_sandbox_ids()`），含暂停的沙箱。
 
-推论：scheduler 的比较是 `计数 > 上限` 才排除，计数恰好等于上限的节点仍会被选中，而 starting 不计入 `MaxSandboxCount`；
-心跳又有几秒的滞后。一波并发创建因此可能让节点的活跃沙箱数越过配置的上限。这属于调度一侧的语义，在第 56 篇讨论。
+scheduler 的 `withinLimit()` 用 `计数 > 上限` 才排除，计数恰好等于上限的节点仍会被选中；`MaxSandboxCount` 比较的是心跳里的 `sandbox_count`，starting 不计入，另由 `MaxSandboxStartingCount` 单独限制。
+推论：加上心跳几秒的滞后，一波并发创建可能让节点的活跃沙箱数越过配置的上限。这属于调度一侧的语义，在[第 56 篇 §2.2](56-scheduler.md#22-资源上限)讨论。
 
 ---
 
@@ -204,6 +204,7 @@ sequenceDiagram
 | Delete | `remove_deleted_sandbox()` | 从存储移除之后 |
 
 没有快照事件；前面列出的三类终结性失败直接 `store.remove()`，**不发 Delete**。
+自动驱逐的删除照常发 Delete：回收任务认领为 Killing 后以 `previous_state = Running` 直接调用 `delete_sandbox_impl()`，最终同样经过 `remove_deleted_sandbox()`（[第 21 篇 §2](21-deletion-and-volume-capture.md#2-入口与互斥)）。
 事件通过 `tokio::sync::broadcast` 发布，容量 `SANDBOX_EVENT_CHANNEL_CAPACITY = 1024`；
 `publish_sandbox_event()` 忽略 `send()` 的错误，没有订阅者时事件直接消失。broadcast 的语义是每个订阅者各自读同一个环形缓冲，
 慢的订阅者落后超过容量时，下一次接收得到 `Lagged(n)`，丢掉最旧的 n 条。
@@ -283,9 +284,9 @@ flowchart LR
 
 - **route 标签是有界的。** `http_route_label()` 把已知路径归一成模板（`/sandboxes/{sandbox_id}/pause` 等），其余一律记为 `unmatched`，
   以免沙箱 ID 进入标签、撑爆时间序列数。代价是 connect、`/timeout`、`/refreshes`、指标端点本身都落进 `unmatched`，无法分开看。
-  `route_source` 区分控制面与三种代理入口（Host、头、前缀，[第 17 篇](17-reverse-proxy.md)）。
+  `route_source` 区分控制面与三种代理入口（Host、头、前缀，[第 17 篇 §2](17-reverse-proxy.md#2-三个入口)）。
 - **stage 计时只覆盖 API 入口。** `SandboxStageTimer` 包在 `create_cold`、`create_warm`、`fork`、`pause`、`snapshot`、`resume` 六个处理函数上；
-  delete 没有计时，回收任务与关闭流程直接调用 orchestrator 的暂停（[第 23 篇](23-auto-eviction-and-ttl.md)）也不经过它。按这个指标估算节点上的暂停次数会偏低。
+  delete 没有计时，回收任务与关闭流程直接调用 orchestrator 的暂停（[第 23 篇 §4.2](23-auto-eviction-and-ttl.md#42-一轮做什么)）也不经过它。按这个指标估算节点上的暂停次数会偏低。
 - **`canceled` 是一种独立的结果。** `MetricGuard` 创建时把状态预置为 `canceled`，只有显式 `finish()` 才改成 `ok` 或 `error`；
   future 被丢弃（例如调用方超时）时 `Drop` 以 `canceled` 记一笔。ublk 设备操作与 OSS 上传用它，于是「取消」与「失败」可以分开统计。
 - **ZFile 的两个时延直方图是抽样的。** 注释写明每线程 1/1024 抽样，`_count` 是样本数而不是读次数；读次数要看对应的计数器。
@@ -320,6 +321,6 @@ e2b infra 的 orchestrator 在 OTel 回调里每 5 s 向 envd 拉一次指标，
 
 - [第 57 篇 · 心跳、节点可观测与 CPU 模板交集](57-heartbeat-and-cpu-intersection.md)：心跳的内容与 scheduler 的处理。
 - [第 56 篇 · scheduler](56-scheduler.md)：容量上限怎样参与放置。
-- [第 28 篇 · MMDS 与 envd](28-mmds-and-envd.md)：envd 客户端与 `live` 标志。
+- [第 28 篇 · MMDS 与 envd](28-mmds-and-envd.md)：envd 客户端与 `live` 标志（[§5.2](28-mmds-and-envd.md#52-失效标志)）。
 - [e2b 手册第 51 篇 · 端口、权限与指标](../e2b-infra/51-envd-ports-permissions-metrics.md)、[e2b 手册第 60 篇 · 遥测：tracing、metrics、logs](../e2b-infra/60-telemetry.md)、[e2b 手册第 61 篇 · 沙箱事件与 webhook](../e2b-infra/61-events-and-webhooks.md)：同类数据在 e2b infra 中的去向。
 - 下一篇：[第 25 篇 · 后端抽象与 Firecracker 进程](25-backend-and-firecracker-process.md)。
