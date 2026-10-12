@@ -65,8 +65,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 00 | `00-overview.md` | 全书导读与 AgentENV 总览 | ● |
-| 01 | `01-repo-map-and-versions.md` | 仓库地图、版本与依赖 | ● |
+| 00 | `00-overview.md` | 全书导读与 AgentENV 总览 | ◎ |
+| 01 | `01-repo-map-and-versions.md` | 仓库地图、版本与依赖 | ◎ |
 
 **00 · 全书导读与 AgentENV 总览**（最后写，全书完成后）
 一篇读完全貌，给评审、决策者与第一天到岗的新人。5000 字上限。
@@ -93,12 +93,12 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 02 | `02-why-agentenv.md` | agent 环境的规模问题与 AgentENV 的取舍 | ● |
-| 03 | `03-firecracker-for-agentenv.md` | 本书用到的 Firecracker：快照、内存后端与脏页 | ● |
-| 04 | `04-io-uring-and-ublk.md` | io_uring 与 ublk | ● |
-| 05 | `05-overlaybd-and-lazy-loading.md` | overlaybd、LSMT 与 OCI 镜像按需加载 | ● |
-| 06 | `06-netns-iptables-transparent-proxy.md` | 网络命名空间、iptables 与透明代理 | ● |
-| 07 | `07-rust-async-primer.md` | 本书用到的 Rust 异步与依赖 crate | ● |
+| 02 | `02-why-agentenv.md` | agent 环境的规模问题与 AgentENV 的取舍 | ◎ |
+| 03 | `03-firecracker-for-agentenv.md` | 本书用到的 Firecracker：快照、内存后端与脏页 | ◎ |
+| 04 | `04-io-uring-and-ublk.md` | io_uring 与 ublk | ◎ |
+| 05 | `05-overlaybd-and-lazy-loading.md` | overlaybd、LSMT 与 OCI 镜像按需加载 | ◎ |
+| 06 | `06-netns-iptables-transparent-proxy.md` | 网络命名空间、iptables 与透明代理 | ◎ |
+| 07 | `07-rust-async-primer.md` | 本书用到的 Rust 异步与依赖 crate | ◎ |
 
 **02 · agent 环境的规模问题与 AgentENV 的取舍**
 - 问题：agentic RL 要同时跑大量各不相同的环境（README 称生产中 150 万镜像，只引用、不展开）；环境长时间空闲；需要分叉做并行探索
@@ -154,10 +154,10 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 08 | `08-system-architecture.md` | 系统架构：单节点与多节点 | ● |
-| 09 | `09-sandbox-lifecycle-walkthrough.md` | 一个沙箱的一生 | ● |
-| 10 | `10-node-process-and-object-model.md` | 节点进程：启动、关闭与对象模型 | ● |
-| 11 | `11-configuration.md` | 配置体系 | ● |
+| 08 | `08-system-architecture.md` | 系统架构：单节点与多节点 | ◎ |
+| 09 | `09-sandbox-lifecycle-walkthrough.md` | 一个沙箱的一生 | ◎ |
+| 10 | `10-node-process-and-object-model.md` | 节点进程：启动、关闭与对象模型 | ◎ |
+| 11 | `11-configuration.md` | 配置体系 | ◎ |
 
 **08 · 系统架构：单节点与多节点**
 - 单节点：客户端直连 `server`（默认 `:8000`）；节点内部的子系统（API、orchestrator、sandbox、snapshot、template、image、p2p、observability）与外部进程（ublk-daemon、FC）
@@ -198,13 +198,13 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 12 | `12-spec-driven-server.md` | 规范驱动的服务骨架 | ● |
-| 13 | `13-authentication.md` | 认证与凭据 | ● |
-| 14 | `14-sandbox-api.md` | 沙箱生命周期 API | ● |
-| 15 | `15-template-build-api.md` | 模板构建 API | ● |
-| 16 | `16-snapshot-and-volume-api.md` | 快照与卷 API | ● |
-| 17 | `17-reverse-proxy.md` | 反向代理 | ● |
-| 18 | `18-e2b-compatibility.md` | E2B 兼容性：矩阵与偏差 | ● |
+| 12 | `12-spec-driven-server.md` | 规范驱动的服务骨架 | ◎ |
+| 13 | `13-authentication.md` | 认证与凭据 | ◎ |
+| 14 | `14-sandbox-api.md` | 沙箱生命周期 API | ◎ |
+| 15 | `15-template-build-api.md` | 模板构建 API | ◎ |
+| 16 | `16-snapshot-and-volume-api.md` | 快照与卷 API | ◎ |
+| 17 | `17-reverse-proxy.md` | 反向代理 | ◎ |
+| 18 | `18-e2b-compatibility.md` | E2B 兼容性：矩阵与偏差 | ◎ |
 
 **12 · 规范驱动的服务骨架**
 - spec-first：`src/api/openapi.yml` 是唯一真相；openapi-generator 7.22.0 `rust-axum` 生成 `agentenv_http_server` crate；手写 `ApiImpl` 只实现六个 trait
@@ -275,12 +275,12 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 19 | `19-state-machine-and-concurrency.md` | 状态机与并发控制 | ● |
-| 20 | `20-launch-plan-and-rollback.md` | launch plan 与失败回滚 | ● |
-| 21 | `21-deletion-and-volume-capture.md` | 删除与卷的捕获提交 | ● |
-| 22 | `22-persistence-across-restarts.md` | 跨重启持久化 | ● |
-| 23 | `23-auto-eviction-and-ttl.md` | 自动驱逐与 TTL | ● |
-| 24 | `24-metrics-and-events.md` | 指标与生命周期事件 | ● |
+| 19 | `19-state-machine-and-concurrency.md` | 状态机与并发控制 | ◎ |
+| 20 | `20-launch-plan-and-rollback.md` | launch plan 与失败回滚 | ◎ |
+| 21 | `21-deletion-and-volume-capture.md` | 删除与卷的捕获提交 | ◎ |
+| 22 | `22-persistence-across-restarts.md` | 跨重启持久化 | ◎ |
+| 23 | `23-auto-eviction-and-ttl.md` | 自动驱逐与 TTL | ◎ |
+| 24 | `24-metrics-and-events.md` | 指标与生命周期事件 | ◎ |
 
 **19 · 状态机与并发控制**
 - 八个状态：Creating、Resuming、Running、Snapshotting、Forking、Pausing、Paused、Killing；没有 Killed（删除即从 store 移除，watch 发 None）
@@ -339,15 +339,15 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 25 | `25-backend-and-firecracker-process.md` | 后端抽象与 Firecracker 进程 | ● |
-| 26 | `26-sandbox-block-devices.md` | 沙箱的块设备：tools 盘、rootfs 与内存设备 | ● |
-| 27 | `27-start-pause-resume-sequences.md` | 启动、暂停与恢复的 Firecracker 调用序列 | ● |
-| 28 | `28-mmds-and-envd.md` | MMDS 与 envd | ● |
-| 29 | `29-network-slots.md` | 网络（一）：槽位、命名空间与地址计划 | ● |
-| 30 | `30-egress-policy-and-proxy.md` | 网络（二）：出站策略与透明代理 | ● |
-| 31 | `31-extra-drives-and-volumes.md` | 附加盘与卷：预留槽位与热插 | ● |
-| 32 | `32-warm-pools.md` | 预热池：网络、块设备与 Firecracker 进程 | ● |
-| 33 | `33-custom-extension-hooks.md` | 自定义扩展 hook | ● |
+| 25 | `25-backend-and-firecracker-process.md` | 后端抽象与 Firecracker 进程 | ◎ |
+| 26 | `26-sandbox-block-devices.md` | 沙箱的块设备：tools 盘、rootfs 与内存设备 | ◎ |
+| 27 | `27-start-pause-resume-sequences.md` | 启动、暂停与恢复的 Firecracker 调用序列 | ◎ |
+| 28 | `28-mmds-and-envd.md` | MMDS 与 envd | ◎ |
+| 29 | `29-network-slots.md` | 网络（一）：槽位、命名空间与地址计划 | ◎ |
+| 30 | `30-egress-policy-and-proxy.md` | 网络（二）：出站策略与透明代理 | ◎ |
+| 31 | `31-extra-drives-and-volumes.md` | 附加盘与卷：预留槽位与热插 | ◎ |
+| 32 | `32-warm-pools.md` | 预热池：网络、块设备与 Firecracker 进程 | ◎ |
+| 33 | `33-custom-extension-hooks.md` | 自定义扩展 hook | ◎ |
 
 **25 · 后端抽象与 Firecracker 进程**
 - `SandboxBackend` / `SandboxBackendFactory`；`FirecrackerSandbox` 的字段（work_dir、fc_instance、network_slot、envd、各 ublk 句柄、hook guard）
@@ -438,17 +438,17 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 34 | `34-lsmt-format-and-index.md` | LSMT 格式与索引 | ● |
-| 35 | `35-zfile-compression.md` | ZFile 压缩 | ● |
-| 36 | `36-read-write-paths-and-rw-layouts.md` | 读写路径与三种可写布局 | ● |
-| 37 | `37-seal-restack-compact.md` | 封存、restack 与 compact | ● |
-| 38 | `38-virtualfile-chain-and-remote-io.md` | VirtualFile 装饰器链与远端 I/O 运行时 | ● |
-| 39 | `39-block-cache-and-background-download.md` | 节点块缓存与后台下载 | ● |
-| 40 | `40-ublk-library.md` | ublk 库 | ● |
-| 41 | `41-ublk-daemon.md` | ublk-daemon | ● |
-| 42 | `42-memory-snapshot-over-ublk.md` | 内存快照：脏页成层与共享只读设备 | ● |
-| 43 | `43-startup-pack-and-prefetch.md` | 启动加速：trace prefetch 与 startup pack | ● |
-| 44 | `44-uffd-alternative.md` | uffd 方案与对比 | ● |
+| 34 | `34-lsmt-format-and-index.md` | LSMT 格式与索引 | ◎ |
+| 35 | `35-zfile-compression.md` | ZFile 压缩 | ◎ |
+| 36 | `36-read-write-paths-and-rw-layouts.md` | 读写路径与三种可写布局 | ◎ |
+| 37 | `37-seal-restack-compact.md` | 封存、restack 与 compact | ◎ |
+| 38 | `38-virtualfile-chain-and-remote-io.md` | VirtualFile 装饰器链与远端 I/O 运行时 | ◎ |
+| 39 | `39-block-cache-and-background-download.md` | 节点块缓存与后台下载 | ◎ |
+| 40 | `40-ublk-library.md` | ublk 库 | ◎ |
+| 41 | `41-ublk-daemon.md` | ublk-daemon | ◎ |
+| 42 | `42-memory-snapshot-over-ublk.md` | 内存快照：脏页成层与共享只读设备 | ◎ |
+| 43 | `43-startup-pack-and-prefetch.md` | 启动加速：trace prefetch 与 startup pack | ◎ |
+| 44 | `44-uffd-alternative.md` | uffd 方案与对比 | ◎ |
 
 **34 · LSMT 格式与索引**
 - `HeaderTrailer`（390 B，占一个 4 KiB 块）字段表；flags 各位（含 AgentENV 新增的 bit5 hybrid_rw）；`index_size` 是条数不是字节
@@ -558,15 +558,15 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 45 | `45-oci-to-overlaybd.md` | 从 OCI 镜像到 overlaybd 层栈 | ● |
-| 46 | `46-snapshot-object-model.md` | 快照对象模型与 SnapshotManager | ● |
-| 47 | `47-posix-repository.md` | POSIX 仓库与提交协议 | ● |
-| 48 | `48-object-storage-repository.md` | 对象存储仓库：上传、回滚与弱一致 | ● |
-| 49 | `49-resolve-and-artifact-cache.md` | 从记录到可运行：resolve 与本地制品缓存 | ● |
-| 50 | `50-rootfs-as-oci-image.md` | 快照 rootfs 作为 OCI 镜像 | ● |
-| 51 | `51-fork.md` | fork：同节点的内存分叉 | ● |
-| 52 | `52-template-builder.md` | 模板构建器 | ● |
-| 53 | `53-buildkit-in-microvm.md` | BuildKit：在 microVM 里跑 Dockerfile | ● |
+| 45 | `45-oci-to-overlaybd.md` | 从 OCI 镜像到 overlaybd 层栈 | ◎ |
+| 46 | `46-snapshot-object-model.md` | 快照对象模型与 SnapshotManager | ◎ |
+| 47 | `47-posix-repository.md` | POSIX 仓库与提交协议 | ◎ |
+| 48 | `48-object-storage-repository.md` | 对象存储仓库：上传、回滚与弱一致 | ◎ |
+| 49 | `49-resolve-and-artifact-cache.md` | 从记录到可运行：resolve 与本地制品缓存 | ◎ |
+| 50 | `50-rootfs-as-oci-image.md` | 快照 rootfs 作为 OCI 镜像 | ◎ |
+| 51 | `51-fork.md` | fork：同节点的内存分叉 | ◎ |
+| 52 | `52-template-builder.md` | 模板构建器 | ◎ |
+| 53 | `53-buildkit-in-microvm.md` | BuildKit：在 microVM 里跑 Dockerfile | ◎ |
 
 **45 · 从 OCI 镜像到 overlaybd 层栈**
 - `ImageResolver::resolve()`：候选 registry 展开（search / allowed registries）→ regctl 取 manifest（按宿主架构选子 manifest）→ 只有取 manifest 阶段可以换 registry → referrers 找 overlaybd-native 加速层 → 分类（StandardOci / OverlaybdNative / turbo 拒绝）
@@ -650,11 +650,11 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 54 | `54-control-plane-overview.md` | 控制面总览与 proto 契约 | ● |
-| 55 | `55-gateway.md` | gateway：路由判定与反向代理 | ● |
-| 56 | `56-scheduler.md` | scheduler：放置、绑定与 HA | ● |
-| 57 | `57-heartbeat-and-cpu-intersection.md` | 心跳、节点可观测与 CPU 模板交集 | ● |
-| 58 | `58-p2p-artifact-transport.md` | P2P 制品传输 | ● |
+| 54 | `54-control-plane-overview.md` | 控制面总览与 proto 契约 | ◎ |
+| 55 | `55-gateway.md` | gateway：路由判定与反向代理 | ◎ |
+| 56 | `56-scheduler.md` | scheduler：放置、绑定与 HA | ◎ |
+| 57 | `57-heartbeat-and-cpu-intersection.md` | 心跳、节点可观测与 CPU 模板交集 | ◎ |
+| 58 | `58-p2p-artifact-transport.md` | P2P 制品传输 | ◎ |
 
 **54 · 控制面总览与 proto 契约**
 - 为什么单节点不需要它；多节点时的三个角色（gateway、scheduler、节点）
@@ -704,12 +704,12 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 59 | `59-host-setup-and-privileges.md` | 宿主准备、依赖供给与权限模型 | ● |
-| 60 | `60-deployment.md` | 单节点安装、Compose 与 Kubernetes | ● |
-| 61 | `61-pvm.md` | PVM：没有嵌套虚拟化时 | ● |
-| 62 | `62-aenv-cli.md` | aenv CLI | ● |
-| 63 | `63-testing-and-benchmarks.md` | 测试与基准 | ● |
-| 64 | `64-build-codegen-release.md` | 构建、代码生成与发布 | ● |
+| 59 | `59-host-setup-and-privileges.md` | 宿主准备、依赖供给与权限模型 | ◎ |
+| 60 | `60-deployment.md` | 单节点安装、Compose 与 Kubernetes | ◎ |
+| 61 | `61-pvm.md` | PVM：没有嵌套虚拟化时 | ◎ |
+| 62 | `62-aenv-cli.md` | aenv CLI | ◎ |
+| 63 | `63-testing-and-benchmarks.md` | 测试与基准 | ◎ |
+| 64 | `64-build-codegen-release.md` | 构建、代码生成与发布 | ◎ |
 
 **59 · 宿主准备、依赖供给与权限模型**
 - 三种模式的分工：`--setup-only`（无特权下载依赖）、`--setup-host`（root 一次性配置宿主：KVM、ublk、udev、sysctl）、运行时 `ensure_environment()`（只校验）
@@ -766,10 +766,10 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 65 | `65-vs-e2b-infra-architecture.md` | 与 e2b infra 的对照（一）：架构、控制面与 API | ● |
-| 66 | `66-vs-e2b-infra-storage-and-memory.md` | 与 e2b infra 的对照（二）：存储、内存恢复与模板 | ● |
-| 67 | `67-firecracker-patch-layer.md` | AENV 补丁版 Firecracker 与 guest 内核 | ● |
-| 68 | `68-known-issues-and-debt.md` | 已知问题与技术债 | ● |
+| 65 | `65-vs-e2b-infra-architecture.md` | 与 e2b infra 的对照（一）：架构、控制面与 API | ◎ |
+| 66 | `66-vs-e2b-infra-storage-and-memory.md` | 与 e2b infra 的对照（二）：存储、内存恢复与模板 | ◎ |
+| 67 | `67-firecracker-patch-layer.md` | AENV 补丁版 Firecracker 与 guest 内核 | ◎ |
+| 68 | `68-known-issues-and-debt.md` | 已知问题与技术债 | ◎ |
 
 **65 · 与 e2b infra 的对照（一）：架构、控制面与 API**
 - 对照维度表：语言与进程结构（Go 单体 orchestrator + api + client-proxy vs Rust 节点 + Go gateway / scheduler）；控制面（Nomad / Consul、PostgreSQL、Redis vs 单节点自足 + 可选 scheduler）；认证与多租户（team / access token vs 单 API key）；反向代理（client-proxy + orchestrator proxy vs 节点内代理 + gateway）；网络（每沙箱 netns 的做法异同）；envd（同一个 envd，AgentENV 只做客户端）
@@ -807,11 +807,11 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 69 | `69-glossary.md` | 术语表 | ● |
-| 70 | `70-code-map.md` | 代码地图：crate、模块与篇目 | ● |
-| 71 | `71-config-env-ports-reference.md` | 配置项、环境变量与端口总表 | ● |
-| 72 | `72-api-reference.md` | 接口总表：HTTP、Firecracker、daemon RPC 与 gRPC | ● |
-| 73 | `73-artifacts-and-formats-reference.md` | 持久化制品与磁盘格式总表 | ● |
+| 69 | `69-glossary.md` | 术语表 | ◎ |
+| 70 | `70-code-map.md` | 代码地图：crate、模块与篇目 | ◎ |
+| 71 | `71-config-env-ports-reference.md` | 配置项、环境变量与端口总表 | ◎ |
+| 72 | `72-api-reference.md` | 接口总表：HTTP、Firecracker、daemon RPC 与 gRPC | ◎ |
+| 73 | `73-artifacts-and-formats-reference.md` | 持久化制品与磁盘格式总表 | ◎ |
 
 **69 · 术语表**：STYLE.md 第三节术语 + 正文出现的其它术语；每条一句定义 + 首次详细讲解的篇目链接。
 
