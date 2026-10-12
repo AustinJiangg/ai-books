@@ -16,7 +16,7 @@
 3. Cargo workspace 有哪些成员，它们之间怎样依赖？Go 代码放在哪里？
 4. 仓库里哪些代码是生成的，规模多大，怎样再生成？
 5. 每个顶层目录与 crate 的职责和行数是多少，本书在哪一篇讲它？
-6. 一台节点上运行的进程，分别来自仓库的哪一部分？
+6. 一台节点上运行的进程分别来自仓库的哪一部分？从一个 API 请求追到块设备，要跨过哪几道接口边界？
 
 ---
 
@@ -67,7 +67,7 @@ v0.2.3 的 tag 是附注 tag（对象 `4890d5e`），指向提交 `6cccaa7842bd`
 | E2B 兼容（3） | `187f654`、`7f19ffd`、`13cbf10` | E2B v2 的 sandbox create / connect；E2B 形的构建状态与日志；沙箱指标采集 API。三者都同时改了 gateway | [第 18 篇](18-e2b-compatibility.md)、[第 55 篇](55-gateway.md) |
 | CLI（5） | `6aa185b`、`8a6594f`、`531a002`、`d660f5f`、`725810d` | 原生 Codex 沙箱会话及其文档；模板 / 快照名动态补全；build 帮助示例；HTTPS 下安装 rustls crypto provider | [第 62 篇](62-aenv-cli.md) |
 | 存储与 P2P（3） | `8cd6793`、`04f8786`、`8ff079c` | 远端镜像 I/O 改派到独立的 remote-io runtime；seal 时只查 upper 索引；P2P 发布已提交的对象存储层 | [第 38 篇](38-virtualfile-chain-and-remote-io.md)、[第 37 篇](37-seal-restack-compact.md)、[第 58 篇](58-p2p-artifact-transport.md) |
-| 新组件（1） | `5353143` | `containerd-plain-snapshotter/`：把宿主上现成的 rootfs 目录 bind-mount 给 containerd 当容器根的 proxy snapshotter 插件 | 本篇 §5 |
+| 新组件（1） | `5353143` | `containerd-plain-snapshotter/`：把宿主上现成的 rootfs 目录 bind-mount 给 containerd 当容器根的 proxy snapshotter 插件 | 本篇 §4.2 |
 | 其它（6） | `59b36a4`、`2f48c9c`、`1f0c8a2`、`31e3c6f`、`9fd0651`、`6cccaa7` | boot args 加 `page_reporting.page_reporting_order=6`；缺省 readiness 改用内置 busybox；测试用对象存储镜像替换；两个 Go 依赖升级；版本号 | [第 03 篇](03-firecracker-for-agentenv.md)、[第 52 篇](52-template-builder.md) |
 
 按改动量看，startup pack 一组（约 +8000 行）与 Codex 会话（约 +3000 行）占了大半；
@@ -92,7 +92,7 @@ v0.2.3 的 tag 是附注 tag（对象 `4890d5e`），指向提交 `6cccaa7842bd`
 | `[kernel.pvm]` | `6.12.33-pvm` | kvcache-ai/linux | PVM guest 内核 |
 | `[tools]` | `0.1.1` | `ghcr.io/kvcache-ai/agentenv-tools` | guest 的 `/dev/vda` 工具盘（envd、busybox、`/init`） |
 | `[overlaybd]` | `v1.0.18-aenv.1` | kvcache-ai/overlaybd release `static-…` | overlaybd 工具（`overlaybd-create/apply/commit/resize`） |
-| `[regclient]` | `v0.11.5` | regclient/regclient | `regctl`，所有 registry 访问 |
+| `[regclient]` | `v0.11.5` | regclient/regclient | `regctl`，镜像拉取等 registry 访问（发布路径另用进程内的 `AcrClient`，[第 50 篇](50-rootfs-as-oci-image.md)） |
 | `[protoc]` | `33.4` | protocolbuffers/protobuf | 只给开发与 CI 用（`adev`），节点不读 |
 
 另有 `[packages.runtime]` 与 `[packages.runtime_commands]` 两节列出宿主要装的发行版软件包（`iptables`、`e2fsprogs`、`umoci`、`zstd` 等）。
@@ -133,46 +133,33 @@ kvcache-ai/firecracker 还有更新的补丁分支，但 v0.2.3 的 manifest 不
 `storage/uffd-core` 有自己的 `Cargo.toml`，但**不在** workspace 里，也没有任何成员依赖它；`AGENTS.md` 称它为 reference-only。
 它是 uffd 内存后端的保留实现，与块设备 File 后端的比较在[第 44 篇](44-uffd-alternative.md)。
 
-下图是运行时依赖（不含 dev-dependencies）的结构。为了可读，图把四个生成或第三方客户端、五个公共小 crate 各画成一组；
+下图是运行时依赖（不含 dev-dependencies）的主干。为了可读，图把三个生成客户端、三个公共小 crate 各画成一个节点；`agentenv` 其实也直接依赖 `uvm-ublk`、`overlaybd`、`storage-util`、`object-store-operator` 与公共小 crate，图里只画经 daemon 的那一条；
 测试与工具类成员（`adev`、`agentenv-benchmarks`、`agentenv-e2e-tests`、`agentenv-test-support`）不画。
 
 ```mermaid
 flowchart TB
-    subgraph BIN["产出二进制的包"]
-        direction LR
-        AG["agentenv<br/>server"]
-        UD["uvm-ublk-daemon"]
-        CLI["aenv<br/>CLI"]
-    end
-    subgraph GEN["生成与第三方客户端"]
-        direction TB
-        HS["agentenv_http_server"]
-        CE["custom_extension_client"]
-        FCC["firecracker_client"]
-        EN["envd<br/>含 http_client"]
-    end
-    subgraph STO["存储栈"]
-        direction TB
-        UB["uvm-ublk"]
-        OB["overlaybd"]
-        SU["storage-util"]
-    end
-    subgraph COM["公共小 crate"]
-        direction TB
-        WP["warm-pool<br/>linux-cap"]
-        OBS["agentenv-observability"]
-        OSO["object-store-operator<br/>shell-util"]
-    end
+    AG["agentenv<br/>server"]
+    CLI["aenv<br/>CLI"]
+    GEN["生成客户端<br/>agentenv_http_server<br/>custom_extension_client<br/>firecracker_client"]
+    EN["envd<br/>含 http_client"]
+    SH["shell-util"]
+    UD["uvm-ublk-daemon"]
+    COM["公共小 crate<br/>warm-pool linux-cap<br/>agentenv-observability"]
+    UB["uvm-ublk"]
+    OB["overlaybd<br/>Rust 版"]
+    SU["storage-util"]
+    OSO["object-store-operator"]
     AG --> GEN
+    AG --> EN
+    AG --> SH
     AG --> UD
-    AG --> STO
-    AG --> COM
-    UD --> UB
     UD --> COM
+    UD --> UB
     UB --> OB
     OB --> SU
-    CLI --> EN
     OB -.->|"feature full"| OSO
+    CLI --> EN
+    CLI --> SH
 ```
 
 几处依赖值得注意。`agentenv` 依赖 `uvm-ublk-daemon` crate，是为了用其中的 `UblkDaemonClient` 与 RPC 协议类型，不是把 daemon 链接进 `server` 进程；
@@ -202,7 +189,8 @@ v0.2.3 新增的 `containerd-plain-snapshotter/` 是另一个 module，模块路
 | `services/api/proto/*.pb.go` | `services/api/proto/scheduler.proto` | Go 3227 | `make -C services proto` |
 
 前四项都由 `cargo adev codegen` 调用 openapi-generator 产生；Rust 侧的 gRPC 代码（scheduler 客户端、`src/image/content.proto` 等）由 `build.rs` 在每次构建时生成到 `OUT_DIR`，不入库。
-`build.rs` 还把 `git rev-parse --short HEAD` 的结果以 `AENV_GIT_COMMIT` 编进二进制。生成器版本、后处理与 CI 缺少一致性检查等问题，见[第 64 篇 §3](64-build-codegen-release.md#3-生成代码)。
+`build.rs` 还把 `git rev-parse --short HEAD` 的结果以 `AENV_GIT_COMMIT` 编进二进制。
+运行中的节点据此报告自己是哪个版本：`src/identity.rs` 的 `NodeIdentity::from_config()` 把这个提交号与 `CARGO_PKG_VERSION`（即 workspace 的 `0.2.3`）放进节点身份，供节点与管理 API 返回；编译时拿不到 git 信息（例如在没有 `.git` 的源码包里构建），提交号就退化为字符串 `unknown`。排查一台节点跑的是哪份代码时，先看这两个字段。生成器版本、后处理与 CI 缺少一致性检查等问题，见[第 64 篇 §3](64-build-codegen-release.md#3-生成代码)。
 
 两个容易误读的地方。第一，`firecracker.yaml` 是**来源**而不是产物：它描述的是 AENV 补丁版 Firecracker 的 API（含补丁新增的端点），
 但 client crate 的版本号仍写 `1.15.1`。第二，生成的 Firecracker client 只提供 model 类型；真正发 HTTP 请求的是手写的 `src/sandbox/firecracker/instance.rs`（[第 25 篇](25-backend-and-firecracker-process.md)）。
@@ -258,10 +246,10 @@ OUTLINE 规划时的「Rust 约 17.1 万」把 `thirdparty/envd/http-client` 算
 | `services/shared`、`services/api` | 1521 | 共享配置、日志、指标桶；`scheduler.proto` | [第 54 篇](54-control-plane-overview.md) |
 | `containerd-plain-snapshotter` | 1042 | 独立的 containerd snapshotter 插件（Go 627） | 本篇 §4.2 |
 | `deploy` | 1078 | Dockerfile、Compose、Kubernetes kustomize | [第 60 篇](60-deployment.md) |
-| `scripts` | 6852 | 安装脚本、能力 runner、e2e shell 套件（`scripts/tests` 5317）、BuildKit 脚本 | [第 60 篇](60-deployment.md)、[第 63 篇](63-testing-and-benchmarks.md) |
+| `scripts` | 7024 | 安装脚本、能力 runner、e2e shell 套件（`scripts/tests` 5317）、BuildKit 脚本与测试夹具 | [第 60 篇](60-deployment.md)、[第 63 篇](63-testing-and-benchmarks.md) |
 | `tools-image` | 671 | guest 工具盘的构建源：从 e2b infra 编译 envd，加 busybox 与 `/init` | [第 64 篇](64-build-codegen-release.md) |
 | `config` | 466 | `default.toml` 与 `deps_manifest.toml` | [第 11 篇](11-configuration.md)、本篇 §3 |
-| `docs/src` | 7239 | mdBook 文档站源码（参考，不是依据） | [第 64 篇](64-build-codegen-release.md) |
+| `docs` | 7509 | mdBook 文档站；其中 `docs/src` 7239 行是正文源码（参考，不是依据） | [第 64 篇](64-build-codegen-release.md) |
 | `.github` | 2296 | CI 与发布 workflow | [第 63 篇](63-testing-and-benchmarks.md)、[第 64 篇](64-build-codegen-release.md) |
 
 从行数分布可以读出这个项目的重心：`storage/overlaybd` 一个 crate 就占 Rust 代码的四分之一，
@@ -292,7 +280,29 @@ AgentENV 只实现它的客户端（`thirdparty/envd`）。
 
 ---
 
-## 8. 小结
+## 8. 读代码的路线：四道接口边界
+
+目录地图回答「某个东西在哪」，读代码时更常见的问题是「一个行为从哪里开始、在哪里结束」。
+节点运行时沿四道接口边界分层，每一道都有一个可以搜索的类型名，读者可以从上往下一层一层追。
+
+1. **生成的 API trait。** `openapi.yml` 的每个 tag 生成一个 trait（`Sandboxes`、`Templates`、`Snapshots`、`Volumes`、`Admin` 等），
+   手写的 `ApiImpl` 在 `src/api/impls/` 下逐个实现。例如 `POST /v2/sandboxes` 落在 `impls/sandbox.rs` 里 `impl Sandboxes<()> for ApiImpl` 的 `v2_sandboxes_post()`。
+   这一层做参数校验、字段换算与错误映射，不持有沙箱状态（[第 12 篇](12-spec-driven-server.md)）。
+2. **`Orchestrator`。** handler 调用 `Orchestrator::create_sandbox()` 这类方法。`Orchestrator` 是对三个 trait 泛型的结构体：
+   元数据存储 `MetadataStore`、后端工厂 `SandboxBackendFactory`、持久化 `SandboxPersister`，缺省分别是 `InMemoryMetadataStore`、`FirecrackerSandboxFactory`、`FileBackedSandboxPersister`（`src/orchestrator/service.rs`）。
+   状态机、并发控制与失败回滚都在这一层，它不直接接触 Firecracker（[第 19 篇](19-state-machine-and-concurrency.md)）。
+3. **`SandboxBackend` trait。** `src/sandbox/backend.rs` 定义一台沙箱的生命周期操作：`start()`、`wait_for_ready()`、`pause()`、`resume()`、`snapshot()`、`fork()`、`stop()` 等。
+   生产实现是 `src/sandbox/firecracker/sandbox.rs` 的 `FirecrackerSandbox`；`src/sandbox/mock.rs` 的 `MockSandboxBackend` 不起任何进程、立即完成所有操作，供 orchestrator 的单元测试使用。
+   所以 `src/orchestrator/tests.rs` 里的用例验证的是状态机与回滚逻辑，而不是真实 VM 的行为（[第 25 篇 §2](25-backend-and-firecracker-process.md#2-回顾后端-trait-的约定)）。
+4. **daemon RPC。** 后端需要块设备时经 `UblkDaemonClient` 向 ublk-daemon 发请求。协议在 `storage/ublk-daemon/src/protocol.rs`：
+   `DaemonRequest` 与 `DaemonResponse` 两个枚举，以 4 字节大端长度前缀加 JSON 的形式在 Unix socket 上传输，单条消息上限 16 MiB（[第 41 篇 §3](41-ublk-daemon.md#3-rpc-协议)）。
+   再往下就是 `storage/ublk` 与 Rust 版 overlaybd 的库代码，不再有进程边界。
+
+这种分层的收益是每一层只需要理解下一层的接口：读 orchestrator 不必懂 Firecracker 的 REST 序列，读后端不必懂 LSMT 索引。
+代价是同一个概念在不同层各有一套类型，例如 API 层的 `models::SandboxState` 由 orchestrator 的 `SandboxState` 经 `From` 转换而来，
+暂停后的后端状态又是另一个 trait 对象 `PausedSandboxState`。追一个字段时要留意转换发生在哪一层，错误码的映射也集中在这些转换上。
+
+## 9. 小结
 
 - AgentENV 从 v0.1.0（2026-07-25，单个导入提交）到 v0.2.3（2026-09-30）共八个 tag、230 个提交，约每周一版；没有 CHANGELOG，release notes 由 git-cliff 生成并跳过 test / chore 类提交。
 - v0.2.3 的 24 个提交里，startup pack 与 CLI 的 Codex 会话占了大部分改动量；E2B v2 兼容的三个提交同时改了 gateway。
@@ -302,6 +312,7 @@ AgentENV 只实现它的客户端（`thirdparty/envd`）。
 - 入库的生成代码约 2.7 万行，讲行为时引用它们的来源：`openapi.yml`、`firecracker.yaml`、`envd.yaml`、`scheduler.proto`。
 - 不含生成代码，Rust 约 17.0 万行、Go 约 1.3 万行；存储栈约 5.6 万行，是仓库的重心。
 - 节点进程中 `server` 与 ublk-daemon 来自本仓库，Firecracker、overlaybd 工具与 guest 内的 envd 都是外部制品。
+- 读代码沿四道边界：生成的 API trait 与 `ApiImpl`、`Orchestrator`、`SandboxBackend`、daemon RPC；orchestrator 的单元测试跑在 mock 后端上。
 
 ## 延伸阅读 / 下一篇
 

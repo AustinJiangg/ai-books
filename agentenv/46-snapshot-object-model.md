@@ -86,6 +86,10 @@ flowchart TB
 （`posixfs/catalog.rs` 的 `committed_record_unlocked()`）。来源是沙箱时，`mark_committed()` 把 `source` 改写成 `Sandbox`。
 模板与构建 ID 合一、别名在 Waiting 时就被占住等 API 层面的后果，见[第 15 篇 §2](15-template-build-api.md#2-模板即快照记录)。
 
+Waiting 记录的 `resources` 在登记时就已确定，此后的构建一律沿用它：`template_build_spec_from_start_request()`（`src/api/impls/template_helpers.rs`）总是把记录里的 CPU 与内存写进构建 spec。
+从模板 base 构建时，`src/template/builder.rs` 要求这份资源与 base 快照记录的 `resources` 相同，否则以「snapshot-based build cannot change CPU or memory」拒绝。
+推论：base 模板的规格不是节点缺省值、而登记时又没有显式给出相同规格时，构建在后台任务里失败，记录变为 Error（[第 52 篇 §2.2](52-template-builder.md#22-模板-base从快照恢复)）。
+
 失败原因 `TemplateBuildErrorReason` 有 `message` 与 `step` 两个字段。`step` 必须是从 1 开始的十进制步骤号，
 `src/template/step_executor.rs` 的注释说明了原因：E2B 官方 SDK 把这个字段当作下标去索引本地记录的调用栈，
 非数字会让 Python SDK 在抛出真正的构建错误之前先在错误处理路径里崩溃；指令文本因此只能放进 `message`。
@@ -135,6 +139,7 @@ flowchart TB
 
 `RunnableSnapshot` 是 `SnapshotRuntimeResolver::resolve()` 的产物，三个字段：记录本身、已填入本节点路径的 manifest、一个 `Arc<dyn RuntimeArtifactLease>`。
 lease 没有任何方法，它的作用全在析构：只要 `RunnableSnapshot` 还活着，它引用的本地缓存文件就不会被驱逐（`src/snapshot/artifact_cache.rs` 的 `CacheArtifactLease`）。
+这份保护只覆盖启动窗口：`RunnableSnapshot` 装在 `CreateLaunchPlan`（`src/orchestrator/launch_plan.rs`）里，随启动计划一起 drop；沙箱运行期间，这些本地缓存文件不再被钉住，后果见[第 49 篇 §6.2](49-resolve-and-artifact-cache.md#62-lease-只覆盖启动窗口)。
 `committed()` 访问器对空载荷直接 `expect`，因为解析器只接受已提交的记录。
 
 ---

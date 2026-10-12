@@ -114,7 +114,7 @@ spec（`src/api/openapi.yml` 的 `/sandboxes/{sandboxID}/fork`）写明源沙箱
 
 ## 3. 共享什么、独占什么
 
-捕获目录的位置是 `managed_snapshot_base()/<源沙箱 ID>/<uuidv7>/`，基目录是 `[firecracker] work_dir/managed-snapshots`，未配置时在系统临时目录下。
+捕获目录的位置是 `managed_snapshot_base()/<源沙箱 ID>/<uuidv7>/`，基目录是 `[firecracker] work_dir/managed-snapshots`（`sandbox.rs` 的 `managed_snapshot_base()`），未配置 `work_dir` 时是系统临时目录下的 `aenv/managed-snapshots`。
 目录里有 `vm_state.bin`、内存层与 `mem_image.json`、`rootfs/` 下封存的层与 `image.json`、`drives/` 下各附加盘的封存层。
 
 ```mermaid

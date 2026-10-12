@@ -71,7 +71,7 @@ flowchart TB
 只要带了 `x-agentenv-sandbox-id` 或其 E2B 别名 `e2b-sandbox-id`，就以原路径转发到沙箱；不带路由头则返回 JSON 形式的 404。
 注释写明它的目的：让客户端在单节点与多节点部署中都能用 `E2B_SANDBOX_URL=${E2B_API_URL}`，而不必追加 `/proxy`。
 envd 的路径（`/files`、`/process.Process/Start` 之类）与控制面路径不重叠，所以同一个端口能同时承载两类流量。
-多节点时 gateway 用同样的头做分发（`services/gateway/internal/server.go` 里同时定义了两个头名，[第 55 篇](55-gateway.md)）。
+多节点时 gateway 用同样的头做分发（`services/gateway/internal/server.go` 里同时定义了两个头名，[第 55 篇 §3.2](55-gateway.md#32-六种路由来源)）。
 
 把按头定址放在主路径上，换来的是部署门槛低：不需要泛域名 DNS，也不需要通配证书，一个 IP 加一个端口就能让 SDK 跑起来。
 代价有两条。第一，一个普通浏览器或不认识这两个头的 HTTP 客户端无法直接访问沙箱里的服务，它们只能走 Host 形态，而 Host 形态要先配置域名。
@@ -83,7 +83,7 @@ envd 的路径空间与控制面目前不重叠，但这依赖两套 API 各自�
 推论：它会退回 SDK 自带的默认域名去连 envd，于是创建成功、执行命令失败。文档把 `E2B_SANDBOX_URL` 列为必设，原因在此。
 
 鉴权与头清洗不在这里重复，见[第 13 篇 §4](13-authentication.md#4-require_auth-的决策)；
-转发、超时与 WebSocket 见[第 17 篇](17-reverse-proxy.md)。
+转发、超时与 WebSocket 见[第 17 篇 §5–§6](17-reverse-proxy.md#5-http-转发)。
 
 ---
 
@@ -108,7 +108,8 @@ envd 的路径空间与控制面目前不重叠，但这依赖两套 API 各自�
 
 这里需要纠正一个常见说法：仓库里的 `thirdparty/envd` 不是 envd 的服务端分支，而是 host 侧调用 envd 的 Rust 客户端库（tonic 生成的 filesystem / process 客户端加一个 OpenAPI 生成的 HTTP 客户端），
 它的 README 直接指向 e2b infra 的 `packages/envd`。guest 里的 envd 随 tools 盘提供（`config/deps_manifest.toml` 的 `[tools]`），
-其源码不在本仓库。推论：数据面协议的兼容来自 guest 里运行的就是 E2B 协议的 envd，而不是 AgentENV 重新实现了它；本书无法从基线代码核实它与上游 envd 的版本关系。
+其源码不在本仓库：`tools-image/Makefile` 在构建 tools 盘镜像时从 e2b-dev/infra 克隆并编译 `packages/envd`，版本由 `ENVD_REF` 指定，缺省 `2026.17`（发布工作流 `publish-tools-image.yml` 可以改写它）。
+所以数据面协议的兼容来自 guest 里运行的就是 e2b infra 的 envd，而不是 AgentENV 重新实现了它。推论：这个 envd 比 e2b 手册的基线 `2026.09` 新，两者的 envd 行为差异本书不展开。
 
 ---
 
@@ -128,7 +129,7 @@ envd 的路径空间与控制面目前不重叠，但这依赖两套 API 各自�
 
 同名不等于同形。`GET /health` 在 AgentENV 返回 204，2026.09 声明的是 200；
 AgentENV 的 `Volume` 在 `volumeID`、`name` 之外多了必填的 `mode`、`sizeMB`、`status`，`NewVolume` 多了 `sizeMB`、`mode`、`fromVolume`、`image`。
-多出来的响应字段对 SDK 无害，多出来的请求字段 SDK 不会发送，缺省值决定了 SDK 建出来的卷是什么样（[第 16 篇](16-snapshot-and-volume-api.md)）。
+多出来的响应字段对 SDK 无害，多出来的请求字段 SDK 不会发送，缺省值决定了 SDK 建出来的卷是什么样：exclusive、64 GiB 的空卷（[第 16 篇 §6.1](16-snapshot-and-volume-api.md#61-volumes_post)）。
 
 **乙类：E2B 形状，但 2026.09 的 spec 里没有。** `POST /v2/sandboxes`、`POST /v2/sandboxes/{id}/connect`、`PUT /sandboxes/{id}/network`、
 `GET /snapshots/{snapshotID}`、`GET /v2/templates`。它们沿用 E2B 的命名与 schema 风格，部分在 AgentENV spec 里被老端点的 deprecated 描述引用
@@ -175,6 +176,7 @@ AgentENV 的 `Volume` 在 `volumeID`、`name` 之外多了必填的 `mode`、`si
 | 私有入口与 secure | `allowPublicTraffic: false` 要求 `secure: true` | 不做这项检查 | 可以建出应用端口私有、envd 公开的沙箱 |
 | `mcp`、`maskRequestHost` | 生效 | 接受但从不读取 | 静默无效，不报错 |
 | 模板步骤 | 支持 COPY / ADD（按 hash 上传） | COPY、ADD、非空 `filesHash` 返回 400；ARG 当 ENV | SDK 的 `copy()` 不可用；构建参数留在运行时环境变量里 |
+| 模板 USER 步骤 | RUN 可逐步指定执行用户 | USER 只改构建上下文，RUN 以构建 VM 的 envd 缺省用户执行 | 推论：`set_user()` 之后的 `run_cmd()` 不换身份 |
 | 卷内容 | SDK 有直接读写卷内容的接口 | 不支持（`docs/src/integration/e2b.md`） | 只能经挂载卷的沙箱读写 |
 | 沙箱 ID | 短 ID | UUID | SDK 不受影响；日志与 URL 里的 ID 更长 |
 | 查询删除中的沙箱 | `GET /sandboxes/{id}` 对 killing 返回 404 | 返回 200 与 `running` | 删除后立即查询会看到「仍在运行」 |
@@ -182,11 +184,11 @@ AgentENV 的 `Volume` 在 `volumeID`、`name` 之外多了必填的 `mode`、`si
 | v2 列表 `limit` | 缺省与上限都是 100 | 只校验上限，不带时返回全部 | 不带 `limit` 时一页拿全部，没有 `x-next-token` |
 | connect 遇到暂停中 | 等暂停结束再恢复 | 返回 400 | 需要客户端重试 |
 
-其中 TTL 相关的三个缺省值（显式 resume 的 15 s、v2 创建与 connect 的 300 s、代理自动恢复至少 300 s）与状态折叠、过滤、分页的细节在[第 14 篇](14-sandbox-api.md)；
-模板步骤与 templateID = buildID 的约束在[第 15 篇](15-template-build-api.md)。这里只指出两个对 SDK 使用者影响最大的点。
+其中 TTL 相关的三个缺省值（显式 resume 的 15 s、v2 创建与 connect 的 300 s、代理自动恢复至少 300 s）与状态折叠、过滤、分页的细节在[第 14 篇 §4](14-sandbox-api.md#4-四个改-ttl-的入口)与 [§8](14-sandbox-api.md#8-列表状态折叠与分页)；
+模板步骤与 templateID = buildID 的约束在[第 15 篇 §3.2](15-template-build-api.md#32-支持的步骤)，USER 步骤的语义在[第 52 篇 §4.1](52-template-builder.md#41-逐步执行)。这里只指出三个对 SDK 使用者影响最大的点。
 
 第一，`autoPause` 的缺省值反了过来。AgentENV 选择缺省暂停，是因为暂停的沙箱可以靠快照恢复，删除不可撤销，缺省偏向保留状态；
-代价是不显式写 `autoPause: false` 的客户端会在节点上积累暂停记录与产物，直到有人删除它们（[第 23 篇](23-auto-eviction-and-ttl.md)）。
+代价是不显式写 `autoPause: false` 的客户端会在节点上积累暂停记录与产物，直到有人删除它们（[第 23 篇 §4.2](23-auto-eviction-and-ttl.md#42-一轮做什么)）。
 推论：SDK 若总是显式发送 `autoPause`，这处差异对它不可见；只有手写请求或省略该字段的客户端会受影响。
 
 第二，「接受但不生效」的字段比「明确拒绝」更难排查。`mcp` 与 `maskRequestHost` 都能通过 spec 校验，handler 不读它们

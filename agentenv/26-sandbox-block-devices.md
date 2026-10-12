@@ -157,7 +157,8 @@ tools 盘的根目录下有一个 `/init`（`tools-image/init`），它是内核
 daemon 侧的 `PoolState` 用 `(image_config, global_config)` 作为共享设备的 key，每个 `ActiveShared` 带一个 `refcount`
 （`storage/ublk-daemon/src/server.rs`）：Shared 模式的 acquire 加一，release 减一，减到零才把设备退回空闲池。
 节点在一代设备上只向 daemon acquire 一次，所以正常情况下 daemon 侧的计数是 1；
-它在并发竞争（4.2 第 4 步里输掉的那份）与跨 global 配置的情形下才大于 1。
+它只在并发竞争时短暂大于 1：4.2 第 4 步里输掉的那份也 acquire 过一次，被丢弃后才减回去。
+daemon 的 key 含 `global_config`，节点的去重 key 却只有 image.json 路径，所以同一路径配上不同全局配置时，节点在快路径上直接复用已有设备，不会再向 daemon acquire。推论：后来者请求的全局配置被忽略；实际中 tools 盘取 `[ublk.overlaybd]` 的 `global_config_path`、内存设备取内存专用的那份全局配置（`prepare_tools_drive()` 与 `start_resume()`），两者在进程内固定，这种情形不出现。
 
 两级计数各管一件事：节点一级决定「这个节点上还有没有沙箱在用」，daemon 一级决定「这个内核设备还有没有任何持有者」。
 节点一级用 `Arc` 是因为 Firecracker 进程、预取任务都需要独立地持有设备，且不应为每次克隆付一次 RPC；
@@ -241,7 +242,7 @@ daemon 在 `materialize_overlaybd_runtime()`（`storage/ublk-daemon/src/runtime.
 `[ublk.overlaybd] runtime_upper_mode` 的代码默认值与 `default.toml` 都是 `hybridLogStructured`（`src/cfg.rs` 的 `UblkOverlaybdTomlConfig`）。
 有一处容易看错：`FirecrackerSandboxFactory::build()` 构造 `OverlaybdConfig` 时写的是 `UpperMode::LogStructured`，
 但随后调用的 `FirecrackerSandboxConfig::from_app_config_with_user_image()` 会用全局配置覆盖它，所以冷启动的 rootfs 实际用 Hybrid 布局。
-三种布局的差别——追加写、原地写、Hybrid 的分片规划——在[第 36 篇](36-read-write-paths-and-rw-layouts.md)；Hybrid RW 的标志位在上游 overlaybd 中也有定义，其中 ReuseZero 一类写入是 Rust 版 overlaybd 独有的。
+三种布局的差别——追加写、原地写、Hybrid 的分片规划——在[第 36 篇](36-read-write-paths-and-rw-layouts.md)；Hybrid RW（LSMT 头部 flags 的 bit5）与上游 overlaybd 默认分支同位同义，只有遇到零段时原地复用物理空间的 `ReuseZero` 写入是 Rust 版 overlaybd 独有的（[第 34 篇 §6](34-lsmt-format-and-index.md#6-与上游的兼容边界)）。
 
 ### 5.3 大小只在冷启动时改变
 

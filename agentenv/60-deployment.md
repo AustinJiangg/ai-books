@@ -38,7 +38,7 @@
 | 暂停沙箱 | `$AENV_HOME`，跨重启保留 | 容器可写层，重建容器即丢失 | hostPath，跨 Pod 重建保留 |
 | 停止宽限 | `TimeoutStopSec=30` | Docker 缺省 | `terminationGracePeriodSeconds: 3600` |
 
-下面三节按表的列逐个展开。
+下面三节按表的列逐个展开。仓库的 HTTP 端到端套件也按这三种形态分成 single-node、compose、k8s 三种 `E2E_MODE`，分别复用本篇讲的安装路径、Compose 文件与 `run.sh`（[第 63 篇 §2.4](63-testing-and-benchmarks.md#24-http-端到端套件)）。
 
 ---
 
@@ -103,7 +103,7 @@ Firecracker 子进程随之退出，运行中沙箱的内存状态就丢了；�
 推论：沙箱稍多时 30 s 不够，systemd 在超时后 SIGKILL 主进程；由于 `KillMode=process`，SIGKILL 也只发给主进程，
 尚未暂停的 Firecracker 进程留在宿主上成为孤儿，而它们背后的 ublk-daemon 检测到父进程退出后自行关闭，孤儿的块设备随之消失
 （[第 22 篇 §7](22-persistence-across-restarts.md#7-崩溃一致性边界)）。崩溃后 `Restart=on-failure` 拉起的新进程同样不会回收它们。
-单元里没有 `ExecStopPost=` 之类的清理步骤；在现有结构上，可以把超时调大到与节点容量相称，再加一步在 `server` 退出后杀掉 cgroup 里残留进程的清理。
+单元里没有 `ExecStopPost=` 之类的清理步骤；在现有结构上，可以把超时调大到与节点容量相称，再由宿主上的外部步骤（例如按单元 cgroup 杀掉残留进程）收拾孤儿 Firecracker 与工作目录（[第 59 篇 §6](59-host-setup-and-privileges.md#6-边界与代价)）。
 
 ---
 
@@ -121,6 +121,10 @@ Firecracker 子进程随之退出，运行中沙箱的内存状态就丢了；�
 
 第二次 `--setup-only` 的注释称它是「authoritative」：预烘焙的结果完全符合预期时，每个依赖都命中「已存在则跳过」，这一步几乎不做事；
 任何缺失或过期都在这里补上。这样依赖层与二进制层可以分开缓存——二进制变了而依赖没变时，依赖层不重建，也不会因此得到一个过期的依赖树。
+
+这里的 `cargo build --release` 不带 `--locked`，也不开 `vendored-openssl`，所以镜像里的 `server` 与 release bundle 里的 `server` 是同一 tag 的**两次独立构建**：
+编译器版本、依赖解析与 OpenSSL 链接方式都可能不同（[第 64 篇 §4.5](64-build-codegen-release.md#45-节点镜像)）。
+镜像里的依赖树也是镜像构建时自己跑 `--setup-only` 下载的，并非拷自 bundle 的 `deps/`。
 
 运行时包列表是**硬编码**在 `runtime-base` 里的：`ca-certificates`、`curl`、`e2fsprogs`、`iproute2`、`iptables`、`jq`、`sudo`、`umoci`、`zstd`，
 外加构建参数 `EXTRA_RUNTIME_PACKAGES`。`config/deps_manifest.toml` 的注释说明 Dockerfile 已不再在构建期解析 manifest，两边要手工同步。
@@ -258,7 +262,7 @@ base 的 `secretGenerator` 里 `AENV_API_KEY=` 是空字面量。绕过 `run.sh`
 
 ### 5.5 清单里没有的部件
 
-- **共享快照仓库**：`agentenv.toml` 就是默认配置，`posix_fs` 的仓库在各节点的 hostPath 里。文档 `docs/src/deployment/kubernetes.md` 把「所有节点共享 POSIX 或 OSS 存储」列为前提，但清单本身不配置它；
+- **共享快照仓库**：`agentenv.toml` 就是默认配置，`posix_fs` 的仓库在各节点的 hostPath 里，每个节点各有一个自己的快照仓库，快照不在节点之间共享。文档 `docs/src/deployment/kubernetes.md` 把「所有节点共享 POSIX 或 OSS 存储」列为前提，但清单本身不配置它；
   不改配置直接部署时，一个节点上提交的快照与模板在别的节点上不可见（[第 08 篇 §5](08-system-architecture.md#5-存储拓扑什么是真相)）。
 - **scheduler 的高可用**：scheduler 与 gateway 都是单副本；scheduler 配置里没有 `redis_addr`，绑定只在内存里，也没有 query-only 副本的清单。
 - **共享 token seed**：只有 local-dev 提供，而且是不能用于生产的固定值。
@@ -275,7 +279,8 @@ base 的 `secretGenerator` 里 `AENV_API_KEY=` 是空字面量。绕过 `run.sh`
 - Compose 的两节点共享快照仓库与 secrets 卷，后者让 API key 与 token seed 自动一致；暂停沙箱在容器可写层，重建容器即丢失；它是多节点模拟，不是生产拓扑。
 - DaemonSet 以 privileged、hostPath 运行，节点 ID 等于 Pod 名；hostPath 遮住镜像里预烘焙的依赖，首次启动要重新下载。
 - preStop 等运行中沙箱自然排空、宽限 3600 s；没有 TTL 的沙箱会让它耗满宽限期。
-- Kubernetes 清单不含共享快照仓库、Redis 与 query-only scheduler、生产用 token seed，必须通过 `run.sh` 应用。
+- Kubernetes 清单不含共享快照仓库（各节点的快照互不可见）、Redis 与 query-only scheduler、生产用 token seed，必须通过 `run.sh` 应用。
+- 节点镜像在 Dockerfile 里从源码重新编译，与 release bundle 是同一 tag 的两次独立构建。
 
 ---
 

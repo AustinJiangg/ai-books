@@ -146,9 +146,10 @@ AENV 补丁版 Firecracker 新增的 `GET /vm/dirty-memory-ranges` 取区间，�
 
 ### 4.3 PVM 下的语义：只能推论
 
-上面关于 `mincore` 的描述只对 AENV 补丁版 Firecracker 成立。PVM 模式用的是 firecracker-next，它不在本书基线里，下面几点都无法从代码确认：
+上面关于 `mincore` 的描述只对 KVM 模式用的那条代码线成立，即 AENV 补丁版 Firecracker（tag `aenv-deps`）。PVM 模式下暂停同样无条件调用 `/vm/dirty-memory-ranges`，
+但响应它的是 firecracker-next；这条代码线不在本书基线里，它是否实现该端点、没有脏页日志时是否也退回 `mincore`，都无法从代码确认。下面几点因此都是推论：
 
-- 推论：AgentENV 的暂停路径无条件调用 `/vm/dirty-memory-ranges`，PVM 模式要能暂停，firecracker-next 必须也实现这个端点，并在没有脏页日志时返回一个过近似的区间集合（例如同样走 `mincore`）。
+- 推论：PVM 模式要能暂停，firecracker-next 必须也实现这个端点，并在没有脏页日志时返回一个过近似的区间集合（例如同样走 `mincore`）。
 - 推论：同理，可选的 `mem_file_path`、用 seek 取内存文件大小、drive 的 `direct` 选项这几个被 AgentENV 用到的补丁行为，在 firecracker-next 里也要有等价实现，否则暂停或从内存层恢复会失败。
 - 「没有测试过」的说法只针对脏页跟踪与 PVM 的组合。推论：PVM 上 KVM 脏页日志的语义（影子页表下由谁、在何时置位）与硬件 KVM 不同，这是保守关闭的原因。
 
@@ -267,7 +268,7 @@ AgentENV 多出一种模式，换来的是能部署在不提供嵌套虚拟化�
 - 模式是节点级配置 `virtualization_mode`（环境变量 `AENV_VIRTUALIZATION_MODE`），它换掉 Firecracker 与 guest 内核两项依赖；PVM 用 firecracker-next `v1.17.0-next.1` 与 `6.12.33-pvm` 内核，仅支持 x86_64。
 - 制品按版本号落在不同目录，两种模式在同一宿主上互不覆盖；显式路径覆盖项不再按模式核对。
 - `validate_mode()` 只在正常启动时运行：PVM 要求 x86_64 且 `kvm_pvm` 已加载，KVM 要求 `kvm_pvm` 未加载。`--setup-only` 不查模块，因此能在无特权构建机上打包 PVM bundle。
-- PVM 下脏页跟踪被归一化强制关闭，但内存快照照常走 `GET /vm/dirty-memory-ranges`；在 AENV 补丁版 Firecracker 中，关闭跟踪意味着改用 `mincore` 过近似，代价是内存层变大。
+- PVM 下脏页跟踪被归一化强制关闭，但内存快照照常走 `GET /vm/dirty-memory-ranges`；「关闭跟踪即改用 `mincore` 过近似、代价是内存层变大」只对 KVM 线的 AENV 补丁版 Firecracker 成立，firecracker-next 的行为无法确认。
 - firecracker-next 是否实现 AgentENV 依赖的四个补丁行为，本书基线无法确认，仓库里也没有 PVM 测试。
 - 模式随沙箱元数据、快照与暂停记录一起保存，在创建、resume、基于快照构建与重启载入四处检查；不符时 API 返回 500，重启时记录被保留但不可恢复。
 - 运行时代码没有 KVM / PVM 分支，差异全在二进制、内核与配置。scheduler 不知道模式，混合模式集群要靠部署约定隔离。

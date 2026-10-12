@@ -22,7 +22,7 @@
 
 ## 1. 问题：一个端口，两种流量
 
-每台沙箱的 guest 网卡在宿主上一个独立的 netns 里，宿主经一个 host interaction 地址（`10.11.0.0/16` 中的一个）与它通信（[第 29 篇](29-network-slots.md)）。
+每台沙箱的 guest 网卡在宿主上一个独立的 netns 里，宿主经一个 host interaction 地址（`10.11.0.0/16` 中的一个）与它通信（[第 29 篇 §2.2](29-network-slots.md#22-地址计划)）。
 这个地址只在节点内可达。SDK、CLI 与浏览器在节点之外，它们要访问 guest 的 envd（缺省端口 49983）或用户自己在 guest 里起的服务，必须经过节点上的某个进程转发。
 
 AgentENV 把这个转发器放在 `server` 进程里，与控制面 API 共用同一个监听端口。这样做省掉一个进程和一个端口，
@@ -88,8 +88,8 @@ flowchart TB
 若把 `api-v2.<domain>` 也解析到这台节点，它会得到「端口非法」的 400，而不是控制面响应。
 另外，请求路径以 `/proxy` 开头时分类器直接放行，不解析 Host（测试 `sandbox_proxy_host_routes_control_paths_and_skips_explicit_proxy`）。
 
-三个入口最后都在响应的 extension 里写入 `HttpRouteSource::{ProxyPrefix, ProxyHeader, ProxyHost}`，外层的指标中间件据此给请求打标签（[第 24 篇](24-metrics-and-events.md)）。
-多节点时 gateway 把数据面请求改写成 `/proxy` 前缀、把 Host 路由转成头再发给节点，节点看到的永远是前两种入口（[第 55 篇](55-gateway.md)）。
+三个入口最后都在响应的 extension 里写入 `HttpRouteSource::{ProxyPrefix, ProxyHeader, ProxyHost}`，外层的指标中间件据此给请求打标签（[第 24 篇 §5.2](24-metrics-and-events.md#52-指标一览)）。
+多节点时 gateway 把 Host 与头两类数据面请求都改写成 `/proxy` 前缀、把 Host 路由的解析结果写成路由头再发给节点，节点看到的永远是 `/proxy` 前缀入口（[第 55 篇 §5.1](55-gateway.md#51-改写了什么)）。
 
 ---
 
@@ -103,19 +103,22 @@ flowchart TB
 2. 没命中时读一次元数据 store，按状态分类：没有记录是 `NotFound`；状态是 Running 却没有路由是 `RouteMissing`；Paused 是 `Paused{auto_resume}`；其余状态是 `Unavailable(state)`。
 
 这里有意不碰沙箱句柄的 `Mutex`。pause、snapshot、fork 这类操作在整个过程中持有句柄锁，可能长达数秒；
-如果代理要先锁句柄才能找到地址，所有数据面流量都会在这期间排队。路由表把「地址」从句柄里拆出来，读路径上只有一把 `RwLock` 的读锁（[第 10 篇](10-node-process-and-object-model.md)）。
+如果代理要先锁句柄才能找到地址，所有数据面流量都会在这期间排队。路由表把「地址」从句柄里拆出来，读路径上只有一把 `RwLock` 的读锁（[第 10 篇 §4.2](10-node-process-and-object-model.md#42-三张表与锁顺序)、[第 19 篇 §7](19-state-machine-and-concurrency.md#7-同一沙箱上的并发操作)）。
 
 路由表的写入点决定了各状态下代理看到什么：
 
 | 时刻 | 路由表 | 代理的结果 |
 |---|---|---|
-| 启动或恢复完成，状态已写成 Running | `launch_sandbox()` 随后 `upsert_proxy_route_if_current_handle()` | 两步之间短暂为 `RouteMissing`，之后 `Ready` |
+| 启动或恢复完成：envd `/init` 已返回，状态已写成 Running | `launch_sandbox()` 随后 `upsert_proxy_route_if_current_handle()` | 两步之间短暂为 `RouteMissing`，之后 `Ready` |
 | Snapshotting、Forking | 不变 | `Ready`：请求照常转发给一台正在被短暂暂停的 VM |
 | 进入 Pausing 之后 | `detach_sandbox_handle_and_route()` 删除 | `Unavailable(Pausing)`，之后 `Paused` |
 | 进入 Killing | 同上删除 | `Unavailable(Killing)`，记录删除后 `NotFound` |
 
+第一行的顺序带来一个保证：`launch_sandbox()` 先等后端的 `wait_for_ready()`（其中包括向 envd 发 `/init`，写入环境变量、工作目录与缺省用户，[第 28 篇 §4.1](28-mmds-and-envd.md#41-wait_for_ready-的顺序)），再写 Running，最后发布路由。
+所以数据面请求不会在 `/init` 之前到达 guest；在此之前到达的请求查到的是 Starting 或 Resuming，得到 410。
+
 写入时 `upsert_proxy_route_if_current_handle()` 先确认句柄仍是本次启动的那一个（`Arc::ptr_eq`），并按「先沙箱表、后路由表」的固定顺序加锁，与删除路径一致，避免死锁。
-每次写入从原子计数器取一个新的 `version`，指标采样用它区分运行代际（[第 24 篇](24-metrics-and-events.md)）。
+每次写入从原子计数器取一个新的 `version`，指标采样用它区分运行代际（[第 24 篇 §3.4](24-metrics-and-events.md#34-代数)）。
 推论：Snapshotting 与 Forking 期间转发的请求会在 TCP 层等到 VM 恢复，只要暂停窗口短于下文的 30 s 响应头超时就不会失败。
 
 拿到地址后，`build_upstream_uri_with_scheme()` 拼出 `http://{ip}:{port}{path}?{query}`（WebSocket 用 `ws://`），直接连 guest，不经过 netns 里的任何用户态进程。
@@ -178,7 +181,7 @@ timeout(
 浏览器加载一个页面时往往并发发出多个请求，除第一个以外都会在恢复期间收到 410；客户端需要把 410 当作可重试的错误。
 
 **流量不续期。** 代理在转发成功时不调用 `keep_alive_for()`，`proxy.rs` 里没有任何续期逻辑。一台正在被频繁访问的沙箱仍会在 TTL 到期时被暂停或删除；
-保持它运行是客户端的责任（connect 或 refreshes，[第 23 篇](23-auto-eviction-and-ttl.md)）。自动恢复只负责「醒来」，不负责「别睡」。
+保持它运行是客户端的责任（connect 或 refreshes，[第 23 篇 §7](23-auto-eviction-and-ttl.md#7-与代理自动恢复的联动)）。自动恢复只负责「醒来」，不负责「别睡」。
 
 ---
 
@@ -246,7 +249,7 @@ envd 的 `POST /process.Process/StreamInput` 是一种特殊情形：它是长�
 `build_proxy_client()` 构造的 hyper 客户端设置了 `pool_max_idle_per_host(0)`：每个请求新建一条 TCP 连接，用完即关。注释给出了原因：
 host interaction 地址在沙箱的运行代际之间复用，而 hyper 的空闲池以 authority（`ip:port`）为键，池里的一条旧连接可能仍属于上一代 VM 的流。
 
-具体地说，后端停止时网络槽位经 `NetworkManager::release()` 归还（`src/sandbox/firecracker/sandbox.rs` 的停止路径），之后可以分给任意一次启动或恢复（[第 32 篇](32-warm-pools.md)），同一个 `10.11.x.y` 在不同时刻可以属于不同的 VM。
+具体地说，后端停止时网络槽位经 `NetworkManager::release()` 归还（`src/sandbox/firecracker/sandbox.rs` 的停止路径），之后可以分给任意一次启动或恢复（[第 32 篇 §3](32-warm-pools.md#3-网络槽位池)），同一个 `10.11.x.y` 在不同时刻可以属于不同的 VM。
 推论：若允许连接复用，一个空闲的 keep-alive 连接在槽位易主之后仍以同样的键留在池里，下一个发往该地址的请求可能被写进一条已经失效的流，得到难以解释的连接错误；
 测试 `proxy_client_does_not_reuse_connections_across_runtime_generations` 模拟了「同一地址换了一代服务端」并断言第二个请求用的是新连接。
 

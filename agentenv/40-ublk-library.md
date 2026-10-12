@@ -37,6 +37,10 @@ libublk-rs 自带 queue 实现与事件循环。`storage/ublk/src/queue.rs` 开�
 这样 Rust 版 overlaybd 的 async 代码可以原样运行；二是 target 自己的文件读写要与 ublk 命令共用同一个 ring、同一次提交；
 三是缓冲、ring 与 runtime 的生命周期要由 AgentENV 控制，以便设备销毁时干净地拆掉。
 
+上游 overlaybd 的经典前端是 tcmu，但默认分支也已带 ublk 前端（`src/ublk/`）：C++ 实现，链接 libublksrv 与 Photon，
+编出一进程一设备的 `overlaybd-ublk` 与全部设备共用一个进程的 `overlaybd-ublkd`（见其 `CMakeLists.txt`）。
+`uvm-ublk` 与它没有代码关系；两者服务的层文件格式相同，用户态 server 各写各的。
+
 `uvm-ublk` 的模块分工如下：
 
 | 文件 | 内容 |
@@ -81,7 +85,9 @@ ublk-daemon 在 `main.rs` 里只建一条这样的 ring，进程内所有设备�
 
 daemon 启动时用 `detect_ublk_features()` 发一次 `GET_FEATURES`：内核不认识这个命令（ENOTTY / EINVAL / EOPNOTSUPP）时按特性为零处理，
 预热池随之退化为只复用容量相同的设备（[第 41 篇](41-ublk-daemon.md)）。
-推论：`UPDATE_SIZE` 与 `AUTO_BUF_REG` 都比 ublk 的基础命令晚进入内核，各版本的分级表见第 04 篇。
+`UPDATE_SIZE` 与 `AUTO_BUF_REG`（bit 11）都比 ublk 的基础命令晚进入内核，按 uapi 头文件都在主线 6.16 首次出现；
+各版本的完整分级与「最低可运行约 6.4」的推论见[第 04 篇 §5.2](04-io-uring-and-ublk.md#52-分级表)，本篇不重复。
+另外，ADD_DEV 声明了内核不认识的特性位并不会失败，内核静默清掉它们（`flags &= UBLK_F_ALL`），所以是否生效要以 GET_FEATURES 的结果为准。
 
 `START_DEV` 与 `DEL_DEV` 在收到 `-EINTR` 时原样重发；其它命令把非零结果直接转成 `std::io::Error`。
 `load_ublk_module()` 在建 ctrl 之前检查 `/sys/module/ublk_drv`，缺失时依次尝试 `modprobe ublk_drv` 与 `sudo -n modprobe ublk_drv`。
@@ -308,14 +314,15 @@ daemon 的预热池就靠它在不销毁设备的前提下把一台空闲设备�
 
 e2b infra 用 NBD 把 rootfs 交给 Firecracker，NBD server 是 orchestrator 进程里的一段 Go 代码，请求与数据都经过 socket 传递（见 e2b 手册第 33 篇）。
 AgentENV 选 ublk，请求描述经共享内存数组到达、命令与后端文件 I/O 在同一个 io_uring 里批量提交，server 也独立成 ublk-daemon 进程。
-代价是对内核版本的要求更高（`UPDATE_SIZE` 等特性需要较新的内核），以及自己维护一套 queue 实现。
+代价是对内核版本的要求更高（`UPDATE_SIZE` 需要主线 6.16，分级见[第 04 篇 §5.2](04-io-uring-and-ublk.md#52-分级表)），以及自己维护一套 queue 实现。
 
 ---
 
 ## 10. 小结
 
 - `uvm-ublk` 只借用 libublk-rs-sys 的 FFI 定义，控制命令、queue 线程与缓冲管理都是自己写的，目的是让 ublk 请求直接在 tokio 上执行 overlaybd 的 async 代码。
-- 控制命令经一条独立 ctrl ring 线程提交，`IoRingHandle` 可跨线程；`UPDATE_SIZE` 按 uapi 手工编码，内核不支持 `GET_FEATURES` 时按特性为零降级。
+- 控制命令经一条独立 ctrl ring 线程提交，`IoRingHandle` 可跨线程；`UPDATE_SIZE` 按 uapi 手工编码，内核不支持 `GET_FEATURES` 时按特性为零降级；内核版本要求以第 04 篇 §5.2 的分级表为准。
+- 上游 overlaybd 默认分支也有自己的 C++ ublk 前端（libublksrv），与 `uvm-ublk` 无代码关系。
 - 设备生命周期有固定顺序：先起 queue 线程并 FETCH，再 SET_PARAMS、START_DEV；拆除时先 STOP_DEV、等线程退出、关字符设备，最后 DEL_DEV。
 - 每个 queue 一个 OS 线程，内含 current_thread runtime + `LocalSet`、每 tag 一个 `slot_task`；SQE 在 `on_thread_park` 时批量提交，ublk 命令与本地文件 I/O 共用一个 ring。
 - 每 queue 独立 ring，是为了避开共享 ring 注册多个字符设备时 DEL_DEV 卡住的问题。

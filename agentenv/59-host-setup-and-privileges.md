@@ -32,7 +32,7 @@
 另一个极端是把每类特权拆成独立的 setuid 辅助程序，常驻进程完全无特权；代价是多出一组需要单独审计、单独分发的二进制。
 
 AgentENV v0.2.3 取的是中间路线：同一个 `server` 二进制按命令行参数进入三种模式，把「需要 root 的一次性改动」与「不需要特权的依赖供给」都从常驻路径里拿出去；
-常驻进程以普通用户运行，只持有两项能力，并且在 spawn 子进程时按需把它们收窄到零或一项。
+常驻进程以普通用户运行，只持有两项能力，并且在 spawn 子进程时按需把它们收窄到零或一项。这种收窄只在 `server` 不是 root 时生效（§6）。
 
 ---
 
@@ -248,7 +248,7 @@ systemd 把两项能力放进 I 与 A，`server` 被 exec 时按 §5.1 的规则
 
 ### 5.3 四类子进程
 
-`server` 在清空 ambient 之后 spawn 的子进程分成四类，各自拿到的能力不同。
+`server` 在清空 ambient 之后 spawn 的子进程分成四类，各自拿到的能力不同。下图与下表都以 `server` **非 root** 运行为前提；以 root 运行时的结果见 §6。
 
 ```mermaid
 flowchart TB
@@ -262,7 +262,7 @@ flowchart TB
     D --> RZ["overlaybd-resize<br/>未清 ambient"]
 ```
 
-| 子进程 | 机制 | 得到的能力 |
+| 子进程 | 机制 | 得到的能力（非 root 时） |
 |---|---|---|
 | 普通命令（regctl、umoci、overlaybd 转换工具、mkfs 等） | 直接 `Command::spawn()` | 无：A 已清空 |
 | 网络命令（`ip tuntap`、`ip route`、`iptables-restore`、`iptables-save`、`nft`） | `run_with_scoped_capabilities(&[CAP_NET_ADMIN], …)` | 恰好 `CAP_NET_ADMIN` |
@@ -309,12 +309,18 @@ root 的 I 集可能为空，而在子进程里、`CAP_SYS_ADMIN` 仍有效时�
 它在冷启动扩容 rootfs 时用 `run_resize_tool()` 直接 spawn `overlaybd-resize`。推论：按 §5.1 的规则，这个 C++ 工具带着 `CAP_SYS_ADMIN` 运行，
 与 `server` 对普通命令「一律不给」的原则不一致。
 
-**前提是非 root。** 以 root 运行时，exec 会从 bounding 集重新授予能力，Firecracker 与普通命令都会带着完整的能力集。
+**收窄只在非 root 时成立。** 以 root 运行时，exec 会从 bounding 集重新授予能力：线程上的 `capset` 与 ambient 设置照样执行，却被 exec 的 root 规则覆盖，
+Firecracker、网络命令与普通命令都会带着 bounding 集里的全部能力。
 `src/privileges.rs` 的测试因此在 root 下只断言 I 与 A 为空。容器部署（Compose 与 DaemonSet 都是 privileged、容器内为 root）正处在这种情况（[第 60 篇](60-deployment.md)）。
-`--setup-host` 拒绝 uid 0 的运行账户，但它约束不到不经安装脚本的启动方式。
+`--setup-host` 拒绝 uid 0 的运行账户，但它约束不到不经安装脚本的启动方式；裸机上「Firecracker 不带能力」实际由 systemd 的 `User=aenv` 与只含两项的 `CapabilityBoundingSet` 保证。
 
 **同一个 uid。** 收窄的是能力，不是身份。Firecracker 与 `server` 是同一个 uid，DAC 上能互相访问对方能访问的文件；
 udev 规则又让运行组可以读写所有 `ublkb*`。这一缺口与 jailer 的对照在[第 25 篇 §5](25-backend-and-firecracker-process.md#5-不用-jailer哪些隔离有哪些没有)。
+
+**残留进程要靠外部清理。** `server` 被 SIGKILL 或崩溃时，析构代码不会执行，Firecracker 子进程成为孤儿继续运行，
+`firecracker-work/` 与 `managed-snapshots/` 下的工作文件也无人回收（[第 22 篇 §7](22-persistence-across-restarts.md#7-崩溃一致性边界)）。
+`install.sh` 的单元为了让 `server` 在退出前串行暂停沙箱而设了 `KillMode=process`，systemd 停止时只杀主进程；`TimeoutStopSec=30` 到期后同样只杀 `server`。
+所以宿主上需要一个外部步骤收拾残留：例如在重启服务前按单元的 cgroup 杀掉剩余进程（`systemctl kill --kill-whom=all`），再清理工作目录。`scripts/` 与 `deploy/` 里没有这样的步骤（单元没有 `ExecStartPre` / `ExecStopPost`，也没有 `pkill` 之类的清理）。
 
 **供应链。** 运行时补齐的依赖没有校验和；manifest 编进二进制，换版本要么重编译、要么在每个节点的配置里覆盖；
 `deps/` 只增不减，没有对旧版本的回收。Docker 镜像的运行时包列表与 manifest 的 `[packages.*]` 需要手工同步，manifest 的注释自己承认了这一点。
@@ -333,7 +339,8 @@ udev 规则又让运行组可以读写所有 `ublkb*`。这一缺口与 jailer �
 - tools 盘的 `oci-rootfs-v1` 格式钉死转换器 `v1.0.18-aenv.1`，使同一 tools 版本在运行时升级后得到同样的层。
 - `--setup-host` 负责组、ublk 模块与 udev 规则、系统级 overlaybd 配置、sysctl 与 IPv4 转发；`ublks_max` 与 `$AENV_HOME` 属主由安装脚本负责。
 - 常驻进程以「可委派」形式持有 `CAP_NET_ADMIN` 与 `CAP_SYS_ADMIN`，启动即清空 ambient；子进程的能力由短命线程上的 `capset` + ambient 精确给出：普通命令零项、网络命令一项、Firecracker 零项、ublk-daemon 一项。
-- 这套模型防的是子进程继承特权；它以 server 非 root 为前提，`server` 自身始终持有 `CAP_SYS_ADMIN`，Firecracker 与 `server` 同 uid。
+- 这套模型防的是子进程继承特权；收窄只在 `server` 非 root 时生效，容器内以 root 运行时 Firecracker 拿到完整能力集；`server` 自身始终持有 `CAP_SYS_ADMIN`，Firecracker 与 `server` 同 uid。
+- `KillMode=process` 让 SIGKILL 或停止超时后的 Firecracker 成为孤儿，残留进程与工作目录要由宿主上的外部步骤清理。
 
 ---
 

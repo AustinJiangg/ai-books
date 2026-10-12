@@ -165,7 +165,7 @@ offset_at(i) = partial[i / group_size] + deltas[i]      （组首块 deltas 为 
 
 `zfile_open_ro(file, verify)` 调 `load_jump_table()`，失败时若 `verify` 为真就 `evict_all()` 后重试，最多两次。
 这里的 `verify` 不是块 CRC 开关，而是「底层是可驱逐的缓存」的意思：`SwitchFile` 打开远端源时传 `!local`，
-本地文件读坏了重读也没用，远端经过节点块缓存（第 39 篇），清掉缓存重拉才有意义。
+本地文件读坏了重读也没用，远端经过节点块缓存（[第 39 篇](39-block-cache-and-background-download.md)），清掉缓存重拉才有意义。
 块 CRC 是否校验由文件自身的 `opt.verify` 决定（`ZFileRO.data_verify`）。
 
 `ZFileRO` 实现 `VirtualFile`：`size()` 返回 `original_file_size`，`write_at()` 直接报错。
@@ -223,8 +223,8 @@ flowchart LR
 
 ### 5.4 在 ublk queue 线程上解压
 
-`pread_with_ctx()` 让底层读经过 ublk queue 的 io_uring 提交（第 38 篇讲 `CtxRead` 与 `DirectRead` 的单态化），
-但解压仍在调用线程上同步执行。设备默认只有一个 queue 线程（第 40 篇），
+`pread_with_ctx()` 让底层读经过 ublk queue 的 io_uring 提交（[第 38 篇 §2.3](38-virtualfile-chain-and-remote-io.md#23-策略类型同一份代码两种-future) 讲 `CtxRead` 与 `DirectRead` 的单态化），
+但解压仍在调用线程上同步执行。设备默认只有一个 queue 线程（[第 40 篇 §4](40-ublk-library.md#4-数据面一个-queue-线程)），
 解压一个 64 块的 256 KiB 请求期间，这个设备上的其它在途请求都得不到 CPU。
 推论：这是「代码简单、无跨线程拷贝」换「单设备 CPU 并行度」的取舍；对远端层，网络等待通常远大于解压时间，这个代价才可以接受。
 
@@ -255,7 +255,7 @@ flowchart LR
 ### 6.2 `ZFileCompactWriter`：compact 与压缩一步完成
 
 发布时要压缩的不是任意文件，而是 sealed LSMT 层。朴素做法是先 compact 出一个 raw 层文件，再整体读一遍压成 ZFile，多一次全量读写。
-`ZFileCompactWriter` 实现 `storage_util::CompactWriter`，可以直接当作第 37 篇 `compact_to()` 的输出：
+`ZFileCompactWriter` 实现 `storage_util::CompactWriter`，可以直接当作 [第 37 篇 §4](37-seal-restack-compact.md#4-compact按映射重写成单层) `compact_to()` 的输出：
 compact 产出的每个 512 KiB 缓冲（`ZFILE_COMPACT_WRITER_BUFFER_SIZE`）直接送进内部的 `ZFileBuilder`。
 
 ZFile 只能顺序追加，而 `compact_to()` 默认会乱序并发写 chunk。为此 `ZFileCompactWriter::requires_ordered_writes()` 返回 true，
@@ -305,20 +305,20 @@ flowchart LR
 
 第 4 步意味着**一个层在本地与在远端有两个不同的 digest**：managed layer 的 digest、OSS 对象键、ACR blob digest 描述的都是压缩后的字节，
 调用方传进来的本地描述符只在原样上传时才被采用。另外，重写经过 `compact_to()`，产物的 LSMT uuid 为 nil（debug 日志写着 "layer uuid will be unset"）。
-上传流程本身见第 48 篇。
+上传流程本身见[第 48 篇](48-object-storage-repository.md)。
 
 POSIX 快照仓库不调用 `prepare_layer_upload()`，层在共享文件系统上始终是 raw。
 `publish_compression.enabled` 的代码缺省与 `default.toml` 都是 true，算法缺省 LZ4。
 
 ### 7.2 读端自动识别
 
-读端不需要任何配置。`ImageFile` 打开每个 lower 时都经过 `new_tar_file_adaptor()` → `new_switch_file()`（第 38 篇），
+读端不需要任何配置。`ImageFile` 打开每个 lower 时都经过 `new_tar_file_adaptor()` → `new_switch_file()`（[第 38 篇 §3.3](38-virtualfile-chain-and-remote-io.md#33-tar-适配与-switchfile)），
 `SwitchFile` 内的 `try_open_zfile()` 读前 512 B：魔数与 header 位都对，就包一层 `ZFileRO`；魔数不对，原样返回。
 魔数对但 digest 不对时 `is_zfile()` 报错 —— 宁可打开失败，也不把一个头部损坏的 ZFile 当 raw 文件读。
-后台下载完成后 `set_switch_file()` 切到本地文件时，同样再识别一次。
+`SwitchFile` 还有一个 `set_switch_file()` 接口，可以换到本地文件并再识别一次；但在 v0.2.3 里它除测试外没有调用者，`SwitchFile` 实际只承担 ZFile 识别（[第 38 篇](38-virtualfile-chain-and-remote-io.md)）。
 
-由此可以推出两件事。其一，节点块缓存（第 39 篇）缓存的是**压缩后**的字节，缓存容量按压缩体积记账。
-其二，启动加速的 `pack_planner`（第 43 篇）要把逻辑页翻译成远端对象里的块，对 ZFile 层借 `ZFileRO::compressed_block_extent()` 拿到编码块的位置，只查元数据不解压。
+这个装配顺序决定了两件事。其一，节点块缓存（[第 39 篇 §2.2](39-block-cache-and-background-download.md#22-条目与键)）缓存的是**压缩后**的字节，缓存容量按压缩体积记账：缓存挂在 `SwitchFile` 之下，看到的是远端对象的原始字节。
+其二，启动加速的 `pack_planner`（[第 43 篇](43-startup-pack-and-prefetch.md)）要把逻辑页翻译成远端对象里的块，对 ZFile 层借 `ZFileRO::compressed_block_extent()` 拿到编码块的位置，只查元数据不解压。
 
 ---
 

@@ -48,7 +48,7 @@ spec 里没声明 409 的端点，handler 就无法返回 409，只能把冲突�
 | `POST /sandboxes` | `sandboxes_post()` | 201 | v1 创建，spec 标为 deprecated；`secure` 缺省 false |
 | `POST /v2/sandboxes` | `v2_sandboxes_post()` | 201 | 强制 secure，`timeout` 缺省 300 |
 | `POST /sandboxes-cold` | `sandboxes_cold_post()` | 201 | AgentENV 扩展：从外部 OCI 镜像冷启动 |
-| `POST /sandboxes/{id}/connect`、`POST /v2/…/connect` | `sandboxes_sandbox_id_connect_post()` | 200 / 201 | 运行中则延长 TTL，暂停中则恢复 |
+| `POST /sandboxes/{id}/connect`、`POST /v2/…/connect` | `sandboxes_sandbox_id_connect_post()`、`v2_sandboxes_sandbox_id_connect_post()` | 200 / 201 | 运行中则延长 TTL，暂停中则恢复；v2 委托 v1 |
 | `POST /sandboxes/{id}/timeout` | `sandboxes_sandbox_id_timeout_post()` | 204 | 覆盖 TTL |
 | `POST /sandboxes/{id}/refreshes` | `sandboxes_sandbox_id_refreshes_post()` | 204 | 只延长 TTL |
 | `POST /sandboxes/{id}/pause`、`/resume` | `…_pause_post()`、`…_resume_post()` | 204 / 201 | resume 在 spec 中标为 deprecated |
@@ -202,7 +202,9 @@ resume handler 则在 API 层用 `default_sandbox_timeout()` 读同一个配置�
 
 ## 5. connect：一个端点覆盖「连上或拉起」
 
-connect 让 SDK 不必先查状态再决定调 keep-alive 还是 resume。`sandboxes_sandbox_id_connect_post()` 先 `get_sandbox()` 读一次状态，再分支：
+connect 让 SDK 不必先查状态再决定调 keep-alive 还是 resume。v2 的 `v2_sandboxes_sandbox_id_connect_post()` 与 v2 创建一样只是一层适配：
+body 可以为空（[第 12 篇 §4.2](12-spec-driven-server.md#42-两个补丁可选-body-与-json-404)），`timeout` 缺省填 300，然后调用 v1 的 handler，把七种响应变体逐一映射成 v2 的同名变体。
+真正的逻辑在 v1 的 `sandboxes_sandbox_id_connect_post()`：先 `get_sandbox()` 读一次状态，再分支：
 
 ```mermaid
 flowchart TB

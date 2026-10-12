@@ -26,8 +26,8 @@
 一个节点上的 `server` 进程里，能改变一台沙箱命运的来源至少有五个：
 控制面 API（create、pause、resume、delete、snapshot、fork、connect 与改 TTL）、
 反向代理收到发往暂停沙箱的请求时触发的自动恢复（[第 17 篇](17-reverse-proxy.md)）、
-每秒一轮的过期回收任务（[第 23 篇](23-auto-eviction-and-ttl.md)）、
-进程关闭时把运行中沙箱逐个暂停的流程（[第 22 篇](22-persistence-across-restarts.md)），
+每秒一轮的过期回收任务（[第 23 篇 §4](23-auto-eviction-and-ttl.md#4-回收任务)）、
+进程关闭时把运行中沙箱逐个暂停的流程（[第 10 篇 §3.2](10-node-process-and-object-model.md#32-orchestratorshutdown只把-paused-留到下次)、[第 22 篇 §4](22-persistence-across-restarts.md#4-写路径一次暂停的提交点)），
 以及模板构建器在构建结束时删除自己的 builder VM（[第 52 篇](52-template-builder.md)）。
 
 这些操作的耗时差别很大。查询只读一份元数据；pause 要打 Firecracker 快照、导出脏页、写一层 overlaybd 层（[第 42 篇](42-memory-snapshot-over-ublk.md)）；
@@ -61,7 +61,7 @@ AgentENV 的做法是把「谁正在操作」写成数据：元数据里的 `sta
 | `Paused` | 稳定 | 只剩快照产物与一条持久记录 | 无 |
 | `Killing` | 过渡 | 正在删除 | 删除推进中摘出 |
 
-只有 `Running` 与 `Paused` 是稳定态。对外 API 把它们之外的状态折叠成 running 或 paused（[第 14 篇](14-sandbox-api.md)），
+只有 `Running` 与 `Paused` 是稳定态。对外 API 把它们之外的状态折叠成 running 或 paused（[第 14 篇 §8.1](14-sandbox-api.md#81-八个状态折成两个)），
 所以用户看不到过渡态，但服务端的每个操作都要面对它们。
 
 表里没有 `Killed`。删除完成时 `remove_deleted_sandbox()` 直接调用 `MetadataStore::remove()`，记录从 store 里消失，
@@ -70,7 +70,7 @@ AgentENV 的做法是把「谁正在操作」写成数据：元数据里的 `sta
 
 元数据本体是 `SandboxMetadata`（`src/orchestrator/store/metadata.rs`），状态只是其中一个字段，其余有 TTL、资源、网络策略、卷挂载等。
 状态与运行期的另外两张表是分开的：`sandboxes` 存活着的 VM 句柄，`proxy_routes` 存可接流量的路由，
-三者的分工与锁顺序在[第 10 篇](10-node-process-and-object-model.md)讲过。
+三者的分工与锁顺序在[第 10 篇 §4.2](10-node-process-and-object-model.md#42-三张表与锁顺序)讲过。
 回顾：句柄表与路由表总是按「先 `sandboxes`、后 `proxy_routes`」的顺序加锁，
 `detach_sandbox_handle_and_route()` 与 `upsert_proxy_route_if_current_handle()` 的注释都写明了这一点。
 
@@ -80,7 +80,7 @@ AgentENV 的做法是把「谁正在操作」写成数据：元数据里的 `sta
 
 全部转换画在一张图里会让十几条带标签的边挤在 Running 周围，所以分成两张：
 第一张是创建、暂停与恢复的主干，第二张是在 Running 上「借出再归还」的旁路，以及删除。
-图中的 `∅` 表示 store 里没有这条记录。
+图中的 `∅` 表示 store 里没有这条记录；第二张图里往返于同一对状态的两条转换合成一条双向边，标签按「去 回」的顺序写两个编号。
 
 ```mermaid
 flowchart TB
@@ -114,16 +114,13 @@ flowchart TB
 
 ```mermaid
 flowchart TB
-    R(["Running"]) -->|"⑪"| SN(["Snapshotting"])
-    SN -->|"⑫"| R
-    R -->|"⑬"| FK(["Forking"])
-    FK -->|"⑭"| R
-    R -->|"⑮"| K(["Killing"])
+    SN(["Snapshotting"]) <-->|"⑪ ⑫"| R(["Running"])
+    R <-->|"⑬ ⑭"| FK(["Forking"])
+    R <-->|"⑮ ⑯"| K(["Killing"])
     P(["Paused"]) -->|"⑮"| K
-    K -->|"⑯"| R
-    K -->|"⑰"| E(("∅"))
-    SN -->|"⑱"| E
-    FK -->|"⑱"| E
+    K -->|"⑰"| E1(("∅"))
+    SN -->|"⑱"| E2(("∅"))
+    FK -->|"⑱"| E2
 ```
 
 | 编号 | 触发 | CAS 期望集合 | 代码位置 |
@@ -140,7 +137,7 @@ flowchart TB
 其二，Creating 只在 `start_nowait()` 成功之后才写入，所以 Firecracker 启动期间 store 里没有这台沙箱；
 它的 ID 在 `create_sandbox()` 内部生成，调用方此时还不知道 ID，也就无从查询。
 模板构建器的 builder VM 是例外，构建 ID 预先已知，于是用一张单独的 `template_build_ids` 表在这段时间里占住路由（`list_sandbox_ids()`）。
-启动流水线的每一步与失败回滚在[第 20 篇](20-launch-plan-and-rollback.md)展开。
+启动流水线的每一步与失败回滚在[第 20 篇 §3](20-launch-plan-and-rollback.md#3-流水线与检查点)展开。
 
 ---
 
@@ -183,11 +180,12 @@ match self.store
 `keep_alive_for()` 在回调里比较新旧过期时间，`allow_shorter = false` 时不缩短。
 代价是回调里不能调用后端，凡是需要 I/O 才能决定的事情，都得先做完 I/O，再用 CAS 校验前提是否仍然成立。
 
-目前唯一的实现是 `InMemoryMetadataStore`（`src/orchestrator/store/in_memory.rs`）：
+目前唯一的实现是 `InMemoryMetadataStore`（`src/orchestrator/store/in_memory.rs`），生产路径也用它（`Orchestrator` 的类型参数缺省值与各个构造函数都是 `InMemoryMetadataStore::new()`）；
+名字里带 file backed 的 `FileBackedSandboxPersister` 是暂停记录的持久化器，不是元数据 store（[第 22 篇 §2](22-persistence-across-restarts.md#2-持久化器接口)）。它的结构是
 一把 `tokio::sync::RwLock` 包住整个 `StoreInner`，里面是 `HashMap<SandboxId, SandboxRecord>` 与按过期时间排序的 `BTreeSet<(SystemTime, SandboxId)>`。
 所有沙箱的所有写操作共用这一把锁，但临界区里没有 `.await` 之外的阻塞、也没有后端调用，持有时间很短。
-过期索引与记录在同一把锁下维护，`update_if_state()` 只在 `expires_at` 真的变化时才重建索引项（[第 23 篇](23-auto-eviction-and-ttl.md)）。
-store 只在内存里，进程重启后只有 Paused 沙箱能从持久层恢复回来（[第 22 篇](22-persistence-across-restarts.md)）。
+过期索引与记录在同一把锁下维护，`update_if_state()` 只在 `expires_at` 真的变化时才重建索引项（[第 23 篇 §3](23-auto-eviction-and-ttl.md#3-过期索引)）。
+store 只在内存里，进程重启后只有 Paused 沙箱能从持久层恢复回来（[第 22 篇 §6](22-persistence-across-restarts.md#6-启动load_all-与它的耦合)）。
 
 ---
 
@@ -246,7 +244,7 @@ create、template builder 的创建、fork、delete、pause、resume、capture s
 后端接口的文档注释说明了另一个依赖这一层的地方。
 `SandboxBackend::freeze_and_snapshot_volumes()` 要求调用方「持有所有权直到完成并 thaw 或 stop；丢弃这个 future 不会取消 guest 内的 I/O」，
 并明确说 orchestrator 用一个自有任务保护删除不被请求取消打断。
-第 21 篇讲它为什么在冻结之前先登记 thaw 义务。
+[第 21 篇 §4.3](21-deletion-and-volume-capture.md#43-先压栈再-await)讲它为什么在冻结之前先登记 thaw 义务。
 
 ---
 
@@ -261,7 +259,7 @@ create、template builder 的创建、fork、delete、pause、resume、capture s
 | Resuming | resume | 等前者结束：Running 时用**自己的** TTL 参数更新；退回 Paused 返回 `InvalidSandboxState(Paused)` | `resume_sandbox_inner()`、`join_concurrent_resume()` |
 | （已是 Running） | resume | 只按 `NewTimeout` 更新 TTL，`NewTimeout::None` 会清除过期时间 | `maybe_update_running_timeout()` |
 | 任一过渡态 | delete | 等过渡结束，再重试 `[Running, Paused]` 的 CAS | `delete_sandbox_inner()` |
-| Killing | delete | 第二个删除者在删除进度锁上排队，拿到锁后按进度续做或直接成功 | 第 21 篇 |
+| Killing | delete | 第二个删除者在删除进度锁上排队，拿到锁后按进度续做或直接成功 | [第 21 篇 §3](21-deletion-and-volume-capture.md#3-deleteprogress可重入的进度) |
 | Creating / Resuming / Snapshotting / Forking | keep-alive | 等过渡结束再判断，避免把中间态当成失败 | `keep_alive_for()` |
 | Pausing / Killing | keep-alive | 立即返回 `InvalidSandboxState` | `keep_alive_for()` |
 | 非 Running | snapshot / fork | Killing 返回 404，其余返回 `InvalidSandboxState` | `begin_snapshot_operation()`、`fork_sandbox_inner()` |
@@ -301,12 +299,12 @@ store 替身在测试文件里：`ScriptedStore` 包住 `InMemoryMetadataStore`�
 - **闸门固定交错**：`auto_evict_claim_prevents_late_keep_alive_success` 让过期回收在认领之后停在闸门上，
   此时发起的 keep-alive 必须失败并报出认领后的状态，放开闸门后回收必须完成。这种测试的交错是确定的，不依赖调度运气。
 - **逐阶段注入失败**：`launch_sandbox_shutdown_just_after_start_stops_without_persisting_state` 一类测试在启动流水线的每个检查点注入失败或关闭信号，
-  检查回滚后的 store、路由与计数器（第 20 篇）。
+  检查回滚后的 store、路由与计数器（[第 20 篇 §4](20-launch-plan-and-rollback.md#4-失败阶段与回滚)）。
 - **模拟取消**：`orchestrator_concurrent_delete_calls_are_idempotent` 在第一个删除者卡在 stop 时 `abort()` 它，
   再并发发起三个删除，断言 stop 只被调用一次、删除最终完成、计数器归零。
 
 断言的对象不只是返回值，还有三处旁证：`proxy_lookup_for()` 的结果（路由表与状态是否一致）、
-`metrics_snapshot()` 的计数（第 24 篇讲它为什么从 store 现算）、以及 `MockBehavior` 记录的 stop 次数。
+`metrics_snapshot()` 的计数（[第 24 篇 §2](24-metrics-and-events.md#2-容量快照现算而不是累加)讲它为什么从 store 现算）、以及 `MockBehavior` 记录的 stop 次数。
 
 这套测试的边界也要说清楚。替身不覆盖 Firecracker、ublk-daemon 与 envd 的真实耗时与失败形态；
 延迟加竞争类的测试只证明「这次调度下没出错」，不证明所有交错都正确。

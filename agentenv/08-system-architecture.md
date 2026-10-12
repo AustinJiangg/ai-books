@@ -57,10 +57,12 @@ AgentENV v0.2.3 的切分是：**一个有状态的管理进程、一个块设�
 daemon 被放进自己的进程组（`process_group(0)`），注释说明这是为了让终端里的 Ctrl+C 只发给 `server`，
 避免优雅关闭期间 daemon 被同一个 SIGINT 打断正在进行的快照与 restack RPC。
 把块设备放在独立进程里，换来的是 io_uring 与 ublk 设备的所有权集中在一处，`server` 只通过 RPC 描述「要一个什么样的设备」；
-设备号由 daemon 分配。daemon 内部在[第 41 篇](41-ublk-daemon.md)展开。
+设备号由内核分配（daemon 发 ADD_DEV 时以 `u32::MAX` 请求自动分配，见 `storage/ublk/src/ctrl.rs`）。daemon 内部在[第 41 篇](41-ublk-daemon.md)展开。
 
 **firecracker**。每台 microVM 一个进程，由 `src/sandbox/firecracker/instance.rs` 的 `spawn_with_netns()` 拉起：
-先在临时线程里进入这台沙箱的网络命名空间（netns），再把线程能力集清空后 spawn，所以 VMM 进程不带任何 Linux 能力；
+先在临时线程里进入这台沙箱的网络命名空间（netns），再把线程能力集清空后 spawn（`src/privileges.rs` 的 `spawn_tokio_command_scoped()`），
+所以 `server` 以非 root 用户运行时 VMM 进程不带任何 Linux 能力；`server` 以 root 运行（例如 Compose 与 DaemonSet 的特权容器）时，
+exec 会从 bounding 集重新授予能力，这一保证不成立（[第 59 篇 §5.1](59-host-setup-and-privileges.md#51-回顾能力在-exec-时怎样变化)）；
 spawn 之后把它的 `oom_score_adj` 设成 1000，内存紧张时优先被杀的是某一台 VM 而不是 `server`。
 进程的工作目录是这台沙箱的 work_dir，所有磁盘路径都是这个目录下的相对 symlink。
 为了缩短恢复路径，`FirecrackerPool` 预先 spawn 一批未配置的进程（[第 32 篇](32-warm-pools.md)）。
@@ -194,6 +196,7 @@ AgentENV 的持久状态有三类，位置与恢复方式各不相同。
 `VolumeManager` 与 `SnapshotManager` 共用同一个仓库对象（`main()` 里的 `snapshot_manager.repository()`）。
 需要注意 `posix_fs` 的缺省 `snapshot_store` 是 `$AENV_HOME/snapshot-store`，在节点本地；
 多节点部署要让各节点看到同一份快照，必须把它改到共享文件系统，或改用 `oss`。
+仓库自带的 Kubernetes base 清单（`deploy/k8s/base/`）用的就是默认配置，因而每个节点各有自己的快照仓库，快照不在节点间共享（[第 60 篇](60-deployment.md)）。
 
 **节点本地的派生物**是丢掉以后可以重建的东西：镜像层缓存、快照制品的本地缓存（`$AENV_HOME/snapshot-local-cache`）、
 预热池里的网络槽位、块设备与 Firecracker 进程、`$AENV_RUNTIME` 下的套接字与 netns 文件。
@@ -224,7 +227,7 @@ gateway 的 `authenticate()` 用常量时间比较校验一次，节点的 `requ
 gateway 对数据面请求**不鉴权**，直接按 host 或路由头转发；源码注释给出的理由是，只有拥有这台沙箱的节点知道它的入口策略。
 节点上的 `require_auth()` 先判断请求是否为代理请求，再按目标端口决定所需凭据：envd 端口且沙箱为 secure 时要 `X-Access-Token`；
 其它端口要么沙箱允许公开流量，要么带 `e2b-traffic-access-token`。`X-API-Key` 不是数据面凭据，在转发进 guest 之前被剥离。
-细节在[第 13 篇](13-authentication.md)与[第 17 篇](17-reverse-proxy.md)。
+决策树在[第 13 篇 §4](13-authentication.md#4-require_auth-的决策)，转发细节在[第 17 篇](17-reverse-proxy.md)。
 
 **制品流**是节点读写快照、镜像层与内存层的流量，不经过 gateway。它有三个来源：快照仓库（POSIX 或对象存储）、
 OCI registry（镜像层按需读取）、其它节点（P2P）。在线读取发生在 ublk-daemon 里：guest 读到一个本地还没有的块时，
@@ -249,6 +252,7 @@ Rust 版 overlaybd 从远端取回对应的数据（[第 38 篇](38-virtualfile-
 
 **单副本的 scheduler。** Kubernetes 清单里 scheduler 是 `replicas: 1`。绑定缺省存在内存里，重启后靠下一轮心跳重建；
 配置 Redis 后可以再起只读的 query-only 副本，只回答 `LookupNode`。primary 不可用时，已有沙箱的请求在有 query-only 副本时还能路由，
+但只能撑到 Redis 里的绑定过期（缺省 30 s）：绑定只由 primary 在处理心跳时续期（[第 56 篇 §6.2](56-scheduler.md#62-primary-不可用时)）；
 新建、列表与心跳都会失败。
 
 **gateway 不重试。** 节点对创建请求返回 5xx 时，gateway 原样透传，不换节点重试；`RecordAssignment` 失败也不回滚创建。

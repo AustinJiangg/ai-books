@@ -34,12 +34,10 @@ Firecracker 的 virtio-net 设备在宿主一侧对应一个 tap 设备，guest 
 第三，**快照可移植**。guest 的网络配置——IP、网关、路由、ARP 表——都在 guest 内核的内存里，暂停时随内存快照冻结。
 恢复时不会重新执行 boot args，如果恢复后接入的网络和快照时不同，guest 不会察觉，只会发现网络不通。
 
-第四，**创建要快、能复用**。建一个命名空间要十几次 netlink 调用、两次外部命令和两次 `iptables-restore`，
-放在每次创建沙箱的关键路径上代价太高，最好提前建好放进池里。
+第四，**能复用**。建一个命名空间要十几次 netlink 调用、两次外部命令和两次 `iptables-restore`，最好提前建好放进池里。
 
-这四个条件互相牵制。第二条要求地址唯一，第三条要求地址固定。
-AgentENV 的解法是给每台沙箱两个地址：guest 看到的地址在所有槽位里都一样，宿主看到的地址每个槽位一个；
-两者之间的转换由槽位所在命名空间里的 NAT 完成。
+第二条要求地址唯一，第三条要求地址固定。AgentENV 给每台沙箱两个地址：guest 看到的在所有槽位里都一样，宿主看到的每个槽位一个，
+两者由槽位命名空间里的 NAT 转换。
 
 ---
 
@@ -211,9 +209,8 @@ veth 的宿主一端要移回宿主命名空间，这需要一个指向宿主命
 `tap0` 用 `ip tuntap` 创建也是同类选择。两条外部命令都通过 `privileges::run_with_scoped_capabilities()` 在一个只持有 `CAP_NET_ADMIN` 的临时线程里执行，
 这个临时线程继承调用线程的命名空间，所以 `ip tuntap` 建出的 `tap0` 落在沙箱命名空间里（权限模型见[第 59 篇](59-host-setup-and-privileges.md)）。
 
-**ARP 重传间隔。** 内核缺省的邻居重传间隔是 1 s。代码注释把这项调整与「resume 的尾延迟」关联起来。
-推论：同一个槽位被先后两台 VM 使用时，它们的地址相同但 MAC 不同（`add_network_interface()` 不指定 `guest_mac`），
-`tap0` 上旧的邻居表项失效后需要重新解析；把重传间隔从 1 s 降到 100 ms，可以缩短第一次重传前的等待。
+**ARP 重传间隔。** 内核缺省的邻居重传间隔是 1 s，代码注释把这项调整与 resume 的尾延迟关联。
+推论：同一槽位先后两台 VM 的地址相同而 MAC 不同（`add_network_interface()` 不指定 `guest_mac`），`tap0` 上的旧邻居表项要重新解析，降到 100 ms 缩短第一次重传前的等待。
 
 **半途失败。** `create_network()` 一开始就把 `cleanup_armed` 置真。任何一步失败，调用方 `allocate_fresh_slot()` 都会清掉位图里的这一位并丢弃 `Slot`，
 而 `Slot` 的 `Drop` 会以同步方式执行 `cleanup(true)`，把已经建出来的部分拆掉。
@@ -227,9 +224,7 @@ veth 的宿主一端要移回宿主命名空间，这需要一个指向宿主命
 
 删除走另一条路：只含 `Delete` 的命令组逐条提交，遇到「规则不存在」类错误就跳过。这样清理是幂等的，不需要先查询规则、再解析成参数。
 
-AgentENV 自己不写 nftables 规则。`nft` 只出现在 `NetworkManager::log_external_conflicts()` 里：启动时执行 `nft list ruleset`，
-扫描是否有别的程序的规则引用了 AgentENV 的网段或 `veth-` 前缀，有就打 warn。
-推论：`iptables-restore` 在宿主上可能是 iptables-nft 前端，这时规则实际落在 nftables 的兼容表里，但对 AgentENV 是透明的。
+AgentENV 自己不写 nftables 规则，`nft` 只用于启动时的冲突探测（§5.1）。推论：宿主上的 `iptables-restore` 若是 iptables-nft 前端，规则实际落在 nftables 的兼容表里，对 AgentENV 透明。
 
 ---
 
@@ -244,8 +239,8 @@ AgentENV 自己不写 nftables 规则。`nft` 只出现在 `NetworkManager::log_
 3. `log_external_conflicts()` 用 `ip addr`、`ip route`、`iptables-save`、`nft list ruleset` 的输出做冲突探测，只告警不阻止；
 4. `install_global_host_iptables()` 安装 §3 的五条宿主规则。
 
-第 2 步针对的是残留：上一次运行没清干净的接口，或者同一台机器上另一个使用相同命名的进程。
-第 3 步的冲突探测按网段前缀做字符串匹配，`network_conflict_pattern()` 的注释承认它对不按八位组对齐的网段会多报或漏报，只是提示。
+第 2 步针对上一次运行没清干净的接口，或同机另一个使用相同命名的进程。
+第 3 步按网段前缀与 `veth-` 前缀做字符串匹配，`network_conflict_pattern()` 的注释承认它对不按八位组对齐的网段会多报或漏报。
 
 宿主规则安装失败时只打 warn，不让初始化失败；`allocate_fresh_slot()` 每次分配新槽位前检查 `HOST_IPTABLES_INSTALLED`，没装上就重试一次，再失败才报错。
 同时，`global()` 用 `libc::atexit` 注册一个退出钩子：静态单例的 `Drop` 不会在进程退出时执行，钩子负责在进程正常退出时排空预热池并删除宿主规则。
@@ -287,6 +282,11 @@ AgentENV 自己不写 nftables 规则。`nft` 只出现在 `NetworkManager::log_
 `server --setup-host` 以 root 运行时把它们连同 `net.ipv4.ip_forward = 1` 写进 `/etc/sysctl.d/99-aenv.conf` 并立即调整；
 普通启动的 `ensure_environment()` 只检查，低于推荐值时告警，但 `ip_forward` 不为 1 会直接拒绝启动。
 在容器里运行时默认跳过调整，除非设置 `AENV_FORCE_SYSCTL_TUNING`。
+写入与检查的分工见[第 59 篇 §4.1](59-host-setup-and-privileges.md#41---setup-host-做了什么)。
+
+容量的另一面是槽位号本身。1 到 32767 是整个节点的预算：运行中的沙箱、网络槽位预热池里的空闲槽位、
+Firecracker 进程池里随进程预建的槽位，各占一位（[第 32 篇](32-warm-pools.md)），§6.5 的残留接口也占位。
+推论：估算单节点能同时运行多少台沙箱时，要先从这个预算里扣掉两个池的上限与残留数。
 
 ---
 

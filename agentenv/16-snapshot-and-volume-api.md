@@ -21,7 +21,7 @@
 
 ## 1. 问题：两类比沙箱活得久的对象
 
-沙箱自己的 rootfs 随沙箱删除而消失；暂停记录虽然能跨重启保留，也只能在原节点恢复原沙箱（[第 22 篇](22-persistence-across-restarts.md)）。
+沙箱自己的 rootfs 随沙箱删除而消失；暂停记录虽然能跨重启保留，也只能在原节点恢复原沙箱（[第 22 篇 §1](22-persistence-across-restarts.md#1-问题重启之后什么还在)）。
 用户需要两种不随沙箱消失的东西。
 
 第一种是**快照**：把一台运行中沙箱的内存、设备状态与磁盘冻结成一个不可变的对象，以后可以从它启动任意多台新沙箱。
@@ -89,14 +89,14 @@ sequenceDiagram
 在沙箱句柄的锁内调用后端的 `snapshot()`，结束后改回 Running（[第 19 篇 §3](19-state-machine-and-concurrency.md#3-转换图与转换表)）。
 Firecracker 后端的 `snapshot()`（`src/sandbox/firecracker/sandbox.rs`）先 `pause_to_dir()`：
 若沙箱挂着可写卷，经 envd 在 guest 里执行一次 `busybox sync`；然后暂停 VM，把内存写成 overlaybd 层，
-把 rootfs 与每块附加盘 restack（封存当前 upper、换上新的空 upper，[第 37 篇](37-seal-restack-compact.md)）。
+把 rootfs 与每块附加盘 restack（封存当前 upper、换上新的空 upper，[第 37 篇 §3](37-seal-restack-compact.md#3-restack封存并换上新-upper)）。
 随后立即 `resume()`。整个 Snapshotting 窗口只包含这些本地操作，不包含任何上传。
 
 **阶段二：卷的逻辑快照**（消息 7–9）。VM 恢复运行之后，handler 的 `snapshot_sandbox_volumes()` 对沙箱的每个挂载调用 `VolumeManager::snapshot_volume_state()`，
 把卷的最新本地状态发布到仓库，得到一组层引用，组装成 `SnapshotVolume{mount_path, mode, size_mb, layers}`。
 
 **阶段三：发布**（消息 10–11）。`SnapshotManager::publish_captured()` 用 `SnapshotId::generate()` 的新 ID 与可选别名，
-把捕获目录里的制品连同 `volume_snapshots` 提交进仓库；它在提交前先启动 startup 录制，使录制与层上传并行（[第 46 篇](46-snapshot-object-model.md)、[第 43 篇](43-startup-pack-and-prefetch.md)）。
+把捕获目录里的制品连同 `volume_snapshots` 提交进仓库；它在提交前先启动 startup 录制，使录制与层上传并行（[第 46 篇 §6](46-snapshot-object-model.md#6-snapshotmanager一层薄门面)、[第 43 篇 §2.1](43-startup-pack-and-prefetch.md#21-何时录谁来等)）。
 返回的记录经 `From<SnapshotRecord> for models::SnapshotInfo` 转成响应体。
 
 这个划分的收益是：沙箱停顿的时间只与本地 restack 与内存落盘有关，与仓库后端的上传速度无关。
@@ -113,6 +113,14 @@ Firecracker 后端的 `snapshot()`（`src/sandbox/firecracker/sandbox.rs`）先 
 `recover_and_publish_backings()`，把本地 `image.json` 的下层上传到仓库并替换卷记录的 `backing_layers`（§5 的 Uploading 状态就出现在这里）；
 返回的层列表因此包含刚封存的那一层，也就与内存快照处在同一时刻。
 
+同一段 `snapshot_extra_drives()` 在暂停路径上也会执行，但暂停之后没有阶段二：`pause_sandbox_inner()` 不调用任何卷发布函数，
+封存层只留在卷的本地目录里，仓库里的卷记录不变。卷内容进入仓库的时机只有三个：本端点的阶段二、删除沙箱（`delete_sandbox_impl()` 里的 `publish_sandbox_volume_backings()`），
+以及终结性失败时的 `finalize_terminal_volumes()`。其中删除才是常规的提交点（[第 21 篇 §1](21-deletion-and-volume-capture.md#1-问题删除是卷的提交点)、[§7](21-deletion-and-volume-capture.md#7-卷的内容还在哪些时刻被发布)）；暂停中的沙箱持有的卷，在别的节点上看到的仍是上一次发布的内容。
+
+fork 走的是另一条时序。`sandboxes_sandbox_id_fork_post()` 先调用 `Orchestrator::snapshot_volume_mounts()`：一次单独的暂停，只 sync 与封存卷，随即恢复；
+之后 orchestrator 的 fork 才第二次暂停、捕获内存。推论：两次暂停之间源沙箱在运行，子沙箱拿到的卷内容早于它拿到的内存，期间 guest 写进卷的数据只在内存的页缓存里（[第 51 篇 §2.1](51-fork.md#21-api-层参数与卷的预处理)）。
+快照端点没有这个窗口，因为卷与内存在同一次暂停内封存。
+
 两点细节：
 
 - guest 里的 `sync` 不是一致性所必需的——内存快照本身带着 guest 的页缓存，从快照恢复时两者合起来是自洽的。
@@ -127,7 +135,7 @@ Firecracker 后端的 `snapshot()`（`src/sandbox/firecracker/sandbox.rs`）先 
 | 别名不合法 | 400 | 无 |
 | 沙箱不存在或正在删除 | 404 | 无 |
 | 沙箱不在 Running（`InvalidSandboxState`） | 400 | 无 |
-| 捕获失败 | 500 | 可恢复错误回到 Running；终结性错误停机并移除沙箱（[第 20 篇](20-launch-plan-and-rollback.md)） |
+| 捕获失败 | 500 | 可恢复错误回到 Running；终结性错误停机并移除沙箱（[第 20 篇 §6](20-launch-plan-and-rollback.md#6-借出-running快照卷快照与-fork)） |
 | 卷发布失败 | 卷错误码为 500 时 500，其余 400 | 已上传的卷保持新状态；发布失败的卷标为 Failed |
 | 快照发布失败 | 别名冲突、请求非法、完整性不符为 400，其余 500 | 卷已前进；捕获目录随句柄释放而删除 |
 
@@ -228,7 +236,7 @@ handler 先解析 `mode`（缺省 exclusive，其它值 400），再决定内容
 在两次检查之间被别人预留时，仓库返回的 `InvalidRequest` 经 `repository_error()` 变成 `VolumeError::Storage`，对外是 500 而不是 409。
 仓库删除成功后清掉进程内缓存与本地数据目录；本地目录删除失败只记 warn。
 
-删除只移除卷记录与别名，不删除卷引用的层文件。posixfs 仓库的 managed-layers 从不回收（[第 47 篇](47-posix-repository.md)）：
+删除只移除卷记录与别名，不删除卷引用的层文件。posixfs 仓库的 managed-layers 从不回收（[第 47 篇 §6](47-posix-repository.md#6-删除)）：
 这是克隆与快照在源卷删除后仍然可用的前提，`src/volume.rs` 的测试 `published_volume_clones_survive_parent_deletion_without_local_files` 锁定了这一点；
 代价是删除卷不释放仓库空间。
 
@@ -251,7 +259,7 @@ handler 先解析 `mode`（缺省 exclusive，其它值 400），再决定内容
 `prepare_volume_mounts()` 生成临时 owner `pending-<uuidv7>`，然后调用 `resolve_volume_mounts()`。它的校验顺序是：
 
 1. 挂载数不超过 `[volume].max_volume_count`（缺省 4；配置校验要求在 1 到 24 之间，24 是 `/dev/vdc` 到 `/dev/vdz` 的设备名容量）。
-2. 按挂载路径排序后逐个处理。路径经 `normalize_mount_path()` 规范化，必须是绝对路径，不能含 `..`、空白、逗号、冒号，不能与 `/proc`、`/dev`、`/agentenv` 等保留路径重叠（[第 31 篇](31-extra-drives-and-volumes.md)）。
+2. 按挂载路径排序后逐个处理。路径经 `normalize_mount_path()` 规范化，必须是绝对路径，不能含 `..`、空白、逗号、冒号，不能与 `/proc`、`/dev`、`/agentenv` 等保留路径重叠（[第 31 篇 §2.1](31-extra-drives-and-volumes.md#21-入口校验)）。
 3. 与已处理的路径互为前缀即拒绝：`/data` 与 `/data/cache` 不能同时挂。
 4. 读卷记录；大小超过当前 `max_size_mb` 时拒绝（卷可能是在上限调低之前创建的）。
 5. 同一个卷不能在一次请求里挂两次。
@@ -299,9 +307,12 @@ server 在 ① 与 ③ 之间崩溃（例如 orchestrator 正在启动 VM 时被
 `sandboxes_post()` 在请求**没有** `volumeMounts` 字段、而快照的 `volume_snapshots` 非空时恢复快照里的卷：
 `restore_snapshot_volume_mounts()` 对每个 `SnapshotVolume` 调用 `VolumeManager::create_from_snapshot()`，
 建一个名为 `volume-restore-<uuidv7>` 的新卷，模式、大小、层列表都取自快照，不读任何本地文件。
-新卷随后和普通请求一样走 §7 的预留流程，并把 `extra_drives_in_snapshot` 设为 true。
+新卷随后和普通请求一样走 §7 的预留流程，并把 `extra_drives_in_snapshot` 设为 true
+（条件是 `body.volume_mounts.is_none() && !volume_snapshots.is_empty()`）。
 后端看到这个标志就不再为这些盘安排 guest 内的挂载（`initial_guest_drive_mounts_for_snapshot_launch()` 返回空），
 因为快照里的 guest 内存本来就记着它们已经挂在原路径上。
+卷盘的 drive id 就是卷 ID（`resolve_volume_mounts()` 用 `volume.id` 构造 `ExtraDrive`），所以恢复出的新卷带着新的 drive id 进入原来的设备槽位；
+槽位怎样按顺序对上、新卷怎样在 load 之后热插，见[第 31 篇 §4.2–4.3](31-extra-drives-and-volumes.md#42-卷已在快照状态里load-前绑定)。
 
 这个设计的要点是**快照不引用原卷**。快照记录的是卷在那一刻的层列表；原卷之后继续被写、被删除，都不影响快照。
 每次从快照创建沙箱都得到一组全新的卷，ro 卷也不例外，所以两台从同一快照启动的沙箱不会争抢同一块 exclusive 卷。
@@ -309,7 +320,7 @@ server 在 ① 与 ③ 之间崩溃（例如 orchestrator 正在启动 VM 时被
 代价有两条：
 
 - **请求一旦给出 `volumeMounts` 就完全取代快照里的卷**，哪怕给的是空列表。空列表经 `volume_mounts_from_model()` 变成「没有卷」，
-  `extra_drives_in_snapshot` 却因为字段存在而为 false。推论：此时 guest 内存里仍记着快照时刻的挂载，而对应的设备槽位上已经换成了别的内容或占位盘，guest 内的行为取决于第 31 篇讲的槽位机制。
+  `extra_drives_in_snapshot` 却因为字段存在而为 false。推论：此时 guest 内存里仍记着快照时刻的挂载，而对应的设备槽位上已经换成了别的内容或占位盘，guest 内的行为取决于[第 31 篇 §3](31-extra-drives-and-volumes.md#3-设备命名与槽位)讲的槽位机制。
 - **恢复出的卷不会随沙箱删除**。沙箱结束时 `finalize_terminal_volumes()` 只发布与释放，不删除；仓库里也没有按 `volume-restore-` 前缀清理的代码。
   这些卷会出现在 `GET /volumes` 里，需要用户自己删除。从带卷的快照反复启动沙箱，卷的数量随启动次数增长。
 

@@ -301,6 +301,7 @@ sequenceDiagram
 
 托管根是 `managed_snapshot_base()` 下按沙箱 ID 分的目录（`[firecracker] work_dir/managed-snapshots`，未配置时在系统临时目录下），由 `PersistentSnapshotRootGuard` 的引用计数管理生命周期。
 capture 之后原地恢复失败会被直接标成终止性错误：VM 的快照已经写好，但它自己回不到运行态。
+这四种收尾都不触发自定义扩展的 hook：hook 只在 `start_fresh()`、`start_resume()` 与 `stop()` 里发送。snapshot 与 fork 原地恢复的源 VM 对扩展而言从未停过；pause 的收尾是一次普通的 `stop()`，其中的 stop hook 排在归还块设备之后、交还网络槽位之前（[第 25 篇 §7.2](25-backend-and-firecracker-process.md#72-firecrackersandboxstop)、[第 33 篇 §3.3](33-custom-extension-hooks.md#33-stop拆除序列中间的一步)）。
 另有一个只处理卷的变体 `snapshot_volumes()`：sync → `PATCH /vm Paused` → restack 可写卷 → `PATCH /vm Resumed`，不碰内存与 rootfs。
 
 ---

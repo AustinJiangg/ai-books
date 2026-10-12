@@ -177,7 +177,9 @@ flowchart LR
 **guest 一侧**：内核命令行启用 DAMON reclaim。`src/sandbox/firecracker/config.rs` 的 `DEFAULT_BOOT_ARGS` 与 `config/default.toml` 的 `boot_args` 都带有一组 `damon_reclaim.*` 参数：
 `enabled=Y`、`min_age=100000`（微秒）、每 500 ms 最多花 20 ms 回收不超过 1 GiB、水位 990 / 990 / 200（千分比），以及 `skip_anon=Y` —— 只回收文件页，不碰匿名页。
 `default.toml` 另有 `page_reporting.page_reporting_order=6`，`DEFAULT_BOOT_ARGS` 没有；两处的差异见[第 11 篇](11-configuration.md)。
-DAMON 把长期没被访问的页缓存回收成空闲页；这些参数隐含要求 guest 内核编进了 DAMON reclaim 与 virtio-balloon 的 page reporting（推论：依据参数名，guest 内核配置见[第 67 篇](67-firecracker-patch-layer.md)）。
+DAMON 把长期没被访问的页缓存回收成空闲页；这些参数隐含要求 guest 内核编进了 DAMON reclaim 与 virtio-balloon 的 page reporting（推论：依据参数名）。
+这个要求未必被满足：上游 Firecracker 6.1 CI 内核配置写着 `# CONFIG_DAMON_RECLAIM is not set`，而 AgentENV 缺省开启 `damon_reclaim.*`。
+推论：若 guest 内核按上游 CI 配置构建，这组参数没有对应的模块可接收，DAMON 回收静默失效，只剩 guest 自己释放的空闲页经 page reporting 归还；这处矛盾与 guest 内核配置的可追溯性见[第 67 篇 §7.2](67-firecracker-patch-layer.md#72-boot-args-隐含的要求)。
 
 **Firecracker 一侧**：冷启动时 `instance.rs` 的 `set_balloon()` 发 `PUT /balloon`，`amount_mib = 0`、`deflate_on_oom = true`、`free_page_reporting = true`。
 气球本身不充气，只是打开 free page reporting 队列。guest 把成块的空闲页报告上来，上游 v1.15.1 的 `process_free_page_reporting_queue()` 对每段调用 `discard_range()`：
@@ -209,6 +211,7 @@ scheduler 的 `services/scheduler/internal/cpu_template.go` 中 `IntersectCpuCon
 
 | 端点 | 来源 | 本书哪篇 |
 |---|---|---|
+| `PUT /logger` | 上游；只在配置了 `[firecracker] log_level` 时发出 | 11、25 |
 | `PUT /machine-config`（含 `track_dirty_pages`） | 上游 | 11、27 |
 | `PUT /cpu-config` | 上游 | 27、57 |
 | `PUT /boot-source`、`PUT /network-interfaces/{id}`、`PUT /actions` | 上游 | 27、29 |
@@ -220,6 +223,7 @@ scheduler 的 `services/scheduler/internal/cpu_template.go` 中 `IntersectCpuCon
 | `GET /vm/dirty-memory-ranges` | 补丁新增 | 27、42 |
 | `PUT /snapshot/load`（File 后端） | 上游；块设备作内存文件靠补丁的 seek | 27、42 |
 
+`PUT /logger` 是可选调用：`instance.rs` 的 `set_logger()` 由 `sandbox.rs` 的 `configure_logger()` 在启动或 load 之前调用，`[firecracker] log_level` 缺省未设置（`config/default.toml` 中被注释掉），此时直接跳过。
 AgentENV 不用 jailer（[第 25 篇](25-backend-and-firecracker-process.md)），也不走 Uffd 后端与 Full 快照。
 `thirdparty/firecracker-client/firecracker.yaml` 是生成客户端用的 OpenAPI 描述，与补丁版仓库的 swagger 除版本号一行外相同；真正的请求由 `instance.rs` 手写发出。
 

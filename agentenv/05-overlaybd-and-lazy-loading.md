@@ -150,13 +150,16 @@ AgentENV 不支持的形态都在分类时拒绝，其中值得一提的是 turb
 ### 4.1 谁做什么
 
 上游 overlaybd（containerd/overlaybd，C++）既有在线数据面，也有离线工具。它的经典前端是 TCMU：
-`overlaybd-tcmu` 进程经 LIO SCSI target 把镜像暴露成一块 SCSI 盘（上游 `README.md`）。本书所取的上游默认分支另带一个 ublk 前端，
-但它与 AgentENV 无关。AgentENV 只拿上游的一部分：
+`overlaybd-tcmu` 进程经 LIO SCSI target 把镜像暴露成一块 SCSI 盘（上游 `README.md`）。
+但「上游 = TCMU 前端」只对经典前端成立：本书所取的上游默认分支（`e2a2ef3`）另带一个基于 libublksrv 的 ublk 前端，
+源码在 `src/ublk/`，包括一个守护进程 `ublkd`（`ublkd_main.cpp`、`ublkd_protocol.h`）与设备池占位 `pool_placeholder.h`，并附有 `overlaybd-ublkd.service` 示例。
+AgentENV 没有使用这个前端，它的 ublk 前端与 daemon 都是 Rust 重写的（[第 40 篇](40-ublk-library.md)、[第 41 篇](41-ublk-daemon.md)）；
+两者都把「设备由一个常驻守护进程集中持有、预先建好设备池」作为结构，引入先后无法从浅 clone 确定。AgentENV 只拿上游的一部分：
 
 | 部分 | AgentENV 用什么 | 位置 |
 |---|---|---|
 | 在线读写：层栈、LSMT、ZFile、registry / 对象存储读取、节点块缓存、预取 | **Rust 版 overlaybd**，在 ublk-daemon 进程里运行 | `storage/overlaybd` |
-| 块设备前端 | ublk，替代 TCMU | `storage/ublk`、`storage/ublk-daemon` |
+| 块设备前端 | Rust 写的 ublk 前端；不用上游的 TCMU 前端，也不用上游默认分支的 libublksrv 前端 | `storage/ublk`、`storage/ublk-daemon` |
 | OCI tar 层转换 | **overlaybd 工具** `overlaybd-create` / `-apply` / `-commit` | `storage/overlaybd/src/tools/oci.rs` 调用 |
 | 运行时镜像扩容 | **overlaybd 工具** `overlaybd-resize`，按 GiB 指定新大小 | `storage/ublk-daemon/src/runtime.rs` 的 `run_resize_tool()` |
 
@@ -215,7 +218,7 @@ Rust 版 overlaybd 遇到下面这些上游配置会在打开镜像时报错，�
 
 - 层配置里的 `targetFile`、`targetDigest`、`gzipIndex`（turbo-OCI 与 gzip 索引一类的读路径），见 `ImageFile` 打开 lower 与 upper 的检查；
 - 缓存类型 `ocf` 与 `download`：`ImageService` 构建缓存时报「cache type … is not migrated in Rust image_service yet」，只实现了 file 缓存；
-- TCMU 前端：由 ublk 取代。
+- TCMU 前端：AgentENV 只有 ublk 前端。
 
 ---
 
@@ -243,7 +246,7 @@ Rust 版 overlaybd 遇到下面这些上游配置会在打开镜像时报错，�
 - ZFile 按固定块独立压缩并记录每块长度，压缩后仍可随机读，对 LSMT 透明。
 - 按需加载用 Range GET 取远端层的片段，换来启动不等下载，代价是冷读走网络；节点块缓存、P2P 与预取都在缓解这一代价。
 - native 镜像解析时不下载任何 blob；标准镜像在节点上用 overlaybd 工具逐层转换，结果按层缓存复用。
-- AgentENV 在线数据面是 Rust 重写、经 ublk 暴露；离线转换与扩容仍调用 `v1.0.18-aenv.1` 的 C++ 工具，双方靠同一种磁盘格式协作。
+- AgentENV 在线数据面是 Rust 重写、经自己的 ublk 前端暴露（上游默认分支也有 ublk 前端，但不被使用）；离线转换与扩容仍调用 `v1.0.18-aenv.1` 的 C++ 工具，双方靠同一种磁盘格式协作。
 - 与上游兼容的是 LSMT、ZFile 与 tar 包裹；Hybrid RW 上游也有定义而 `ReuseZero` 是 Rust 版独有；`PMIDX001`、`OBCH`、`AENVMF01` 是扩展；节点块缓存按完整 URL 而不是 digest 取键。
 
 ## 延伸阅读 / 下一篇

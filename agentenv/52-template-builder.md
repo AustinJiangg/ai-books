@@ -93,7 +93,8 @@ CPU 与内存的检查有一个容易踩到的后果。`template_build_spec_from
 构建 VM 不经过 orchestrator。`build_template()` 与 `build_template_from_snapshot()` 都用 `SandboxId::new()` 生成一个新 ID，直接构造 `FirecrackerSandbox`，
 它不在 orchestrator 的 store 与句柄表里：没有 TTL，不参与自动驱逐，不计入 orchestrator 的沙箱计数与心跳里的沙箱名单（构建 ID 另行登记），进程关闭时也不在 pause 名单里。
 API 层用 `register_template_build()` 登记的是构建 ID，只为路由与心跳服务（[第 15 篇 §3.1](15-template-build-api.md#31-时序)）。
-扩展 hook 照常触发，扩展因此会看到一个 API 查不到的 `sandboxId`（[第 33 篇](33-custom-extension-hooks.md)）。
+扩展 hook 却照常触发：hook 挂在 `FirecrackerSandbox` 自己的启动与停止路径上（`CustomExtensionClient::global()` 存在即调用），镜像 base 触发 start-fresh、模板 base 触发 start-resume，构建结束的 `stop()` 触发 stop（[第 33 篇 §3](33-custom-extension-hooks.md#3-在生命周期里的位置)）。
+扩展因此会看到一个 API 查不到、也不在心跳的沙箱名单里的 `sandboxId`（心跳里登记的是构建 ID）。
 `SandboxLaunchConfig::new()` 不设出站策略、不设 envd 令牌，推论：构建 VM 按缺省策略放行公网，RUN 里的包管理器可以联网。
 
 ---
@@ -138,7 +139,7 @@ RUN 则要求镜像里有 `/bin/bash`：一个只有 BusyBox `sh` 的镜像，�
 失败原因里的 `step` 必须是从 1 开始的数字字符串。`execute()` 的注释说明，e2b 官方 SDK 把这个字段当作本地记录的步骤栈的下标来解析，
 非数字会让 Python SDK 在抛出真正的构建错误之前就崩溃；所以消息里放指令文本，`step` 里放 `source_step`（一个客户端步骤展开成多个内部步骤时保留客户端编号）或位置序号。
 
-USER 的语义需要特别说明。RUN 经 `SandboxExecutor::executor()` 拿到的 `Executor` 不带 root 标记，`ProcessOpts` 也没有用户字段，
+USER 的语义需要特别说明。RUN 经 `SandboxExecutor::executor()` 拿到的 `Executor`（`src/sandbox/process.rs`）`root_user` 为假，只有 `with_root_user()` 才会让 envd 以 root 执行；`ProcessOpts` 只有环境变量、cwd、超时与输出回调，没有用户字段，
 所以命令以 envd 的默认用户执行，即构建 VM 启动时 `/init` 设定的 `defaultUser`（[第 28 篇 §4.2](28-mmds-and-envd.md#42-init-的内容)），对镜像 base 来说就是镜像 config 里的 USER。
 `User` 步骤只改上下文。推论：构建中途的 `USER foo` 不会让之后的 RUN 换成 `foo` 执行，这与 Dockerfile 的语义不同；
 `foo` 只在模板发布后、从模板启动的沙箱里成为默认用户。
@@ -243,7 +244,7 @@ OSS 后端用一次 put 覆盖同名 key，读者看到的总是某一时刻的�
 ## 9. 与 e2b infra 的对照
 
 e2b infra 把构建拆成若干阶段，每个阶段算一个层 hash，命中缓存就跳过，未命中的阶段各起一台沙箱、执行后暂停并上传，下一阶段从上一层的快照恢复（e2b 手册第 42、45 篇）；
-它的 RUN 还可以按步骤指定用户。AgentENV 在一台 VM 里跑完全部步骤、只捕获一次，省掉了逐层暂停与上传，代价是没有步骤级缓存，也没有逐步切换用户。
+它的 RUN 以上下文里当前的用户执行，USER 步骤会改变之后 RUN 的身份（e2b 手册第 44 篇）。AgentENV 在一台 VM 里跑完全部步骤、只捕获一次，省掉了逐层暂停与上传，代价是没有步骤级缓存，也没有逐步切换用户。
 
 ---
 
@@ -265,4 +266,5 @@ e2b infra 把构建拆成若干阶段，每个阶段算一个层 hash，命中�
 - [第 43 篇 · startup pack 与预取](43-startup-pack-and-prefetch.md)：发布时并行进行的录制。
 - [第 46 篇 · 快照对象模型](46-snapshot-object-model.md)：模板记录的字段与状态。
 - [e2b 手册第 42 篇 · 阶段流水线](../e2b-infra/42-build-phases.md)、[e2b 手册第 45 篇 · 层与构建缓存](../e2b-infra/45-layers-and-build-cache.md)：e2b infra 的逐层构建与缓存。
+- [e2b 手册第 44 篇 · 构建期沙箱与命令](../e2b-infra/44-build-sandbox-and-commands.md)：e2b infra 的 RUN 怎样按上下文用户执行。
 - 下一篇：[第 53 篇 · BuildKit：在 microVM 里跑 Dockerfile](53-buildkit-in-microvm.md)。

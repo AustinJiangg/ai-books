@@ -29,8 +29,8 @@ overlaybd 的层栈只关心一件事：给定层号与物理偏移，读出一�
 - 对象存储（S3 兼容、阿里云 OSS）里的快照层；
 - 别的节点上已经有的同一层，经 P2P 门面取（机制见[第 58 篇](58-p2p-artifact-transport.md)）。
 
-远端来源还要叠一层节点块缓存（[第 39 篇](39-block-cache-and-background-download.md)）。
-如果每种组合写一个专门类型，组合数会乘起来。Rust 版 overlaybd 沿用上游 overlaybd 的思路：
+远端来源还要叠一层节点块缓存（[第 39 篇 §2.1](39-block-cache-and-background-download.md#21-位置)）。
+如果每种组合写一个专门类型，组合数会乘起来。Rust 版 overlaybd 沿用上游 overlaybd 的思路（上游的 C++ 实现里，每层同样是一个文件对象，层层包装后交给前端；经典前端是 tcmu，默认分支也已带 ublk 前端）：
 所有东西都实现同一个文件接口，每种能力是一层包装，包装之间按需叠加。
 
 ---
@@ -60,7 +60,7 @@ overlaybd 的层栈只关心一件事：给定层号与物理偏移，读出一�
 `LocalBoxFuture<'a, T>`，即 `Pin<Box<dyn Future + 'a>>`，**没有 `Send`**。
 
 原因在 `AsyncIoRing`（`storage/util`）：它内部用 `Rc`，本身不是 `Send`，捕获了它的 future 自然也不是。
-这与 ublk 的执行模型一致：每个 ublk queue 是一个 OS 线程，线程里跑 `current_thread` runtime 加 `LocalSet`
+这与 ublk 的执行模型一致（[第 40 篇 §4](40-ublk-library.md#4-数据面一个-queue-线程)）：每个 ublk queue 是一个 OS 线程，线程里跑 `current_thread` runtime 加 `LocalSet`
 （`storage/ublk/src/dev.rs` 的 `queue_work()`），这个线程有自己的 io_uring，future 从不离开它。
 `#[async_trait]` 只改写 `async fn` 签名，不碰这几个手写方法，所以同一个 trait 里两族方法并存：
 普通方法给多线程 runtime 上的后台任务用，`*_with_ctx` 给 queue 线程用。
@@ -155,7 +155,7 @@ flowchart LR
 
 它的名字来自另一项能力：`set_switch_file(path)` 会重新打开一个本地文件（同样经过 tar 与 ZFile 识别），之后的 I/O 全部切过去。
 但在 AgentENV v0.2.3 里，**`set_switch_file()` 除了 `switch.rs` 自己的测试之外没有调用者**。
-后台下载把数据回填进节点块缓存，前台读经 `CachedFile` 命中缓存，并不切换到本地文件。
+后台下载把数据回填进节点块缓存，前台读经 `CachedFile` 命中缓存，并不切换到本地文件（[第 39 篇 §5.5](39-block-cache-and-background-download.md#55-下载完成之后)）。
 所以 `SwitchFile` 在现行代码里实际只承担「自动识别 ZFile」这一件事。
 
 ### 3.4 `registryfs_v2`
@@ -195,7 +195,7 @@ part size 是请求值，opendal 会把它夹到服务允许的范围（S3 为 5
 
 ublk-daemon 进程里同时存在几类执行体：主 runtime（多线程，处理 RPC 等）；每个设备的每个 queue 一个 OS 线程，
 线程里一个 `current_thread` runtime，随设备销毁而销毁；以及本节要讲的 `obd-remote-io`。
-节点块缓存的后台 worker 与后台下载调度器也要找一个 runtime 住（[第 39 篇](39-block-cache-and-background-download.md)）。
+节点块缓存的后台 worker 与后台下载调度器也要找一个 runtime 住（[第 39 篇 §5](39-block-cache-and-background-download.md#5-后台下载调度器)）。
 
 ### 4.2 问题
 

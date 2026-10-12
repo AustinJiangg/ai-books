@@ -186,7 +186,7 @@ startup pack 录制产出的 `memory-startup.trace` 写在捕获目录里（`src
 | backed zero 与 `NO_PHYSICAL_OFFSET` 哨兵 | Rust 版扩展：磁盘上的 zeroed 位不变，差别在 Rust 版怎样解释 `moffset` | `ReadOnlyIndex::new()` 的规范化（[第 34 篇 §2.3](34-lsmt-format-and-index.md#23-两种零段)） |
 | ZFile 头尾字段与偏移，flags bit0–bit4 | 兼容 | 上游 `src/overlaybd/zfile/zfile.cpp`；Rust 侧 `HeaderTrailer::decode_from_512()`（[第 35 篇 §8](35-zfile-compression.md#8-与上游-overlaybd-的兼容性)） |
 | ZFile flags bit5（压缩 index） | 上游有定义、无使用；Rust 版未实现。上游 `FLAG_SHIFT_IDX_COMP = 5` 只被 `set_compress_index()` 置位，而这个函数在上游没有调用者，所以上游自身也不产出带 bit5 的文件 | 上游 `zfile.cpp`（[第 35 篇 §8](35-zfile-compression.md#8-与上游-overlaybd-的兼容性)） |
-| ZFile raw CRC32C、块 CRC seed 100007、jump table | 兼容 | 上游 `crc32c_extend()`；Rust 侧 `crc32c()`、`crc32c_salt()`、`JumpTable::build()`（[第 35 篇 §3](35-zfile-compression.md#3-校验一种raw-crc32c)） |
+| ZFile raw CRC32C、块 CRC seed 100007、jump table | 兼容 | 上游 `crc32c_extend()`；Rust 侧 `crc32c()`、`crc32c_salt()`、`JumpTable::build()`（[第 35 篇 §3](35-zfile-compression.md#3-校验一种rawcrc32c)） |
 | ZFile 算法 LZ4、ZSTD（级别 3） | 兼容 | Rust 侧 `create_compressor()` 与 `ZSTD_C_LEVEL` |
 | ZFile 算法 MINI_LZO（algo 0） | Rust 版不支持，`create_compressor()` 只认 1、2。上游 `compressor.h` 定义了 `MINI_LZO = 0`，但上游默认分支的 `create_compressor()` 同样只构造 LZ4 与 ZSTD，其它值报 EINVAL | 上游 `src/overlaybd/zfile/compressor.{h,cpp}` |
 | ZFile 字典 | Rust 版不写；读端按 `dict_size` 跳过，与上游一致 | `ZFileBuilder` 从不写 dict |

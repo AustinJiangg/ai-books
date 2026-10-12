@@ -24,7 +24,9 @@
 
 一个节点的 HTTP 端口（默认 `:8000`）上同时流过两类流量（[第 08 篇](08-system-architecture.md)）。
 **控制面**是创建、暂停、删除沙箱与模板的管理请求；**数据面**是经反向代理送进 guest 的请求，
-又分成发往 envd 端口（默认 `49983`，`[tools] control_plane_port`）的命令执行、文件读写，与发往沙箱内应用端口的业务流量。
+又分成发往 envd 端口（`49983`）的命令执行、文件读写，与发往沙箱内应用端口的业务流量。
+envd 端口在配置里有一个键 `[tools] control_plane_port`，但它实际上不可改：它只决定宿主侧连哪个端口、把哪个端口当作 envd，
+guest 内的 `tools-image/pivot-init` 启动 envd 时不传端口（推论：envd 因而总是监听自己的缺省端口 49983），`aenv` CLI 也写死了 `ENVD_PORT_STR = "49983"`（`crates/aenv/src/grpc/mod.rs`）。
 
 三者的信任关系不同。能调用控制面的人可以创建、删除任何沙箱，是部署的管理者。
 envd 端口等于 guest 里的 root shell，持有它的人能在一台沙箱里执行任意命令，但不应因此能操作别的沙箱。
@@ -205,14 +207,18 @@ flowchart TB
    注意被删除的只有**有效**的 key；一个不匹配的 `X-API-Key` 头被视为应用自己的头，原样转发。
 3. 查元数据。沙箱不存在返回代理风格的 404；`template_builder` 为真同样返回 404。
 4. 判断是否 envd 请求：`target_port == proxy::effective_envd_port(&metadata)`。暂停状态里记录了 envd 端口时用记录值，否则用全局配置——
-   一台暂停的沙箱在配置改动后恢复，判断的仍是它自己的 envd 端口。
+   一台暂停的沙箱在配置改动后恢复，判断的仍是它自己的 envd 端口。由于 guest 侧端口不可改（§1），这个键若被改成别的值，
+   推论：宿主侧的 `wait_for_ready()` 在新端口上等不到 envd，沙箱根本起不来，所以这一分支实际只会遇到 49983。
 5. envd 请求：`!secure || envd token 有效`；非 envd 请求：`allow_public_traffic || traffic token 有效`。不满足返回 401。
 6. 若 envd token 没有通过验证（包括请求不是发往 envd 的情形），删除 `x-access-token`，只把验证过的 envd token 转给 envd。
 
 API key 在第 5 步里**不出现**。持有平台密钥的管理者访问 secure 沙箱的 envd，也必须先经 API 拿到 `envdAccessToken`——`aenv` CLI 正是这样做的。
 e2e 套件里的「secure envd rejects API key」「envd token cannot authenticate another sandbox」两条断言覆盖了这一点。
 
-鉴权发生在代理解析之前，这让暂停沙箱的自动恢复（[第 17 篇](17-reverse-proxy.md)）也受保护：一个没有正确 token 的请求在 `require_auth()` 就被拒绝，
+还有一个时间上的前提：代理路由在 envd 完成 `/init`、拿到 token 之后才发布（[第 09 篇 §2.2](09-sandbox-lifecycle-walkthrough.md#22-orchestrator一条流水线) 第 7 步），
+在此之前到达的数据面请求通过了鉴权也找不到路由，不会撞上一个还没收到 token 的 envd。
+
+鉴权发生在代理解析之前，这让暂停沙箱的自动恢复（[第 17 篇 §4](17-reverse-proxy.md#4-自动恢复)）也受保护：一个没有正确 token 的请求在 `require_auth()` 就被拒绝，
 不会触发一次恢复（测试 `paused_secure_envd_auto_resume_requires_valid_access_token`）。
 
 ### 4.4 转发前的头清洗
@@ -270,6 +276,11 @@ v1 的 `POST /sandboxes` 只在请求体 `secure == true` 时开启 secure，缺
 因为只有节点知道一台沙箱是否 secure、是否公开（[第 55 篇](55-gateway.md)）。控制面请求于是在 gateway 与节点各验一次，用的是同一把 key。
 
 认证只验证凭据，不加密传输。节点端口是明文 HTTP，API key 与 token 在网络上可见，部署时需要 TLS 终结或可信网络。
+
+数据面鉴权还有一个网络层的前提：流量必须经过节点的反向代理。guest 端口在宿主上经 host interaction 网段可达，
+宿主 iptables 规则只放行已建立的回程，发往该网段的新连接落到宿主 FORWARD 链的默认策略。
+推论：宿主 FORWARD 默认放行、且有外部主机能把 host interaction 网段路由到这台节点时，它可以绕过代理直连 guest 端口，上表的 token 检查全部不起作用。
+部署时宿主 FORWARD 应默认 DROP（[第 29 篇 §6.1](29-network-slots.md#61-依赖宿主防火墙的前提)）。
 
 ---
 

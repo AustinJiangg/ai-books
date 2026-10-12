@@ -259,9 +259,10 @@ CLI 在请求体里显式写 `secure: true` 弥补 v1 缺省非 secure 的差异
 
 ## 8. 与 e2b infra 的对照
 
-据 e2b 手册的考察，e2b 的 JS 与 Python SDK 向 envd 送 PTY 输入用的是 unary 的 `SendInput`，生成的 `StreamInput` 存根没有被业务代码使用，因而没有长期挂着的请求体。
-`aenv` 选择了长期存在的 `StreamInput` 客户端流，换来输入的顺序保证与更少的请求数，代价是要用 10 s 的 keepalive 维持这条流、在它被切断时重建，并在恢复期间退回 unary 的 `SendInput`。
-两边都用 Connect 协议、都能在 HTTP/1.1 上工作，这是 E2B SDK 能直接访问 AgentENV 沙箱里 envd 的前提之一（[第 18 篇](18-e2b-compatibility.md)）。
+e2b 手册第 48 篇的考察是：e2b 的 JS 与 Python SDK 向 envd 送 PTY 输入用的是 unary 的 `SendInput`，生成的 `StreamInput` 存根没有被业务代码使用，该篇并据此推论客户端流在只讲 HTTP/1.1 的 envd 上用不上。
+`aenv` 的做法与这个推论不同：它在 `http1_only()` 的连接上实际使用了 `StreamInput`，依据是客户端流是半双工的、请求体可以分块送完（§3.1），真正需要 HTTP/2 的只有全双工的双向流；两本书的口径差别就在这一点上。
+它换来输入的顺序保证与更少的请求数，代价是要用 10 s 的 keepalive 维持这条流、在它被切断时重建，并在恢复期间退回 unary 的 `SendInput`。
+两边都用 Connect 协议，这是 E2B SDK 能直接访问 AgentENV 沙箱里 envd 的前提之一（[第 18 篇](18-e2b-compatibility.md)）。
 
 ---
 
