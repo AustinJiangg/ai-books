@@ -66,7 +66,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
 | 00 | `00-overview.md` | 全书导读与 AgentENV 总览 | ○ |
-| 01 | `01-repo-map-and-versions.md` | 仓库地图、版本与依赖 | ○ |
+| 01 | `01-repo-map-and-versions.md` | 仓库地图、版本与依赖 | ● |
 
 **00 · 全书导读与 AgentENV 总览**（最后写，全书完成后）
 一篇读完全貌，给评审、决策者与第一天到岗的新人。5000 字上限。
@@ -766,8 +766,8 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 
 | # | 文件 | 标题 | 状态 |
 |---|---|---|---|
-| 65 | `65-vs-e2b-infra-architecture.md` | 与 e2b infra 的对照（一）：架构、控制面与 API | ○ |
-| 66 | `66-vs-e2b-infra-storage-and-memory.md` | 与 e2b infra 的对照（二）：存储、内存恢复与模板 | ○ |
+| 65 | `65-vs-e2b-infra-architecture.md` | 与 e2b infra 的对照（一）：架构、控制面与 API | ● |
+| 66 | `66-vs-e2b-infra-storage-and-memory.md` | 与 e2b infra 的对照（二）：存储、内存恢复与模板 | ● |
 | 67 | `67-firecracker-patch-layer.md` | AENV 补丁版 Firecracker 与 guest 内核 | ○ |
 | 68 | `68-known-issues-and-debt.md` | 已知问题与技术债 | ○ |
 
@@ -811,7 +811,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 70 | `70-code-map.md` | 代码地图：crate、模块与篇目 | ○ |
 | 71 | `71-config-env-ports-reference.md` | 配置项、环境变量与端口总表 | ○ |
 | 72 | `72-api-reference.md` | 接口总表：HTTP、Firecracker、daemon RPC 与 gRPC | ○ |
-| 73 | `73-artifacts-and-formats-reference.md` | 持久化制品与磁盘格式总表 | ○ |
+| 73 | `73-artifacts-and-formats-reference.md` | 持久化制品与磁盘格式总表 | ● |
 
 **69 · 术语表**：STYLE.md 第三节术语 + 正文出现的其它术语；每条一句定义 + 首次详细讲解的篇目链接。
 

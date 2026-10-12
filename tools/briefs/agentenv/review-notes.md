@@ -196,3 +196,7 @@
 - 57 → 68：崩溃重启的节点再也拿不到交集（`intersectionSent` 仍为 true）；`intersectionSent` 先于 `ReconcileNode` 置位，响应失败即永久丢失；一个节点缺 `cpu-template-helper` 会阻塞整个集群的交集；scheduler 重启后交集不再重算；交集随节点加入收窄、早先的快照不在覆盖内；首次主机采样在 tokio worker 上 `thread::sleep` 100 ms；`buckets.go` 的同步注释指向已不含桶定义的文件。
 - 58：`/p2p-control/publish-layer` 在 v0.2.3 无调用者（URL 传到 `ImageService` 但只在 `Debug` 中读取），daemon 下载的层从不发布（修正调研笔记 C / D）；默认配置把 P2P 标为 EXPERIMENTAL；P2P key 只按 digest，同层跨 registry 共享（区别于 39 所说的块缓存 key）。
 - 58 → 68：删除快照不 unpublish 其制品；自广告 TODO（不合并先前 provider）；节点重启后 catalog 不重新登记到 scheduler；P2P 路径绕过 registry 认证；catalog 与 blob 无访问控制；`p2p-design.md` 的 `fetch_byte_range` 返回类型与代码不符。
+
+## 第 4 批（额度中断后保留的草稿）
+
+- 01、65、66、73 由中断的代理写成，结构完整但未自检收尾：01 第 1 张图太宽（1722 px）、汉字 2463 偏少；65 第 1 张图边标签重叠、汉字 5244 超限；66 第 2 张图标签压线、汉字 5082；73 有锚点失效 `35-zfile-compression.md#3-校验一种raw-crc32c`。审校时修。
