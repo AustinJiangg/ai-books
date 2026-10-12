@@ -208,3 +208,9 @@
 - 67：补丁 ② 跳过 `mark_virtio_queue_memory_dirty` 不致漏页（`Queue::initialize()` 已标脏、位图不重置）；补丁 ⑦ 不检查 Paused，`page_size` 取宿主页大小。
 - 67 → 68：内核配置不可追溯；补丁版 CHANGELOG 有 `#XXXX` 占位、只列 ⑦ 且放在已发布的 [1.15.1] 节；推论：补丁 ③ 的 `serde(default)` 在 bitcode 下无效、`SNAPSHOT_VERSION` 未变，补丁版与上游状态文件互不兼容；swagger 称面向已暂停 VM 而代码不检查；`firecracker_version` 只记录不核对。
 - 66：延伸阅读里指向不存在的 `65-vs-e2b-infra-architecture-and-api.md` 已由主编改正。
+- 71 → 11 / 47：`AENV_SNAPSHOT_STORE` 推论不生效（`BackendConfig::posix_fs` 是 `Option`、无 `#[config(nested)]`；节缺省时用不带 `.env()` 的 `builder().load()`），两篇改成推论或由审校验证。
+- 71 → 11：§6.3 不一致表补 `service_instance_id`。
+- 71 → 13 / 28：envd 端口实际不可改（guest 内 `pivot-init` 不传端口，`aenv` 写死 `ENVD_PORT_STR = "49983"`）。
+- 71 → 41：`[pool.block].enabled` 缺省 server 与 daemon 分歧（server 认为开、daemon 不开）。
+- 71：scheduler 另有指标端口 9101。
+- 71 → 68：`[pool.block].maintenance_enabled` 不起作用（`block_pool_config()` 恒写 false）；`max_concurrent_builds` 注释称每节点上限而只约束 BuildKit 会话；`[custom_extension].url` 示例端口 9090 与 scheduler 撞车；`env-vars.md` 漏列两个变量；9102 / 9101 指标端口在 Compose 与 k8s 清单里未发布；gateway `-config` 文件不存在即启动失败而节点静默回退；时长字段必须写字符串；推论：配置文件不存在时 server 仍把编译期路径传给 daemon，daemon 读文件失败。

@@ -261,3 +261,251 @@ daemon 其余参数全部来自命令行。`UblkDaemonClient::new()`（`storage/
 | `--p2p-publish-url` | `from_app_config()` 恒为 `None` | 不发布 | [58 §5.1](58-p2p-artifact-transport.md#51-为什么是一个-http-服务) |
 
 ---
+
+## 4. gateway 与 scheduler 的 JSON 配置
+
+### 4.1 加载顺序
+
+两个 Go 服务共用 `services/shared/config/config.go` 的 `load()`，顺序与节点相同：**代码默认 → JSON 文件 → 环境变量**，后者覆盖前者，最后 `applyDefaults()` 回填几个空值、`validate()` 按服务检查。
+与节点的三处差别：
+
+- 文件路径只来自命令行 `-config`；不给就只用代码默认与环境变量。给了路径而文件不存在时启动失败（`read config file`），不像节点那样静默回退。
+- 每个结构有自定义 `UnmarshalJSON`，JSON 里**出现**的键才覆盖默认值，缺省的键保持代码默认；时长字段必须写成 `"30s"` 这样的字符串，写数字直接报错。
+- 环境变量只覆盖一部分键（下表「env」一列）；`report_ttl`、`forward_response_size`、`nodes`、`discovery`、`node_resource_limit` 只能写在文件里。
+
+仓库附带三份控制面配置：`services/config/local.json`（本地开发）、`deploy/docker/config/default.json`（Compose，gateway 与 scheduler 共用一份）、
+`deploy/k8s/base/config/{scheduler,gateway}.json`（Kubernetes，各一份）。下表「附带配置」一列写三者的取值，相同时合并。
+
+### 4.2 顶层与 scheduler
+
+| 键 | 代码默认 | 附带配置 | env | 篇目 |
+|---|---|---|---|---|
+| `log_level` | `info` | 三份都是 `info` | `LOG_LEVEL` | [54](54-control-plane-overview.md) |
+| `log_format` | `auto`（可选 `auto` / `console` / `json`） | local 与 Compose `auto`；k8s `json` | `LOG_FORMAT` | [54](54-control-plane-overview.md) |
+| `scheduler.grpc_listen_addr` | `:9090` | 三份都是 `:9090` | `SCHEDULER_GRPC_LISTEN_ADDR` | [56](56-scheduler.md) |
+| `scheduler.metrics_listen_addr` | `:9101`，空串回填 `:9101` | local `:9101`；Compose 与 k8s 不写 | `SCHEDULER_METRICS_LISTEN_ADDR` | [56](56-scheduler.md) |
+| `scheduler.strategy` | `round_robin`；`random` 可选，其它值静默按 `round_robin` | 三份都是 `round_robin` | `SCHEDULER_STRATEGY` | [56 §2.3](56-scheduler.md#23-策略) |
+| `scheduler.report_ttl` | `30s` | local 与 Compose `30s`；k8s 不写 | 无 | [57 §3.2](57-heartbeat-and-cpu-intersection.md#32-scheduler-侧heartbeat) |
+| `scheduler.binding_ttl` | `30s` | local 与 Compose `30s`；k8s 不写 | `SCHEDULER_BINDING_TTL` | [56 §3.3](56-scheduler.md#33-redis-实现) |
+| `scheduler.redis_addr` | 空，即内存绑定 | local 空串；Compose 与 k8s 不写 | `SCHEDULER_REDIS_ADDR` | [56 §3.3](56-scheduler.md#33-redis-实现) |
+| `scheduler.artifact_store_capacity` | `1000000`，须为正 | 三份都不写 | `SCHEDULER_ARTIFACT_STORE_CAPACITY` | [58 §3.5](58-p2p-artifact-transport.md#35-scheduler-侧的索引) |
+| `scheduler.artifact_lookup_node_limit` | `0` | 三份都不写 | `SCHEDULER_ARTIFACT_LOOKUP_NODE_LIMIT` | [58 §3.5](58-p2p-artifact-transport.md#35-scheduler-侧的索引) |
+| `scheduler.nodes` | `[{local-node, http://127.0.0.1:8000}]` | local 同代码；Compose `node-a` / `node-b` 指向 `agentenv-{a,b}:8000`；k8s 不写 | 无 | [56 §4.1](56-scheduler.md#41-static) |
+| `scheduler.discovery.mode` | `static`，空串回填 | local 与 Compose 不写；k8s `kubernetes` | 无 | [56 §4](56-scheduler.md#4-节点发现) |
+| `scheduler.discovery.kubernetes.namespace` / `service_name` / `port` / `scheme` | 空 / 空 / 0 / `http` | k8s `agentenv-system` / `agentenv-nodes` / `8000` / `http` | 无 | [56 §4.2](56-scheduler.md#42-kubernetes) |
+| `scheduler.discovery.kubernetes.ignore_pod_selector` / `no_schedule_pod_selector` | 空 | 三份都不写 | 无 | [56 §4.2](56-scheduler.md#42-kubernetes) |
+| `scheduler.node_resource_limit.*` | 整节缺省即不限；九个可选上限（运行与含暂停的沙箱数、启动中数、CPU / 内存的使用与分配百分比、含暂停的分配 CPU 与内存字节） | 三份都不写 | 无 | [56 §2.2](56-scheduler.md#22-资源上限) |
+
+`-query-only` 模式只校验 `grpc_listen_addr`、`metrics_listen_addr`、两个 TTL 与必填的 `redis_addr`，跳过节点列表与发现的检查（[第 56 篇 §6](56-scheduler.md#6-haprimary-与-query-only)）。
+
+### 4.3 gateway
+
+| 键 | 代码默认 | 附带配置 | env | 篇目 |
+|---|---|---|---|---|
+| `gateway.http_listen_addr` | `:8080` | 三份都是 `:8080` | `GATEWAY_HTTP_LISTEN_ADDR` | [55](55-gateway.md) |
+| `gateway.metrics_listen_addr` | `:9102`，空串回填 `:9102` | local `:9102`；Compose 与 k8s 不写 | `GATEWAY_METRICS_LISTEN_ADDR` | [55](55-gateway.md) |
+| `gateway.scheduler_addr` | `127.0.0.1:9090` | local 同代码；Compose `scheduler:9090`；k8s `agentenv-scheduler:9090` | `GATEWAY_SCHEDULER_ADDR` | [55 §4](55-gateway.md#4-选节点) |
+| `gateway.query_only_scheduler_addr` | 空，查询也走主 scheduler | local 空串；其余不写 | `GATEWAY_QUERY_ONLY_SCHEDULER_ADDR` | [54 §3.4](54-control-plane-overview.md#34-query-only-服务) |
+| `gateway.request_timeout` | **`30s`** | 三份都是 **`90s`** | `GATEWAY_REQUEST_TIMEOUT` | [55 §5.2](55-gateway.md#52-超时) |
+| `gateway.forward_response_size` | `4194304` | 三份都是 `4194304` | 无 | [55 §6.1](55-gateway.md#61-时机与-id-来源) |
+| `gateway.sandbox_proxy_domains` | `[]` | 三份都是 `[]` | `GATEWAY_SANDBOX_PROXY_DOMAINS`（逗号分隔） | [55 §3.2](55-gateway.md#32-六种路由来源) |
+| `gateway.debug_mode` | `false` | 三份都不写 | `GATEWAY_DEBUG_MODE` | [55](55-gateway.md) |
+
+`request_timeout` 是这一组里唯一「代码默认与附带配置不同」的键。代码默认的 30 s 小于节点自动恢复最多等待的 60 s，不带配置文件启动的 gateway 访问暂停沙箱时可能先超时（[第 55 篇 §5.2](55-gateway.md#52-超时)）。
+
+### 4.4 命令行与密钥
+
+| 进程 | 参数或来源 | 缺省 | 作用 |
+|---|---|---|---|
+| gateway、scheduler | `-config <path>` | 空，只用代码默认与环境变量 | JSON 配置文件；两个镜像的 `CMD` 都是 `-config /config/default.json` |
+| scheduler | `-query-only` | `false` | 只服务 `LookupNode`，要求 `redis_addr` |
+| gateway | `AENV_API_KEY`，否则 `/run/secrets/api-key` | 都没有则拒绝启动 | 集群级 API key；gateway 不会像节点那样自动生成（`services/gateway/cmd/main.go` 的 `loadAPIKeyFrom()`） |
+
+---
+
+## 5. 环境变量
+
+### 5.1 经 confique 覆盖的 21 个
+
+只有字段上声明了 `env = "…"` 的键能被环境变量覆盖（`src/cfg.rs`）。读取发生在 `ConfigManager::load_config_file()` 的 `AppConfig::builder().env()` 一步，早于路径归一化，
+所以变量给出的相对路径同样以配置文件目录为基准。
+
+| 变量 | 覆盖的键 | 解析 | 篇目 |
+|---|---|---|---|
+| `AENV_HOME_PATH` | `home_path` | 非空路径 | [11 §2.2](11-configuration.md#22-路径归一化) |
+| `AENV_RUNTIME_PATH` | `runtime_path` | 非空路径 | [10 §5](10-node-process-and-object-model.md#5-节点磁盘布局) |
+| `AENV_DEPS_PATH` | `deps_path` | 非空路径；ublk-daemon 也直接读 | [59 §3.2](59-host-setup-and-privileges.md#32-版本化路径与存在即已安装) |
+| `AENV_VIRTUALIZATION_MODE` | `virtualization_mode` | `kvm` / `pvm` | [61 §2.1](61-pvm.md#21-virtualizationmode) |
+| `AENV_FIRECRACKER_WORK_DIR` | `[firecracker].work_dir` | 非空路径 | [26 §5.4](26-sandbox-block-devices.md#54-可写层住在工作目录里) |
+| `AENV_FIRECRACKER_SERIAL_DIR` | `[firecracker].serial_dir` | 非空路径 | [11 §2.2](11-configuration.md#22-路径归一化) |
+| `AENV_SNAPSHOT_STORE` | `[backend.posix_fs].snapshot_store` | 非空路径；推论：不生效，见 §7 | [47 §2](47-posix-repository.md#2-目录布局) |
+| `AENV_SNAPSHOT_LOCAL_CACHE_PATH` | `[snapshot].local_cache_path` | 非空路径 | [49 §6](49-resolve-and-artifact-cache.md#6-localartifactcache) |
+| `AENV_PERSISTED_SANDBOX_STORE_PATH` | `[orchestrator].persisted_sandbox_store_path` | 非空路径 | [22 §3](22-persistence-across-restarts.md#3-记录与目录) |
+| `AENV_UBLK_DAEMON_BINARY_PATH` | `[ublk].daemon_binary_path` | 非空路径 | [41 §2.1](41-ublk-daemon.md#21-拉起与就绪) |
+| `AENV_UBLK_DAEMON_METRICS_LISTEN_ADDR` | `[ublk].daemon_metrics_listen_addr` | 去空白的字符串 | [24 §5.1](24-metrics-and-events.md#51-记录器与暴露位置) |
+| `AGENTENV_MEMORY_SNAPSHOT_TRACK_DIRTY_PAGES` | `[memory_snapshot].track_dirty_pages` | 布尔；唯一的 `AGENTENV_` 前缀 | [42 §5](42-memory-snapshot-over-ublk.md#5-关闭脏页跟踪时) |
+| `AENV_OBSERVABILITY_SCHEDULER_REPORT_ENABLED` | `[observability.scheduler_report].enabled` | 布尔 | [57 §3.1](57-heartbeat-and-cpu-intersection.md#31-节点侧observabilityreporter) |
+| `AENV_OBSERVABILITY_REPORT_INTERVAL_SECS` | `[observability.scheduler_report].interval_secs` | 整数 | [57 §3.1](57-heartbeat-and-cpu-intersection.md#31-节点侧observabilityreporter) |
+| `AENV_OBSERVABILITY_SCHEDULER_ENDPOINT` | `[cluster].scheduler_endpoint` | 去空白；变量名与节名不对应 | [57 §3.1](57-heartbeat-and-cpu-intersection.md#31-节点侧observabilityreporter) |
+| `AENV_NODE_ID` | `[node_identity].node_id` | 字符串 | [57 §3.2](57-heartbeat-and-cpu-intersection.md#32-scheduler-侧heartbeat) |
+| `AENV_CLUSTER_ID` | `[node_identity].cluster_id` | 字符串，再解析为 UUID | [12](12-spec-driven-server.md) |
+| `AENV_SERVICE_INSTANCE_ID` | `[node_identity].service_instance_id` | 字符串 | [57 §4.1](57-heartbeat-and-cpu-intersection.md#41-unregisternode) |
+| `AENV_SANDBOX_PROXY_DOMAINS` | `[sandbox_proxy].domains` | 逗号分隔列表 | [17 §2](17-reverse-proxy.md#2-三个入口) |
+| `AENV_SANDBOX_ACCESS_TOKEN_HASH_SEED` | `[sandbox].access_token_hash_seed` | 去空白的字符串 | [13 §3.1](13-authentication.md#31-派生) |
+| `AENV_CUSTOM_EXTENSION_URL` | `[custom_extension].url` | 去空白的字符串 | [33 §2](33-custom-extension-hooks.md#2-契约四个-hook) |
+
+### 5.2 `server` 直接读、不经 confique 的变量
+
+| 变量 | 缺省 | 读取位置 | 作用 |
+|---|---|---|---|
+| `AENV_CONFIG_PATH` | 编译期 `CARGO_MANIFEST_DIR/config/default.toml` | `src/cfg.rs` 的 `ConfigManager::new()`；命令行 `--config` 优先 | 配置文件路径（[11 §2.1](11-configuration.md#21-流程)） |
+| `API_ADDR` | `0.0.0.0:8000` | `src/bin/server.rs` 的 `main()` | 节点 HTTP 监听地址，不能写进 TOML（[11 §3.3](11-configuration.md#33-不在单例里的配置)） |
+| `AENV_API_KEY` | 退到 `/run/secrets/api-key`、`$AENV_HOME/secrets/api-key`，再没有就生成 | `src/api_key.rs` 的 `ApiKey::resolve()` | 部署级 API key（[13 §2.1](13-authentication.md#21-来源与格式)） |
+| `RUST_LOG` | `agentenv=info,envd=info,uvm_ublk=info` | `src/logging.rs`（`EnvFilter::try_from_default_env()`） | 日志过滤；ublk-daemon 继承同一变量 |
+| `AENV_LOG_FORMAT` | `compact`（另有 `pretty`、`json`，未知值按 `compact`） | `src/logging.rs`；daemon 侧 `storage/ublk/src/lib.rs` | 日志格式 |
+| `AENV_LOG_SPAN_EVENTS` | `off`（另有 `new`、`enter`、`exit`、`close`、`active` 等） | `src/logging.rs` | tracing span 事件 |
+| `AENV_FORCE_SYSCTL_TUNING` | 未设置；容器内跳过 sysctl 调优 | `src/setup/network_capacity.rs` 的 `should_skip_sysctl_tuning()` | 取 `1` / `true` / `yes` / `on` 时在容器里也调优 |
+| `HOSTNAME` | 再退到 `/proc/sys/kernel/hostname`、`/etc/hostname` | `src/identity.rs` 的 `read_hostname()` | `node_id` 未配置时的回退 |
+| `DOCKER_CONFIG`、`HOME` | `$HOME/.docker` | `src/setup/deps.rs`、`src/snapshot/repository/backends/common/acr/client.rs` | 找 Docker 凭据（拉依赖、回推镜像） |
+| `AENV_GIT_COMMIT` | 无 | `src/identity.rs` 的 `option_env!` | **编译期**注入构建提交号，运行期设置无效 |
+| `AENV_NETWORK_PANIC_CHILD` | 无 | `src/sandbox/network/manager.rs` 测试 | 测试用子进程标记，生产不读 |
+
+### 5.3 ublk-daemon
+
+| 变量 | 读取位置 | 作用 |
+|---|---|---|
+| `AENV_HOME_PATH`、`AENV_DEPS_PATH` | `storage/ublk-daemon/src/main.rs` 的 `env_path()` | 定位扩容工具，优先于 TOML 里的 `home_path` / `deps_path`（§3） |
+| `RUST_LOG`、`AENV_LOG_FORMAT` | `storage/ublk/src/lib.rs` 的 `setup_tracing()` | 日志过滤与格式；未设 `RUST_LOG` 时 `uvm_ublk` 的级别取 `--log-level` |
+| `LD_LIBRARY_PATH` | `storage/ublk-daemon/src/runtime.rs` | 调 C++ overlaybd 工具时拼接库路径 |
+
+### 5.4 部署与安装脚本
+
+这些变量由脚本读取，再换成上面的节点变量或命令参数，代码本身不读。
+
+| 变量 | 缺省 | 读取者 | 作用 |
+|---|---|---|---|
+| `AENV_HOME_PATH`、`AENV_VIRTUALIZATION_MODE` | `/var/lib/aenv`、`kvm` | `scripts/install.sh` | 安装时的数据目录与模式，写进 `/etc/default/aenv`（[60 §2.2](60-deployment.md#22-环境文件与-api-key)） |
+| `AENV_SERVICE_USER`、`AENV_SERVICE_GROUP` | `aenv` | `scripts/install.sh` | systemd 服务的运行用户与组 |
+| `AENV_RUN_USER`、`AENV_MEMLOCK_LIMIT` | 当前用户、`unlimited` | `scripts/run-with-capabilities.sh` | 以带能力的非 root 用户运行测试与开发进程（[63 §3](63-testing-and-benchmarks.md#3-能力委托run-with-capabilitiessh)） |
+| `AENV_INSTALL_PREFIX`、`AENV_INSTALL_SUDO` | `/usr/local`、`sudo` | `Makefile` | `aenv` CLI 的安装位置 |
+| `AENV_TEST_STATE_DIR`、`AENV_TEST_DEPS_PATH` | `/tmp/aenv-test-…`、`/var/lib/aenv/deps` | `Makefile` | 能力测试的 home、runtime 与依赖目录 |
+| `AENV_API_KEY` | 无，读集群 Secret 或生成 | `deploy/k8s/run.sh` | 写进 `agentenv-auth` Secret（[60 §5.4](60-deployment.md#54-runsh-与密钥引导)） |
+| `KUBECTL`、`K8S_OVERLAY`、`K8S_NAMESPACE`、`AENV_LOCAL_REPO_ENV_PATH` | `kubectl`、`default`、`agentenv-system`、仓库 `env/` | `deploy/k8s/run.sh` | 渲染与应用清单；最后一个只用于 local-dev overlay |
+| `SANDBOX_PROXY_DOMAINS`、`CONFIG_PATH`、`HOST_RESOLV_CONF`、`RUST_LOG` | 空、`../config/default.toml`、`/run/systemd/resolve/resolv.conf`、同 §5.2 | `deploy/docker-compose.yml` 的插值 | 分别换成节点与 gateway 的域名变量、挂载的 TOML、guest DNS 来源 |
+
+测试与基准还读一批只在 `scripts/tests/` 与 `crates/benchmarks/` 里出现的变量：e2e 套件的 `AENV_URL`、`AENV_PROXY_URL`、`AENV_TEMPLATE_ID`、`AENV_ENVD_PORT`（缺省 49983）、
+`AENV_PORT`（单节点缺省 18080）、`AENV_GATEWAY_PORT` / `AENV_NODE_A_PORT` / `AENV_NODE_B_PORT`（8000 / 8001 / 8002）、`AENV_NODE_URLS` 等，
+基准的 `AENV_BENCH_FULL`、`AENV_BENCH_UPPER_MODE`、`AGENTENV_BENCH_OCI_IMAGE` 等。它们不影响生产进程，详见[第 63 篇](63-testing-and-benchmarks.md)。
+
+### 5.5 客户端侧
+
+| 变量 | 读取者 | 说明 |
+|---|---|---|
+| `E2B_API_URL`、`E2B_API_KEY`、`E2B_SANDBOX_URL` | E2B SDK（不是 AgentENV 进程） | 把 SDK 指向节点或 gateway；`src/api/proxy.rs` 的注释说明 `E2B_SANDBOX_URL` 可设成与 `E2B_API_URL` 相同，靠请求头分派（[18](18-e2b-compatibility.md)） |
+| 无 | `aenv` CLI | `Client::from_env()` 名不副实：只读 `aenv auth` 保存的凭据文件，不读任何环境变量；`aenv auth` 的缺省 URL 是 `http://localhost:8000`（[62](62-aenv-cli.md)） |
+| `TERM`、`COLORTERM`、`LANG`、`LC_ALL`、`LC_CTYPE` | `aenv connect` 的 `pty_envs()` | 透传给 guest 里的终端，`TERM` 会被重映射 |
+| `CODEX_BIN`、`CODEX_HOME` | `aenv codex` | 本地 codex 可执行文件与 home |
+
+---
+
+## 6. 端口
+
+### 6.1 总表
+
+下图画出一套集群里的监听端口与调用方向；Compose 与 Kubernetes 的对外映射在 §6.2。
+
+```mermaid
+flowchart TB
+    C["客户端<br/>SDK 与 aenv"]
+    subgraph CP["控制面"]
+        direction LR
+        GW["gateway<br/>:8080 / 指标 :9102"]
+        SC["scheduler<br/>gRPC :9090 / 指标 :9101"]
+    end
+    subgraph ND["节点"]
+        direction LR
+        SV["server<br/>API_ADDR :8000"]
+        UD["ublk-daemon<br/>指标 :9103"]
+        subgraph NS["沙箱 netns"]
+            EP["出站代理<br/>:15000"]
+            EV["guest 与 envd<br/>:49983"]
+        end
+    end
+    C --> GW
+    GW --> SC
+    GW --> SV
+    SV --> SC
+    SV --> EV
+    SV --> UD
+    EV -->|"guest 出站 80 与 443"| EP
+```
+
+| 端口 | 进程与绑定 | 定义位置 | 可配置 | 篇目 |
+|---|---|---|---|---|
+| 8000 | `server` 的 HTTP：E2B 形 API、原生 API、`/proxy`、Host 路由、BuildKit 隧道、`/health`、`/metrics` | `src/bin/server.rs` 的 `API_ADDR` 缺省 `0.0.0.0:8000`；`install.sh` 写成 `127.0.0.1:8000` | `API_ADDR` | [10 §2.6](10-node-process-and-object-model.md#26-服务对象orchestrator-与监听)、[17 §2](17-reverse-proxy.md#2-三个入口) |
+| 49983 | guest 内 envd；宿主经 `http://<host_interaction_ip>:49983` 访问 | `src/cfg.rs` 的 `ToolsConfig::control_plane_port`；`crates/aenv/src/grpc/mod.rs` 的 `ENVD_PORT_STR` 写死 | 宿主侧 `[tools].control_plane_port`；guest 侧见下文 | [28 §3.2](28-mmds-and-envd.md#32-地址)、[13 §4.3](13-authentication.md#43-数据面) |
+| 15000 | 每个带域名规则的沙箱 netns 内的透明出站代理，绑定 `0.0.0.0:15000`；nat 表把 guest 的 80 / 443 重定向到这里 | `src/sandbox/network/egress_proxy.rs` 的 `EGRESS_PROXY_PORT` | 否 | [30 §4.1](30-egress-policy-and-proxy.md#41-判定流程)、[29 §2.1](29-network-slots.md#21-拓扑) |
+| 9103 | ublk-daemon 的 Prometheus 端点，Rust 版 overlaybd 的指标只在这里 | `[ublk].daemon_metrics_listen_addr` 与 daemon `--metrics-listen-addr` 的缺省都是 `0.0.0.0:9103` | 是，空串关闭 | [24 §5.1](24-metrics-and-events.md#51-记录器与暴露位置) |
+| 8080 | gateway 的 HTTP 入口 | `config.go` 的 `defaultConfig()` `:8080` | `http_listen_addr` / `GATEWAY_HTTP_LISTEN_ADDR` | [55](55-gateway.md) |
+| 9102 | gateway 的 Prometheus 端点 | `defaultConfig()` 与 `applyDefaults()` `:9102` | `metrics_listen_addr` / `GATEWAY_METRICS_LISTEN_ADDR` | [55](55-gateway.md) |
+| 9090 | scheduler 的 gRPC（节点心跳、gateway 的放置与绑定、P2P 目录） | `defaultConfig()` `:9090`；gateway 侧 `scheduler_addr` 缺省 `127.0.0.1:9090` | `grpc_listen_addr` / `SCHEDULER_GRPC_LISTEN_ADDR` | [54 §2](54-control-plane-overview.md#2-三个角色与调用方向)、[56](56-scheduler.md) |
+| 9101 | scheduler 的 Prometheus 端点 | `defaultConfig()` 与 `applyDefaults()` `:9101` | `metrics_listen_addr` / `SCHEDULER_METRICS_LISTEN_ADDR` | [56](56-scheduler.md) |
+| 1234 | builder VM 内的 buildkitd，`tcp://0.0.0.0:1234`；节点经隧道转发 | `src/image/buildkit.rs` 的 `BUILDKIT_PORT`；`src/api/impls/image_build/worker.rs` 的启动脚本 | 否 | [53 §2](53-buildkit-in-microvm.md#2-组件与数据路径) |
+| 随机 | iroh 端点 `0.0.0.0:0` | `[p2p].listen_addr` | 是 | [58 §3.1](58-p2p-artifact-transport.md#31-一个节点上起了什么) |
+| 随机 | P2P 的 overlaybd HTTP 门面 `127.0.0.1:0`，只给本机 overlaybd 用 | `src/overlaybd/p2p/facade.rs` 的 `P2pHttpFacadeServer::start()` | 否 | [58 §5.1](58-p2p-artifact-transport.md#51-为什么是一个-http-服务) |
+
+关于 49983 有一处隐式约束。`control_plane_port` 只决定**宿主连哪个端口**（并随快照记录，`effective_envd_port()` 对暂停沙箱用快照里的值）；
+guest 里的 envd 由 `tools-image/pivot-init` 以不带端口参数的 `exec /agentenv/envd` 拉起，监听的是 envd 自己的缺省端口。推论：只改这个键而不重做 tools 盘，宿主会连向一个没有监听的端口；
+`aenv` CLI 又把 49983 写死，所以这个键实际上不可改。
+
+### 6.2 部署清单里的映射
+
+| 形态 | 节点 | gateway | scheduler | 依据 |
+|---|---|---|---|---|
+| 裸机单节点 | `API_ADDR="127.0.0.1:8000"`，只监听回环；9103 按 `default.toml` 监听全部地址 | 无 | 无 | `scripts/install.sh`（[60 §2.2](60-deployment.md#22-环境文件与-api-key)） |
+| Compose | 容器内 `API_ADDR=0.0.0.0:8000`，不向宿主发布端口 | 容器 `:8080` 映射到宿主 `8000`；9102 未发布 | `:9090`，`grpc_health_probe` 做健康检查；9101 未发布 | `deploy/docker-compose.yml`（[60 §4.1](60-deployment.md#41-拓扑与启动次序)） |
+| Kubernetes | DaemonSet 声明 `http` 8000 与 `ublk-metrics` 9103；headless Service `agentenv-nodes` 暴露 8000，另一个 headless Service 暴露 9103 并带 `prometheus.io/port` 注解 | Deployment 声明 8080，Service 8080；9102 未声明 | Deployment 声明 9090，Service 9090；9101 未声明 | `deploy/k8s/base/*.yaml`（[60 §5.1](60-deployment.md#51-清单的组成)） |
+
+两个 Go 服务的指标端口在三种形态里都没有被发布或写进 Service：进程照样监听，但只能直连 Pod 或容器地址去抓取。
+
+---
+
+## 7. 不一致与技术债
+
+以下各条供[第 68 篇](68-known-issues-and-debt.md)汇总；第 11 篇 §6 已讲的几条只列结论。
+
+1. **`AENV_SNAPSHOT_STORE` 可能是死变量。** `BackendConfig::posix_fs` 是 `Option<PosixFsBackendConfig>` 且没有 `#[config(nested)]`，confique 把它当作普通 serde 字段整体反序列化，
+   内层字段上的 `env` 声明不参与加载；节缺省时补上的 `PosixFsBackendConfig::default()` 由 `impl_config_default!` 生成，走的是不带 `.env()` 的 `builder().load()`。
+   推论：这个变量在任何情况下都不起作用，而 `docs/src/configuration/env-vars.md` 与第 47 篇都写它能覆盖仓库根。本书没有运行验证。
+2. **代码默认与 `default.toml` 有六处不同**（§2.12），其中 `service_instance_id = "service-instance-a"` 让所有节点、每次重启共用同一个实例 ID。
+3. **ublk-daemon 的三处默认与 `server` 不同**（§3）：`deps_path`、`[pool.block].enabled`、`[pool.block].startup_prewarm`。后两处只在配置文件省略相应键时显现；推论：省略 `[pool.block].enabled` 时两个进程对「池是否开着」看法不一。
+   另外，`server` 在配置文件不存在时也会把编译期缺省路径作为 `--config` 传给 daemon，推论：此时 daemon 读文件失败而启动不起来，与 `server` 自己的静默回退相反。
+4. **`max_concurrent_builds` 的注释与实现范围不同**：注释说是每节点构建上限，实现只约束 BuildKit 会话（[第 15 篇 §3.3](15-template-build-api.md#33-这条路径没有会话)）。
+5. **`[pool.block].maintenance_enabled` 是不起作用的键**：`block_pool_config()` 恒写 `false`。
+6. **`control_plane_port` 只改宿主一侧**（§6.1），guest 侧与 `aenv` CLI 都没有跟着变的通道。
+7. **示例端口撞车**：`default.toml` 里 `[custom_extension].url` 的示例是 `http://127.0.0.1:9090`，与紧随其后 `[cluster].scheduler_endpoint` 示例、scheduler 缺省 gRPC 端口相同。
+8. **注释之间的口径**：`default.toml` 称 startup pack 对 OSS 与 POSIX 都可用、manifest 是 v4；`src/cfg.rs` 的 `SnapshotStartupPackConfig` 文档注释写「OSS backend only」「v3 page manifest」（[第 43 篇 §3.3](43-startup-pack-and-prefetch.md#33-名字的混用)）。
+   `[backend.oss]` 注释称 `credential_process` 优先，代码两者同配直接报错（[第 48 篇 §4.4](48-object-storage-repository.md#44-分片上传与凭证)）。
+9. **文档漂移**：`docs/src/configuration/env-vars.md` 漏掉 `AGENTENV_MEMORY_SNAPSHOT_TRACK_DIRTY_PAGES`（只出现在 `reference.md` 的说明文字里）与编译期的 `AENV_GIT_COMMIT`；
+   `reference.md` 把 `remote_blocks.max_size_gb` 与 `boot_args` 的缺省写成默认文件的值而不是代码的值。
+10. **命名**：`AGENTENV_` 前缀只此一个；`[cluster].scheduler_endpoint` 的变量叫 `AENV_OBSERVABILITY_SCHEDULER_ENDPOINT`；`API_ADDR` 无前缀；Go 服务的变量没有统一前缀（`LOG_LEVEL`、`GATEWAY_*`、`SCHEDULER_*`）。
+11. **控制面的两个小坑**：`scheduler.strategy` 写错时静默退回 round-robin；gateway 的 `request_timeout` 代码默认 30 s 与附带配置的 90 s 不同（§4.3）。
+
+---
+
+## 8. 小结
+
+- 节点配置的优先级是环境变量 > 文件 > 代码默认；文件缺失不报错，所以「代码默认」一列才是没有配置文件时的真实行为，它与 `default.toml` 有六处不同。
+- 能被环境变量覆盖的节点键共 21 个，集中在路径、身份、集群与密钥；另有 `AENV_CONFIG_PATH`、`API_ADDR`、`AENV_API_KEY`、日志变量等由代码直接读取，不在 `AppConfig` 里。其中 `AENV_SNAPSHOT_STORE` 推论为不生效。
+- ublk-daemon 用自己的 serde 结构再读同一个文件里的六个键，`deps_path` 与块设备池两个开关的缺省与 `server` 不同。
+- gateway 与 scheduler 的顺序是代码默认 → JSON → 环境变量，文件路径只来自 `-config`，文件不存在即失败；时长字段必须写成字符串。
+- 一个节点监听 8000（API）与 9103（daemon 指标），每个启用域名规则的沙箱 netns 里有 15000（出站代理），guest 里有 49983（envd）；控制面是 gateway 8080 / 9102 与 scheduler 9090 / 9101。
+- 49983 与 15000 实际上不可改：前者只改了宿主一侧，后者是常量；两个 Go 服务的指标端口在三种部署形态里都没有发布。
+
+## 延伸阅读 / 下一篇
+
+- 配置的加载、归一化与校验：[第 11 篇 · 配置体系](11-configuration.md)；ublk-daemon 的进程模型：[第 41 篇](41-ublk-daemon.md)。
+- 控制面：[第 54 篇](54-control-plane-overview.md)、[第 55 篇 · gateway](55-gateway.md)、[第 56 篇 · scheduler](56-scheduler.md)；部署清单：[第 60 篇](60-deployment.md)。
+- 接口总表：[第 72 篇](72-api-reference.md)；持久化制品与目录：[第 73 篇](73-artifacts-and-formats-reference.md)。
+- 对照：[e2b 手册第 14 篇 · 配置、flag 与版本](../e2b-infra/14-config-flags-versions.md)。
+- confique 的分层加载与 `nested` 语义：<https://docs.rs/confique/0.4.0/confique/>。
