@@ -769,7 +769,7 @@ Rust 约 17.1 万行、Go 约 1.3 万行。按区域：`storage/overlaybd` 4.3 �
 | 65 | `65-vs-e2b-infra-architecture.md` | 与 e2b infra 的对照（一）：架构、控制面与 API | ● |
 | 66 | `66-vs-e2b-infra-storage-and-memory.md` | 与 e2b infra 的对照（二）：存储、内存恢复与模板 | ● |
 | 67 | `67-firecracker-patch-layer.md` | AENV 补丁版 Firecracker 与 guest 内核 | ● |
-| 68 | `68-known-issues-and-debt.md` | 已知问题与技术债 | ○ |
+| 68 | `68-known-issues-and-debt.md` | 已知问题与技术债 | ● |
 
 **65 · 与 e2b infra 的对照（一）：架构、控制面与 API**
 - 对照维度表：语言与进程结构（Go 单体 orchestrator + api + client-proxy vs Rust 节点 + Go gateway / scheduler）；控制面（Nomad / Consul、PostgreSQL、Redis vs 单节点自足 + 可选 scheduler）；认证与多租户（team / access token vs 单 API key）；反向代理（client-proxy + orchestrator proxy vs 节点内代理 + gateway）；网络（每沙箱 netns 的做法异同）；envd（同一个 envd，AgentENV 只做客户端）
