@@ -214,3 +214,4 @@
 - 71 → 41：`[pool.block].enabled` 缺省 server 与 daemon 分歧（server 认为开、daemon 不开）。
 - 71：scheduler 另有指标端口 9101。
 - 71 → 68：`[pool.block].maintenance_enabled` 不起作用（`block_pool_config()` 恒写 false）；`max_concurrent_builds` 注释称每节点上限而只约束 BuildKit 会话；`[custom_extension].url` 示例端口 9090 与 scheduler 撞车；`env-vars.md` 漏列两个变量；9102 / 9101 指标端口在 Compose 与 k8s 清单里未发布；gateway `-config` 文件不存在即启动失败而节点静默回退；时长字段必须写字符串；推论：配置文件不存在时 server 仍把编译期路径传给 daemon，daemon 读文件失败。
+- 70 → 01：§6.3 `scripts` 行数 6852 与实测 7024 不符，审校核对；`docs/src` 7239 只是正文源码，整个 `docs/` 7509。
