@@ -15,6 +15,8 @@
   按 Stroustrup《C++程序设计语言》（第 4 版，C++11）讲大学 C++ 期末笔试考点。
 - **AgentENV 技术手册** · [网页版](https://austinjiangg.github.io/ai-books/html/agentenv.html) · [Markdown](agentenv/README.md)<br>
   [kvcache-ai/AgentENV](https://github.com/kvcache-ai/AgentENV) tag `v0.2.3` 的代码讲解，并与 e2b infra 逐项对照。
+- **mmap 从零讲透** · [网页版](https://austinjiangg.github.io/ai-books/html/mmap.html) · [Markdown](mmap/README.md)<br>
+  写给新手的 mmap 教程：从系统调用、虚拟内存、缺页与页缓存讲到写时复制、落盘、性能、内核实现与 Firecracker。
 
 网页版是单个 HTML 文件，图可点击放大，手机也能看；想离线看，在页面上 Ctrl+S（Mac 上 ⌘+S）存下来即可。
 
