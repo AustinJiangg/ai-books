@@ -21,6 +21,8 @@
   写给新手的 Firecracker 教程（v1.17.0，以 ARM64 为例）：从电脑如何运转、KVM 讲到动手启动 microVM、virtio、网络、存储、jailer、快照、性能与源码导读。
 - **MMIO 从零讲透** · [网页版](https://austinjiangg.github.io/ai-books/html/mmio.html) · [Markdown](mmio/README.md)<br>
   写给新手的 MMIO 教程：从 CPU 怎么控制硬件、地址空间与设备寄存器讲到 volatile、内存属性、屏障、中断、DMA、Linux 驱动、PCIe、用户态访问与虚拟机。
+- **E2B 沙箱网络从零讲透** · [网页版](https://austinjiangg.github.io/ai-books/html/e2b-network.html) · [Markdown](e2b-network/README.md)<br>
+  写给新手的 E2B 沙箱网络教程（2026.09 + ARM 补丁，单机鲲鹏部署）：从 IP、路由、DNS、网络命名空间、veth、tap、iptables/nftables、NAT 与 conntrack 讲到网络槽位、出站防火墙、入口代理、部署配置与排障。
 
 网页版是单个 HTML 文件，图可点击放大，手机也能看；想离线看，在页面上 Ctrl+S（Mac 上 ⌘+S）存下来即可。
 
