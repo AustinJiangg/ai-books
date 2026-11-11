@@ -19,6 +19,8 @@
   写给新手的 mmap 教程：从系统调用、虚拟内存、缺页与页缓存讲到写时复制、落盘、性能、内核实现与 Firecracker。
 - **彻底搞懂 Firecracker** · [网页版](https://austinjiangg.github.io/ai-books/html/firecracker-intro.html) · [Markdown](firecracker-intro/README.md)<br>
   写给新手的 Firecracker 教程（v1.17.0，以 ARM64 为例）：从电脑如何运转、KVM 讲到动手启动 microVM、virtio、网络、存储、jailer、快照、性能与源码导读。
+- **MMIO 从零讲透** · [网页版](https://austinjiangg.github.io/ai-books/html/mmio.html) · [Markdown](mmio/README.md)<br>
+  写给新手的 MMIO 教程：从 CPU 怎么控制硬件、地址空间与设备寄存器讲到 volatile、内存属性、屏障、中断、DMA、Linux 驱动、PCIe、用户态访问与虚拟机。
 
 网页版是单个 HTML 文件，图可点击放大，手机也能看；想离线看，在页面上 Ctrl+S（Mac 上 ⌘+S）存下来即可。
 
