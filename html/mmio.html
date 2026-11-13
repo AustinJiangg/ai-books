@@ -488,7 +488,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>第 9～11 篇进入 Linux：内核驱动怎么写、PCI 设备的地址怎么来、用户程序怎么直接访问设备。</li>
 <li>第 12 篇讲虚拟机，第 13 篇把全书串起来，并附常见坑汇总和术语表。</li>
 <li>每篇末尾有“本篇小结”表格，复习时过一遍小结即可。</li>
-<li>本仓库的<a href="../mmap/README.md">《mmap 从零讲透》</a>（虚拟内存、页表）和<a href="../firecracker-intro/README.md">《彻底搞懂 Firecracker》</a>（KVM、virtio）与本书互为补充，文中重叠处会给出链接。</li>
+<li>本仓库的<a href="mmap.html#dp0">《mmap 从零讲透》</a>（虚拟内存、页表）和<a href="firecracker-intro.html#dp0">《彻底搞懂 Firecracker》</a>（KVM、virtio）与本书互为补充，文中重叠处会给出链接。</li>
 </ul><nav class="pager" data-n="p0"></nav></article><article id="v01" class="doc" hidden><h1 id="d01-从点亮一盏灯说起程序怎么控制硬件">｜从点亮一盏灯说起：程序怎么控制硬件</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：搞清楚一个看似简单、其实很少有人认真想过的问题：<strong>CPU 只会读写内存、做加减法，它是怎么“指挥”网卡、硬盘、串口这些外部设备的？</strong> 读完本篇，你会知道历史上出现过的两种答案（端口 I/O 和内存映射 I/O），并对 MMIO 有一个准确的一句话理解。</p>
@@ -777,7 +777,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <p>打个比方：一条街上的门牌号从 1 号排到 100 号，大部分是住户（内存），但其中第 50 号是邮局（设备）。邮递员（CPU）按门牌号送信，送到 50 号时，信件交给了邮局，邮局会根据信的内容去干别的事。邮局门牌号和住户门牌号在同一套编号里，但邮局不是住户。</p>
 <p>所以更准确的说法是：MMIO 访问的是<strong>物理地址空间</strong>，而物理地址空间里<strong>既有内存，也有设备</strong>。这一点是下一篇的主题。</p>
 <h3 id="d01-62-mmio-和-mmap">6.2 MMIO 和 mmap</h3>
-<p>如果你读过本仓库的<a href="../mmap/README.md">《mmap 从零讲透》</a>，可能会问：MMIO 和 mmap 有什么关系？</p>
+<p>如果你读过本仓库的<a href="mmap.html#dp0">《mmap 从零讲透》</a>，可能会问：MMIO 和 mmap 有什么关系？</p>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -1126,7 +1126,7 @@ fee00000-fee00fff : Local APIC             ← 每个 CPU 核自己的中断控�
 </blockquote>
 <hr />
 <h2 id="d02-七物理地址和虚拟地址">七、物理地址和虚拟地址</h2>
-<p>到这里为止，我们讨论的都是<strong>物理地址</strong>——总线上真正跑的那个地址。但是如果你读过<a href="../mmap/03-virtual-memory.md">《mmap 从零讲透》第 3 篇</a>，就知道：<strong>CPU 上运行的程序看到的其实是虚拟地址</strong>，要经过 MMU（内存管理单元）根据页表翻译之后，才变成物理地址。</p>
+<p>到这里为止，我们讨论的都是<strong>物理地址</strong>——总线上真正跑的那个地址。但是如果你读过<a href="mmap.html#d03">《mmap 从零讲透》第 3 篇</a>，就知道：<strong>CPU 上运行的程序看到的其实是虚拟地址</strong>，要经过 MMU（内存管理单元）根据页表翻译之后，才变成物理地址。</p>
 <p>所以完整的路径是：</p>
 <div class="hl"><pre><span></span><code>程序里的指针（虚拟地址）
       │
@@ -2155,7 +2155,7 @@ CPU 指令
 </code></pre></div>
 
 <h3 id="d05-12-缓存的几个关键行为">1.2 缓存的几个关键行为</h3>
-<p>缓存不是简单地“存一份副本”这么简单。为了效率，它有几个重要的行为特点（如果你读过<a href="../mmap/02-memory-and-addresses.md">《mmap 从零讲透》第 2 篇</a>，对此应该不陌生）：</p>
+<p>缓存不是简单地“存一份副本”这么简单。为了效率，它有几个重要的行为特点（如果你读过<a href="mmap.html#d02">《mmap 从零讲透》第 2 篇</a>，对此应该不陌生）：</p>
 <ol>
 <li><strong>以缓存行为单位搬运</strong>。缓存不是一个字节一个字节地从内存读，而是一次读一整块，通常是 <strong>64 字节</strong>，叫一个<strong>缓存行（cache line）</strong>。你读一个 4 字节的整数，缓存会把它周围的 64 字节都读进来——因为程序很可能马上会用到旁边的数据。</li>
 <li><strong>写回（write-back）</strong>。你写一个变量，CPU 通常只改缓存里的副本，并把这一行标记为“脏的”。等到这一行要被挤出缓存时，才一次性写回内存。这样，对同一个变量的多次写入，只需要一次内存写。</li>
@@ -2628,7 +2628,7 @@ Device-GRE
 <li>多个 CPU 核各自有自己的缓存和写缓冲区，一个核写入的数据，另一个核可能过一会儿才看到。</li>
 </ul>
 <p>对单个 CPU 核上运行的单线程程序来说，这些优化是“透明”的——CPU 会保证你<strong>自己</strong>看到的结果和按顺序执行一样。但对于<strong>其他观察者</strong>（另一个 CPU 核，或者一个设备），它们看到的写入顺序，可能和程序顺序不同。</p>
-<p>如果你读过<a href="../mmap/08-anonymous-mapping.md">《mmap 从零讲透》第 8 篇</a>，那里讲过 ARM64 的“弱内存序”给多进程共享内存带来的问题。设备，本质上就是另一个“观察者”。</p>
+<p>如果你读过<a href="mmap.html#d08">《mmap 从零讲透》第 8 篇</a>，那里讲过 ARM64 的“弱内存序”给多进程共享内存带来的问题。设备，本质上就是另一个“观察者”。</p>
 <h3 id="d06-22-强内存序与弱内存序">2.2 强内存序与弱内存序</h3>
 <p>不同 CPU 架构允许的乱序程度不同：</p>
 <ul>
@@ -4961,7 +4961,7 @@ I/O BAR（位 0 = 1）：
 
 <p>这条路很安全：内核检查权限，驱动负责正确地操作硬件，用户程序就算写错了也不会把机器搞坏。但它也有代价：</p>
 <ul>
-<li>每次系统调用都要从用户态切换到内核态，再切换回来（这个开销在<a href="../mmap/01-reading-a-file.md">《mmap 从零讲透》第 1 篇</a>里讲过）；</li>
+<li>每次系统调用都要从用户态切换到内核态，再切换回来（这个开销在<a href="mmap.html#d01">《mmap 从零讲透》第 1 篇</a>里讲过）；</li>
 <li>数据要经过内核的好几层处理，可能还要在内核和用户空间之间拷贝；</li>
 <li>想支持一种新设备，必须写内核驱动，而内核开发的门槛和风险都比较高。</li>
 </ul>
@@ -4972,7 +4972,7 @@ I/O BAR（位 0 = 1）：
 <ul>
 <li>第 2 篇：设备寄存器有一个<strong>物理地址</strong>；</li>
 <li>第 9 篇：内核访问它之前，要用 <code>ioremap</code> 在<strong>内核页表</strong>里建立一个映射；</li>
-<li><a href="../mmap/README.md">《mmap 从零讲透》</a>：mmap 的本质，就是在<strong>进程页表</strong>里建立映射。</li>
+<li><a href="mmap.html#dp0">《mmap 从零讲透》</a>：mmap 的本质，就是在<strong>进程页表</strong>里建立映射。</li>
 </ul>
 <p>把这几点串起来：如果能在<strong>用户进程的页表</strong>里建立一个映射，让某段用户虚拟地址指向设备的物理地址，并且设好 Device 内存属性，那么用户程序就可以像访问普通数组一样访问设备寄存器了。</p>
 <div class="hl"><pre><span></span><code>  用户进程虚拟地址空间                           物理地址空间
@@ -5388,7 +5388,7 @@ I/O BAR（位 0 = 1）：
 <p><strong>下一篇预告</strong>：<a href="#d12">《虚拟机里的 MMIO 与 virtio-mmio》</a>。在虚拟机里，客户机操作系统的驱动以为自己在读写真实的设备寄存器，但背后根本没有那块硬件。这是怎么做到的？我们会看到 MMIO 如何被“陷入”并“模拟”，以及专门为虚拟机设计的 virtio-mmio 设备。</p><nav class="pager" data-n="11"></nav></article><article id="v12" class="doc" hidden><h1 id="d12-虚拟机里的-mmio-与-virtio-mmio">｜虚拟机里的 MMIO 与 virtio-mmio</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：理解虚拟机里的“设备”是怎么回事。读完本篇，你会明白客户机里的驱动程序明明在读写“设备寄存器”，背后却根本没有硬件，这是如何做到的；一次 MMIO 访问在虚拟化环境下要走过怎样的旅程、代价有多大、有哪些优化手段；以及专门为虚拟机设计的 virtio-mmio 设备长什么样。</p>
-<p>本仓库的<a href="../firecracker-intro/README.md">《彻底搞懂 Firecracker》</a>对 KVM 和 virtio 有更详细的讲解，本篇只从 MMIO 的角度串讲一遍，细节会给出链接。</p>
+<p>本仓库的<a href="firecracker-intro.html#dp0">《彻底搞懂 Firecracker》</a>对 KVM 和 virtio 有更详细的讲解，本篇只从 MMIO 的角度串讲一遍，细节会给出链接。</p>
 </blockquote>
 <hr />
 <h2 id="d12-一一个骗局">一、一个“骗局”</h2>
@@ -5415,7 +5415,7 @@ I/O BAR（位 0 = 1）：
 <hr />
 <h2 id="d12-二原理故意不映射">二、原理：故意不映射</h2>
 <h3 id="d12-21-两阶段地址翻译回顾">2.1 两阶段地址翻译回顾</h3>
-<p>在硬件虚拟化里，客户机的地址要经过<strong>两次</strong>翻译（详见《彻底搞懂 Firecracker》<a href="../firecracker-intro/03-hardware-virtualization-and-kvm.md">第 3 篇</a>和<a href="../firecracker-intro/09-memory.md">第 9 篇</a>）：</p>
+<p>在硬件虚拟化里，客户机的地址要经过<strong>两次</strong>翻译（详见《彻底搞懂 Firecracker》<a href="firecracker-intro.html#d03">第 3 篇</a>和<a href="firecracker-intro.html#d09">第 9 篇</a>）：</p>
 <div class="hl"><pre><span></span><code>客户机程序的虚拟地址
       │  第一阶段：客户机自己的页表（客户机内核管理）
       ▼
@@ -5427,7 +5427,7 @@ I/O BAR（位 0 = 1）：
 
 <p>客户机以为自己看到的是物理地址，其实那只是一个“中间地址”。第二阶段的页表由宿主机控制，客户机看不到也改不了。（x86 上的同一机制叫 <strong>EPT</strong>，扩展页表。）</p>
 <h3 id="d12-22-内存映射了设备没映射">2.2 内存映射了，设备没映射</h3>
-<p>对于客户机的<strong>内存</strong>，KVM 会在 stage-2 页表里建立映射：客户机的“物理”地址 <code>0x40000000</code> 开始的那一段，映射到宿主机上某个进程（比如 Firecracker）mmap 出来的一大块内存（这块内存本身就是用匿名 mmap 分配的，参见<a href="../mmap/12-real-world.md">《mmap 从零讲透》第 12 篇</a>）。客户机访问内存时，两次翻译都由硬件完成，<strong>不需要宿主机软件参与</strong>，速度和物理机几乎一样。</p>
+<p>对于客户机的<strong>内存</strong>，KVM 会在 stage-2 页表里建立映射：客户机的“物理”地址 <code>0x40000000</code> 开始的那一段，映射到宿主机上某个进程（比如 Firecracker）mmap 出来的一大块内存（这块内存本身就是用匿名 mmap 分配的，参见<a href="mmap.html#d12">《mmap 从零讲透》第 12 篇</a>）。客户机访问内存时，两次翻译都由硬件完成，<strong>不需要宿主机软件参与</strong>，速度和物理机几乎一样。</p>
 <p>但对于客户机的<strong>设备</strong>地址（比如 <code>0x09000000</code>），KVM <strong>故意不在 stage-2 页表里建立映射</strong>。</p>
 <p>于是，当客户机执行“往 <code>0x09000000</code> 写”这条指令时：</p>
 <ol>
@@ -5529,7 +5529,7 @@ I/O BAR（位 0 = 1）：
 
 <p>客户机的 vCPU 不再需要等待设备处理完请求，只需要付出一次“陷入 KVM 再回来”的代价。</p>
 <p>对应地，<strong>irqfd</strong> 是反方向的优化：VMM 处理完请求后，写一个 eventfd，KVM 直接把中断注入客户机，不需要 VMM 再调用一次 ioctl。</p>
-<p>这两个机制在《彻底搞懂 Firecracker》<a href="../firecracker-intro/10-virtio.md">第 10 篇</a>里有更详细的讲解。</p>
+<p>这两个机制在《彻底搞懂 Firecracker》<a href="firecracker-intro.html#d10">第 10 篇</a>里有更详细的讲解。</p>
 <h3 id="d12-44-优化三设备直通干脆不模拟">4.4 优化三：设备直通——干脆不模拟</h3>
 <p>最极端的优化是：<strong>不模拟，直接把一个真实的物理设备交给虚拟机。</strong></p>
 <p>这就是<strong>设备直通（device passthrough）</strong>，通常借助上一篇讲的 <strong>VFIO</strong> 来实现：</p>
@@ -5728,7 +5728,7 @@ I/O BAR（位 0 = 1）：
 
 <p>和第 8 篇的网卡发包流程对比，几乎是一模一样的结构。区别只在于：“设备”是 VMM 里的一段软件，“DMA”是 VMM 直接读写客户机的内存。</p>
 <p>整个数据路径上，MMIO 访问只有门铃一次、中断处理两次。而且 virtio 还有“通知抑制”等机制，在流量大时可以进一步减少门铃和中断的次数。</p>
-<p>更多细节（virtqueue 的结构、批处理、事件抑制、Firecracker 如何防御恶意客户机）请参阅《彻底搞懂 Firecracker》<a href="../firecracker-intro/10-virtio.md">第 10 篇</a>。</p>
+<p>更多细节（virtqueue 的结构、批处理、事件抑制、Firecracker 如何防御恶意客户机）请参阅《彻底搞懂 Firecracker》<a href="firecracker-intro.html#d10">第 10 篇</a>。</p>
 <h3 id="d12-55-客户机怎么发现-virtio-mmio-设备">5.5 客户机怎么发现 virtio-mmio 设备</h3>
 <p>virtio-mmio 设备的地址是固定的，没有 PCI 那样的枚举机制（第 10 篇），所以需要用第 2 篇讲的方法告诉客户机：</p>
 <ul>
@@ -5795,7 +5795,7 @@ I/O BAR（位 0 = 1）：
 </tr>
 </tbody>
 </table></div>
-<p><strong>Firecracker</strong> 的设计目标是“极简、快速启动、安全”，所以它最初只支持 virtio-mmio：设备数量少、启动时不用枚举、要模拟的代码量最小（攻击面也最小）。较新的版本（v1.13 起）也加入了可选的 virtio-pci 支持，用来满足需要更多队列、更好的中断分发的场景（详见《彻底搞懂 Firecracker》<a href="../firecracker-intro/10-virtio.md">第 10 篇</a>）。</p>
+<p><strong>Firecracker</strong> 的设计目标是“极简、快速启动、安全”，所以它最初只支持 virtio-mmio：设备数量少、启动时不用枚举、要模拟的代码量最小（攻击面也最小）。较新的版本（v1.13 起）也加入了可选的 virtio-pci 支持，用来满足需要更多队列、更好的中断分发的场景（详见《彻底搞懂 Firecracker》<a href="firecracker-intro.html#d10">第 10 篇</a>）。</p>
 <hr />
 <h2 id="d12-六把视角拉远">六、把视角拉远</h2>
 <p>回顾这一篇，你会发现虚拟化并没有发明什么新的 MMIO 机制，它只是<strong>巧妙地利用了</strong>前面几篇讲过的东西：</p>
@@ -6420,8 +6420,8 @@ I/O BAR（位 0 = 1）：
 <li><strong>ARM PL011 UART 技术参考手册</strong>：第 3 篇用到的寄存器定义。</li>
 <li><strong>PCI Express 基础规范</strong>、<strong>NVMe 规范</strong>：第 10 篇用到的配置空间、BAR、NVMe 寄存器定义。</li>
 <li><strong>virtio 规范</strong>（OASIS 发布）：第 12 篇的 virtio-mmio 寄存器和初始化流程。</li>
-<li>本仓库的<a href="../mmap/README.md">《mmap 从零讲透》</a>：虚拟内存、页表、页缓存，是理解 MMIO 映射的基础。</li>
-<li>本仓库的<a href="../firecracker-intro/README.md">《彻底搞懂 Firecracker》</a>：KVM、stage-2、virtio 的详细讲解，是第 12 篇的延伸。</li>
+<li>本仓库的<a href="mmap.html#dp0">《mmap 从零讲透》</a>：虚拟内存、页表、页缓存，是理解 MMIO 映射的基础。</li>
+<li>本仓库的<a href="firecracker-intro.html#dp0">《彻底搞懂 Firecracker》</a>：KVM、stage-2、virtio 的详细讲解，是第 12 篇的延伸。</li>
 </ul>
 <hr />
 <h2 id="d13-八术语表">八、术语表</h2>

@@ -1054,7 +1054,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="dp0-相关手册">相关手册</h2>
 <ul>
-<li><a href="../e2b-infra/README.md">e2b 服务端基础设施技术手册</a>：Firecracker 的调用方（orchestrator）怎么用它；第 03、28、31、37、70 篇与本书关系最密切。</li>
+<li><a href="e2b-infra.html#dp0">e2b 服务端基础设施技术手册</a>：Firecracker 的调用方（orchestrator）怎么用它；第 03、28、31、37、70 篇与本书关系最密切。</li>
 <li><a href="../../e2b-infra-docs/rollback/docs/README.md">checkpoint / restore 手册</a>：本书第十部分 checkpoint / restore 扩展的设计动机、orchestrator 侧实现、测试与性能。</li>
 </ul><nav class="pager" data-n="p0"></nav></article><article id="v00" class="doc" hidden><h1 id="d00-全书导读与-firecracker-总览">全书导读与 Firecracker 总览</h1>
 <blockquote>
@@ -1289,7 +1289,7 @@ orchestrator 怎么调用这些端点、差分树与磁盘分层怎么组织、�
     本篇第 1 节那份约束清单的完整版。</li>
 <li><a href="README.md"><code>README.md</code></a>：完整目录与读者导览表。</li>
 <li><a href="#d79">第 79 篇 · 阅读上游代码的方法与常见问题</a>：第一次打开这份代码时的实用建议。</li>
-<li>调用方视角的 Firecracker：<a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇</a>。</li>
+<li>调用方视角的 Firecracker：<a href="e2b-infra.html#d28">e2b 手册第 28 篇</a>。</li>
 <li>原地回滚的设计动机、orchestrator 侧实现与性能数据：
     <a href="../../e2b-infra-docs/rollback/docs/README.md">checkpoint / restore 手册</a>。</li>
 </ul><nav class="pager" data-n="00"></nav></article><article id="v01" class="doc" hidden><h1 id="d01-三层版本谱系与仓库地图">三层版本谱系与仓库地图</h1>
@@ -1801,7 +1801,7 @@ e2b 定制版把 <code>mem_file_path</code> 从必填改成可选，是这条原
     本篇第 1 节两处谱系细节的展开。</li>
 <li><a href="#d75">第 75 篇 · 代码地图</a>：从文件反查篇目。</li>
 <li><a href="#d78">第 78 篇 · 各层差异总表</a>：本篇第 2 节的文件级展开。</li>
-<li>e2b 侧怎么起 Firecracker 进程、怎么管版本目录，见 <a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇</a>。</li>
+<li>e2b 侧怎么起 Firecracker 进程、怎么管版本目录，见 <a href="e2b-infra.html#d28">e2b 手册第 28 篇</a>。</li>
 </ul><nav class="pager" data-n="01"></nav></article><article id="v02" class="doc" hidden><h1 id="d02-microvm-与-firecracker-的设计取舍">microVM 与 Firecracker 的设计取舍</h1>
 <blockquote>
 <p>Firecracker 的代码之所以不到十万行，不是因为它写得比别的 VMM 精简，而是因为它砍掉了一整类功能。
@@ -2031,7 +2031,7 @@ ARM 适配版要处理的则是另外两个问题：把这一整套搬到 aarch6
 <li><a href="#d11">第 11 篇 · builder：从配置到运行中的 microVM</a>：本篇第 2.3 节挂设备顺序的完整版。</li>
 <li><a href="#d42">第 42 篇 · seccomp</a>、<a href="#d43">第 43 篇 · jailer</a>：两道防线的细节。</li>
 <li><a href="#d49">第 49 篇 · 为什么分叉：e2b 的内存管线要什么</a>：第 6 节的展开。</li>
-<li>e2b 侧为什么选 microVM 而不是容器，见 <a href="../e2b-infra/02-why-sandbox.md">e2b 手册第 02 篇</a>。</li>
+<li>e2b 侧为什么选 microVM 而不是容器，见 <a href="e2b-infra.html#d02">e2b 手册第 02 篇</a>。</li>
 </ul><nav class="pager" data-n="02"></nav></article><article id="v03" class="doc" hidden><h1 id="d03-本书用到的-kvm-api">本书用到的 KVM API</h1>
 <blockquote>
 <p>KVM 把「运行一台虚拟机」这件事变成了对三个文件描述符做 ioctl。本篇只讲 Firecracker 实际用到的那部分接口，
@@ -2280,7 +2280,7 @@ Firecracker 把它缓存下来，免得每建一个 vCPU 问一次。</p>
 <li><a href="#d14">第 14 篇 · 脏页跟踪：KVM 日志与用户态位图</a>：本篇第 3 节的完整版。</li>
 <li><a href="#d15">第 15 篇 · vCPU 线程与状态机</a>：<code>KVM_RUN</code> 外面那层状态机。</li>
 <li><a href="#d16">第 16 篇 · x86_64 vCPU</a>、<a href="#d18">第 18 篇 · aarch64 vCPU</a>：两套寄存器接口的细节。</li>
-<li>e2b 侧对 KVM 内存虚拟化的背景介绍，见 <a href="../e2b-infra/04-kvm-and-memory-virtualization.md">e2b 手册第 04 篇</a>。</li>
+<li>e2b 侧对 KVM 内存虚拟化的背景介绍，见 <a href="e2b-infra.html#d04">e2b 手册第 04 篇</a>。</li>
 </ul><nav class="pager" data-n="03"></nav></article><article id="v04" class="doc" hidden><h1 id="d04-virtio-与-virtio-mmio-基础">virtio 与 virtio-mmio 基础</h1>
 <blockquote>
 <p>Firecracker 给 guest 的全部 I/O 能力，都来自五种 virtio 设备与一条 4 KiB 宽的 MMIO 寄存器窗口。
@@ -4511,7 +4511,7 @@ vCPU 停下只保证 guest 不再产生新请求，已经在飞行中的 I/O 仍
 <li><a href="#d10">第 10 篇 · 资源模型：VmResources 与 vmm_config</a>：Preboot 动作写进去的那个对象。</li>
 <li><a href="#d15">第 15 篇 · vCPU 线程与状态机</a>：<code>VcpuEvent</code> 与 <code>NotAllowed</code> 的来源。</li>
 <li><a href="#d37">第 37 篇 · 创建快照</a>：<code>create_snapshot()</code> 之后发生的事。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>：调用方怎么按顺序使用 pause 与 snapshot 这两个动作。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>：调用方怎么按顺序使用 pause 与 snapshot 这两个动作。</li>
 <li>下一篇：<a href="#d10">第 10 篇 · 资源模型：VmResources 与 vmm_config</a>。</li>
 </ul><nav class="pager" data-n="09"></nav></article><article id="v10" class="doc" hidden><h1 id="d10-资源模型vmresources-与-vmm_config">资源模型：VmResources 与 vmm_config</h1>
 <blockquote>
@@ -5713,7 +5713,7 @@ guest 写状态寄存器触发激活时，<code>mmio.rs</code> 把它克隆一�
 <li><a href="#d39">第 39 篇 · userfaultfd 后端与缺页处理</a>：按需填页的另一条恢复路径。</li>
 <li><a href="#d17">第 17 篇 · x86_64 平台</a>、<a href="#d19">第 19 篇 · aarch64 平台</a>：两个架构的完整 GPA 布局。</li>
 <li>上游文档 <code>docs/hugepages.md</code>：大页的启用方式与已知限制。</li>
-<li><a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇</a>：调用方怎么实现 userfaultfd 后端。</li>
+<li><a href="e2b-infra.html#d31">e2b 手册第 31 篇</a>：调用方怎么实现 userfaultfd 后端。</li>
 </ul><nav class="pager" data-n="13"></nav></article><article id="v14" class="doc" hidden><h1 id="d14-脏页跟踪kvm-日志与用户态位图">脏页跟踪：KVM 日志与用户态位图</h1>
 <blockquote>
 <p>差分快照的全部价值建立在一个判断上：自上次快照以来，哪些页被写过。这个判断没有单一来源 ——
@@ -6001,7 +6001,7 @@ HDBSS（hardware dirty bit state structure），见<a href="#d65">第 65 篇</a>
 <li><a href="#d36">第 36 篇 · 快照总览</a>、<a href="#d41">第 41 篇 · snapshot-editor 与兼容性</a>：差分层怎么被合并与检查。</li>
 <li><a href="#d26">第 26 篇 · virtqueue 实现</a>、<a href="#d25">第 25 篇 · virtio 设备模型</a>：队列对象与描述符链的细节。</li>
 <li>上游文档 <code>docs/snapshotting/snapshot-support.md</code>：差分快照的使用约束。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>：调用方为什么绕开了这条路径，改用自己的脏页判据。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>：调用方为什么绕开了这条路径，改用自己的脏页判据。</li>
 </ul><nav class="pager" data-n="14"></nav></article><article id="v15" class="doc" hidden><h1 id="d15-vcpu-线程与状态机">vCPU 线程与状态机</h1>
 <blockquote>
 <p>一台 microVM 的每个 vCPU 在 Firecracker 进程里都是一个独立的 OS 线程，线程的主体是一个反复调用 <code>KVM_RUN</code> 的循环。
@@ -10232,7 +10232,7 @@ API 本身不做这个检查，约束落在调用方。</p>
 <li><a href="#d26">第 26 篇 · virtqueue 实现</a>：<code>pop_or_enable_notification()</code>、<code>undo_pop()</code> 与 used ring 索引的语义。</li>
 <li><a href="#d40">第 40 篇 · 设备状态的 Persist</a>：所有设备统一的保存与恢复流程。</li>
 <li>e2b 用网络块设备作为 <code>path_on_host</code>，把 rootfs 的按需取数与分层放在 Firecracker 之外：
-    <a href="../e2b-infra/33-nbd-and-rootfs.md">e2b 手册第 33 篇</a>。</li>
+    <a href="e2b-infra.html#d33">e2b 手册第 33 篇</a>。</li>
 </ul><nav class="pager" data-n="27"></nav></article><article id="v28" class="doc" hidden><h1 id="d28-io_uring-引擎">io_uring 引擎</h1>
 <blockquote>
 <p>virtio-block 的默认引擎用阻塞系统调用，一次只能有一个请求在途。异步引擎把请求交给 io_uring，
@@ -11695,7 +11695,7 @@ dumbo 返回的 <code>RecvEvent</code> 递增 —— 注意 <code>NewConnectionR
 <li>下一篇：<a href="#d33">第 33 篇 · vsock</a>，另一条 guest 与宿主之间的通道，
     它不借用网卡，而是有自己的 virtio 设备与连接复用器。</li>
 <li>上游文档 <code>docs/mmds/mmds-user-guide.md</code> 与 <code>docs/mmds/mmds-design.md</code> 可作为参考，以代码为准。</li>
-<li><a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇</a> —— 调用方在什么时刻绑定 MMDS、写入哪些元数据。</li>
+<li><a href="e2b-infra.html#d28">e2b 手册第 28 篇</a> —— 调用方在什么时刻绑定 MMDS、写入哪些元数据。</li>
 </ul><nav class="pager" data-n="32"></nav></article><article id="v33" class="doc" hidden><h1 id="d33-vsock设备连接状态机与-unix-muxer">vsock：设备、连接状态机与 unix muxer</h1>
 <blockquote>
 <p>guest 与宿主之间常常需要一条控制通道：传命令、传日志、做健康探测。用网络做这件事要配地址、要防火墙、
@@ -12787,7 +12787,7 @@ Linux 5.18 及以后会据此重新播种内核 PRNG。它解决的是内核这�
 <li><a href="#d40">第 40 篇 · 设备状态的 Persist</a> —— <code>Persist</code> trait 与逐设备的字段。</li>
 <li><a href="#d41">第 41 篇 · snapshot-editor、rebase-snap 与兼容性</a> —— 工具与兼容矩阵。</li>
 <li>上游文档：<code>docs/snapshotting/snapshot-support.md</code>、<code>docs/snapshotting/versioning.md</code>。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a> —— 一个不让 Firecracker 写内存文件的调用方长什么样。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇</a> —— 一个不让 Firecracker 写内存文件的调用方长什么样。</li>
 </ul><nav class="pager" data-n="36"></nav></article><article id="v37" class="doc" hidden><h1 id="d37-创建快照save_state内存导出与-diff">创建快照：save_state、内存导出与 Diff</h1>
 <blockquote>
 <p><code>PUT /snapshot/create</code> 的实现只有几十行，但每一行的位置都有理由：为什么必须先暂停、
@@ -13045,7 +13045,7 @@ guest 内存由调用方通过新增的查询 API 自己取。见<a href="#d54">
 <li><a href="#d26">第 26 篇 · virtqueue 实现</a> —— 队列的裸指针访问方式。</li>
 <li><a href="#d40">第 40 篇 · 设备状态的 Persist</a> —— <code>save()</code> 在每个设备上具体做了什么。</li>
 <li><a href="#d41">第 41 篇 · snapshot-editor、rebase-snap 与兼容性</a> —— Diff 产物怎么合并。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a> —— 一个绕开内存导出的调用方。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇</a> —— 一个绕开内存导出的调用方。</li>
 </ul><nav class="pager" data-n="37"></nav></article><article id="v38" class="doc" hidden><h1 id="d38-加载快照restore内存后端与设备重建">加载快照：restore、内存后端与设备重建</h1>
 <blockquote>
 <p>创建快照是把一个进程的状态拆成两个文件，加载快照是反过来：在一个<strong>全新的</strong>进程里重新申请
@@ -13382,7 +13382,7 @@ userfaultfd 时除 MISSING 之外还注册了 WRITE_PROTECT 模式，并在大�
 <li><a href="#d40">第 40 篇 · 设备状态的 Persist</a> —— 每个设备的 <code>restore()</code> 具体做了什么。</li>
 <li><a href="#d11">第 11 篇 · builder</a> —— 正常启动路径的构建顺序，与本篇对照着读。</li>
 <li><a href="#d41">第 41 篇 · snapshot-editor、rebase-snap 与兼容性</a> —— 跨机器恢复的兼容性边界。</li>
-<li><a href="../e2b-infra/27-resume-sandbox.md">e2b 手册第 27 篇</a> —— 一个只用 Uffd 后端加 <code>resume_vm</code> 的调用方。</li>
+<li><a href="e2b-infra.html#d27">e2b 手册第 27 篇</a> —— 一个只用 Uffd 后端加 <code>resume_vm</code> 的调用方。</li>
 </ul><nav class="pager" data-n="38"></nav></article><article id="v39" class="doc" hidden><h1 id="d39-userfaultfd-后端与缺页处理">userfaultfd 后端与缺页处理</h1>
 <blockquote>
 <p>从快照恢复时，guest 内存的内容要从某处搬回来。上游 v1.12.1 给了两条路：交给内核按文件映射按需读，
@@ -13661,7 +13661,7 @@ e2b 定制版把写保护注册加进了 Firecracker 一侧，示例处理器却
 <li><a href="#d40">下一篇：第 40 篇 · 设备状态的 Persist</a>。</li>
 <li>上游文档 <code>docs/snapshotting/handling-page-faults-on-snapshot-resume.md</code>，以及 Linux 内核文档
     <code>admin-guide/mm/userfaultfd</code>。</li>
-<li>e2b 侧的缺页处理器实现在 orchestrator 里，见 <a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇</a>。</li>
+<li>e2b 侧的缺页处理器实现在 orchestrator 里，见 <a href="e2b-infra.html#d31">e2b 手册第 31 篇</a>。</li>
 </ul><nav class="pager" data-n="39"></nav></article><article id="v40" class="doc" hidden><h1 id="d40-设备状态的-persist逐设备的保存与恢复">设备状态的 Persist：逐设备的保存与恢复</h1>
 <blockquote>
 <p>快照里除了内存与 vCPU，还有十几个设备的状态。它们的保存与恢复靠同一个只有四行的 trait 组织起来，
@@ -14197,8 +14197,8 @@ ARM 适配版在内存文件之外多写一个位图 sidecar，记录这次导�
 <li><a href="#d42">下一篇：第 42 篇 · seccomp</a>。</li>
 <li>上游文档 <code>docs/snapshotting/versioning.md</code>、<code>docs/snapshotting/snapshot-editor.md</code>。</li>
 <li>e2b 不用 <code>rebase-snap</code>：它在 orchestrator 里按自己的映射表做同样的叠加，
-    见 <a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>（映射表怎么合并）与
-    <a href="../e2b-infra/30-block-layer.md">e2b 手册第 30 篇</a>（合并后的多代 diff 怎么按块读）。</li>
+    见 <a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>（映射表怎么合并）与
+    <a href="e2b-infra.html#d30">e2b 手册第 30 篇</a>（合并后的多代 diff 怎么按块读）。</li>
 </ul><nav class="pager" data-n="41"></nav></article><article id="v42" class="doc" hidden><h1 id="d42-seccompseccompiler过滤器与安装时机">seccomp：seccompiler、过滤器与安装时机</h1>
 <blockquote>
 <p>Firecracker 把「这个进程允许对宿主内核说哪些话」写成三张 JSON 表，在构建时编译成 BPF 程序嵌进二进制，
@@ -14802,7 +14802,7 @@ jailer 决定这些系统调用能触及哪些对象。</strong> 两者都不完
 <li><a href="#d44">第 44 篇 · 日志与 metrics</a>：jailer 传进来的计时参数最终出现在哪里。</li>
 <li><a href="#d42">第 42 篇 · seccomp</a>：另一半隔离，以及两道边界为什么必须叠加。</li>
 <li><a href="#d47">第 47 篇 · 测试体系</a>：<code>tests/integration_tests/security/test_jail.py</code> 验证了哪些性质。</li>
-<li><a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇</a>：不使用 jailer 的那套进程管理是什么形态。</li>
+<li><a href="e2b-infra.html#d28">e2b 手册第 28 篇</a>：不使用 jailer 的那套进程管理是什么形态。</li>
 <li>上游文档 <code>docs/jailer.md</code>。</li>
 </ul><nav class="pager" data-n="43"></nav></article><article id="v44" class="doc" hidden><h1 id="d44-日志与-metrics">日志与 metrics</h1>
 <blockquote>
@@ -16110,7 +16110,7 @@ dimensions 里必须带 <code>performance_test</code> 键；
 <li><a href="#d42">第 42 篇 · seccomp</a> 讲 <code>test_seccomp.py</code> 验证的那套过滤器。</li>
 <li><a href="#d43">第 43 篇 · jailer</a> 讲 <code>test_jail.py</code> 里那些 cgroup 与 namespace 断言的对象。</li>
 <li>上游文档 <code>tests/README.md</code> 给出 devtool 与 A/B 测试的完整操作说明；以代码为准。</li>
-<li>编排层的端到端验证与性能数据在 <a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a> 与 checkpoint / restore 手册
+<li>编排层的端到端验证与性能数据在 <a href="e2b-infra.html#d37">e2b 手册第 37 篇</a> 与 checkpoint / restore 手册
     <code>../../e2b-infra-docs/rollback/docs/</code> 中。</li>
 </ul><nav class="pager" data-n="47"></nav></article><article id="v48" class="doc" hidden><h1 id="d48-发布策略版本与兼容承诺">发布策略、版本与兼容承诺</h1>
 <blockquote>
@@ -16429,7 +16429,7 @@ e2b 加了 <code>/memory</code> 与 <code>/memory/mappings</code>，ARM 适配�
 <li><a href="#d78">第 78 篇 · 三层差异总表</a> 给出两层定制的文件级清单。</li>
 <li>上游文档 <code>docs/RELEASE_POLICY.md</code>、<code>docs/kernel-policy.md</code>、<code>docs/api-change-runbook.md</code>、
     <code>docs/snapshotting/versioning.md</code> 是本篇的原始依据。</li>
-<li>编排层怎么按版本字符串选二进制、怎么滚动升级，见 <a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇</a>。</li>
+<li>编排层怎么按版本字符串选二进制、怎么滚动升级，见 <a href="e2b-infra.html#d28">e2b 手册第 28 篇</a>。</li>
 </ul><nav class="pager" data-n="48"></nav></article><article id="v49" class="doc" hidden><h1 id="d49-为什么分叉e2b-的内存管线要什么">为什么分叉：e2b 的内存管线要什么</h1>
 <blockquote>
 <p>上游 Firecracker 把 guest 内存的导出封装得很严：什么时候导、导哪些页、导到哪里，全部由
@@ -16819,8 +16819,8 @@ e2b 定制版没有削弱这些约束，但在它们之外增加了一条从外�
 <li><a href="#d55">第 55 篇 · seccomp、构建发布脚本与合入的上游修复</a>：第 4、6 节的展开。</li>
 <li><a href="#d01">第 01 篇 · 三层版本谱系与仓库地图</a>：三层提交谱系与改动规模。</li>
 <li><a href="#d78">第 78 篇 · 各层差异总表</a>：文件级差异总表。</li>
-<li>e2b 侧的差分链、映射表与上传流程，见 <a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>；
-    沙箱从模板恢复的全过程见 <a href="../e2b-infra/12-sandbox-lifecycle-walkthrough.md">e2b 手册第 12 篇</a>。</li>
+<li>e2b 侧的差分链、映射表与上传流程，见 <a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>；
+    沙箱从模板恢复的全过程见 <a href="e2b-infra.html#d12">e2b 手册第 12 篇</a>。</li>
 </ul><nav class="pager" data-n="49"></nav></article><article id="v50" class="doc" hidden><h1 id="d50-memorymappings把-guest-内存的宿主地址交出去">/memory/mappings：把 guest 内存的宿主地址交出去</h1>
 <blockquote>
 <p>要让另一个进程直接读走 guest 内存，它得先知道这些内存在 Firecracker 的地址空间里落在哪。
@@ -17086,8 +17086,8 @@ e2b 定制版没有削弱这些约束，但在它们之外开了一条从外向�
 <li><a href="#d54">第 54 篇 · 可选 memfile 的快照</a>：不写内存文件的 create，与本端点配套。</li>
 <li><a href="#d13-3-区域的后备四种做法">第 13 篇 · guest 内存</a>：区域切分与内存文件的平铺规则。</li>
 <li><a href="#d39-2-握手一次性交出去的两样东西">第 39 篇 · userfaultfd 后端</a>：同形结构的另一端。</li>
-<li>orchestrator 侧怎么把位图与映射表合成一次导出，见 <a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>；
-    uffd 服务的实现见 <a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇</a>。</li>
+<li>orchestrator 侧怎么把位图与映射表合成一次导出，见 <a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>；
+    uffd 服务的实现见 <a href="e2b-infra.html#d31">e2b 手册第 31 篇</a>。</li>
 </ul><nav class="pager" data-n="50"></nav></article><article id="v51" class="doc" hidden><h1 id="d51-memory常驻页与零页位图">/memory：常驻页与零页位图</h1>
 <blockquote>
 <p>一台刚从零启动的 microVM，配了 8 GiB 内存，真正被碰过的可能只有几百 MiB，
@@ -17368,7 +17368,7 @@ swagger 里 <code>MemoryResponse</code> 的两个字段都标为 required，描�
 <li><a href="#d13-3-区域的后备四种做法">第 13 篇 · guest 内存</a>：匿名映射与 <code>MAP_NORESERVE</code> 的语义。</li>
 <li><a href="#d42">第 42 篇 · seccomp</a>：过滤器的安装时机与漏放行的后果。</li>
 <li><a href="#d55">第 55 篇 · seccomp、构建发布脚本与合入的上游修复</a>：两个架构过滤器改动不对称的原因。</li>
-<li>orchestrator 侧怎么用这两张位图生成第一代产物，见 <a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>。</li>
+<li>orchestrator 侧怎么用这两张位图生成第一代产物，见 <a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>。</li>
 </ul><nav class="pager" data-n="51"></nav></article><article id="v52" class="doc" hidden><h1 id="d52-memorydirtypagemap-与写保护位的脏页判据">/memory/dirty：pagemap 与写保护位的脏页判据</h1>
 <blockquote>
 <p>上游判断「哪些页被写过」的两个来源都与快照流程绑死：KVM 的日志读一次就清零，用户态位图随内存文件一起被消费。
@@ -17636,7 +17636,7 @@ ARM 适配版因此换了后端，用鲲鹏 950 的硬件脏页跟踪 HDBSS（ha
 <li><a href="#d54">第 54 篇 · 可选 memfile 的快照</a>：这个端点在 e2b 暂停流程中的位置。</li>
 <li><a href="#d48">第 48 篇 · 发布与兼容策略</a>：v1.13.0 的变更条目与差分快照约束的演进。</li>
 <li>内核文档 <code>admin-guide/mm/pagemap</code> 与 <code>admin-guide/mm/userfaultfd</code>。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>：调用方拿到这张位图之后做什么。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>：调用方拿到这张位图之后做什么。</li>
 </ul><nav class="pager" data-n="52"></nav></article><article id="v53" class="doc" hidden><h1 id="d53-uffd-写保护让脏页判据成立的最后一环">uffd 写保护：让脏页判据成立的最后一环</h1>
 <blockquote>
 <p>上一篇的判据读的是 pagemap 里的一个位：这一页还在不在 userfaultfd 的写保护之下。
@@ -17772,7 +17772,7 @@ guest 照样写，写完照样继续跑。它改变的只有一件事：这一�
 <p>结论是责任的转移：<strong>匿名内存上每一页的初始写保护，必须由 uffd 处理器在填页的那一刻一起带上</strong>，
 办法是在 <code>UFFDIO_COPY</code> 上加 <code>UFFDIO_COPY_MODE_WP</code> 标志。
 这件事发生在 Firecracker 进程之外，属于调用方的 uffd 处理器，本书不展开，
-实现见 <a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇</a>。</p>
+实现见 <a href="e2b-infra.html#d31">e2b 手册第 31 篇</a>。</p>
 <p>保护还是一次性的。一页被写过之后，它的写保护就没有了，除非有人再调一次 <code>UFFDIO_WRITEPROTECT</code>
 把它重新保护起来。Firecracker 这一侧没有提供这个动作：全仓库只有恢复路径上那一处 <code>write_protect()</code> 调用，
 既没有 API 也没有内部时机去重新加保护。所以 bit 57 记录的是「自这次恢复以来」，
@@ -17877,7 +17877,7 @@ Firecracker 一侧连 pagemap 都不用碰。第 2 节那张表就是这两条�
 <li><a href="#d39">第 39 篇 · userfaultfd 后端</a>：握手、事件与示例处理器的完整形态。</li>
 <li><a href="#d57">第 57 篇 · 迁入的版本</a>、<a href="#d65">第 65 篇 · 脏页跟踪后端</a>：aarch64 上的替代路线。</li>
 <li>内核文档 <code>admin-guide/mm/userfaultfd</code>：写保护模式与 <code>WP_ASYNC</code> 的权威描述。</li>
-<li><a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇</a>：调用方的 uffd 处理器如何在填页时带上写保护。</li>
+<li><a href="e2b-infra.html#d31">e2b 手册第 31 篇</a>：调用方的 uffd 处理器如何在填页时带上写保护。</li>
 </ul><nav class="pager" data-n="53"></nav></article><article id="v54" class="doc" hidden><h1 id="d54-可选-memfile-的快照与-e2b-的暂停流程">可选 memfile 的快照与 e2b 的暂停流程</h1>
 <blockquote>
 <p>上游的 <code>PUT /snapshot/create</code> 把两件事绑在一起：把 microVM 的状态序列化成文件，
@@ -18112,7 +18112,7 @@ e2b 的窗口里是一次状态文件写、若干次位图计算（<code>mincore
 <li><a href="#d50">第 50 篇 · /memory/mappings</a>、<a href="#d51">第 51 篇 · /memory</a>、<a href="#d52">第 52 篇 · /memory/dirty</a> —— 暂停流程里的三个查询接口。</li>
 <li><a href="#d49">第 49 篇 · 为什么分叉</a> —— 这条内存管线的整体动机。</li>
 <li><a href="#d57">第 57 篇 · 迁入的版本</a> —— ARM 适配版继承这个改动时的取舍。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a> —— 调用方一侧的完整暂停流程，含差分产物与 header 合并。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇</a> —— 调用方一侧的完整暂停流程，含差分产物与 header 合并。</li>
 </ul><nav class="pager" data-n="54"></nav></article><article id="v55" class="doc" hidden><h1 id="d55-seccomp构建发布脚本与合入的上游修复">seccomp、构建发布脚本与合入的上游修复</h1>
 <blockquote>
 <p>前六篇讲的是 e2b 定制版加了什么功能。这一篇讲剩下的部分：为了让新增的系统调用穿过 seccomp
@@ -18670,7 +18670,7 @@ ARM 部署里实际使用的内核文件来自更晚的 release，见<a href="#d
 <li><a href="#d11">第 11 篇 · builder</a> —— 内核加载在构建流程里的位置。</li>
 <li><a href="#d61">第 61 篇 · ARM 上的 guest 内核</a> —— 部署中实际使用的内核文件。</li>
 <li><a href="#d63">第 63 篇 · 与 e2b infra 的对接</a> —— 内核命令行由谁拼、版本目录怎么组织。</li>
-<li><a href="../e2b-infra/14-config-flags-versions.md">e2b 手册第 14 篇</a> —— 默认内核版本在调用方一侧的配置位置。</li>
+<li><a href="e2b-infra.html#d14">e2b 手册第 14 篇</a> —— 默认内核版本在调用方一侧的配置位置。</li>
 </ul><nav class="pager" data-n="56"></nav></article><article id="v57" class="doc" hidden><h1 id="d57-迁入的版本54a1c1a-与被放弃的-uffd-写保护">迁入的版本：54a1c1a 与被放弃的 uffd 写保护</h1>
 <blockquote>
 <p>把一份 Firecracker 分叉搬到另一个仓库、另一套架构上，第一件要说清的事是「搬的是哪一版」。
@@ -18929,7 +18929,7 @@ uffd 恢复的 microVM 里大部分页从未被触碰过，这层过滤仍然有
 <li><a href="#d65">第 65 篇 · 脏页跟踪后端</a>：替代写保护的那条路。</li>
 <li>Linux 内核文档 <code>admin-guide/mm/userfaultfd</code> 的 write-protect 一节给出了 <code>WP_ASYNC</code> 与
     <code>UFFDIO_WRITEPROTECT</code> 的语义与内核版本要求。</li>
-<li>调用方一侧怎么使用这张位图，见 <a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>。</li>
+<li>调用方一侧怎么使用这张位图，见 <a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>。</li>
 </ul><nav class="pager" data-n="57"></nav></article><article id="v58" class="doc" hidden><h1 id="d58-在-aarch64-上构建与运行">在 aarch64 上构建与运行</h1>
 <blockquote>
 <p>上游 Firecracker 一直支持 aarch64，但 e2b 的分叉只在 x86_64 上构建、测试和发布过。
@@ -19893,7 +19893,7 @@ aarch64 侧在 Firecracker 内部只剩那一次 <code>prctl</code>，其余靠�
 <li><a href="#d61">第 61 篇 · ARM 上的 guest 内核</a>：宿主之上，guest 侧要什么。</li>
 <li><a href="#d66">第 66 篇 · HDBSS</a>：这台机器上那项厂商扩展的机制与代价。</li>
 <li><a href="#d19">第 19 篇 · aarch64 平台</a>：FDT、GIC 与内存布局的上游实现。</li>
-<li>e2b 手册讲 orchestrator 如何使用宿主的大页池与内存管线：<a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇</a>。</li>
+<li>e2b 手册讲 orchestrator 如何使用宿主的大页池与内存管线：<a href="e2b-infra.html#d31">e2b 手册第 31 篇</a>。</li>
 </ul><nav class="pager" data-n="60"></nav></article><article id="v61" class="doc" hidden><h1 id="d61-arm-上的-guest-内核arm64-配置与部署中的内核文件">ARM 上的 guest 内核：arm64 配置与部署中的内核文件</h1>
 <blockquote>
 <p>在 aarch64 上跑 microVM，guest 内核不能直接拿 x86_64 那份来用，也不能简单地「换个架构编译一遍」——
@@ -20225,7 +20225,7 @@ guest 的 init 路径由 <code>init=</code> 指定。</p>
 <li><a href="#d62">第 62 篇 · aarch64 的 seccomp 过滤器</a>：下一篇。</li>
 <li><a href="#d63">第 63 篇 · 与 e2b infra 的对接</a>：版本目录、RPM 与完整的启动参数。</li>
 <li><a href="#d19">第 19 篇 · aarch64 平台</a>：FDT 里那些节点是怎么生成的。</li>
-<li>orchestrator 侧如何选择内核版本与建模板：<a href="../e2b-infra/69-guest-kernel-for-arm.md">e2b 手册第 69 篇</a>。</li>
+<li>orchestrator 侧如何选择内核版本与建模板：<a href="e2b-infra.html#d69">e2b 手册第 69 篇</a>。</li>
 </ul><nav class="pager" data-n="61"></nav></article><article id="v62" class="doc" hidden><h1 id="d62-aarch64-的-seccomp-过滤器">aarch64 的 seccomp 过滤器</h1>
 <blockquote>
 <p>系统调用白名单是全书里最容易被忽略、也最容易把一台机器变成「功能全都对、就是跑不起来」的地方。
@@ -20928,7 +20928,7 @@ orchestrator 按「目录名即版本名」拼路径（<code>fc/config.go</code>
 </table></div>
 <p>后两处必须相等，否则 orchestrator 找不到二进制，建模板会在第一步失败；
 它们与前两处不需要相等，因为没有任何一段代码去核对。这件事的来龙去脉在
-<a href="../e2b-infra/70-firecracker-fork.md">e2b 手册第 70 篇</a>讲过，这里只留一个对读者有用的结论：</p>
+<a href="e2b-infra.html#d70">e2b 手册第 70 篇</a>讲过，这里只留一个对读者有用的结论：</p>
 <p><strong>在这套体系里，版本号标识的是「宿主上的哪一个目录」，不是「哪一套 API 面」。</strong>
 一个叫 <code>v1.13.1</code> 的目录里放的可能是 1.12.1 源码加两层补丁的产物，
 而这个产物比上游 v1.13.1 多两个端点、少一个特性。真正能标识 API 面的只有提交哈希：
@@ -20991,9 +20991,9 @@ orchestrator 按「目录名即版本名」拼路径（<code>fc/config.go</code>
 <li><a href="#d64">第 64 篇 · checkpoint / restore 扩展总览</a>：本部分后半段的起点，调用序列会再长出两个端点。</li>
 <li><a href="#d61">第 61 篇 · ARM 上的 guest 内核</a>：<code>/fc-kernels/</code> 下那几个目录里到底是什么。</li>
 <li><a href="#d43">第 43 篇 · jailer</a>：本篇第 2 节对照的那一套。</li>
-<li><a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇</a>：orchestrator 侧的进程管理全貌。</li>
-<li><a href="../e2b-infra/70-firecracker-fork.md">e2b 手册第 70 篇</a>：分叉版本与版本号约定的由来。</li>
-<li><a href="../e2b-infra/71-orchestrator-arm-fc-changes.md">e2b 手册第 71 篇</a>：ARM 适配对 orchestrator 侧的全部改动。</li>
+<li><a href="e2b-infra.html#d28">e2b 手册第 28 篇</a>：orchestrator 侧的进程管理全貌。</li>
+<li><a href="e2b-infra.html#d70">e2b 手册第 70 篇</a>：分叉版本与版本号约定的由来。</li>
+<li><a href="e2b-infra.html#d71">e2b 手册第 71 篇</a>：ARM 适配对 orchestrator 侧的全部改动。</li>
 <li><a href="../../e2b-infra-docs/rollback/docs/09-firecracker-api-contract.md">checkpoint / restore 手册第 09 篇</a>：扩展端点的调用契约。</li>
 </ul><nav class="pager" data-n="63"></nav></article><article id="v64" class="doc" hidden><h1 id="d64-checkpoint--restore-扩展总览目标四个扩展点与分工">checkpoint / restore 扩展总览：目标、四个扩展点与分工</h1>
 <blockquote>
@@ -27950,7 +27950,7 @@ e2b 定制版与 ARM 适配版的 swagger 都已把它移出 <code>required</cod
 <li><a href="#d77">第 77 篇 · 配置项、命令行参数、环境变量与 metrics 总表</a>：
     本篇里出现的配置项字段在那里有完整取值范围。</li>
 <li><a href="#d73">第 73 篇 · 失败模型</a>：<code>Faulted</code> 状态下哪些端点还能用。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇</a>：orchestrator 侧怎么按顺序调用这些端点。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇</a>：orchestrator 侧怎么按顺序调用这些端点。</li>
 </ul><nav class="pager" data-n="76"></nav></article><article id="v77" class="doc" hidden><h1 id="d77-配置项命令行参数环境变量与-metrics-总表">配置项、命令行参数、环境变量与 metrics 总表</h1>
 <blockquote>
 <p>一台 microVM 的行为由四组输入决定：进程的命令行参数、API 或配置文件里的配置项、少数环境变量，
@@ -28873,7 +28873,7 @@ SIGPIPE、SIGHUP、SIGILL。SIGTERM 与 SIGINT <strong>不在其中</strong>，�
 <li><a href="#d44">第 44 篇 · 日志与 metrics</a>：metrics 树的结构与丢数据的条件。</li>
 <li><a href="#d76">第 76 篇 · API 端点总表</a>：配置项对应的端点与 JSON 骨架。</li>
 <li><a href="#d66">第 66 篇 · HDBSS</a>：两个环境变量背后的硬件机制与回落路径。</li>
-<li><a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇</a>：orchestrator 实际拼出的命令行与进程管理。</li>
+<li><a href="e2b-infra.html#d28">e2b 手册第 28 篇</a>：orchestrator 实际拼出的命令行与进程管理。</li>
 </ul><nav class="pager" data-n="77"></nav></article><article id="v78" class="doc" hidden><h1 id="d78-三层差异总表文件级">三层差异总表（文件级）</h1>
 <blockquote>
 <p>这本书的第九、第十部分按主题讲两层改动。本篇换一个维度：按<strong>文件</strong>把它们摊开，

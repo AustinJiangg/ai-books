@@ -28,6 +28,7 @@ python3 scripts/build_docs_site.py --docs README.md --out readme.html   # 单个
 | `--exclude "drafts/*"` | 跳过匹配的文件（相对 `--docs` 的 glob），可写多次 |
 | `--lang en` | 界面文字用英文（目录、搜索、上一篇等），默认 `zh` |
 | `--accent "#1d2125"`、`--accent-dark "#e6e9ec"` | 浅色和深色主题的强调色；默认就是墨色，不带彩色，品牌需要时再传 |
+| `--sibling "../other=other.html"` | 另一套也用本脚本生成的文档：指向该目录里 md 的相对链接改成 `other.html#d<key>[-小节]`，打开对应的篇和小节；可写多次。地址相对生成的 HTML 所在位置 |
 
 ## 输入
 
@@ -80,6 +81,7 @@ python3 scripts/build_docs_site.py --docs README.md --out readme.html   # 单个
 已知限制：
 
 - 指向 md 和图片以外的相对链接（比如 `../src/a.py`）、指向不存在文件的链接，生成时会按「文档 → 地址」逐条列出来，页面里保留原地址。
+  - 指向 `--docs` 之外另一套文档的 md 链接，用 `--sibling` 告诉脚本那套文档生成在哪个 HTML 里，就会改成跳到那个页面的对应篇和小节；对方的站内 key 按同样的规则（编号或 `p<序号>`）算，所以那套文档也要用本脚本、不带 `--exclude` 生成。
 - 用了 mermaid 的站点会大 3.3 MB；在意体积时，把图先画成 SVG，再用 `![说明](图.svg)` 引用。
 
 ## 排版要点（改样式时保持这些）

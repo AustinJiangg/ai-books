@@ -1030,8 +1030,8 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <hr />
 <h2 id="dp0-相关手册">相关手册</h2>
 <ul>
-<li><a href="../e2b-infra/README.md">e2b 服务端基础设施技术手册</a>：同一组问题的另一种实现；第 65、66 篇的对照以它为依据，第 05、06、31、33、37 篇与本书第六、七部分关系最密切。</li>
-<li><a href="../firecracker/README.md">Firecracker 技术手册</a>：本书不展开 Firecracker 本身；第 36–39 篇（快照与内存后端）、第 14 篇（脏页跟踪）、第 49–54 篇（e2b 定制版的内存 API）是本书第 03、42、67 篇的背景。</li>
+<li><a href="e2b-infra.html#dp0">e2b 服务端基础设施技术手册</a>：同一组问题的另一种实现；第 65、66 篇的对照以它为依据，第 05、06、31、33、37 篇与本书第六、七部分关系最密切。</li>
+<li><a href="firecracker.html#dp0">Firecracker 技术手册</a>：本书不展开 Firecracker 本身；第 36–39 篇（快照与内存后端）、第 14 篇（脏页跟踪）、第 49–54 篇（e2b 定制版的内存 API）是本书第 03、42、67 篇的背景。</li>
 </ul><nav class="pager" data-n="p0"></nav></article><article id="v00" class="doc" hidden><h1 id="d00-全书导读与-agentenv-总览">全书导读与 AgentENV 总览</h1>
 <blockquote>
 <p>这一篇用一次阅读的篇幅讲完 AgentENV 的全貌：它为什么存在、一台节点和一个集群由什么组成、一台沙箱从创建到删除经过哪些部件、
@@ -1362,8 +1362,8 @@ Firecracker 不用 jailer、<code>managed-layers/</code> 在两种仓库里都�
 <li><a href="#d02">第 02 篇 · agent 环境的规模问题与 AgentENV 的取舍</a>：四个设计目标的来由。</li>
 <li><a href="#d08">第 08 篇 · 系统架构：单节点与多节点</a>：进程、子系统、存储拓扑与三种流量的完整版。</li>
 <li><a href="#d65">第 65 篇</a>、<a href="#d66">第 66 篇</a>：与 e2b infra 的逐项对照。</li>
-<li><a href="../e2b-infra/README.md">e2b 服务端基础设施技术手册</a>：同一组问题的另一种实现。</li>
-<li><a href="../firecracker/README.md">Firecracker 技术手册</a>：本书不展开的 Firecracker 本身。</li>
+<li><a href="e2b-infra.html#dp0">e2b 服务端基础设施技术手册</a>：同一组问题的另一种实现。</li>
+<li><a href="firecracker.html#dp0">Firecracker 技术手册</a>：本书不展开的 Firecracker 本身。</li>
 <li>下一篇：<a href="#d01">第 01 篇 · 仓库地图、版本与依赖</a>。</li>
 </ul><nav class="pager" data-n="00"></nav></article><article id="v01" class="doc" hidden><h1 id="d01-仓库地图版本与依赖">仓库地图、版本与依赖</h1>
 <blockquote>
@@ -2278,8 +2278,8 @@ AgentENV 把任意 OCI 镜像直接变成按需读的层栈，并让同一快照
 <ul>
 <li>下一篇：<a href="#d03">第 03 篇 · 本书用到的 Firecracker</a> —— 快照、内存后端与脏页：要求二到要求四在 VMM 一侧的前提。</li>
 <li><a href="#d08">第 08 篇 · 系统架构</a>：这些机制分别住在哪个进程里。</li>
-<li><a href="../firecracker/02-microvm-design-tradeoffs.md">Firecracker 手册第 02 篇 · microVM 与 Firecracker 的设计取舍</a>：microVM 砍掉了什么、留下了什么。</li>
-<li><a href="../e2b-infra/02-why-sandbox.md">e2b 手册第 02 篇 · AI 代码沙箱：问题、威胁模型与隔离谱系</a>：同类负载的威胁模型与隔离谱系。</li>
+<li><a href="firecracker.html#d02">Firecracker 手册第 02 篇 · microVM 与 Firecracker 的设计取舍</a>：microVM 砍掉了什么、留下了什么。</li>
+<li><a href="e2b-infra.html#d02">e2b 手册第 02 篇 · AI 代码沙箱：问题、威胁模型与隔离谱系</a>：同类负载的威胁模型与隔离谱系。</li>
 <li>AgentENV 仓库的 <code>README.md</code> 与 <code>docs/src/concepts/overview.md</code>：项目自述的设计目标与用户工作流；文中的数字不在本书讨论范围内。</li>
 </ul><nav class="pager" data-n="02"></nav></article><article id="v03" class="doc" hidden><h1 id="d03-本书用到的-firecracker快照内存后端与脏页">本书用到的 Firecracker：快照、内存后端与脏页</h1>
 <blockquote>
@@ -2600,11 +2600,11 @@ AgentENV 选 File 后端，把缺页交给内核与 ublk 块设备，换来跨�
 <ul>
 <li>下一篇：<a href="#d04">第 04 篇 · io_uring 与 ublk</a> —— 把内存层与磁盘变成块设备的那套内核机制。</li>
 <li><a href="#d67">第 67 篇 · Firecracker 补丁层</a>：补丁的完整清单、实现与未被使用的部分。</li>
-<li><a href="../firecracker/36-snapshot-overview-and-format.md">Firecracker 手册第 36 篇 · 快照总览</a>、<a href="../firecracker/37-snapshot-create.md">第 37 篇 · 创建快照</a>、<a href="../firecracker/38-snapshot-load.md">第 38 篇 · 加载快照</a>：状态文件格式、Full / Diff 与两种内存后端。</li>
-<li><a href="../firecracker/13-guest-memory.md">Firecracker 手册第 13 篇 · guest 内存</a>、<a href="../firecracker/14-dirty-page-tracking.md">第 14 篇 · 脏页跟踪</a>：内存区域、memslot 与两套脏页记录。</li>
-<li><a href="../firecracker/34-balloon.md">Firecracker 手册第 34 篇 · balloon</a>：恢复后的 <code>discard_range</code> 为什么要覆盖映射；该书基线是上游 v1.12.1，没有 free page reporting。</li>
-<li><a href="../firecracker/20-cpu-templates.md">Firecracker 手册第 20 篇 · CPU 模板机制</a>、<a href="../firecracker/41-snapshot-tools-and-compat.md">第 41 篇 · snapshot-editor、rebase-snap 与兼容性</a>。</li>
-<li><a href="../firecracker/39-uffd-backend.md">Firecracker 手册第 39 篇 · userfaultfd 后端</a>、<a href="../firecracker/49-why-e2b-forked.md">第 49 篇 · 为什么分叉</a>：AgentENV 没有走的那条路。</li>
+<li><a href="firecracker.html#d36">Firecracker 手册第 36 篇 · 快照总览</a>、<a href="firecracker.html#d37">第 37 篇 · 创建快照</a>、<a href="firecracker.html#d38">第 38 篇 · 加载快照</a>：状态文件格式、Full / Diff 与两种内存后端。</li>
+<li><a href="firecracker.html#d13">Firecracker 手册第 13 篇 · guest 内存</a>、<a href="firecracker.html#d14">第 14 篇 · 脏页跟踪</a>：内存区域、memslot 与两套脏页记录。</li>
+<li><a href="firecracker.html#d34">Firecracker 手册第 34 篇 · balloon</a>：恢复后的 <code>discard_range</code> 为什么要覆盖映射；该书基线是上游 v1.12.1，没有 free page reporting。</li>
+<li><a href="firecracker.html#d20">Firecracker 手册第 20 篇 · CPU 模板机制</a>、<a href="firecracker.html#d41">第 41 篇 · snapshot-editor、rebase-snap 与兼容性</a>。</li>
+<li><a href="firecracker.html#d39">Firecracker 手册第 39 篇 · userfaultfd 后端</a>、<a href="firecracker.html#d49">第 49 篇 · 为什么分叉</a>：AgentENV 没有走的那条路。</li>
 </ul><nav class="pager" data-n="03"></nav></article><article id="v04" class="doc" hidden><h1 id="d04-io_uring-与-ublk">io_uring 与 ublk</h1>
 <blockquote>
 <p>AgentENV 的每一块 overlaybd 盘都是一个 ublk 设备：内核把块请求经 io_uring 交给用户态的 ublk-daemon，
@@ -3136,7 +3136,7 @@ ublk 命令与 target 对本地层文件的 <code>Read</code> / <code>Write</cod
 <li><a href="#d40">第 40 篇 · ublk 库</a>：本篇概念在 AgentENV 代码里的实现。</li>
 <li><a href="#d41">第 41 篇 · ublk-daemon</a>：谁持有这些设备、怎样池化与共享。</li>
 <li>Linux 内核文档 <code>Documentation/block/ublk.rst</code>：控制命令、数据面命令、用户态恢复与零拷贝的权威说明。</li>
-<li><a href="../e2b-infra/33-nbd-and-rootfs.md">e2b 手册第 33 篇</a>：同一问题上的 NBD 方案。</li>
+<li><a href="e2b-infra.html#d33">e2b 手册第 33 篇</a>：同一问题上的 NBD 方案。</li>
 </ul><nav class="pager" data-n="04"></nav></article><article id="v05" class="doc" hidden><h1 id="d05-overlaybdlsmt-与-oci-镜像按需加载">overlaybd、LSMT 与 OCI 镜像按需加载</h1>
 <blockquote>
 <p>容器镜像是一叠 tar 包，要用就得先整份下载、解压、解包；microVM 要的却是一块盘。
@@ -3839,8 +3839,8 @@ ClientHello 可能被拆进多个 TLS 记录，所以解析器要先拆记录、
 <h2 id="d06-延伸阅读--下一篇">延伸阅读 / 下一篇</h2>
 <ul>
 <li><a href="#d29">第 29 篇 · 网络（一）：槽位、命名空间与地址计划</a>、<a href="#d30">第 30 篇 · 网络（二）：出站策略与透明代理</a>：本篇概念的具体用法。</li>
-<li><a href="../e2b-infra/07-linux-networking-for-sandboxes.md">e2b 手册第 07 篇 · 沙箱网络的内核基础</a>：同一组内核机制的另一个视角，侧重 nftables。</li>
-<li><a href="../firecracker/30-virtio-net.md">Firecracker 手册第 30 篇 · virtio-net：tap、收发路径与 offload</a>：tap 另一侧的设备模拟。</li>
+<li><a href="e2b-infra.html#d07">e2b 手册第 07 篇 · 沙箱网络的内核基础</a>：同一组内核机制的另一个视角，侧重 nftables。</li>
+<li><a href="firecracker.html#d30">Firecracker 手册第 30 篇 · virtio-net：tap、收发路径与 offload</a>：tap 另一侧的设备模拟。</li>
 <li>man 页：<code>network_namespaces(7)</code>、<code>setns(2)</code>、<code>veth(4)</code>、<code>iptables-extensions(8)</code>（REDIRECT、conntrack 匹配）、<code>iptables-restore(8)</code>；RFC 3021、RFC 3927、RFC 6066（TLS SNI）。</li>
 <li>下一篇：<a href="#d07">第 07 篇 · 本书用到的 Rust 异步与依赖 crate</a>。</li>
 </ul><nav class="pager" data-n="06"></nav></article><article id="v07" class="doc" hidden><h1 id="d07-本书用到的-rust-异步与依赖-crate">本书用到的 Rust 异步与依赖 crate</h1>
@@ -4255,7 +4255,7 @@ roaring 是压缩位图，块缓存用它记录哪些块已在本地（<a href="
 <ul>
 <li><a href="#d19">第 19 篇 · 状态机与并发控制</a>：取消安全与句柄锁在生命周期操作里的用法。</li>
 <li><a href="#d38">第 38 篇 · VirtualFile 装饰器链与远端 I/O 运行时</a>、<a href="#d40">第 40 篇 · ublk 库</a>：多 runtime 与 <code>LocalSet</code> 的完整案例。</li>
-<li><a href="../firecracker/05-rust-and-crates-primer.md">Firecracker 手册第 05 篇 · 本书用到的 Rust 与依赖 crate</a>：另一个 Rust 系统项目的基础，侧重 <code>unsafe</code> 与 rust-vmm crate。</li>
+<li><a href="firecracker.html#d05">Firecracker 手册第 05 篇 · 本书用到的 Rust 与依赖 crate</a>：另一个 Rust 系统项目的基础，侧重 <code>unsafe</code> 与 rust-vmm crate。</li>
 <li>tokio 文档：「Bridging with sync code」「Graceful shutdown」两篇指南，以及 <code>tokio::select!</code> 文档里关于取消安全的说明。</li>
 <li>下一篇：<a href="#d08">第 08 篇 · 系统架构：单节点与多节点</a>。</li>
 </ul><nav class="pager" data-n="07"></nav></article><article id="v08" class="doc" hidden><h1 id="d08-系统架构单节点与多节点">系统架构：单节点与多节点</h1>
@@ -4703,8 +4703,8 @@ Rust 版 overlaybd 从远端取回对应的数据（<a href="#d38">第 38 篇</a
 <li><a href="#d54">第 54 篇 · 控制面总览</a>：三个角色与 proto 契约。</li>
 <li><a href="#d41">第 41 篇 · ublk-daemon</a>：块设备进程的内部结构。</li>
 <li><a href="#d55">第 55 篇 · gateway</a>、<a href="#d56">第 56 篇 · scheduler</a>、<a href="#d57">第 57 篇 · 心跳与 CPU 模板交集</a>：控制面的三个部件。</li>
-<li><a href="../e2b-infra/10-system-architecture.md">e2b 手册第 10 篇 · 系统架构</a>：同类系统的另一种进程划分。</li>
-<li><a href="../firecracker/07-process-startup.md">Firecracker 手册第 07 篇 · 进程启动</a>：VMM 进程本身做了什么。</li>
+<li><a href="e2b-infra.html#d10">e2b 手册第 10 篇 · 系统架构</a>：同类系统的另一种进程划分。</li>
+<li><a href="firecracker.html#d07">Firecracker 手册第 07 篇 · 进程启动</a>：VMM 进程本身做了什么。</li>
 <li>下一篇：<a href="#d09">第 09 篇 · 一个沙箱的一生</a>。</li>
 </ul><nav class="pager" data-n="08"></nav></article><article id="v09" class="doc" hidden><h1 id="d09-一个沙箱的一生">一个沙箱的一生</h1>
 <blockquote>
@@ -5032,8 +5032,8 @@ AgentENV 把内存层做成只读 ublk 块设备交给 Firecracker 的 File 后�
 <li><a href="#d20">第 20 篇 · launch plan 与失败回滚</a>：<code>launch_sandbox()</code> 每一步失败时撤销什么。</li>
 <li><a href="#d27">第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列</a>：三条路径的完整端点序列。</li>
 <li><a href="#d42">第 42 篇 · 内存快照</a>：脏页如何成层、共享内存设备如何恢复。</li>
-<li><a href="../e2b-infra/12-sandbox-lifecycle-walkthrough.md">e2b 手册第 12 篇 · 沙箱生命周期走查</a>：同一条主线在 e2b infra 里的走法。</li>
-<li><a href="../firecracker/38-snapshot-load.md">Firecracker 手册第 38 篇 · 快照加载</a>：<code>PUT /snapshot/load</code> 在 VMM 内部做了什么。</li>
+<li><a href="e2b-infra.html#d12">e2b 手册第 12 篇 · 沙箱生命周期走查</a>：同一条主线在 e2b infra 里的走法。</li>
+<li><a href="firecracker.html#d38">Firecracker 手册第 38 篇 · 快照加载</a>：<code>PUT /snapshot/load</code> 在 VMM 内部做了什么。</li>
 <li>下一篇：<a href="#d10">第 10 篇 · 节点进程：启动、关闭与对象模型</a>。</li>
 </ul><nav class="pager" data-n="09"></nav></article><article id="v10" class="doc" hidden><h1 id="d10-节点进程启动关闭与对象模型">节点进程：启动、关闭与对象模型</h1>
 <blockquote>
@@ -5412,7 +5412,7 @@ $AENV_RUNTIME  (默认 /run/aenv)
 <li>下一篇：<a href="#d11">第 11 篇 · 配置体系</a>——本篇里出现的每个路径与开关从哪里来。</li>
 <li>状态机与 CAS：<a href="#d19">第 19 篇 · 状态机与并发控制</a>；持久化与崩溃边界：<a href="#d22">第 22 篇 · 跨重启持久化</a>。</li>
 <li>后端与 Firecracker 进程：<a href="#d25">第 25 篇</a>；预热池：<a href="#d32">第 32 篇</a>；ublk-daemon：<a href="#d41">第 41 篇</a>；权限模型：<a href="#d59">第 59 篇</a>。</li>
-<li>对照：<a href="../e2b-infra/25-orchestrator-process.md">e2b 手册第 25 篇 · orchestrator 进程</a>、<a href="../e2b-infra/11-object-model.md">e2b 手册第 11 篇 · 对象模型</a>。</li>
+<li>对照：<a href="e2b-infra.html#d25">e2b 手册第 25 篇 · orchestrator 进程</a>、<a href="e2b-infra.html#d11">e2b 手册第 11 篇 · 对象模型</a>。</li>
 </ul><nav class="pager" data-n="10"></nav></article><article id="v11" class="doc" hidden><h1 id="d11-配置体系">配置体系</h1>
 <blockquote>
 <p>一个节点的行为由一份 TOML 文件、一组环境变量与代码里的默认值共同决定。三者谁覆盖谁、路径怎样展开、
@@ -5860,7 +5860,7 @@ scheduler 用它防止旧进程迟到的 <code>UnregisterNode</code> 删掉新�
 <li>下一篇：<a href="#d12">第 12 篇 · 规范驱动的服务骨架</a>，进入 API 层。</li>
 <li>全部配置键、环境变量与端口：<a href="#d71">第 71 篇</a>；配置被消费的启动序列：<a href="#d10">第 10 篇</a>。</li>
 <li>宿主准备与依赖供给：<a href="#d59">第 59 篇</a>；ublk-daemon 的进程模型：<a href="#d41">第 41 篇</a>。</li>
-<li>对照：<a href="../e2b-infra/14-config-flags-versions.md">e2b 手册第 14 篇 · 配置、flag 与版本</a>。</li>
+<li>对照：<a href="e2b-infra.html#d14">e2b 手册第 14 篇 · 配置、flag 与版本</a>。</li>
 <li>confique 的分层加载语义：<a href="https://docs.rs/confique/0.4.0/confique/">https://docs.rs/confique/0.4.0/confique/</a>。</li>
 </ul><nav class="pager" data-n="11"></nav></article><article id="v12" class="doc" hidden><h1 id="d12-规范驱动的服务骨架">规范驱动的服务骨架</h1>
 <blockquote>
@@ -6168,7 +6168,7 @@ AgentENV 的生成器把约束编进 Rust 类型（模型结构体、<code>valid
 <li><a href="#d17">第 17 篇 · 反向代理</a>：分类器之后的代理路径。</li>
 <li><a href="#d33">第 33 篇 · custom extension hook</a>：同一生成器的客户端方向。</li>
 <li><a href="#d64">第 64 篇 · 构建、代码生成与发布</a>：全部生成代码的再生成命令。</li>
-<li><a href="../e2b-infra/15-api-service-structure.md">e2b 手册第 15 篇 · API 服务的结构</a>：Go 侧的同一类做法与运行时校验。</li>
+<li><a href="e2b-infra.html#d15">e2b 手册第 15 篇 · API 服务的结构</a>：Go 侧的同一类做法与运行时校验。</li>
 <li>下一篇：<a href="#d13">第 13 篇 · 认证与凭据</a>。</li>
 </ul><nav class="pager" data-n="12"></nav></article><article id="v13" class="doc" hidden><h1 id="d13-认证与凭据">认证与凭据</h1>
 <blockquote>
@@ -6518,7 +6518,7 @@ AgentENV 只有一把部署级 key，没有团队与配额，<code>Claims</code>
 <li><a href="#d17">第 17 篇 · 反向代理</a>：鉴权之后的路由解析、头清洗与自动恢复。</li>
 <li><a href="#d28">第 28 篇 · MMDS 与 envd</a>：<code>accessTokenHash</code> 与 <code>/init</code>。</li>
 <li><a href="#d55">第 55 篇 · gateway</a>：多节点下的认证分界。</li>
-<li><a href="../e2b-infra/16-auth-and-multitenancy.md">e2b 手册第 16 篇 · 认证与多租户</a>：团队、五种凭证与 hash seed。</li>
+<li><a href="e2b-infra.html#d16">e2b 手册第 16 篇 · 认证与多租户</a>：团队、五种凭证与 hash seed。</li>
 <li>下一篇：<a href="#d14">第 14 篇 · 沙箱生命周期 API</a>。</li>
 </ul><nav class="pager" data-n="13"></nav></article><article id="v14" class="doc" hidden><h1 id="d14-沙箱生命周期-api">沙箱生命周期 API</h1>
 <blockquote>
@@ -6993,7 +6993,7 @@ e2b infra 的 v2 列表要合并运行态存储与数据库里的快照，AgentE
 <li><a href="#d19">第 19 篇 · 状态机与并发控制</a>：本篇各端点背后的状态转换。</li>
 <li><a href="#d23">第 23 篇 · 自动驱逐与 TTL</a>：TTL 到期之后发生什么。</li>
 <li><a href="#d18">第 18 篇 · E2B 兼容性</a>：本篇提到的偏差在兼容矩阵中的位置。</li>
-<li><a href="../e2b-infra/17-sandbox-create-api.md">e2b 手册第 17 篇 · 创建沙箱</a>、<a href="../e2b-infra/18-sandbox-lifecycle-api.md">e2b 手册第 18 篇 · 沙箱生命周期 API</a>：同一组端点在 e2b infra 中的实现。</li>
+<li><a href="e2b-infra.html#d17">e2b 手册第 17 篇 · 创建沙箱</a>、<a href="e2b-infra.html#d18">e2b 手册第 18 篇 · 沙箱生命周期 API</a>：同一组端点在 e2b infra 中的实现。</li>
 <li>下一篇：<a href="#d15">第 15 篇 · 模板构建 API</a>。</li>
 </ul><nav class="pager" data-n="14"></nav></article><article id="v15" class="doc" hidden><h1 id="d15-模板构建-api">模板构建 API</h1>
 <blockquote>
@@ -7420,7 +7420,7 @@ e2b infra 用「文件按 hash 上传」支持 COPY；AgentENV 的步骤路径�
 <li><a href="#d52">第 52 篇 · 模板构建器</a>：后台任务里 <code>TemplateBuildRunner</code> 做了什么。</li>
 <li><a href="#d53">第 53 篇 · BuildKit</a>：builder 模板、缓存种子与镜像导入。</li>
 <li><a href="#d62">第 62 篇 · aenv CLI</a>：<code>aenv build</code> 的客户端实现。</li>
-<li><a href="../e2b-infra/22-template-api.md">e2b 手册第 22 篇 · 模板 API</a>、<a href="../e2b-infra/41-template-build-overview.md">e2b 手册第 41 篇 · 构建总览</a>：e2b infra 的模板对象与构建流程。</li>
+<li><a href="e2b-infra.html#d22">e2b 手册第 22 篇 · 模板 API</a>、<a href="e2b-infra.html#d41">e2b 手册第 41 篇 · 构建总览</a>：e2b infra 的模板对象与构建流程。</li>
 <li>下一篇：<a href="#d16">第 16 篇 · 快照与卷 API</a>。</li>
 </ul><nav class="pager" data-n="15"></nav></article><article id="v16" class="doc" hidden><h1 id="d16-快照与卷-api">快照与卷 API</h1>
 <blockquote>
@@ -7895,7 +7895,7 @@ AgentENV 把卷做成 overlaybd 块设备，用 exclusive / ro 两种模式和�
 <li><a href="#d31">第 31 篇 · 附加盘与卷：预留槽位与热插</a>：卷在 guest 里怎样出现、恢复后怎样热插。</li>
 <li><a href="#d46">第 46 篇 · 快照对象模型与 SnapshotManager</a>：<code>publish_captured()</code> 之后的提交与制品。</li>
 <li><a href="#d51">第 51 篇 · fork</a>：fork 时 exclusive 卷的逐子沙箱克隆。</li>
-<li><a href="../e2b-infra/40-volumes-and-nfsproxy.md">e2b 手册第 40 篇 · Volumes 与 NFS proxy</a>、<a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇 · 暂停与快照</a>：同一组概念在 e2b infra 中的做法。</li>
+<li><a href="e2b-infra.html#d40">e2b 手册第 40 篇 · Volumes 与 NFS proxy</a>、<a href="e2b-infra.html#d37">e2b 手册第 37 篇 · 暂停与快照</a>：同一组概念在 e2b infra 中的做法。</li>
 <li>下一篇：<a href="#d17">第 17 篇 · 反向代理</a>。</li>
 </ul><nav class="pager" data-n="16"></nav></article><article id="v17" class="doc" hidden><h1 id="d17-反向代理">反向代理</h1>
 <blockquote>
@@ -8267,7 +8267,7 @@ e2b infra 的自动恢复由边缘代理经 gRPC 向 API 发起，并受全局�
 <li><a href="#d29">第 29 篇 · 网络（一）：槽位、命名空间与地址计划</a>：host interaction 地址从哪里来。</li>
 <li><a href="#d23">第 23 篇 · 自动驱逐与 TTL</a>：自动恢复设置的 TTL 之后发生什么。</li>
 <li><a href="#d55">第 55 篇 · gateway</a>：多节点时请求怎样被改写后送到节点上的这个代理。</li>
-<li><a href="../e2b-infra/53-client-proxy-edge.md">e2b 手册第 53 篇 · client-proxy</a>、<a href="../e2b-infra/54-shared-proxy-library.md">e2b 手册第 54 篇 · 共享代理库</a>：e2b infra 的两跳代理与按生命周期分池。</li>
+<li><a href="e2b-infra.html#d53">e2b 手册第 53 篇 · client-proxy</a>、<a href="e2b-infra.html#d54">e2b 手册第 54 篇 · 共享代理库</a>：e2b infra 的两跳代理与按生命周期分池。</li>
 <li>下一篇：<a href="#d18">第 18 篇 · E2B 兼容性：矩阵与偏差</a>。</li>
 </ul><nav class="pager" data-n="17"></nav></article><article id="v18" class="doc" hidden><h1 id="d18-e2b-兼容性矩阵与偏差">E2B 兼容性：矩阵与偏差</h1>
 <blockquote>
@@ -8713,8 +8713,8 @@ AgentENV 的 <code>Volume</code> 在 <code>volumeID</code>、<code>name</code> �
 <li><a href="#d15">第 15 篇 · 模板构建 API</a>：两条构建路径与不支持的步骤。</li>
 <li><a href="#d17">第 17 篇 · 反向代理</a>：三种代理入口与转发细节。</li>
 <li><a href="#d65">第 65 篇 · 与 e2b infra 的对照（一）</a>：两套系统在架构层面的取舍。</li>
-<li><a href="../e2b-infra/52-envd-legacy-and-sdk-compat.md">e2b 手册第 52 篇 · legacy 服务与 SDK 兼容</a>：SDK 怎样定址 envd、为什么端口编进域名。</li>
-<li><a href="../e2b-infra/17-sandbox-create-api.md">e2b 手册第 17 篇 · 创建沙箱</a>：<code>autoPause</code>、<code>autoResume</code>、网络字段在 e2b infra 中的处理。</li>
+<li><a href="e2b-infra.html#d52">e2b 手册第 52 篇 · legacy 服务与 SDK 兼容</a>：SDK 怎样定址 envd、为什么端口编进域名。</li>
+<li><a href="e2b-infra.html#d17">e2b 手册第 17 篇 · 创建沙箱</a>：<code>autoPause</code>、<code>autoResume</code>、网络字段在 e2b infra 中的处理。</li>
 <li>下一篇：<a href="#d19">第 19 篇 · 状态机与并发控制</a>。</li>
 </ul><nav class="pager" data-n="18"></nav></article><article id="v19" class="doc" hidden><h1 id="d19-状态机与并发控制">状态机与并发控制</h1>
 <blockquote>
@@ -9217,7 +9217,7 @@ store 替身在测试文件里：<code>ScriptedStore</code> 包住 <code>InMemor
 <li><a href="#d10">第 10 篇 · 节点进程与对象模型</a>：三张表与锁顺序。</li>
 <li><a href="#d21">第 21 篇 · 删除与卷的捕获提交</a>：Killing 态内部的可重入进度。</li>
 <li><a href="#d23">第 23 篇 · 自动驱逐与 TTL</a>：过期索引与认领。</li>
-<li><a href="../e2b-infra/18-sandbox-lifecycle-api.md">e2b 手册第 18 篇 · 沙箱生命周期 API</a>、<a href="../e2b-infra/20-sandbox-state-storage.md">e2b 手册第 20 篇 · 沙箱运行态存储</a>：同一组问题在 API 层的三段式做法。</li>
+<li><a href="e2b-infra.html#d18">e2b 手册第 18 篇 · 沙箱生命周期 API</a>、<a href="e2b-infra.html#d20">e2b 手册第 20 篇 · 沙箱运行态存储</a>：同一组问题在 API 层的三段式做法。</li>
 <li>下一篇：<a href="#d20">第 20 篇 · launch plan 与失败回滚</a>。</li>
 </ul><nav class="pager" data-n="19"></nav></article><article id="v20" class="doc" hidden><h1 id="d20-launch-plan-与失败回滚">launch plan 与失败回滚</h1>
 <blockquote>
@@ -9547,7 +9547,7 @@ AgentENV 把资源释放交给后端幂等的 <code>stop()</code>，orchestrator
 <li><a href="#d21">第 21 篇 · 删除与卷的捕获提交</a>：删除怎样用可重入的进度记录代替一次性回滚。</li>
 <li><a href="#d22">第 22 篇 · 跨重启持久化</a>：<code>mark_resuming</code> 与 <code>rollback_resuming</code> 在崩溃时的含义。</li>
 <li><a href="#d42">第 42 篇 · 内存快照</a>：pause 的后端一侧做了什么。</li>
-<li><a href="../e2b-infra/26-sandbox-object.md">e2b 手册第 26 篇 · Sandbox 对象与 Factory</a>、<a href="../e2b-infra/39-health-errors-and-teardown.md">e2b 手册第 39 篇 · 健康检查、错误语义与清理</a>：<code>Cleanup</code> 栈的做法。</li>
+<li><a href="e2b-infra.html#d26">e2b 手册第 26 篇 · Sandbox 对象与 Factory</a>、<a href="e2b-infra.html#d39">e2b 手册第 39 篇 · 健康检查、错误语义与清理</a>：<code>Cleanup</code> 栈的做法。</li>
 <li>下一篇：<a href="#d21">第 21 篇 · 删除与卷的捕获提交</a>。</li>
 </ul><nav class="pager" data-n="20"></nav></article><article id="v21" class="doc" hidden><h1 id="d21-删除与卷的捕获提交">删除与卷的捕获提交</h1>
 <blockquote>
@@ -9939,7 +9939,7 @@ AgentENV 的卷是块设备上的 overlaybd 层栈，写入先进入节点本地
 <li>下一篇：<a href="#d22">第 22 篇 · 跨重启持久化</a>——暂停沙箱的记录、产物与崩溃边界。</li>
 <li>状态机与等待：<a href="#d19">第 19 篇 · 状态机与并发控制</a>；捕获失败的同一套二分在 pause 与 snapshot 中的用法：<a href="#d20">第 20 篇 · launch plan 与失败回滚</a>。</li>
 <li>卷的设备与热插：<a href="#d31">第 31 篇</a>；卷 API：<a href="#d16">第 16 篇</a>；restack 机制：<a href="#d37">第 37 篇</a>；过期回收：<a href="#d23">第 23 篇</a>。</li>
-<li>对照：<a href="../e2b-infra/40-volumes-and-nfsproxy.md">e2b 手册第 40 篇 · Volumes 与 NFS proxy</a>。</li>
+<li>对照：<a href="e2b-infra.html#d40">e2b 手册第 40 篇 · Volumes 与 NFS proxy</a>。</li>
 </ul><nav class="pager" data-n="21"></nav></article><article id="v22" class="doc" hidden><h1 id="d22-跨重启持久化">跨重启持久化</h1>
 <blockquote>
 <p><code>server</code> 进程重启之后，哪些沙箱还在？AgentENV 的回答很窄：只有暂停的沙箱。
@@ -10322,7 +10322,7 @@ AgentENV 的暂停产物与记录都在节点本地的 <code>persisted-sandboxes
 <li>下一篇：<a href="#d23">第 23 篇 · 自动驱逐与 TTL</a>——过期的 Running 沙箱怎样被暂停或删除。</li>
 <li>关闭序列：<a href="#d10">第 10 篇 · 节点进程</a>；暂停与恢复的 Firecracker 调用：<a href="#d27">第 27 篇</a>；失败回滚：<a href="#d20">第 20 篇</a>。</li>
 <li>令牌：<a href="#d13">第 13 篇 · 认证与凭据</a>；镜像缓存与 GC：<a href="#d45">第 45 篇</a>；心跳与注销：<a href="#d57">第 57 篇</a>；ublk-daemon：<a href="#d41">第 41 篇</a>。</li>
-<li>对照：<a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇 · Pause：脏页判定与差分导出</a>。</li>
+<li>对照：<a href="e2b-infra.html#d37">e2b 手册第 37 篇 · Pause：脏页判定与差分导出</a>。</li>
 </ul><nav class="pager" data-n="22"></nav></article><article id="v23" class="doc" hidden><h1 id="d23-自动驱逐与-ttl">自动驱逐与 TTL</h1>
 <blockquote>
 <p>agent 工作负载里，客户端崩溃、忘记关闭、网络中断都很常见，没有人收尾的沙箱会一直占着节点的内存与 CPU。
@@ -10795,7 +10795,7 @@ N 台同时到期时，排在最后的那台要等前面 N−1 次暂停全部�
 <li><a href="#d19">第 19 篇 · 状态机与并发控制</a>：CAS 原语与并发合并规则。</li>
 <li><a href="#d21">第 21 篇 · 删除与卷的捕获提交</a>：<code>Delete</code> 动作内部的可重入进度。</li>
 <li><a href="#d17">第 17 篇 · 反向代理</a>：自动恢复所在的请求路径。</li>
-<li><a href="../e2b-infra/18-sandbox-lifecycle-api.md">e2b 手册第 18 篇 · 沙箱生命周期 API</a>、<a href="../e2b-infra/20-sandbox-state-storage.md">e2b 手册第 20 篇 · 沙箱运行态存储</a>：API 层 evictor 与到期集合的另一种做法。</li>
+<li><a href="e2b-infra.html#d18">e2b 手册第 18 篇 · 沙箱生命周期 API</a>、<a href="e2b-infra.html#d20">e2b 手册第 20 篇 · 沙箱运行态存储</a>：API 层 evictor 与到期集合的另一种做法。</li>
 <li>下一篇：<a href="#d24">第 24 篇 · 指标与生命周期事件</a>。</li>
 </ul><nav class="pager" data-n="23"></nav></article><article id="v24" class="doc" hidden><h1 id="d24-指标与生命周期事件">指标与生命周期事件</h1>
 <blockquote>
@@ -11238,7 +11238,7 @@ CPU 数必须为正，使用率必须是非负有限数，五个字节量都不�
 <li><a href="#d57">第 57 篇 · 心跳、节点可观测与 CPU 模板交集</a>：心跳的内容与 scheduler 的处理。</li>
 <li><a href="#d56">第 56 篇 · scheduler</a>：容量上限怎样参与放置。</li>
 <li><a href="#d28">第 28 篇 · MMDS 与 envd</a>：envd 客户端与 <code>live</code> 标志（<a href="#d28-52-失效标志">§5.2</a>）。</li>
-<li><a href="../e2b-infra/51-envd-ports-permissions-metrics.md">e2b 手册第 51 篇 · 端口、权限与指标</a>、<a href="../e2b-infra/60-telemetry.md">e2b 手册第 60 篇 · 遥测：tracing、metrics、logs</a>、<a href="../e2b-infra/61-events-and-webhooks.md">e2b 手册第 61 篇 · 沙箱事件与 webhook</a>：同类数据在 e2b infra 中的去向。</li>
+<li><a href="e2b-infra.html#d51">e2b 手册第 51 篇 · 端口、权限与指标</a>、<a href="e2b-infra.html#d60">e2b 手册第 60 篇 · 遥测：tracing、metrics、logs</a>、<a href="e2b-infra.html#d61">e2b 手册第 61 篇 · 沙箱事件与 webhook</a>：同类数据在 e2b infra 中的去向。</li>
 <li>下一篇：<a href="#d25">第 25 篇 · 后端抽象与 Firecracker 进程</a>。</li>
 </ul><nav class="pager" data-n="24"></nav></article><article id="v25" class="doc" hidden><h1 id="d25-后端抽象与-firecracker-进程">后端抽象与 Firecracker 进程</h1>
 <blockquote>
@@ -11635,8 +11635,8 @@ AgentENV 用一个短命线程完成 <code>setns</code> 与能力清空、直接
 <ul>
 <li>下一篇：<a href="#d26">第 26 篇 · 沙箱的块设备</a>——工作目录里那几个符号链接背后的设备从哪里来、怎么共享、怎么归还。</li>
 <li>调用序列：<a href="#d27">第 27 篇</a>；预热的 Firecracker 进程：<a href="#d32">第 32 篇</a>；扩展 hook 的 guard：<a href="#d33">第 33 篇</a>；能力模型与宿主准备：<a href="#d59">第 59 篇</a>；补丁端点：<a href="#d67">第 67 篇</a>。</li>
-<li><a href="../firecracker/43-jailer.md">Firecracker 手册第 43 篇 · jailer</a>、<a href="../firecracker/42-seccomp.md">Firecracker 手册第 42 篇 · seccomp</a>、<a href="../firecracker/07-process-startup.md">Firecracker 手册第 07 篇 · 进程启动</a>：被省略的那一层隔离与 Firecracker 的信号处理。</li>
-<li><a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇 · Firecracker 进程管理</a>：同一个问题的另一种拆法。</li>
+<li><a href="firecracker.html#d43">Firecracker 手册第 43 篇 · jailer</a>、<a href="firecracker.html#d42">Firecracker 手册第 42 篇 · seccomp</a>、<a href="firecracker.html#d07">Firecracker 手册第 07 篇 · 进程启动</a>：被省略的那一层隔离与 Firecracker 的信号处理。</li>
+<li><a href="e2b-infra.html#d28">e2b 手册第 28 篇 · Firecracker 进程管理</a>：同一个问题的另一种拆法。</li>
 </ul><nav class="pager" data-n="25"></nav></article><article id="v26" class="doc" hidden><h1 id="d26-沙箱的块设备tools-盘rootfs-与内存设备">沙箱的块设备：tools 盘、rootfs 与内存设备</h1>
 <blockquote>
 <p>一台沙箱在宿主上挂着好几个 <code>/dev/ublkbN</code>：一块所有沙箱共用的只读 tools 盘、一块自己独占的可写 rootfs、若干附加盘，
@@ -12053,8 +12053,8 @@ AgentENV 把 envd 放在单独的共享 tools 盘上，用户镜像不被修改�
 <ul>
 <li>下一篇：<a href="#d27">第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列</a>——这些设备在哪一步被创建、挂上与换掉。</li>
 <li>daemon 侧：<a href="#d41">第 41 篇 · ublk-daemon</a>（预热池、占位镜像、运行时物化）；内存设备：<a href="#d42">第 42 篇</a>；可写层布局：<a href="#d36">第 36 篇</a>；封存与 restack：<a href="#d37">第 37 篇</a>；卷槽位：<a href="#d31">第 31 篇</a>；补丁：<a href="#d67">第 67 篇</a>。</li>
-<li><a href="../firecracker/27-virtio-block.md">Firecracker 手册第 27 篇 · virtio-block</a>、<a href="../firecracker/38-snapshot-load.md">Firecracker 手册第 38 篇 · 快照加载</a>：上游 virtio-blk 与 File 后端。</li>
-<li><a href="../e2b-infra/33-nbd-and-rootfs.md">e2b 手册第 33 篇 · NBD 与 rootfs</a>、<a href="../e2b-infra/43-rootfs-construction.md">e2b 手册第 43 篇 · rootfs 构建</a>：envd 写进 rootfs 的做法。</li>
+<li><a href="firecracker.html#d27">Firecracker 手册第 27 篇 · virtio-block</a>、<a href="firecracker.html#d38">Firecracker 手册第 38 篇 · 快照加载</a>：上游 virtio-blk 与 File 后端。</li>
+<li><a href="e2b-infra.html#d33">e2b 手册第 33 篇 · NBD 与 rootfs</a>、<a href="e2b-infra.html#d43">e2b 手册第 43 篇 · rootfs 构建</a>：envd 写进 rootfs 的做法。</li>
 </ul><nav class="pager" data-n="26"></nav></article><article id="v27" class="doc" hidden><h1 id="d27-启动暂停与恢复的-firecracker-调用序列">启动、暂停与恢复的 Firecracker 调用序列</h1>
 <blockquote>
 <p>一台沙箱在 Firecracker 层面只有三种「生」的方式：冷启动、从快照恢复、暂停时写出快照。
@@ -12628,7 +12628,7 @@ AgentENV 的内存是一个现成的块设备，load 返回即可补丁，MMDS �
 <li><a href="#d42">第 42 篇 · 内存快照</a>：脏页区间怎样变成 overlaybd 层，共享内存设备怎样复用页缓存。</li>
 <li><a href="#d67">第 67 篇 · Firecracker 补丁层</a>：本篇用到的四个补丁行为的实现。</li>
 <li><a href="#d31">第 31 篇 · 附加盘与卷</a>：卷槽位与恢复后热插的完整流程。</li>
-<li><a href="../e2b-infra/28-firecracker-process-management.md">e2b 手册第 28 篇 · Firecracker 进程管理</a>、<a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇 · Pause</a>：e2b infra 的同类序列。</li>
+<li><a href="e2b-infra.html#d28">e2b 手册第 28 篇 · Firecracker 进程管理</a>、<a href="e2b-infra.html#d37">e2b 手册第 37 篇 · Pause</a>：e2b infra 的同类序列。</li>
 </ul><nav class="pager" data-n="27"></nav></article><article id="v28" class="doc" hidden><h1 id="d28-mmds-与-envd">MMDS 与 envd</h1>
 <blockquote>
 <p>同一份模板快照会恢复出成百上千台沙箱，它们的内存在恢复那一刻一模一样。
@@ -12942,8 +12942,8 @@ envd 在 e2b infra 里随模板 rootfs 构建，在 AgentENV 里随 tools 盘分
 <li>下一篇：<a href="#d29">第 29 篇 · 网络（一）：槽位、命名空间与地址计划</a> —— <code>host_interaction_ip</code> 与 guest 地址怎样分配，宿主怎样到达 49983 端口。</li>
 <li><a href="#d13">第 13 篇 · 认证与凭据</a>：令牌的派生与数据面鉴权。</li>
 <li><a href="#d27">第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列</a>：MMDS 写入在三条序列中的位置。</li>
-<li><a href="../e2b-infra/48-envd-overview.md">e2b 手册第 48 篇 · envd 总览</a>：envd 侧对 MMDS 与 <code>/init</code> 的处理。</li>
-<li><a href="../e2b-infra/36-orchestrator-proxy-and-envd-client.md">e2b 手册第 36 篇 · 代理与 envd 通信</a>：e2b infra 的 <code>/init</code> 重试与超时。</li>
+<li><a href="e2b-infra.html#d48">e2b 手册第 48 篇 · envd 总览</a>：envd 侧对 MMDS 与 <code>/init</code> 的处理。</li>
+<li><a href="e2b-infra.html#d36">e2b 手册第 36 篇 · 代理与 envd 通信</a>：e2b infra 的 <code>/init</code> 重试与超时。</li>
 </ul><nav class="pager" data-n="28"></nav></article><article id="v29" class="doc" hidden><h1 id="d29-网络一槽位命名空间与地址计划">网络（一）：槽位、命名空间与地址计划</h1>
 <blockquote>
 <p>每台沙箱都要有一张能上网、能被宿主访问、又彼此隔离的网卡，而这张网卡的配置会随内存快照一起被冻结。
@@ -13285,8 +13285,8 @@ AgentENV 用进程内位图分配，规则全部经 <code>iptables-restore</code
 <li><a href="#d17">第 17 篇 · 反向代理</a>：host interaction IP 的使用方之一。</li>
 <li><a href="#d28">第 28 篇 · MMDS 与 envd</a>：envd 地址 <code>http://&lt;hip&gt;:49983</code>。</li>
 <li><a href="#d32">第 32 篇 · 预热池</a>：网络槽位池的水位与维护线程。</li>
-<li><a href="../e2b-infra/07-linux-networking-for-sandboxes.md">e2b 手册第 07 篇 · 沙箱网络的内核基础</a>、<a href="../e2b-infra/35-sandbox-networking.md">e2b 手册第 35 篇 · 沙箱网络</a>：同一拓扑在 e2b infra 中的实现。</li>
-<li><a href="../firecracker/30-virtio-net.md">Firecracker 手册第 30 篇 · virtio-net：tap、收发路径与 offload</a>：tap 另一侧的设备模拟。</li>
+<li><a href="e2b-infra.html#d07">e2b 手册第 07 篇 · 沙箱网络的内核基础</a>、<a href="e2b-infra.html#d35">e2b 手册第 35 篇 · 沙箱网络</a>：同一拓扑在 e2b infra 中的实现。</li>
+<li><a href="firecracker.html#d30">Firecracker 手册第 30 篇 · virtio-net：tap、收发路径与 offload</a>：tap 另一侧的设备模拟。</li>
 <li>下一篇：<a href="#d30">第 30 篇 · 网络（二）：出站策略与透明代理</a>。</li>
 </ul><nav class="pager" data-n="29"></nav></article><article id="v30" class="doc" hidden><h1 id="d30-网络二出站策略与透明代理">网络（二）：出站策略与透明代理</h1>
 <blockquote>
@@ -13600,7 +13600,7 @@ AgentENV 只在有域名规则时才为 80 / 443 启动命名空间内的代理�
 <li><a href="#d14">第 14 篇 · 沙箱生命周期 API</a>：<code>network</code> 与 <code>allowInternetAccess</code> 字段、<code>PUT /network</code>。</li>
 <li><a href="#d32">第 32 篇 · 预热池</a>：槽位为什么会跨租户复用。</li>
 <li><a href="#d68">第 68 篇 · 已知问题与技术债</a>：本篇提到的不一致之处的汇总。</li>
-<li><a href="../e2b-infra/35-sandbox-networking.md">e2b 手册第 35 篇 · 沙箱网络</a>：e2b infra 的 tcpfirewall 与槽位复位。</li>
+<li><a href="e2b-infra.html#d35">e2b 手册第 35 篇 · 沙箱网络</a>：e2b infra 的 tcpfirewall 与槽位复位。</li>
 <li>下一篇：<a href="#d31">第 31 篇 · 附加盘与卷：预留槽位与热插</a>。</li>
 </ul><nav class="pager" data-n="30"></nav></article><article id="v31" class="doc" hidden><h1 id="d31-附加盘与卷预留槽位与热插">附加盘与卷：预留槽位与热插</h1>
 <blockquote>
@@ -13983,7 +13983,7 @@ AgentENV 把卷做成块设备，读写路径与 rootfs 共用 overlaybd 与 ubl
 <li><a href="#d27">第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列</a>：槽位相关调用在完整序列中的位置。</li>
 <li><a href="#d37">第 37 篇 · 封存、restack 与 compact</a>：卷 upper 封存的机制。</li>
 <li><a href="#d51">第 51 篇 · fork</a>：fork 时卷的克隆与替换。</li>
-<li><a href="../e2b-infra/40-volumes-and-nfsproxy.md">e2b 手册第 40 篇 · Volumes 与 NFS proxy</a>：同一需求的网络文件系统方案。</li>
+<li><a href="e2b-infra.html#d40">e2b 手册第 40 篇 · Volumes 与 NFS proxy</a>：同一需求的网络文件系统方案。</li>
 <li>下一篇：<a href="#d32">第 32 篇 · 预热池</a>。</li>
 </ul><nav class="pager" data-n="31"></nav></article><article id="v32" class="doc" hidden><h1 id="d32-预热池网络块设备与-firecracker-进程">预热池：网络、块设备与 Firecracker 进程</h1>
 <blockquote>
@@ -14349,7 +14349,7 @@ AgentENV 用一个水位线加只升不降的补充目标代替固定容量，�
 <li><a href="#d30">第 30 篇 · 网络（二）：出站策略与透明代理</a>：槽位复用时的跨租户残留。</li>
 <li><a href="#d41">第 41 篇 · ublk-daemon</a>：块设备池所在的 daemon 与设备的两级引用计数。</li>
 <li><a href="#d27">第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列</a>：预热进程在恢复序列中的位置。</li>
-<li><a href="../e2b-infra/35-sandbox-networking.md">e2b 手册第 35 篇 · 沙箱网络</a>、<a href="../e2b-infra/33-nbd-and-rootfs.md">e2b 手册第 33 篇 · NBD 与 rootfs</a>：e2b infra 的槽位池与设备池。</li>
+<li><a href="e2b-infra.html#d35">e2b 手册第 35 篇 · 沙箱网络</a>、<a href="e2b-infra.html#d33">e2b 手册第 33 篇 · NBD 与 rootfs</a>：e2b infra 的槽位池与设备池。</li>
 <li>下一篇：<a href="#d33">第 33 篇 · 自定义扩展 hook</a>。</li>
 </ul><nav class="pager" data-n="32"></nav></article><article id="v33" class="doc" hidden><h1 id="d33-自定义扩展-hook">自定义扩展 hook</h1>
 <blockquote>
@@ -16141,7 +16141,7 @@ AgentENV 保留逐层的索引、在打开时合并，用层数预算与 compact
 <li><a href="#d41">第 41 篇 · ublk-daemon</a>：<code>RestackSnapshot</code> RPC、三类错误语义与预热池的镜像锁。</li>
 <li><a href="#d42">第 42 篇 · 内存快照</a>：<code>ProcessVmReader</code> 与 <code>compact_to()</code> 怎样把脏页写成层。</li>
 <li><a href="#d47">第 47 篇 · POSIX 仓库与提交协议</a>：封存好的层怎样进入快照仓库。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇 · 暂停与快照</a>：diff 与映射表合并的另一种做法。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇 · 暂停与快照</a>：diff 与映射表合并的另一种做法。</li>
 <li>下一篇：<a href="#d38">第 38 篇 · VirtualFile 装饰器链与远端 I/O 运行时</a>。</li>
 </ul><nav class="pager" data-n="37"></nav></article><article id="v38" class="doc" hidden><h1 id="d38-virtualfile-装饰器链与远端-io-运行时">VirtualFile 装饰器链与远端 I/O 运行时</h1>
 <blockquote>
@@ -16446,7 +16446,7 @@ rootfs 与内存设备用不同的全局配置（<a href="#d41">第 41 篇</a>�
 <li><a href="#d35">第 35 篇 · ZFile 压缩</a>：<code>SwitchFile</code> 识别出 ZFile 之后的读路径。</li>
 <li><a href="#d40">第 40 篇 · ublk 库</a>：queue 线程、<code>LocalSet</code> 与 <code>on_thread_park</code> 批量提交。</li>
 <li><a href="#d58">第 58 篇 · P2P 制品传输</a>：<code>/p2p-http</code> 与 <code>/p2p-uuid</code> 门面背后的机制。</li>
-<li><a href="../firecracker/28-io-uring-engine.md">Firecracker 手册第 28 篇 · io_uring 引擎</a>：另一个把 io_uring 接进事件驱动程序的例子。</li>
+<li><a href="firecracker.html#d28">Firecracker 手册第 28 篇 · io_uring 引擎</a>：另一个把 io_uring 接进事件驱动程序的例子。</li>
 <li>下一篇：<a href="#d39">第 39 篇 · 节点块缓存与后台下载</a>。</li>
 </ul><nav class="pager" data-n="38"></nav></article><article id="v39" class="doc" hidden><h1 id="d39-节点块缓存与后台下载">节点块缓存与后台下载</h1>
 <blockquote>
@@ -16839,7 +16839,7 @@ AgentENV 把前台粒度降到 256 KiB、把大请求交给带准入闸门的后
 <li><a href="#d43">第 43 篇 · 启动加速</a>：startup pack 如何借用本篇的调度器与 loader 选举。</li>
 <li><a href="#d11">第 11 篇 · 配置</a>：<code>[memory_snapshot.background_download]</code> 与 <code>[image.cache.remote_blocks]</code> 的代码默认与文件默认。</li>
 <li><a href="#d73">第 73 篇 · 持久化制品与磁盘格式总表</a>：<code>OBCH</code> 等扩展格式与上游格式的兼容对照。</li>
-<li><a href="../e2b-infra/30-block-layer.md">e2b 手册第 30 篇</a>、<a href="../e2b-infra/34-template-cache-and-local-storage.md">e2b 手册第 34 篇</a>：e2b infra 的 chunker 与模板缓存。</li>
+<li><a href="e2b-infra.html#d30">e2b 手册第 30 篇</a>、<a href="e2b-infra.html#d34">e2b 手册第 34 篇</a>：e2b infra 的 chunker 与模板缓存。</li>
 </ul><nav class="pager" data-n="39"></nav></article><article id="v40" class="doc" hidden><h1 id="d40-ublk-库">ublk 库</h1>
 <blockquote>
 <p>AgentENV 的每一块 overlaybd 盘都是一个 ublk 设备，而服务这些设备的用户态代码不是 libublk，
@@ -17213,7 +17213,7 @@ AgentENV 选 ublk，请求描述经共享内存数组到达、命令与后端文
 <li><a href="#d38">第 38 篇 · VirtualFile 装饰器链与远端 I/O 运行时</a>：<code>IoCtx</code>、<code>!Send</code> future 与 <code>RuntimeDispatchFile</code>。</li>
 <li><a href="#d39">第 39 篇 · 节点块缓存与后台下载</a>：queue 线程上缓存命中与回填的行为。</li>
 <li><a href="#d43">第 43 篇 · 启动加速</a>：挂在 <code>OverlaybdTarget</code> 上的首触页录制器。</li>
-<li><a href="../e2b-infra/33-nbd-and-rootfs.md">e2b 手册第 33 篇</a>：e2b infra 的 NBD server 与 rootfs。</li>
+<li><a href="e2b-infra.html#d33">e2b 手册第 33 篇</a>：e2b infra 的 NBD server 与 rootfs。</li>
 </ul><nav class="pager" data-n="40"></nav></article><article id="v41" class="doc" hidden><h1 id="d41-ublk-daemon">ublk-daemon</h1>
 <blockquote>
 <p>节点上的每一个 ublk 设备都归同一个进程所有：<code>uvm-ublk-daemon</code>，下文写作 ublk-daemon 或 daemon。
@@ -17681,7 +17681,7 @@ AgentENV 把块设备服务拆成独立进程，换来能力收窄与跨设备�
 <li><a href="#d32">第 32 篇 · 预热池</a>：块设备池作为一个池的水位与补充行为。</li>
 <li><a href="#d37">第 37 篇 · 封存、restack 与 compact</a>：<code>restack_snapshot</code> 在镜像层面做了什么。</li>
 <li><a href="#d43">第 43 篇 · 启动加速</a>：录制与预取 RPC 的语义。</li>
-<li><a href="../e2b-infra/33-nbd-and-rootfs.md">e2b 手册第 33 篇 · NBD 与 rootfs</a>：进程内 NBD server 的做法。</li>
+<li><a href="e2b-infra.html#d33">e2b 手册第 33 篇 · NBD 与 rootfs</a>：进程内 NBD server 的做法。</li>
 </ul><nav class="pager" data-n="41"></nav></article><article id="v42" class="doc" hidden><h1 id="d42-内存快照脏页成层与共享只读设备">内存快照：脏页成层与共享只读设备</h1>
 <blockquote>
 <p>暂停一台沙箱时，AgentENV 不让 Firecracker 写内存文件，而是问它「哪些页脏了、它们在你的地址空间里的哪里」，
@@ -17975,8 +17975,8 @@ AgentENV 用 KVM 脏页日志确定写过的页、把结果写成 LSMT 层，并
 <li><a href="#d37">第 37 篇 · 封存、restack 与 compact</a>：<code>compact_to()</code> 与层数预算。</li>
 <li><a href="#d44">第 44 篇 · uffd 方案与对比</a>：同样用 <code>ProcessVmReader</code> 加 <code>compact_to</code> 的备选方案。</li>
 <li><a href="#d67">第 67 篇 · Firecracker 补丁层</a>：可选 <code>mem_file_path</code>、<code>dirty-memory-ranges</code> 与 seek 取大小。</li>
-<li><a href="../firecracker/37-snapshot-create.md">Firecracker 手册第 37 篇</a>、<a href="../firecracker/38-snapshot-load.md">Firecracker 手册第 38 篇 · 快照加载</a>：上游的快照写出与 File 后端。</li>
-<li><a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇 · uffd 内存后端</a>、<a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇 · 暂停与快照</a>。</li>
+<li><a href="firecracker.html#d37">Firecracker 手册第 37 篇</a>、<a href="firecracker.html#d38">Firecracker 手册第 38 篇 · 快照加载</a>：上游的快照写出与 File 后端。</li>
+<li><a href="e2b-infra.html#d31">e2b 手册第 31 篇 · uffd 内存后端</a>、<a href="e2b-infra.html#d37">e2b 手册第 37 篇 · 暂停与快照</a>。</li>
 </ul><nav class="pager" data-n="42"></nav></article><article id="v43" class="doc" hidden><h1 id="d43-启动加速trace-prefetch-与-startup-pack">启动加速：trace prefetch 与 startup pack</h1>
 <blockquote>
 <p>内存快照按需加载，省掉了恢复前搬运整个内存镜像的成本，却把恢复后最初几秒的缺页变成了一串串行的远端读。
@@ -18378,7 +18378,7 @@ AgentENV 没有用户态缺页处理器可挂，于是把录制放在 ublk 设�
 <li><a href="#d41">第 41 篇 · ublk-daemon</a>：<code>StartPackRecording</code>、<code>PackRecordingStatus</code>、<code>PrefetchStartupPack</code> 等 RPC。</li>
 <li><a href="#d49">第 49 篇 · resolve 与本地制品缓存</a>：manifest 制品的写入、描述符挂接与解析。</li>
 <li><a href="#d68">第 68 篇 · 已知问题与技术债</a>：版本称呼与注释漂移的汇总。</li>
-<li><a href="../e2b-infra/32-memory-prefetch-and-hugepages.md">e2b 手册第 32 篇</a>：e2b infra 的预取映射与两组 worker。</li>
+<li><a href="e2b-infra.html#d32">e2b 手册第 32 篇</a>：e2b infra 的预取映射与两组 worker。</li>
 </ul><nav class="pager" data-n="43"></nav></article><article id="v44" class="doc" hidden><h1 id="d44-uffd-方案与对比">uffd 方案与对比</h1>
 <blockquote>
 <p>让一台 microVM 从内存快照按需恢复，有两种基本做法：在用户态接管缺页（userfaultfd），或者把内存镜像做成一个块设备、让内核按文件映射去读。
@@ -18660,8 +18660,8 @@ AgentENV 最终换到块设备 File 后端，换来跨沙箱共享页缓存，�
 <li><a href="#d42">第 42 篇 · 内存快照</a>：现行方案的暂停管线与共享设备。</li>
 <li><a href="#d67">第 67 篇 · AENV 补丁版 Firecracker</a>：现行方案依赖的两处补丁。</li>
 <li><a href="#d66">第 66 篇 · 与 e2b infra 的对照（二）</a>：存储与内存恢复的整体对照。</li>
-<li><a href="../firecracker/39-uffd-backend.md">Firecracker 手册第 39 篇</a>、<a href="../firecracker/53-uffd-write-protection.md">Firecracker 手册第 53 篇</a>：uffd 后端与写保护。</li>
-<li><a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇</a>、<a href="../e2b-infra/05-userfaultfd.md">e2b 手册第 05 篇</a>：e2b infra 的 uffd 服务与 userfaultfd 预备知识。</li>
+<li><a href="firecracker.html#d39">Firecracker 手册第 39 篇</a>、<a href="firecracker.html#d53">Firecracker 手册第 53 篇</a>：uffd 后端与写保护。</li>
+<li><a href="e2b-infra.html#d31">e2b 手册第 31 篇</a>、<a href="e2b-infra.html#d05">e2b 手册第 05 篇</a>：e2b infra 的 uffd 服务与 userfaultfd 预备知识。</li>
 </ul><nav class="pager" data-n="44"></nav></article><article id="v45" class="doc" hidden><h1 id="d45-从-oci-镜像到-overlaybd-层栈">从 OCI 镜像到 overlaybd 层栈</h1>
 <blockquote>
 <p>用户给出的是一个 OCI 镜像引用，沙箱要的是一个能挂成 <code>/dev/ublkbN</code> 的 overlaybd 层栈。
@@ -19024,7 +19024,7 @@ AgentENV 保留 OCI 的层结构，每层一个 overlaybd 层，native 镜像连
 <li><a href="#d38">第 38 篇 · VirtualFile 装饰器链与远端 I/O 运行时</a>：native 层在运行时怎样被按需读取。</li>
 <li><a href="#d58">第 58 篇 · P2P 制品传输</a>：<code>oci-layer/v1</code> 键所在的传输层与发现机制。</li>
 <li><a href="#d53">第 53 篇 · BuildKit</a>：<code>resolve_buildkit()</code> 用同一条转换流水线处理 BuildKit 产出的镜像。</li>
-<li><a href="../e2b-infra/43-rootfs-construction.md">e2b 手册第 43 篇 · rootfs 制作</a>：另一种把 OCI 镜像变成磁盘的做法。</li>
+<li><a href="e2b-infra.html#d43">e2b 手册第 43 篇 · rootfs 制作</a>：另一种把 OCI 镜像变成磁盘的做法。</li>
 </ul><nav class="pager" data-n="45"></nav></article><article id="v46" class="doc" hidden><h1 id="d46-快照对象模型与-snapshotmanager">快照对象模型与 SnapshotManager</h1>
 <blockquote>
 <p>一个快照是 VM 状态、内存层、rootfs 层栈、附加盘与卷的组合，再加上恢复它所需的运行上下文。
@@ -19411,7 +19411,7 @@ AgentENV 没有数据库，记录与制品在同一个仓库里，按快照 ID �
 <li><a href="#d49">第 49 篇 · 从记录到可运行</a>：<code>RunnableSnapshot</code> 的路径与 lease 从哪里来。</li>
 <li><a href="#d16">第 16 篇 · 快照与卷 API</a>：创建快照与卷快照在 API 层的三个阶段。</li>
 <li><a href="#d15">第 15 篇 · 模板构建 API</a>：模板即快照记录在 E2B 接口上的后果。</li>
-<li><a href="../e2b-infra/11-object-model.md">e2b 手册第 11 篇 · 对象模型</a>、<a href="../e2b-infra/29-template-artifact-format.md">e2b 手册第 29 篇 · 模板产物格式</a>：另一套用数据库加对象存储组织模板的做法。</li>
+<li><a href="e2b-infra.html#d11">e2b 手册第 11 篇 · 对象模型</a>、<a href="e2b-infra.html#d29">e2b 手册第 29 篇 · 模板产物格式</a>：另一套用数据库加对象存储组织模板的做法。</li>
 </ul><nav class="pager" data-n="46"></nav></article><article id="v47" class="doc" hidden><h1 id="d47-posix-仓库与提交协议">POSIX 仓库与提交协议</h1>
 <blockquote>
 <p>文件系统没有多文件事务，却要承载「一个快照要么完整可见、要么不存在」的语义。
@@ -19808,7 +19808,7 @@ POSIX 的顺序选择了另一种保证：只要 record 还在，删除就一定
 <li>对象模型与三层存储：<a href="#d46">第 46 篇</a>；解析与本地缓存：<a href="#d49">第 49 篇</a>；startup manifest：<a href="#d43">第 43 篇</a>。</li>
 <li>层的来源：<a href="#d37">第 37 篇 · 封存、restack 与 compact</a>、<a href="#d36">第 36 篇 · 读写路径与三种可写布局</a>；卷记录：<a href="#d16">第 16 篇</a>、<a href="#d21">第 21 篇</a>。</li>
 <li>技术债汇总：<a href="#d68">第 68 篇</a>。</li>
-<li>对照：<a href="../e2b-infra/13-storage-landscape.md">e2b 手册第 13 篇 · 存储全景</a>——e2b infra 把模板与别名的账目放在 PostgreSQL，对象存储里只放按 build ID 寻址的不可变产物。</li>
+<li>对照：<a href="e2b-infra.html#d13">e2b 手册第 13 篇 · 存储全景</a>——e2b infra 把模板与别名的账目放在 PostgreSQL，对象存储里只放按 build ID 寻址的不可变产物。</li>
 </ul><nav class="pager" data-n="47"></nav></article><article id="v48" class="doc" hidden><h1 id="d48-对象存储仓库上传回滚与弱一致">对象存储仓库：上传、回滚与弱一致</h1>
 <blockquote>
 <p>对象存储没有 <code>rename</code>，没有 <code>flock</code>，单个对象的 PUT 是原子的，多个对象之间什么也不保证。
@@ -20156,7 +20156,7 @@ AgentENV 把 catalog 本身放进对象存储，换来的是仓库自包含、�
 <li>POSIX 协议：<a href="#d47">第 47 篇</a>；对象模型：<a href="#d46">第 46 篇</a>；推回源镜像仓库：<a href="#d50">第 50 篇</a>。</li>
 <li>发布压缩与 ZFile：<a href="#d35">第 35 篇</a>；运行时按需读：<a href="#d38">第 38 篇</a>、<a href="#d39">第 39 篇</a>；P2P：<a href="#d58">第 58 篇</a>。</li>
 <li>技术债汇总：<a href="#d68">第 68 篇</a>。</li>
-<li>对照：<a href="../e2b-infra/13-storage-landscape.md">e2b 手册第 13 篇 · 存储全景</a>、<a href="../e2b-infra/75-minio-storage.md">e2b 手册第 75 篇 · MinIO 存储 provider</a>。</li>
+<li>对照：<a href="e2b-infra.html#d13">e2b 手册第 13 篇 · 存储全景</a>、<a href="e2b-infra.html#d75">e2b 手册第 75 篇 · MinIO 存储 provider</a>。</li>
 </ul><nav class="pager" data-n="48"></nav></article><article id="v49" class="doc" hidden><h1 id="d49-从记录到可运行resolve-与本地制品缓存">从记录到可运行：resolve 与本地制品缓存</h1>
 <blockquote>
 <p>快照仓库里的 committed 记录只写逻辑层引用，不写任何节点本地路径；Firecracker 与 ublk-daemon 却只认本地路径。
@@ -20486,7 +20486,7 @@ AgentENV 把层的按需读交给 ublk-daemon 里的 overlaybd，resolve 只下�
 <li><a href="#d45">第 45 篇 · 从 OCI 镜像到 overlaybd 层栈</a>：镜像缓存的 commit 目录与 GC 保留条件。</li>
 <li><a href="#d39">第 39 篇 · 节点块缓存与后台下载</a>：远端层字节真正落盘的地方。</li>
 <li><a href="#d58">第 58 篇 · P2P 制品传输</a>：vm_state 与 manifest 的 P2P key。</li>
-<li><a href="../e2b-infra/34-template-cache-and-local-storage.md">e2b 手册第 34 篇 · 模板缓存与本地存储</a>：TTL 代替引用计数的缓存设计。</li>
+<li><a href="e2b-infra.html#d34">e2b 手册第 34 篇 · 模板缓存与本地存储</a>：TTL 代替引用计数的缓存设计。</li>
 <li>下一篇：<a href="#d50">第 50 篇 · 快照 rootfs 作为 OCI 镜像</a>。</li>
 </ul><nav class="pager" data-n="49"></nav></article><article id="v50" class="doc" hidden><h1 id="d50-快照-rootfs-作为-oci-镜像">快照 rootfs 作为 OCI 镜像</h1>
 <blockquote>
@@ -21161,7 +21161,7 @@ AgentENV 的 fork 把这条路缩短为节点本地的一次捕获与 N 次恢�
 <li><a href="#d20">第 20 篇 · launch plan 与失败回滚</a>：「借出 Running」模式与 Terminal / Recoverable 约定。</li>
 <li><a href="#d31">第 31 篇 · 附加盘与卷</a>：卷槽位、替换与热插。</li>
 <li><a href="#d42">第 42 篇 · 内存快照</a>：内存层怎样由脏页区间写成。</li>
-<li><a href="../e2b-infra/18-sandbox-lifecycle-api.md">e2b 手册第 18 篇 · 沙箱生命周期 API</a>：e2b infra 的快照模板。</li>
+<li><a href="e2b-infra.html#d18">e2b 手册第 18 篇 · 沙箱生命周期 API</a>：e2b infra 的快照模板。</li>
 <li>下一篇：<a href="#d52">第 52 篇 · 模板构建器</a>。</li>
 </ul><nav class="pager" data-n="51"></nav></article><article id="v52" class="doc" hidden><h1 id="d52-模板构建器">模板构建器</h1>
 <blockquote>
@@ -21441,8 +21441,8 @@ OSS 后端用一次 put 覆盖同名 key，读者看到的总是某一时刻的�
 <li><a href="#d15">第 15 篇 · 模板构建 API</a>：受理、状态与日志接口。</li>
 <li><a href="#d43">第 43 篇 · startup pack 与预取</a>：发布时并行进行的录制。</li>
 <li><a href="#d46">第 46 篇 · 快照对象模型</a>：模板记录的字段与状态。</li>
-<li><a href="../e2b-infra/42-build-phases.md">e2b 手册第 42 篇 · 阶段流水线</a>、<a href="../e2b-infra/45-layers-and-build-cache.md">e2b 手册第 45 篇 · 层与构建缓存</a>：e2b infra 的逐层构建与缓存。</li>
-<li><a href="../e2b-infra/44-build-sandbox-and-commands.md">e2b 手册第 44 篇 · 构建期沙箱与命令</a>：e2b infra 的 RUN 怎样按上下文用户执行。</li>
+<li><a href="e2b-infra.html#d42">e2b 手册第 42 篇 · 阶段流水线</a>、<a href="e2b-infra.html#d45">e2b 手册第 45 篇 · 层与构建缓存</a>：e2b infra 的逐层构建与缓存。</li>
+<li><a href="e2b-infra.html#d44">e2b 手册第 44 篇 · 构建期沙箱与命令</a>：e2b infra 的 RUN 怎样按上下文用户执行。</li>
 <li>下一篇：<a href="#d53">第 53 篇 · BuildKit：在 microVM 里跑 Dockerfile</a>。</li>
 </ul><nav class="pager" data-n="52"></nav></article><article id="v53" class="doc" hidden><h1 id="d53-buildkit在-microvm-里跑-dockerfile">BuildKit：在 microVM 里跑 Dockerfile</h1>
 <blockquote>
@@ -21868,7 +21868,7 @@ AgentENV 把 Dockerfile 语义整个交给 microVM 里的 BuildKit，构建只�
 <li><a href="#d21">第 21 篇 · 删除与卷的捕获提交</a>：builder 删除时缓存卷怎样被冻结与发布。</li>
 <li><a href="#d45">第 45 篇 · 从 OCI 镜像到 overlaybd 层栈</a>：逐层转换流水线与转换缓存。</li>
 <li><a href="#d52">第 52 篇 · 模板构建器</a>：最终模板 VM 里发生的事。</li>
-<li><a href="../e2b-infra/41-template-build-overview.md">e2b 手册第 41 篇 · 构建总览</a>、<a href="../e2b-infra/45-layers-and-build-cache.md">e2b 手册第 45 篇 · 层与构建缓存</a>：e2b infra 的逐层构建与缓存键。</li>
+<li><a href="e2b-infra.html#d41">e2b 手册第 41 篇 · 构建总览</a>、<a href="e2b-infra.html#d45">e2b 手册第 45 篇 · 层与构建缓存</a>：e2b infra 的逐层构建与缓存键。</li>
 <li>下一篇：<a href="#d54">第 54 篇 · 控制面总览与 proto 契约</a>。</li>
 </ul><nav class="pager" data-n="53"></nav></article><article id="v54" class="doc" hidden><h1 id="d54-控制面总览与-proto-契约">控制面总览与 proto 契约</h1>
 <blockquote>
@@ -22210,7 +22210,7 @@ AgentENV 反过来，由节点推送心跳、scheduler 只做被动的服务端�
 <li><a href="#d56">第 56 篇 · scheduler</a>：放置、绑定存储与 HA。</li>
 <li><a href="#d57">第 57 篇 · 心跳与 CPU 模板交集</a>：心跳内容、状态推导与注销。</li>
 <li><a href="#d58">第 58 篇 · P2P 制品传输</a>：P2P 四个 RPC 的使用方。</li>
-<li><a href="../e2b-infra/19-node-management-and-placement.md">e2b 手册第 19 篇 · 节点管理与放置</a>、<a href="../e2b-infra/21-clusters-and-discovery.md">e2b 手册第 21 篇 · 集群与发现</a>：e2b infra 的拉取式节点视图。</li>
+<li><a href="e2b-infra.html#d19">e2b 手册第 19 篇 · 节点管理与放置</a>、<a href="e2b-infra.html#d21">e2b 手册第 21 篇 · 集群与发现</a>：e2b infra 的拉取式节点视图。</li>
 <li>下一篇：<a href="#d55">第 55 篇 · gateway：路由判定与反向代理</a>。</li>
 </ul><nav class="pager" data-n="54"></nav></article><article id="v55" class="doc" hidden><h1 id="d55-gateway路由判定与反向代理">gateway：路由判定与反向代理</h1>
 <blockquote>
@@ -22619,7 +22619,7 @@ AgentENV 用一个 gateway 同时承担控制面转发与数据面入口，放�
 <li><a href="#d17">第 17 篇 · 反向代理</a>：gateway 转发之后，节点上的 <code>/proxy</code> 入口、自动恢复与两阶段超时。</li>
 <li><a href="#d54">第 54 篇 · 控制面总览与 proto 契约</a>：三个角色与 RPC 分组。</li>
 <li><a href="#d57">第 57 篇 · 心跳、节点可观测与 CPU 模板交集</a>：维持绑定的心跳名单从哪里来。</li>
-<li><a href="../e2b-infra/53-client-proxy-edge.md">e2b 手册第 53 篇 · client-proxy</a>、<a href="../e2b-infra/55-sandbox-catalog-and-routing.md">e2b 手册第 55 篇 · 沙箱目录与路由</a>：e2b infra 的数据面入口与路由表。</li>
+<li><a href="e2b-infra.html#d53">e2b 手册第 53 篇 · client-proxy</a>、<a href="e2b-infra.html#d55">e2b 手册第 55 篇 · 沙箱目录与路由</a>：e2b infra 的数据面入口与路由表。</li>
 <li>下一篇：<a href="#d56">第 56 篇 · scheduler：放置、绑定与 HA</a>。</li>
 </ul><nav class="pager" data-n="55"></nav></article><article id="v56" class="doc" hidden><h1 id="d56-scheduler放置绑定与-ha">scheduler：放置、绑定与 HA</h1>
 <blockquote>
@@ -22992,7 +22992,7 @@ AgentENV 的放置只有阈值过滤加轮询，不看节点健康状态、不�
 <li><a href="#d24">第 24 篇 · 指标与生命周期事件</a>：心跳快照里各项计数的定义。</li>
 <li><a href="#d57">第 57 篇 · 心跳、节点可观测与 CPU 模板交集</a>：绑定的真相源从哪里来。</li>
 <li><a href="#d58">第 58 篇 · P2P 制品传输</a>：scheduler 上的制品索引怎样被使用。</li>
-<li><a href="../e2b-infra/19-node-management-and-placement.md">e2b 手册第 19 篇 · 节点管理与放置</a>、<a href="../e2b-infra/55-sandbox-catalog-and-routing.md">e2b 手册第 55 篇 · 沙箱目录与路由</a>：e2b infra 的放置算法与路由表。</li>
+<li><a href="e2b-infra.html#d19">e2b 手册第 19 篇 · 节点管理与放置</a>、<a href="e2b-infra.html#d55">e2b 手册第 55 篇 · 沙箱目录与路由</a>：e2b infra 的放置算法与路由表。</li>
 <li>下一篇：<a href="#d57">第 57 篇 · 心跳、节点可观测与 CPU 模板交集</a>。</li>
 </ul><nav class="pager" data-n="56"></nav></article><article id="v57" class="doc" hidden><h1 id="d57-心跳节点可观测与-cpu-模板交集">心跳、节点可观测与 CPU 模板交集</h1>
 <blockquote>
@@ -23380,8 +23380,8 @@ AgentENV 用自动求交的 CPU 模板换取跨型号恢复，代价是 guest �
 <li><a href="#d56">第 56 篇 · scheduler</a>：容量过滤、绑定存储与 <code>ReconcileNode</code>、发现与 lingering。</li>
 <li><a href="#d22">第 22 篇 · 跨重启持久化</a>：关闭顺序与 404 窗口。</li>
 <li><a href="#d27">第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列</a>：<code>PUT /cpu-config</code> 在冷启动序列中的位置。</li>
-<li><a href="../firecracker/20-cpu-templates.md">Firecracker 手册第 20 篇 · CPU 模板机制</a>、<a href="../firecracker/21-x86-64-cpuid-msr-normalization.md">Firecracker 手册第 21 篇 · CPUID 与 MSR 归一化</a>：模板的数据模型与位图语义。</li>
-<li><a href="../e2b-infra/19-node-management-and-placement.md">e2b 手册第 19 篇 · 节点管理与放置</a>：拉取式同步与 CPU 型号全等检查。</li>
+<li><a href="firecracker.html#d20">Firecracker 手册第 20 篇 · CPU 模板机制</a>、<a href="firecracker.html#d21">Firecracker 手册第 21 篇 · CPUID 与 MSR 归一化</a>：模板的数据模型与位图语义。</li>
+<li><a href="e2b-infra.html#d19">e2b 手册第 19 篇 · 节点管理与放置</a>：拉取式同步与 CPU 型号全等检查。</li>
 <li>下一篇：<a href="#d58">第 58 篇 · P2P 制品传输</a>。</li>
 </ul><nav class="pager" data-n="57"></nav></article><article id="v58" class="doc" hidden><h1 id="d58-p2p-制品传输">P2P 制品传输</h1>
 <blockquote>
@@ -23675,7 +23675,7 @@ AgentENV 让节点彼此充当缓存、由 scheduler 维护「谁有什么」的
 <li><a href="#d49">第 49 篇 · 从记录到可运行</a>：OSS resolver 与 vm_state 的本地缓存；<a href="#d48">第 48 篇 · 对象存储仓库</a>：发布压缩与上传。</li>
 <li><a href="#d45">第 45 篇 · 从 OCI 镜像到 overlaybd 层栈</a>：转换层的三级查找与 image cache GC。</li>
 <li><a href="#d56-6-haprimary-与-query-only">第 56 篇 §6 · scheduler 的 HA</a>：primary 与 query-only 副本，P2P 索引为什么不在 HA 覆盖范围内。</li>
-<li><a href="../e2b-infra/34-template-cache-and-local-storage.md">e2b 手册第 34 篇 · 模板缓存与本地存储</a>：NFS 共享分片缓存。</li>
+<li><a href="e2b-infra.html#d34">e2b 手册第 34 篇 · 模板缓存与本地存储</a>：NFS 共享分片缓存。</li>
 <li>下一篇：<a href="#d59">第 59 篇 · 宿主准备、依赖供给与权限模型</a>。</li>
 </ul><nav class="pager" data-n="58"></nav></article><article id="v59" class="doc" hidden><h1 id="d59-宿主准备依赖供给与权限模型">宿主准备、依赖供给与权限模型</h1>
 <blockquote>
@@ -24513,7 +24513,7 @@ Pod 进入终止状态后它在 EndpointSlice 里变成 Terminating，scheduler 
 <li><a href="#d22">第 22 篇 · 跨重启持久化</a>：暂停记录与崩溃一致性边界。</li>
 <li><a href="#d55">第 55 篇 · gateway</a>、<a href="#d56">第 56 篇 · scheduler</a>：控制面两个组件的行为。</li>
 <li><a href="#d64">第 64 篇 · 构建、代码生成与发布</a>：server bundle 与镜像的生成。</li>
-<li><a href="../e2b-infra/09-nomad-consul-terraform.md">e2b 手册第 09 篇</a>：e2b infra 用 Nomad、Consul 与 Terraform 的部署方式。</li>
+<li><a href="e2b-infra.html#d09">e2b 手册第 09 篇</a>：e2b infra 用 Nomad、Consul 与 Terraform 的部署方式。</li>
 </ul><nav class="pager" data-n="60"></nav></article><article id="v61" class="doc" hidden><h1 id="d61-pvm没有嵌套虚拟化时">PVM：没有嵌套虚拟化时</h1>
 <blockquote>
 <p>云上的虚拟机多半不向客户暴露硬件虚拟化扩展，没有 <code>/dev/kvm</code> 就跑不了 Firecracker。PVM 用一个宿主内核模块提供与 KVM 兼容的接口，让这类机器也能跑 microVM。
@@ -24816,8 +24816,8 @@ AgentENV 多出一种模式，换来的是能部署在不提供嵌套虚拟化�
 <li>下一篇：<a href="#d62">第 62 篇 · aenv CLI</a>。</li>
 <li>宿主准备与依赖供给：<a href="#d59">第 59 篇</a>；部署形态：<a href="#d60">第 60 篇</a>。</li>
 <li>内存快照怎样使用脏页区间：<a href="#d42">第 42 篇</a>；AENV 补丁版 Firecracker 的补丁与 guest 内核：<a href="#d67">第 67 篇</a>。</li>
-<li>KVM 脏页日志与 Firecracker 的两张位图：<a href="../firecracker/14-dirty-page-tracking.md">Firecracker 手册第 14 篇 · 脏页跟踪</a>；KVM API 回顾：<a href="../firecracker/03-kvm-api-primer.md">Firecracker 手册第 03 篇</a>。</li>
-<li>e2b infra 的宿主与嵌套虚拟化：<a href="../e2b-infra/63-gcp-terraform.md">e2b 手册第 63 篇</a>。</li>
+<li>KVM 脏页日志与 Firecracker 的两张位图：<a href="firecracker.html#d14">Firecracker 手册第 14 篇 · 脏页跟踪</a>；KVM API 回顾：<a href="firecracker.html#d03">Firecracker 手册第 03 篇</a>。</li>
+<li>e2b infra 的宿主与嵌套虚拟化：<a href="e2b-infra.html#d63">e2b 手册第 63 篇</a>。</li>
 <li>PVM 论文：<em>PVM: Efficient Shadow Paging for Deploying Secure Containers in Cloud-native Environment</em>, SOSP 2023，<a href="https://dl.acm.org/doi/10.1145/3600006.3613158">https://dl.acm.org/doi/10.1145/3600006.3613158</a>。</li>
 </ul><nav class="pager" data-n="61"></nav></article><article id="v62" class="doc" hidden><h1 id="d62-aenv-cli">aenv CLI</h1>
 <blockquote>
@@ -25132,7 +25132,7 @@ CLI 在请求体里显式写 <code>secure: true</code> 弥补 v1 缺省非 secur
 <ul>
 <li>下一篇：<a href="#d63">第 63 篇 · 测试与基准</a>。</li>
 <li>服务端一侧：构建会话与隧道见 <a href="#d15">第 15 篇</a>，代理的超时与 fallback 见 <a href="#d17">第 17 篇</a>，envd 的来源与就绪见 <a href="#d28">第 28 篇</a>，BuildKit 在 microVM 里的运行见 <a href="#d53">第 53 篇</a>。</li>
-<li>e2b infra 的 envd 协议与 SDK 侧的 Connect 客户端：<a href="../e2b-infra/48-envd-overview.md">e2b 手册第 48 篇</a>、<a href="../e2b-infra/52-envd-legacy-and-sdk-compat.md">e2b 手册第 52 篇</a>。</li>
+<li>e2b infra 的 envd 协议与 SDK 侧的 Connect 客户端：<a href="e2b-infra.html#d48">e2b 手册第 48 篇</a>、<a href="e2b-infra.html#d52">e2b 手册第 52 篇</a>。</li>
 <li>Connect 协议规范：<a href="https://connectrpc.com/docs/protocol/">https://connectrpc.com/docs/protocol/</a>。</li>
 </ul><nav class="pager" data-n="62"></nav></article><article id="v63" class="doc" hidden><h1 id="d63-测试与基准">测试与基准</h1>
 <blockquote>
@@ -25574,8 +25574,8 @@ e2b infra 的单元测试矩阵跑在自建 runner 上，作业开头配好 user
 <li><a href="#d19">第 19 篇 · 状态机与并发控制</a>：orchestrator 替身测试的四种模式。</li>
 <li><a href="#d59">第 59 篇 · 宿主准备、依赖供给与权限模型</a>：<code>--setup-host</code> 与线程作用域能力。</li>
 <li><a href="#d60">第 60 篇 · 单节点安装、Compose 与 Kubernetes</a>：E2E 三种模式所部署的形态。</li>
-<li><a href="../e2b-infra/62-testing.md">e2b 手册第 62 篇 · 测试体系</a>：同类系统的另一种分层与跳过策略。</li>
-<li><a href="../firecracker/47-testing.md">Firecracker 手册第 47 篇 · 测试</a>：Firecracker 自身的测试框架。</li>
+<li><a href="e2b-infra.html#d62">e2b 手册第 62 篇 · 测试体系</a>：同类系统的另一种分层与跳过策略。</li>
+<li><a href="firecracker.html#d47">Firecracker 手册第 47 篇 · 测试</a>：Firecracker 自身的测试框架。</li>
 <li>下一篇：<a href="#d64">第 64 篇 · 构建、代码生成与发布</a>。</li>
 </ul><nav class="pager" data-n="63"></nav></article><article id="v64" class="doc" hidden><h1 id="d64-构建代码生成与发布">构建、代码生成与发布</h1>
 <blockquote>
@@ -25890,8 +25890,8 @@ e2b 手册描述的 e2b infra 产物是镜像与上传到对象存储的裸二�
 <li><a href="#d59">第 59 篇 · 宿主准备、依赖供给与权限模型</a>：<code>--setup-only</code> 的下载与 manifest。</li>
 <li><a href="#d60">第 60 篇 · 单节点安装、Compose 与 Kubernetes</a>：<code>install.sh</code>、Dockerfile 与部署清单。</li>
 <li><a href="#d67">第 67 篇 · AENV 补丁版 Firecracker 与 guest 内核</a>：<code>firecracker.yaml</code> 描述的补丁端点。</li>
-<li><a href="../e2b-infra/65-build-and-release.md">e2b 手册第 65 篇 · 构建与发布</a>：另一套产物形态与一致性检查。</li>
-<li><a href="../firecracker/48-release-and-compat-policy.md">Firecracker 手册第 48 篇 · 发布与兼容策略</a>：上游 Firecracker 的发布方式。</li>
+<li><a href="e2b-infra.html#d65">e2b 手册第 65 篇 · 构建与发布</a>：另一套产物形态与一致性检查。</li>
+<li><a href="firecracker.html#d48">Firecracker 手册第 48 篇 · 发布与兼容策略</a>：上游 Firecracker 的发布方式。</li>
 <li>下一篇：<a href="#d65">第 65 篇 · 与 e2b infra 的对照（一）</a>。</li>
 </ul><nav class="pager" data-n="64"></nav></article><article id="v65" class="doc" hidden><h1 id="d65-与-e2b-infra-的对照一架构控制面与-api">与 e2b infra 的对照（一）：架构、控制面与 API</h1>
 <blockquote>
@@ -26327,9 +26327,9 @@ AgentENV 在恢复之前写 MMDS，<code>address</code> 字段为空，先以 3 
 <li><a href="#d08">第 08 篇 · 系统架构</a>：AgentENV 侧的进程、存储拓扑与流量。</li>
 <li><a href="#d18">第 18 篇 · E2B 兼容性</a>：端点四类划分与偏差矩阵。</li>
 <li><a href="#d54">第 54 篇 · 控制面总览</a>、<a href="#d56">第 56 篇 · scheduler</a>：推模型控制面的细节。</li>
-<li><a href="../e2b-infra/10-system-architecture.md">e2b 手册第 10 篇 · 系统架构</a>、<a href="../e2b-infra/15-api-service-structure.md">e2b 手册第 15 篇 · API 服务结构</a>、<a href="../e2b-infra/16-auth-and-multitenancy.md">e2b 手册第 16 篇 · 认证与多租户</a></li>
-<li><a href="../e2b-infra/19-node-management-and-placement.md">e2b 手册第 19 篇 · 节点管理与放置</a>、<a href="../e2b-infra/35-sandbox-networking.md">e2b 手册第 35 篇 · 沙箱网络</a>、<a href="../e2b-infra/48-envd-overview.md">e2b 手册第 48 篇 · envd 总览</a></li>
-<li><a href="../e2b-infra/53-client-proxy-edge.md">e2b 手册第 53 篇 · client-proxy</a>、<a href="../e2b-infra/55-sandbox-catalog-and-routing.md">e2b 手册第 55 篇 · 沙箱目录与路由</a></li>
+<li><a href="e2b-infra.html#d10">e2b 手册第 10 篇 · 系统架构</a>、<a href="e2b-infra.html#d15">e2b 手册第 15 篇 · API 服务结构</a>、<a href="e2b-infra.html#d16">e2b 手册第 16 篇 · 认证与多租户</a></li>
+<li><a href="e2b-infra.html#d19">e2b 手册第 19 篇 · 节点管理与放置</a>、<a href="e2b-infra.html#d35">e2b 手册第 35 篇 · 沙箱网络</a>、<a href="e2b-infra.html#d48">e2b 手册第 48 篇 · envd 总览</a></li>
+<li><a href="e2b-infra.html#d53">e2b 手册第 53 篇 · client-proxy</a>、<a href="e2b-infra.html#d55">e2b 手册第 55 篇 · 沙箱目录与路由</a></li>
 <li>下一篇：<a href="#d66">第 66 篇 · 与 e2b infra 的对照（二）：存储、内存恢复与模板</a>。</li>
 </ul><nav class="pager" data-n="65"></nav></article><article id="v66" class="doc" hidden><h1 id="d66-与-e2b-infra-的对照二存储内存恢复与模板">与 e2b infra 的对照（二）：存储、内存恢复与模板</h1>
 <blockquote>
@@ -26647,10 +26647,10 @@ POSIX 后端的提交点是一次 <code>rename</code>；对象存储后端的提
 <li>下一篇：<a href="#d67">第 67 篇 · AENV 补丁版 Firecracker 与 guest 内核</a> —— 本篇第 2 节涉及的补丁的完整清单与实现。</li>
 <li>上一篇：<a href="#d65">第 65 篇 · 与 e2b infra 的对照（一）</a>：架构、控制面与 API。</li>
 <li><a href="#d42">第 42 篇 · 内存快照</a>、<a href="#d44">第 44 篇 · uffd 方案与对比</a>：AgentENV 两种内存方案的细节。</li>
-<li><a href="../firecracker/49-why-e2b-forked.md">Firecracker 手册第 49 篇 · 为什么分叉</a>、<a href="../firecracker/50-memory-mappings-api.md">第 50 篇 · /memory/mappings</a>、<a href="../firecracker/51-memory-resident-empty-api.md">第 51 篇 · /memory</a>、<a href="../firecracker/52-memory-dirty-api.md">第 52 篇 · /memory/dirty</a>、<a href="../firecracker/53-uffd-write-protection.md">第 53 篇 · uffd 写保护</a>、<a href="../firecracker/54-optional-memfile-snapshot.md">第 54 篇 · 可选 memfile</a>。</li>
-<li><a href="../e2b-infra/05-userfaultfd.md">e2b 手册第 05 篇 · userfaultfd</a>、<a href="../e2b-infra/06-block-devices-nbd-cow.md">第 06 篇 · 块设备、NBD 与写时复制</a>、<a href="../e2b-infra/29-template-artifact-format.md">第 29 篇 · 模板产物格式</a>、<a href="../e2b-infra/30-block-layer.md">第 30 篇 · block 包</a>。</li>
-<li><a href="../e2b-infra/31-uffd-memory-backend.md">e2b 手册第 31 篇 · uffd 内存后端</a>、<a href="../e2b-infra/32-memory-prefetch-and-hugepages.md">第 32 篇 · 预取与大页</a>、<a href="../e2b-infra/33-nbd-and-rootfs.md">第 33 篇 · NBD 与 rootfs</a>、<a href="../e2b-infra/34-template-cache-and-local-storage.md">第 34 篇 · 模板缓存</a>、<a href="../e2b-infra/37-pause-and-snapshot.md">第 37 篇 · Pause</a>。</li>
-<li><a href="../e2b-infra/41-template-build-overview.md">e2b 手册第 41 篇 · 构建总览</a>、<a href="../e2b-infra/42-build-phases.md">第 42 篇 · 阶段流水线</a>、<a href="../e2b-infra/43-rootfs-construction.md">第 43 篇 · rootfs 制作</a>、<a href="../e2b-infra/45-layers-and-build-cache.md">第 45 篇 · 层与构建缓存</a>、<a href="../e2b-infra/46-template-manager-service.md">第 46 篇 · template-manager</a>。</li>
+<li><a href="firecracker.html#d49">Firecracker 手册第 49 篇 · 为什么分叉</a>、<a href="firecracker.html#d50">第 50 篇 · /memory/mappings</a>、<a href="firecracker.html#d51">第 51 篇 · /memory</a>、<a href="firecracker.html#d52">第 52 篇 · /memory/dirty</a>、<a href="firecracker.html#d53">第 53 篇 · uffd 写保护</a>、<a href="firecracker.html#d54">第 54 篇 · 可选 memfile</a>。</li>
+<li><a href="e2b-infra.html#d05">e2b 手册第 05 篇 · userfaultfd</a>、<a href="e2b-infra.html#d06">第 06 篇 · 块设备、NBD 与写时复制</a>、<a href="e2b-infra.html#d29">第 29 篇 · 模板产物格式</a>、<a href="e2b-infra.html#d30">第 30 篇 · block 包</a>。</li>
+<li><a href="e2b-infra.html#d31">e2b 手册第 31 篇 · uffd 内存后端</a>、<a href="e2b-infra.html#d32">第 32 篇 · 预取与大页</a>、<a href="e2b-infra.html#d33">第 33 篇 · NBD 与 rootfs</a>、<a href="e2b-infra.html#d34">第 34 篇 · 模板缓存</a>、<a href="e2b-infra.html#d37">第 37 篇 · Pause</a>。</li>
+<li><a href="e2b-infra.html#d41">e2b 手册第 41 篇 · 构建总览</a>、<a href="e2b-infra.html#d42">第 42 篇 · 阶段流水线</a>、<a href="e2b-infra.html#d43">第 43 篇 · rootfs 制作</a>、<a href="e2b-infra.html#d45">第 45 篇 · 层与构建缓存</a>、<a href="e2b-infra.html#d46">第 46 篇 · template-manager</a>。</li>
 </ul><nav class="pager" data-n="66"></nav></article><article id="v67" class="doc" hidden><h1 id="d67-aenv-补丁版-firecracker-与-guest-内核">AENV 补丁版 Firecracker 与 guest 内核</h1>
 <blockquote>
 <p>AgentENV 的内存路径要求 Firecracker 做三件上游 Firecracker v1.15.1 做不到的事：不写内存文件的快照、交出脏页区间、把块设备当内存文件；磁盘路径另要一个 O_DIRECT 开关。
@@ -27031,8 +27031,8 @@ e2b 继续用「区域坐标 + 独立的位图端点」由 orchestrator 自己�
 <li><a href="#d03">第 03 篇 · 本书用到的 Firecracker</a>：四个补丁行为与上游机制的对照。</li>
 <li><a href="#d27">第 27 篇 · 启动、暂停与恢复的 Firecracker 调用序列</a>、<a href="#d42">第 42 篇 · 内存快照</a>、<a href="#d26">第 26 篇 · 沙箱块设备</a>：补丁行为的调用方。</li>
 <li><a href="#d66">第 66 篇 · 与 e2b infra 的对照（二）</a>：两个 Firecracker 分叉的整体对照。</li>
-<li><a href="../firecracker/14-dirty-page-tracking.md">Firecracker 手册第 14 篇 · 脏页跟踪</a>、<a href="../firecracker/37-snapshot-create.md">第 37 篇 · 创建快照</a>、<a href="../firecracker/41-snapshot-tools-and-compat.md">第 41 篇 · 快照工具与兼容性</a>：上游机制。</li>
-<li><a href="../firecracker/50-memory-mappings-api.md">Firecracker 手册第 50 篇 · /memory/mappings</a>、<a href="../firecracker/54-optional-memfile-snapshot.md">第 54 篇 · 可选 memfile</a>、<a href="../firecracker/56-guest-kernel-requirements-and-e2b-configs.md">第 56 篇 · guest 内核要求</a>：e2b 定制版的对应补丁与内核配置。</li>
+<li><a href="firecracker.html#d14">Firecracker 手册第 14 篇 · 脏页跟踪</a>、<a href="firecracker.html#d37">第 37 篇 · 创建快照</a>、<a href="firecracker.html#d41">第 41 篇 · 快照工具与兼容性</a>：上游机制。</li>
+<li><a href="firecracker.html#d50">Firecracker 手册第 50 篇 · /memory/mappings</a>、<a href="firecracker.html#d54">第 54 篇 · 可选 memfile</a>、<a href="firecracker.html#d56">第 56 篇 · guest 内核要求</a>：e2b 定制版的对应补丁与内核配置。</li>
 </ul><nav class="pager" data-n="67"></nav></article><article id="v68" class="doc" hidden><h1 id="d68-已知问题与技术债">已知问题与技术债</h1>
 <blockquote>
 <p>本篇把前面各篇在读代码时记下的问题汇成一份清单：每条给出现象、代码位置、后果与详讲的篇目，按正确性、可用性、可运维性、安全与信任边界、供应链与构建、文档漂移六类排列。
@@ -29090,7 +29090,7 @@ Firecracker 卡住时没有人发现，ublk-daemon 死掉时发现了但无法�
 <li><a href="#d67">第 67 篇 · AENV 补丁版 Firecracker 与 guest 内核</a>：C-30、O-07 依赖的补丁行为，以及 B-18 至 B-20 涉及的内核与状态文件。</li>
 <li><a href="#d71">第 71 篇 · 配置项、环境变量与端口总表</a>：O-24 至 O-39 涉及的键与默认值。</li>
 <li><a href="#d73">第 73 篇 · 持久化制品与磁盘格式总表</a>：各制品「谁删、有没有 GC」一栏与 §4.2 对应。</li>
-<li><a href="../e2b-infra/37-pause-and-snapshot.md">e2b 手册第 37 篇 · 暂停与快照</a>：同一类系统在暂停路径上的失败处理。</li>
+<li><a href="e2b-infra.html#d37">e2b 手册第 37 篇 · 暂停与快照</a>：同一类系统在暂停路径上的失败处理。</li>
 </ul><nav class="pager" data-n="68"></nav></article><article id="v69" class="doc" hidden><h1 id="d69-术语表">术语表</h1>
 <blockquote>
 <p>本附录收录全书固定译法的术语（STYLE.md 第三节）与正文第 01–66 篇中反复出现的其它术语、类型名与格式名，每条给一句定义，并链到首次详细讲解它的篇目与小节。
@@ -33804,7 +33804,7 @@ guest 里的 envd 由 <code>tools-image/pivot-init</code> 以不带端口参数�
 <li>配置的加载、归一化与校验：<a href="#d11">第 11 篇 · 配置体系</a>；ublk-daemon 的进程模型：<a href="#d41">第 41 篇</a>。</li>
 <li>控制面：<a href="#d54">第 54 篇</a>、<a href="#d55">第 55 篇 · gateway</a>、<a href="#d56">第 56 篇 · scheduler</a>；部署清单：<a href="#d60">第 60 篇</a>。</li>
 <li>接口总表：<a href="#d72">第 72 篇</a>；持久化制品与目录：<a href="#d73">第 73 篇</a>。</li>
-<li>对照：<a href="../e2b-infra/14-config-flags-versions.md">e2b 手册第 14 篇 · 配置、flag 与版本</a>。</li>
+<li>对照：<a href="e2b-infra.html#d14">e2b 手册第 14 篇 · 配置、flag 与版本</a>。</li>
 <li>confique 的分层加载与 <code>nested</code> 语义：<a href="https://docs.rs/confique/0.4.0/confique/">https://docs.rs/confique/0.4.0/confique/</a>。</li>
 </ul><nav class="pager" data-n="71"></nav></article><article id="v72" class="doc" hidden><h1 id="d72-接口总表httpfirecrackerdaemon-rpc-与-grpc">接口总表：HTTP、Firecracker、daemon RPC 与 gRPC</h1>
 <blockquote>
@@ -34822,7 +34822,7 @@ Go 生成名把 <code>P2p</code> 写成 <code>P2P</code>（<code>ListP2PPeers()<
 <li><a href="#d41">第 41 篇 · ublk-daemon</a>、<a href="#d54">第 54 篇 · 控制面总览与 proto 契约</a>：两套 RPC 的协议细节。</li>
 <li><a href="#d71">第 71 篇 · 配置项、环境变量与端口总表</a>：本篇各监听地址对应的配置键与端口。</li>
 <li><a href="#d73">第 73 篇 · 持久化制品与磁盘格式总表</a>：接口之外的另一类契约。</li>
-<li><a href="../firecracker/08-api-server.md">Firecracker 手册第 08 篇</a>：上游 API server 怎样把 REST 请求变成 VMM 动作；<a href="../firecracker/38-snapshot-load.md">Firecracker 手册第 38 篇</a>：上游 <code>PUT /snapshot/load</code> 的实现。</li>
+<li><a href="firecracker.html#d08">Firecracker 手册第 08 篇</a>：上游 API server 怎样把 REST 请求变成 VMM 动作；<a href="firecracker.html#d38">Firecracker 手册第 38 篇</a>：上游 <code>PUT /snapshot/load</code> 的实现。</li>
 </ul><nav class="pager" data-n="72"></nav></article><article id="v73" class="doc" hidden><h1 id="d73-持久化制品与磁盘格式总表">持久化制品与磁盘格式总表</h1>
 <blockquote>
 <p>本附录把散在第六、七部分的落盘对象集中成几张表：快照仓库里的每个制品由谁写、谁读、谁删、有没有回收；节点本地每个目录装什么、丢了会怎样；

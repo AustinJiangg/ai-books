@@ -36,6 +36,8 @@ ap.add_argument("--exclude", action="append", default=[], help="跳过的路径�
 ap.add_argument("--lang", choices=["zh", "en"], default="zh", help="界面文字的语言")
 ap.add_argument("--accent", default="#1d2125", help="浅色主题强调色，默认是正文墨色（不带彩色）")
 ap.add_argument("--accent-dark", default="#e6e9ec", help="深色主题强调色")
+ap.add_argument("--sibling", action="append", default=[], metavar="目录=地址",
+                help="另一个也用本脚本生成的文档站：指向该目录里 md 的相对链接改成「地址#站内位置」，可写多次")
 A = ap.parse_args()
 D = A.docs
 OUT = A.out
@@ -81,17 +83,54 @@ def sort_key(rel):
     return ([natural(p) for p in d.split("/")] if d else [], stem not in ("index", "readme"), natural(name))
 
 
-def find_docs():
-    if ONLY:
+def find_docs(root=None, exclude=None):
+    if ONLY and root is None:
         return [ONLY]
+    root = D if root is None else root
+    exclude = A.exclude if exclude is None else exclude
     found = []
-    for base, dirs, names in os.walk(D):
+    for base, dirs, names in os.walk(root):
         dirs[:] = [x for x in dirs if not x.startswith(".") and x not in SKIP_DIRS]
         for n in names:
-            rel = os.path.relpath(os.path.join(base, n), D).replace(os.sep, "/")
-            if n.lower().endswith(MD_EXT) and not any(fnmatch.fnmatch(rel, g) for g in A.exclude):
+            rel = os.path.relpath(os.path.join(base, n), root).replace(os.sep, "/")
+            if n.lower().endswith(MD_EXT) and not any(fnmatch.fnmatch(rel, g) for g in exclude):
                 found.append(rel)
     return sorted(found, key=sort_key)
+
+
+def doc_keys(paths):
+    """每篇的站内 key：文件名编号不重复时就是编号（01、A），否则是 p<序号>。返回 [(rel, 编号, key)]。"""
+    prefixes = [m.group(1) if (m := re.match(r"(\d{1,3}|[A-Z])[-_ .]", posixpath.basename(r))) else None
+                for r in paths]
+    return [(rel, num, num if num is not None and prefixes.count(num) == 1 else f"p{i}")
+            for i, (rel, num) in enumerate(zip(paths, prefixes))]
+
+
+# --sibling：别的文档站的目录（绝对路径）→ (地址, 该站 rel → key)
+SIBLINGS = []
+for s in A.sibling:
+    sdir, sep, url = s.partition("=")
+    if not sep or not os.path.isdir(sdir):
+        sys.exit(f"--sibling 要写成「目录=地址」，且目录存在：{s}")
+    SIBLINGS.append((os.path.abspath(sdir), url, {r: k for r, _, k in doc_keys(find_docs(sdir, []))}))
+
+
+def sibling_href(doc_rel, path, frag):
+    """相对链接落在某个 --sibling 目录里的 md 上时，返回「地址#d<key>[-小节]」。"""
+    p = local_path(doc_rel, path)
+    if p is None:
+        return None
+    ap_ = os.path.normpath(os.path.join(os.path.abspath(D), p))
+    for sdir, url, keys in SIBLINGS:
+        if ap_ != sdir and not ap_.startswith(sdir + os.sep):
+            continue
+        r = os.path.relpath(ap_, sdir).replace(os.sep, "/").rstrip("/")
+        cands = [r] + [f"{r}{e}" for e in MD_EXT] + [posixpath.normpath(f"{r}/{n}") for n in
+                                                     ("README.md", "readme.md", "index.md", "Readme.md")]
+        k = next((keys[c] for c in cands if c in keys), None)
+        if k is not None:
+            return f"{url}#d{k}-{unquote(frag).lower()}" if frag else f"{url}#d{k}"
+    return None
 
 
 def split_frontmatter(src):
@@ -323,8 +362,7 @@ docs = {}
 paths = find_docs()
 if not paths:
     sys.exit(f"{D} 下没有 markdown 文件")
-prefixes = [m.group(1) if (m := re.match(r"(\d{1,3}|[A-Z])[-_ .]", posixpath.basename(r))) else None for r in paths]
-for i, (rel, num) in enumerate(zip(paths, prefixes)):
+for rel, num, doc_key in doc_keys(paths):
     with open(os.path.join(D, rel), encoding="utf-8-sig", errors="replace") as f:
         src = f.read().replace("\r\n", "\n")
     src = re.sub(r"^\t+", lambda t: "    " * len(t.group(0)), src, flags=re.M)   # 行首 tab 按 4 格算
@@ -341,8 +379,7 @@ for i, (rel, num) in enumerate(zip(paths, prefixes)):
     title = title[:1].upper() + title[1:] if not m and not fm_title else title
     if not m:
         src = f"# {title}\n\n{src}"
-    unique = num is not None and prefixes.count(num) == 1
-    label = num if unique else ""
+    label = num if doc_key == num else ""
     # 标题以和文件名相同的编号开头（「05 · 」「附录 A · 」「Chapter 3: 」「第 3 章 」）时去掉这个前缀：
     # 编号已经显示在左栏目录里，正文标题不再重复。
     nav_title = title
@@ -352,7 +389,7 @@ for i, (rel, num) in enumerate(zip(paths, prefixes)):
         nav_title = t.group(1)
         if m:
             src = src.replace(m.group(0), f"# {nav_title}", 1)
-    docs[num if unique else f"p{i}"] = dict(rel=rel, src=src, title=title, label=label, nav_title=nav_title)
+    docs[doc_key] = dict(rel=rel, src=src, title=title, label=label, nav_title=nav_title)
 
 rel2key = {v["rel"]: k for k, v in docs.items()}
 
@@ -392,6 +429,8 @@ def rendered_doc(key, d):
         k = resolve_doc(rel, path) if path else None
         if k is not None:
             return f"#d{k}-{unquote(frag).lower()}" if frag else f"#d{k}"
+        if path and (s := sibling_href(rel, path, frag)):
+            return s
         if os.path.splitext(path.split("?")[0])[1].lower() in MIME:
             return data_uri(rel, path) or None
         if local_path(rel, target) is not None:
