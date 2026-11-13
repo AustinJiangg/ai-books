@@ -50,12 +50,12 @@ elif not os.path.isdir(D):
 # 界面文字
 UI = {
     "zh": dict(lang="zh-CN", toc="目录", open_toc="打开目录", search="搜索全书", in_doc="本篇小节", prev="← 上一篇",
-               next="下一篇 →", found="{d} 篇，共 {h} 处", none="没有找到", other="其他", missing="缺图", fig="图",
+               next="下一篇 →", found="{d} 篇，共 {h} 处", none="没有找到", other="其他", intro="导读", missing="缺图", fig="图",
                dark="深色模式", to_light="切换到浅色模式", to_dark="切换到深色模式", viewer="查看大图", zoom_in="放大",
                zoom_out="缩小", fit="适合", fit_t="适合屏幕", close="关闭",
                alert=dict(note="注意", tip="提示", important="重要", warning="警告", caution="小心")),
     "en": dict(lang="en", toc="Contents", open_toc="Open contents", search="Search", in_doc="On this page",
-               prev="← Previous", next="Next →", found="{h} matches in {d} pages", none="No results", other="Other",
+               prev="← Previous", next="Next →", found="{h} matches in {d} pages", none="No results", other="Other", intro="Overview",
                missing="missing image", fig="Figure", dark="Dark mode", to_light="Switch to light mode",
                to_dark="Switch to dark mode", viewer="Image viewer", zoom_in="Zoom in", zoom_out="Zoom out",
                fit="Fit", fit_t="Fit to screen", close="Close",
@@ -524,6 +524,12 @@ else:
         g = re.sub(r"[-_]+", " ", g)
         GROUPS.setdefault(g[:1].upper() + g[1:], []).append(k)
     GROUPS = sorted(GROUPS.items(), key=lambda kv: (kv[0] != "", natural(kv[0])))
+order = [n for _, ns in GROUPS for n in ns if n in docs]
+site_title = A.title or nav_titles[order[0]]
+# 第一篇（通常是 README）的标题就是站名时，左栏已在顶上显示站名，这一项改叫「导读」，免得同一行字出现两次
+nav_label = dict(nav_titles)
+if nav_label[order[0]] == site_title:
+    nav_label[order[0]] = UI["intro"]
 group_of = {}
 nav = []
 for g, keys in GROUPS:
@@ -533,11 +539,8 @@ for g, keys in GROUPS:
         if n in docs:
             group_of[n] = g
             tag = f'<span class="nn">{docs[n]["label"]}</span>' if docs[n]["label"] else ""
-            nav.append(f'<a href="#d{n}" data-n="{n}">{tag}<span class="nt">{html.escape(nav_titles[n])}</span>'
+            nav.append(f'<a href="#d{n}" data-n="{n}">{tag}<span class="nt">{html.escape(nav_label[n])}</span>'
                        f'<em class="hit"></em></a>')
-
-order = [n for _, ns in GROUPS for n in ns if n in docs]
-site_title = A.title or nav_titles[order[0]]
 
 sections = []
 for key, d in docs.items():
