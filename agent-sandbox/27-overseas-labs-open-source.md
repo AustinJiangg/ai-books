@@ -84,12 +84,12 @@
 ```mermaid
 quadrantChart
     title 训练侧透明度 × 产品侧透明度（示意）
-    x-axis 训练侧披露少 --> 训练侧披露多
-    y-axis 产品侧披露少 --> 产品侧披露多
-    quadrant-1 两侧都公开
-    quadrant-2 产品侧公开
-    quadrant-3 两侧都少
-    quadrant-4 训练侧公开
+    x-axis "训练侧披露少" --> "训练侧披露多"
+    y-axis "产品侧披露少" --> "产品侧披露多"
+    quadrant-1 "两侧都公开"
+    quadrant-2 "产品侧公开"
+    quadrant-3 "两侧都少"
+    quadrant-4 "训练侧公开"
     OpenAI: [0.3, 0.85]
     Anthropic: [0.28, 0.9]
     Google DeepMind: [0.1, 0.8]

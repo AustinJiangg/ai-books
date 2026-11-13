@@ -143,6 +143,7 @@ def split_frontmatter(src):
 
 
 CODE = re.compile(r"(^[ \t]*(`{3,}|~{3,}).*?^[ \t]*\2[ \t]*$|`[^`\n]+`)", re.M | re.S)
+FENCE = re.compile(r"^[ \t]*(`{3,}|~{3,}).*?^[ \t]*\1[ \t]*$", re.M | re.S)   # 只认代码块，找标题用
 
 
 def outside_code(s, fn):
@@ -369,11 +370,11 @@ for rel, num, doc_key in doc_keys(paths):
     src, fm_title = split_frontmatter(src)
     # 下划线写法的标题（下一行是 === 或 ---）先改成 # / ##，后面统一处理
     src = setext_to_atx(src)
-    m = re.search(r"^#[ \t]+(.+?)[ \t]*#*[ \t]*$", CODE.sub("", src), re.M)
-    if not m and (h := re.search(r"^#{2,6}[ \t]+(.+?)[ \t]*#*[ \t]*$", CODE.sub("", src), re.M)) \
+    m = re.search(r"^#[ \t]+(.+?)[ \t]*#*[ \t]*$", FENCE.sub("", src), re.M)
+    if not m and (h := re.search(r"^#{2,6}[ \t]+(.+?)[ \t]*#*[ \t]*$", FENCE.sub("", src), re.M)) \
             and not (fm_title and fm_title != h.group(1)):
         src = src.replace(h.group(0), f"# {h.group(1)}", 1)      # 没有一级标题：第一个标题当篇名
-        m = re.search(r"^#[ \t]+(.+?)[ \t]*#*[ \t]*$", CODE.sub("", src), re.M)
+        m = re.search(r"^#[ \t]+(.+?)[ \t]*#*[ \t]*$", FENCE.sub("", src), re.M)
     stem = re.sub(r"^\d+[-_ .]", "", posixpath.basename(rel).rsplit(".", 1)[0])
     title = m.group(1) if m else fm_title or re.sub(r"[-_]+", " ", stem)
     title = title[:1].upper() + title[1:] if not m and not fm_title else title
@@ -383,13 +384,16 @@ for rel, num, doc_key in doc_keys(paths):
     # 标题以和文件名相同的编号开头（「05 · 」「附录 A · 」「Chapter 3: 」「第 3 章 」）时去掉这个前缀：
     # 编号已经显示在左栏目录里，正文标题不再重复。
     nav_title = title
-    num_re = re.escape(label.lstrip("0") or label) if label.isdigit() else re.escape(label)
-    if label and (t := re.match(rf"(?:附录|appendix|chapter|part|第)?\s*0*{num_re}(?:\s*(?:章|篇|部分)\s*[·:：、—–]?|\s*[·:：、—–]|\s*-(?=\s)|\.(?=\s))\s*(.+)$",
-                                title, re.I)):
+    num_re = re.escape(label.lstrip("0") or "0") if label.isdigit() else re.escape(label)
+    if label and (t := re.match(rf"(?:附录|appendix|chapter|part|第)?\s*0*{num_re}(?:\s*(?:章|篇|部分)\s*[·:：、—–|｜]?|\s*[·:：、—–|｜]|\s*-(?=\s)|\.(?=\s))\s*(.+)$",
+                                title, re.I)
+                  # 有「附录 / Chapter」这类前缀词时，编号后只隔空格也算（「附录 A　术语表」）
+                  or re.match(rf"(?:附录|appendix|chapter|part)\s*0*{num_re}\s+(.+)$", title, re.I)):
         nav_title = t.group(1)
         if m:
             src = src.replace(m.group(0), f"# {nav_title}", 1)
-    docs[doc_key] = dict(rel=rel, src=src, title=title, label=label, nav_title=nav_title)
+    plain = lambda t: re.sub(r"`([^`\n]+)`", r"\1", t)
+    docs[doc_key] = dict(rel=rel, src=src, title=plain(title), label=label, nav_title=plain(nav_title))
 
 rel2key = {v["rel"]: k for k, v in docs.items()}
 

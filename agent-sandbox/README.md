@@ -62,11 +62,11 @@
 
 **附录**
 
-- [附录 A　术语表](91-appendix-a-glossary.md)
-- [附录 B　关键数字溯源表](92-appendix-b-number-provenance.md)
-- [附录 C　各系统 API 对照](93-appendix-c-api-comparison.md)
-- [附录 D　负载刻画模板](94-appendix-d-workload-template.md)
-- [附录 E　文献库](95-appendix-e-bibliography.md)
+- [附录 A　术语表](A-glossary.md)
+- [附录 B　关键数字溯源表](B-number-provenance.md)
+- [附录 C　各系统 API 对照](C-api-comparison.md)
+- [附录 D　负载刻画模板](D-workload-template.md)
+- [附录 E　文献库](E-bibliography.md)
 
 编写用文件：[`OUTLINE.md`](OUTLINE.md)（详细目录与每章要点）、[`STYLE.md`](STYLE.md)（凡例）、[`FIGURE-GUIDE.md`](FIGURE-GUIDE.md)（图的规约）。
 

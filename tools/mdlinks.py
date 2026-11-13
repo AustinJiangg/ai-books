@@ -9,8 +9,8 @@ import re, os, sys, glob
 
 def slug(t):
     t = t.strip().lower()
+    t = re.sub(r'`([^`]*)`', lambda m: re.sub(r'[<>]', '', m.group(1)), t)   # 代码里的 <T> 是文字，不是标签
     t = re.sub(r'<[^>]+>', '', t)
-    t = re.sub(r'`([^`]*)`', r'\1', t)
     t = re.sub(r'\*\*?([^*]*)\*\*?', r'\1', t)
     t = re.sub(r'\[([^\]]*)\]\([^)]*\)', r'\1', t)
     t = re.sub(r'[^\w一-鿿\- ]', '', t)
@@ -28,7 +28,7 @@ for f in files:
         m = re.match(r'^(#{1,6})\s+(.*)$', line)
         if m:
             s.add(slug(m.group(2)))
-    anchors[os.path.basename(f)] = s
+    anchors[os.path.normpath(f)] = s
 
 bad = missing = 0
 for f in files:
@@ -40,13 +40,13 @@ for f in files:
             continue
         path, _, frag = target.partition('#')
         if path == '':
-            if frag and frag not in anchors[os.path.basename(f)]:
+            if frag and frag not in anchors[os.path.normpath(f)]:
                 print(f'ANCHOR-MISS  {f}  ->  #{frag}   [{label}]'); bad += 1
         else:
             full = os.path.normpath(os.path.join(os.path.dirname(f) or '.', path))
             if not os.path.exists(full):
                 print(f'MISSING-FILE {f}  ->  {path}'); missing += 1
-            elif frag and full.endswith('.md') and frag not in anchors.get(os.path.basename(full), set()):
+            elif frag and full.endswith('.md') and frag not in anchors.get(full, set()):
                 print(f'ANCHOR-MISS  {f}  ->  {path}#{frag}'); bad += 1
 print('---')
 print(f'anchor/link errors: {bad}   not-yet-written targets: {missing}')

@@ -233,7 +233,7 @@ Rust 的单元测试多数以行内 `#[cfg(test)] mod tests` 写在被测文件�
 | `crates/aenv/src/commands/codex/` | 2952 | `aenv codex`：在沙箱里隔离执行的 Codex 会话 | [第 62 篇 §6](62-aenv-cli.md#6-aenv-codex一个完整的用例) |
 | `crates/aenv/src/commands/` 其余 | 3184 | 补全、上传下载、start / pause / resume 等子命令 | [第 62 篇 §7](62-aenv-cli.md#7-补全与其它细节) |
 | `crates/aenv/` 其余 | 412 | 入口、凭据保存、进度与输出 | [第 62 篇](62-aenv-cli.md) |
-| `crates/warm-pool` | 617 | 水位维持的通用预热池 `WarmPool<T>` | [第 32 篇 §2](32-warm-pools.md#2-通用实现warmpool) |
+| `crates/warm-pool` | 617 | 水位维持的通用预热池 `WarmPool<T>` | [第 32 篇 §2](32-warm-pools.md#2-通用实现warmpoolt) |
 | `crates/linux-cap` | 231 | Linux 能力的委派 | [第 59 篇 §5.4](59-host-setup-and-privileges.md#54-linux-cap-crate) |
 | `crates/object-store-operator` | 680 | 对象存储凭据与客户端 | [第 48 篇 §4.4](48-object-storage-repository.md#44-分片上传与凭证) |
 | `crates/observability` | 101 | 节点与控制面共用的指标格式与直方图桶 | [第 57 篇 §6](57-heartbeat-and-cpu-intersection.md#6-共用的直方图桶) |

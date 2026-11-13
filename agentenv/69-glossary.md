@@ -174,7 +174,7 @@
 | hook guard | hook guard | 把一个运行时实例的扩展 hook 生命周期包成 RAII 的对象：先记实例 id 再发 start，保证 stop 能配对。 | [第 33 篇 §4.2](33-custom-extension-hooks.md#42-guard先记-id再发请求) |
 | launch plan | `LaunchPlan` | 冷启动与恢复共用的启动流水线描述，分阶段带检查点与回滚。 | [第 20 篇 §2](20-launch-plan-and-rollback.md#2-launchplan一条流水线两种计划) |
 | 生命周期事件 | lifecycle event | orchestrator 发布的 Create 等五类沙箱事件，订阅者是 guest 指标采样任务与心跳上报器。 | [第 24 篇 §4](24-metrics-and-events.md#4-生命周期事件) |
-| orchestrator | `Orchestrator` | 节点内的沙箱状态机与操作编排者，持有元数据存储、句柄表与路由表。 | [第 10 篇 §4.1](10-node-process-and-object-model.md#41-orchestrator-的字段) |
+| orchestrator | `Orchestrator` | 节点内的沙箱状态机与操作编排者，持有元数据存储、句柄表与路由表。 | [第 10 篇 §4.1](10-node-process-and-object-model.md#41-orchestrators-f-p-的字段) |
 | 暂停状态 | `PausedSandboxState` | 后端交给 orchestrator 的不透明暂停状态 trait 对象。 | [第 10 篇 §4.4](10-node-process-and-object-model.md#44-pausedsandboxstate不透明的暂停状态) |
 | 持久化器 | persister | 把暂停沙箱的记录写进 RocksDB 并在重启时 `load_all()` 的组件。 | [第 22 篇 §2](22-persistence-across-restarts.md#2-持久化器接口) |
 | 可恢复 / 终止错误 | `Recoverable` / `Terminal` | 捕获错误的两类：前者保证 VM 已恢复运行，后者表示 VM 已被改动、不能再当作可运行。 | [第 20 篇 §7.1](20-launch-plan-and-rollback.md#71-两类错误的约定) |
@@ -188,7 +188,7 @@
 | 规范驱动 | spec-driven server | 由 `openapi.yml` 生成 trait 与 handler、手写实现填进去的服务骨架。 | [第 12 篇 §2](12-spec-driven-server.md#2-生成管线) |
 | 状态折叠 | state folding | 对外 API 把八个内部状态折成 running / paused 两个。 | [第 14 篇 §8.1](14-sandbox-api.md#81-八个状态折成两个) |
 | 过期时间 | TTL / timeout | 沙箱的存活时长与到期动作；正文写 TTL，API 字段名照写 `timeout`。 | [第 23 篇 §2](23-auto-eviction-and-ttl.md#2-ttl-的数据表示) |
-| 预热池 | warm pool | 提前备好与身份无关的资源（网络槽位、块设备、Firecracker 进程），按水位补充。 | [第 32 篇 §2](32-warm-pools.md#2-通用实现warmpool) |
+| 预热池 | warm pool | 提前备好与身份无关的资源（网络槽位、块设备、Firecracker 进程），按水位补充。 | [第 32 篇 §2](32-warm-pools.md#2-通用实现warmpoolt) |
 
 ## 6. 网络
 

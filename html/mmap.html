@@ -448,7 +448,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <div class="brandrow"><div class="brand">mmap 从零讲透</div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="深色模式" aria-pressed="false"><svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button></div>
 <label class="search"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="搜索全书" aria-label="搜索全书" autocomplete="off"><kbd>/</kbd></label>
 <div class="sres" id="sres" aria-live="polite"></div>
-<nav class="navlist"><a href="#dp0" data-n="p0"><span class="nt">mmap 从零讲透</span><em class="hit"></em></a><div class="ng">第一部分 打地基：为什么需要 mmap</div><a href="#d01" data-n="01"><span class="nn">01</span><span class="nt">｜从读一个文件说起：程序和操作系统是怎么打交道的</span><em class="hit"></em></a><a href="#d02" data-n="02"><span class="nn">02</span><span class="nt">｜内存到底是什么：地址、字节和物理内存</span><em class="hit"></em></a><a href="#d03" data-n="03"><span class="nn">03</span><span class="nt">｜虚拟内存：每个程序都活在自己的&quot;楚门的世界&quot;</span><em class="hit"></em></a><a href="#d04" data-n="04"><span class="nn">04</span><span class="nt">｜缺页异常：操作系统的&quot;按需供货&quot;魔法</span><em class="hit"></em></a><a href="#d05" data-n="05"><span class="nn">05</span><span class="nt">｜页缓存：文件在内存里的&quot;分身&quot;</span><em class="hit"></em></a><div class="ng">第二部分 认识 mmap：是什么、怎么用</div><a href="#d06" data-n="06"><span class="nn">06</span><span class="nt">｜mmap 登场：把文件变成一个数组</span><em class="hit"></em></a><a href="#d07" data-n="07"><span class="nn">07</span><span class="nt">｜共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制</span><em class="hit"></em></a><a href="#d08" data-n="08"><span class="nn">08</span><span class="nt">｜匿名映射：没有文件的 mmap</span><em class="hit"></em></a><a href="#d09" data-n="09"><span class="nn">09</span><span class="nt">｜数据什么时候真正落盘：一致性、同步与崩溃</span><em class="hit"></em></a><div class="ng">第三部分 深入与实战：为什么、何时用</div><a href="#d10" data-n="10"><span class="nn">10</span><span class="nt">｜性能真相：mmap 一定比 read 快吗？</span><em class="hit"></em></a><a href="#d11" data-n="11"><span class="nn">11</span><span class="nt">｜内核视角：一次 mmap 调用在内核里走过的路</span><em class="hit"></em></a><a href="#d12" data-n="12"><span class="nn">12</span><span class="nt">｜真实世界里的 mmap：谁在用、怎么用、踩过哪些坑</span><em class="hit"></em></a><div class="ng">写作说明</div><a href="#dp13" data-n="p13"><span class="nt">大纲</span><em class="hit"></em></a></nav>
+<nav class="navlist"><a href="#dp0" data-n="p0"><span class="nt">mmap 从零讲透</span><em class="hit"></em></a><div class="ng">第一部分 打地基：为什么需要 mmap</div><a href="#d01" data-n="01"><span class="nn">01</span><span class="nt">从读一个文件说起：程序和操作系统是怎么打交道的</span><em class="hit"></em></a><a href="#d02" data-n="02"><span class="nn">02</span><span class="nt">内存到底是什么：地址、字节和物理内存</span><em class="hit"></em></a><a href="#d03" data-n="03"><span class="nn">03</span><span class="nt">虚拟内存：每个程序都活在自己的&quot;楚门的世界&quot;</span><em class="hit"></em></a><a href="#d04" data-n="04"><span class="nn">04</span><span class="nt">缺页异常：操作系统的&quot;按需供货&quot;魔法</span><em class="hit"></em></a><a href="#d05" data-n="05"><span class="nn">05</span><span class="nt">页缓存：文件在内存里的&quot;分身&quot;</span><em class="hit"></em></a><div class="ng">第二部分 认识 mmap：是什么、怎么用</div><a href="#d06" data-n="06"><span class="nn">06</span><span class="nt">mmap 登场：把文件变成一个数组</span><em class="hit"></em></a><a href="#d07" data-n="07"><span class="nn">07</span><span class="nt">共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制</span><em class="hit"></em></a><a href="#d08" data-n="08"><span class="nn">08</span><span class="nt">匿名映射：没有文件的 mmap</span><em class="hit"></em></a><a href="#d09" data-n="09"><span class="nn">09</span><span class="nt">数据什么时候真正落盘：一致性、同步与崩溃</span><em class="hit"></em></a><div class="ng">第三部分 深入与实战：为什么、何时用</div><a href="#d10" data-n="10"><span class="nn">10</span><span class="nt">性能真相：mmap 一定比 read 快吗？</span><em class="hit"></em></a><a href="#d11" data-n="11"><span class="nn">11</span><span class="nt">内核视角：一次 mmap 调用在内核里走过的路</span><em class="hit"></em></a><a href="#d12" data-n="12"><span class="nn">12</span><span class="nt">真实世界里的 mmap：谁在用、怎么用、踩过哪些坑</span><em class="hit"></em></a><div class="ng">写作说明</div><a href="#dp13" data-n="p13"><span class="nt">大纲</span><em class="hit"></em></a></nav>
 </aside>
 <div class="scrim" id="scrim"></div>
 <main><article id="vp0" class="doc" hidden><h1 id="dp0-mmap-从零讲透">mmap 从零讲透</h1>
@@ -484,7 +484,7 @@ span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 
 <li>第 10～12 篇面向想深入的读者：性能分析、内核源码路径和真实系统里的用法。</li>
 <li>每篇末尾有“本篇小结”表格，复习时过一遍小结即可。</li>
 <li>文中的 C 示例程序都是完整可编译的，建议边读边在 Linux 上跑一遍；输出里的地址、计数等数字随机器而异，看量级即可。第 1 篇里直接执行 <code>svc</code> 指令的程序只能在 ARM64 上编译。</li>
-</ul><nav class="pager" data-n="p0"></nav></article><article id="v01" class="doc" hidden><h1 id="d01-从读一个文件说起程序和操作系统是怎么打交道的">｜从读一个文件说起：程序和操作系统是怎么打交道的</h1>
+</ul><nav class="pager" data-n="p0"></nav></article><article id="v01" class="doc" hidden><h1 id="d01-从读一个文件说起程序和操作系统是怎么打交道的">从读一个文件说起：程序和操作系统是怎么打交道的</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：搞懂"程序读文件"这件日常小事背后到底发生了什么，理解<strong>用户态/内核态</strong>、<strong>系统调用</strong>、<strong>文件描述符</strong>这几个基础概念，并亲眼看到"数据被搬了好几次"这个事实——它正是 mmap 诞生的理由。</p>
 <p><strong>约定</strong>：本系列代码使用 C 语言 + Linux；涉及硬件细节时以 <strong>ARM64（aarch64）</strong> 为例，必要时对比 x86。</p>
@@ -923,7 +923,7 @@ close(2)                                = 0
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d02">《内存到底是什么：地址、字节和物理内存》</a>。我们会打开内存条看看里面的"储物格"，弄清指针到底是什么，并做一个有点奇怪的实验：两个同时运行的程序，把数据放在"同一个地址"，却互不干扰。这怎么可能？</p><nav class="pager" data-n="01"></nav></article><article id="v02" class="doc" hidden><h1 id="d02-内存到底是什么地址字节和物理内存">｜内存到底是什么：地址、字节和物理内存</h1>
+<p><strong>下一篇预告</strong>：<a href="#d02">《内存到底是什么：地址、字节和物理内存》</a>。我们会打开内存条看看里面的"储物格"，弄清指针到底是什么，并做一个有点奇怪的实验：两个同时运行的程序，把数据放在"同一个地址"，却互不干扰。这怎么可能？</p><nav class="pager" data-n="01"></nav></article><article id="v02" class="doc" hidden><h1 id="d02-内存到底是什么地址字节和物理内存">内存到底是什么：地址、字节和物理内存</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：弄清"内存"和"地址"到底是什么，理解指针的本质，建立对存储速度差距的直觉，并通过一个实验发现一件奇怪的事：<strong>程序看到的地址，并不是内存条上的真实位置。</strong></p>
 </blockquote>
@@ -1252,7 +1252,7 @@ setarch<span class="w"> </span>-R<span class="w"> </span>./same_addr<span class=
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d03">《虚拟内存：每个程序都活在自己的"楚门的世界"》</a>。我们会拆开 ARM64 的四级页表，看 CPU 里的 MMU 是如何在每一次内存访问时完成翻译的，还会第一次打开进程的"内存地图" <code>/proc/self/maps</code>——你会在里面发现 mmap 的身影。</p><nav class="pager" data-n="02"></nav></article><article id="v03" class="doc" hidden><h1 id="d03-虚拟内存每个程序都活在自己的楚门的世界">｜虚拟内存：每个程序都活在自己的"楚门的世界"</h1>
+<p><strong>下一篇预告</strong>：<a href="#d03">《虚拟内存：每个程序都活在自己的"楚门的世界"》</a>。我们会拆开 ARM64 的四级页表，看 CPU 里的 MMU 是如何在每一次内存访问时完成翻译的，还会第一次打开进程的"内存地图" <code>/proc/self/maps</code>——你会在里面发现 mmap 的身影。</p><nav class="pager" data-n="02"></nav></article><article id="v03" class="doc" hidden><h1 id="d03-虚拟内存每个程序都活在自己的楚门的世界">虚拟内存：每个程序都活在自己的"楚门的世界"</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：理解虚拟地址如何被翻译成物理地址——<strong>页、页表、MMU、TLB</strong> 这四个核心概念；以 ARM64 为例拆解四级页表；最后第一次读懂进程的内存地图 <code>/proc/self/maps</code>，并在里面找到 mmap。</p>
 </blockquote>
@@ -1693,7 +1693,7 @@ ffffd8e3a000-ffffd8e5b000 rw-p 00000000 00:00 0        [stack]
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d04">《缺页异常：操作系统的"按需供货"魔法》</a>。我们会看到访问一个"无效"页时，CPU 和内核之间发生了怎样一场精密的接力，并用实验证明：<code>malloc</code> 了 1GB 内存，实际上可能一个字节的物理内存都没占用。</p><nav class="pager" data-n="03"></nav></article><article id="v04" class="doc" hidden><h1 id="d04-缺页异常操作系统的按需供货魔法">｜缺页异常：操作系统的"按需供货"魔法</h1>
+<p><strong>下一篇预告</strong>：<a href="#d04">《缺页异常：操作系统的"按需供货"魔法》</a>。我们会看到访问一个"无效"页时，CPU 和内核之间发生了怎样一场精密的接力，并用实验证明：<code>malloc</code> 了 1GB 内存，实际上可能一个字节的物理内存都没占用。</p><nav class="pager" data-n="03"></nav></article><article id="v04" class="doc" hidden><h1 id="d04-缺页异常操作系统的按需供货魔法">缺页异常：操作系统的"按需供货"魔法</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：理解访问一个"不存在"的页时发生了什么——<strong>缺页异常（page fault）</strong>的完整流程；分清小缺页、大缺页和段错误；用实验证明"申请了内存 ≠ 占用了内存"。这是理解 mmap 为什么能"瞬间映射 10GB 文件"的关键。</p>
 </blockquote>
@@ -2039,7 +2039,7 @@ dmesg<span class="w"> </span><span class="p">|</span><span class="w"> </span>tai
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d05">《页缓存：文件在内存里的"分身"》</a>。我们将认识内核里最大的一块缓存——page cache，看清 <code>read</code> 和 mmap 在数据通路上的本质区别，并解释一个常见的困惑：为什么 Linux 总是"吃光"你的内存？</p><nav class="pager" data-n="04"></nav></article><article id="v05" class="doc" hidden><h1 id="d05-页缓存文件在内存里的分身">｜页缓存：文件在内存里的"分身"</h1>
+<p><strong>下一篇预告</strong>：<a href="#d05">《页缓存：文件在内存里的"分身"》</a>。我们将认识内核里最大的一块缓存——page cache，看清 <code>read</code> 和 mmap 在数据通路上的本质区别，并解释一个常见的困惑：为什么 Linux 总是"吃光"你的内存？</p><nav class="pager" data-n="04"></nav></article><article id="v05" class="doc" hidden><h1 id="d05-页缓存文件在内存里的分身">页缓存：文件在内存里的"分身"</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：认识 Linux 内核里最重要的缓存——<strong>页缓存（page cache）</strong>。理解读写文件时数据在哪里停留、脏页是什么、什么时候写回磁盘，并看清 <code>read</code> 与 mmap 在数据通路上的本质区别。</p>
 </blockquote>
@@ -2359,7 +2359,7 @@ grep<span class="w"> </span>-E<span class="w"> </span><span class="s2">&quot;Dir
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d06">《mmap 登场：把文件变成一个数组》</a>。地基已经打好，主角正式登场！我们会逐个参数讲清 <code>mmap</code> 函数，写出第一个用 mmap 读文件和改文件的程序，并盘点新手最容易踩的坑。</p><nav class="pager" data-n="05"></nav></article><article id="v06" class="doc" hidden><h1 id="d06-mmap-登场把文件变成一个数组">｜mmap 登场：把文件变成一个数组</h1>
+<p><strong>下一篇预告</strong>：<a href="#d06">《mmap 登场：把文件变成一个数组》</a>。地基已经打好，主角正式登场！我们会逐个参数讲清 <code>mmap</code> 函数，写出第一个用 mmap 读文件和改文件的程序，并盘点新手最容易踩的坑。</p><nav class="pager" data-n="05"></nav></article><article id="v06" class="doc" hidden><h1 id="d06-mmap-登场把文件变成一个数组">mmap 登场：把文件变成一个数组</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：逐个参数讲清 <code>mmap</code> 和 <code>munmap</code>，写出第一个用 mmap <strong>读</strong>文件和<strong>改</strong>文件的程序，用实验验证"mmap 什么都不读、缺页才读"，并盘点新手最容易踩的坑。</p>
 </blockquote>
@@ -2920,7 +2920,7 @@ sync<span class="p">;</span><span class="w"> </span><span class="nb">echo</span>
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d07">《共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制》</a>。为什么 <code>MAP_PRIVATE</code> 下修改了内容但文件没变？修改的数据去哪儿了？我们会揭开<strong>写时复制（COW）</strong>的机制，顺便解答一个经典问题：为什么 <code>fork</code> 一个占用 10GB 内存的进程只需要几毫秒？</p><nav class="pager" data-n="06"></nav></article><article id="v07" class="doc" hidden><h1 id="d07-共享还是私有map_sharedmap_private-与写时复制">｜共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制</h1>
+<p><strong>下一篇预告</strong>：<a href="#d07">《共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制》</a>。为什么 <code>MAP_PRIVATE</code> 下修改了内容但文件没变？修改的数据去哪儿了？我们会揭开<strong>写时复制（COW）</strong>的机制，顺便解答一个经典问题：为什么 <code>fork</code> 一个占用 10GB 内存的进程只需要几毫秒？</p><nav class="pager" data-n="06"></nav></article><article id="v07" class="doc" hidden><h1 id="d07-共享还是私有map_sharedmap_private-与写时复制">共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：彻底搞懂 <code>MAP_SHARED</code> 和 <code>MAP_PRIVATE</code> 的区别；理解操作系统中最巧妙的技巧之一——<strong>写时复制（Copy-on-Write，COW）</strong>；并用它解释为什么 <code>fork</code> 一个占用 10GB 内存的进程只需要几毫秒。</p>
 </blockquote>
@@ -3343,7 +3343,7 @@ cat<span class="w"> </span>demo.txt
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d08">《匿名映射：没有文件的 mmap》</a>。如果 mmap 不关联任何文件呢？我们会发现 <code>malloc</code> 的秘密、进程间共享内存的实现方式，以及 <code>/dev/shm</code> 这个"活在内存里的文件系统"。</p><nav class="pager" data-n="07"></nav></article><article id="v08" class="doc" hidden><h1 id="d08-匿名映射没有文件的-mmap">｜匿名映射：没有文件的 mmap</h1>
+<p><strong>下一篇预告</strong>：<a href="#d08">《匿名映射：没有文件的 mmap》</a>。如果 mmap 不关联任何文件呢？我们会发现 <code>malloc</code> 的秘密、进程间共享内存的实现方式，以及 <code>/dev/shm</code> 这个"活在内存里的文件系统"。</p><nav class="pager" data-n="07"></nav></article><article id="v08" class="doc" hidden><h1 id="d08-匿名映射没有文件的-mmap">匿名映射：没有文件的 mmap</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：理解不关联任何文件的<strong>匿名映射</strong>；揭开 <code>malloc</code> 背后的 <code>brk</code> 与 mmap；学会用 mmap 在进程之间共享内存（父子进程、无关进程）；认识 <code>/dev/shm</code>、tmpfs 和 <code>memfd_create</code>。最后提醒一个 ARM64 上特别要注意的问题：共享内存的<strong>内存顺序</strong>。</p>
 </blockquote>
@@ -3707,7 +3707,7 @@ ls<span class="w"> </span>-l<span class="w"> </span>/dev/shm/demo_shm
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d09">《数据什么时候真正落盘：一致性、同步与崩溃》</a>。你在 mmap 区域里写下的数据，此刻究竟在哪里？<code>munmap</code> 了就安全了吗？断电会怎样？文件被别人截断时为什么会收到 SIGBUS？我们会一一解答，并学会用 <code>msync</code> 保护你的数据。</p><nav class="pager" data-n="08"></nav></article><article id="v09" class="doc" hidden><h1 id="d09-数据什么时候真正落盘一致性同步与崩溃">｜数据什么时候真正落盘：一致性、同步与崩溃</h1>
+<p><strong>下一篇预告</strong>：<a href="#d09">《数据什么时候真正落盘：一致性、同步与崩溃》</a>。你在 mmap 区域里写下的数据，此刻究竟在哪里？<code>munmap</code> 了就安全了吗？断电会怎样？文件被别人截断时为什么会收到 SIGBUS？我们会一一解答，并学会用 <code>msync</code> 保护你的数据。</p><nav class="pager" data-n="08"></nav></article><article id="v09" class="doc" hidden><h1 id="d09-数据什么时候真正落盘一致性同步与崩溃">数据什么时候真正落盘：一致性、同步与崩溃</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：弄清写进 mmap 区域的数据<strong>此刻在哪里</strong>、<strong>何时到达磁盘</strong>；掌握 <code>msync</code> 的正确用法；理解 <code>munmap</code> 和进程退出到底保证了什么；认识断电时的崩溃一致性问题；最后学会诊断和防范 mmap 特有的 <strong>SIGBUS</strong>。</p>
 </blockquote>
@@ -4141,7 +4141,7 @@ ls<span class="w"> </span>-l<span class="w"> </span>/dev/shm/demo_shm
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d10">《性能真相：mmap 一定比 read 快吗？》</a>。网上流传着"mmap 零拷贝，所以更快"的说法，但事实远比这复杂。我们会分析 mmap 的隐藏成本——缺页、页表、TLB 击落——学会用 <code>madvise</code> 和大页调优，并亲手写一个基准测试来检验。</p><nav class="pager" data-n="09"></nav></article><article id="v10" class="doc" hidden><h1 id="d10-性能真相mmap-一定比-read-快吗">｜性能真相：mmap 一定比 read 快吗？</h1>
+<p><strong>下一篇预告</strong>：<a href="#d10">《性能真相：mmap 一定比 read 快吗？》</a>。网上流传着"mmap 零拷贝，所以更快"的说法，但事实远比这复杂。我们会分析 mmap 的隐藏成本——缺页、页表、TLB 击落——学会用 <code>madvise</code> 和大页调优，并亲手写一个基准测试来检验。</p><nav class="pager" data-n="09"></nav></article><article id="v10" class="doc" hidden><h1 id="d10-性能真相mmap-一定比-read-快吗">性能真相：mmap 一定比 read 快吗？</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：打破"mmap 零拷贝所以一定更快"的迷思。系统地分析 mmap 省掉了什么、又额外付出了什么；理解缺页开销、TLB 击落、预读；学会使用 <code>madvise</code>、<code>MAP_POPULATE</code>、大页和 <code>mlock</code> 调优；并亲手写一个基准测试。</p>
 </blockquote>
@@ -4581,7 +4581,7 @@ gcc<span class="w"> </span>-O2<span class="w"> </span>bench.c<span class="w"> </
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d11">《内核视角：一次 mmap 调用在内核里走过的路》</a>。我们将钻进 Linux 内核，看 <code>mm_struct</code> 和 VMA 如何组织一个进程的地址空间，跟踪一次 mmap 系统调用和一次缺页在 ARM64 上的完整代码路径，并学会读懂 <code>/proc/pid/smaps</code> 里的 RSS、PSS 等指标。</p><nav class="pager" data-n="10"></nav></article><article id="v11" class="doc" hidden><h1 id="d11-内核视角一次-mmap-调用在内核里走过的路">｜内核视角：一次 mmap 调用在内核里走过的路</h1>
+<p><strong>下一篇预告</strong>：<a href="#d11">《内核视角：一次 mmap 调用在内核里走过的路》</a>。我们将钻进 Linux 内核，看 <code>mm_struct</code> 和 VMA 如何组织一个进程的地址空间，跟踪一次 mmap 系统调用和一次缺页在 ARM64 上的完整代码路径，并学会读懂 <code>/proc/pid/smaps</code> 里的 RSS、PSS 等指标。</p><nav class="pager" data-n="10"></nav></article><article id="v11" class="doc" hidden><h1 id="d11-内核视角一次-mmap-调用在内核里走过的路">内核视角：一次 mmap 调用在内核里走过的路</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：钻进 Linux 内核，认识管理进程地址空间的两个核心数据结构 <strong><code>mm_struct</code></strong> 和 <strong>VMA</strong>；跟踪一次 mmap 系统调用和一次缺页异常在 <strong>ARM64</strong> 上的代码路径；理解页缓存的 <code>address_space</code>、反向映射与内存回收；最后读懂 <code>/proc/pid/smaps</code> 中的 RSS、PSS 等指标。</p>
 <p>本篇会出现一些内核函数名。你不需要记住它们，它们的作用是给你一张"地图"：以后想读内核源码时，知道从哪里下手。内核在不断演进，具体函数名在不同版本间可能有调整，本文以较新的 6.x 内核为准。</p>
@@ -5035,7 +5035,7 @@ pmap<span class="w"> </span>-X<span class="w"> </span><span class="nv">$PID</spa
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d12">《真实世界里的 mmap：谁在用、怎么用、踩过哪些坑》</a>。系列最后一篇，我们会看到 mmap 在动态链接器、数据库、设备驱动、虚拟机（Firecracker）中的真实用法，认识让用户程序接管缺页的 <code>userfaultfd</code>，并用一张图把整个系列串起来。</p><nav class="pager" data-n="11"></nav></article><article id="v12" class="doc" hidden><h1 id="d12-真实世界里的-mmap谁在用怎么用踩过哪些坑">｜真实世界里的 mmap：谁在用、怎么用、踩过哪些坑</h1>
+<p><strong>下一篇预告</strong>：<a href="#d12">《真实世界里的 mmap：谁在用、怎么用、踩过哪些坑》</a>。系列最后一篇，我们会看到 mmap 在动态链接器、数据库、设备驱动、虚拟机（Firecracker）中的真实用法，认识让用户程序接管缺页的 <code>userfaultfd</code>，并用一张图把整个系列串起来。</p><nav class="pager" data-n="11"></nav></article><article id="v12" class="doc" hidden><h1 id="d12-真实世界里的-mmap谁在用怎么用踩过哪些坑">真实世界里的 mmap：谁在用、怎么用、踩过哪些坑</h1>
 <blockquote>
 <p><strong>本篇目标</strong>：看 mmap 在真实系统中的用法——动态链接器、数据库、设备与零拷贝、虚拟机（以 <strong>Firecracker</strong> 为例）；认识让用户程序接管缺页的 <strong>userfaultfd</strong>；汇总常见陷阱和排查工具；最后用一张图把整个系列串起来。</p>
 </blockquote>
@@ -5794,7 +5794,7 @@ close(3)                                = 0
 <span class="pct" id="lbpct"></span><button id="lbin" type="button" aria-label="放大" title="放大 (+)">+</button>
 <button id="lbfit" type="button" title="适合屏幕 (0)">适合</button><button id="lbclose" type="button" aria-label="关闭" title="关闭 (Esc)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div></div>
 <script>
-const ORDER=["p0", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "p13"], T={"p0": "mmap 从零讲透", "01": "｜从读一个文件说起：程序和操作系统是怎么打交道的", "02": "｜内存到底是什么：地址、字节和物理内存", "03": "｜虚拟内存：每个程序都活在自己的\"楚门的世界\"", "04": "｜缺页异常：操作系统的\"按需供货\"魔法", "05": "｜页缓存：文件在内存里的\"分身\"", "06": "｜mmap 登场：把文件变成一个数组", "07": "｜共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制", "08": "｜匿名映射：没有文件的 mmap", "09": "｜数据什么时候真正落盘：一致性、同步与崩溃", "10": "｜性能真相：mmap 一定比 read 快吗？", "11": "｜内核视角：一次 mmap 调用在内核里走过的路", "12": "｜真实世界里的 mmap：谁在用、怎么用、踩过哪些坑", "p13": "大纲"}, UI={"lang": "zh-CN", "toc": "目录", "open_toc": "打开目录", "search": "搜索全书", "in_doc": "本篇小节", "prev": "← 上一篇", "next": "下一篇 →", "found": "{d} 篇，共 {h} 处", "none": "没有找到", "other": "其他", "missing": "缺图", "fig": "图", "dark": "深色模式", "to_light": "切换到浅色模式", "to_dark": "切换到深色模式", "viewer": "查看大图", "zoom_in": "放大", "zoom_out": "缩小", "fit": "适合", "fit_t": "适合屏幕", "close": "关闭", "alert": {"note": "注意", "tip": "提示", "important": "重要", "warning": "警告", "caution": "小心"}};
+const ORDER=["p0", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "p13"], T={"p0": "mmap 从零讲透", "01": "从读一个文件说起：程序和操作系统是怎么打交道的", "02": "内存到底是什么：地址、字节和物理内存", "03": "虚拟内存：每个程序都活在自己的\"楚门的世界\"", "04": "缺页异常：操作系统的\"按需供货\"魔法", "05": "页缓存：文件在内存里的\"分身\"", "06": "mmap 登场：把文件变成一个数组", "07": "共享还是私有：MAP_SHARED、MAP_PRIVATE 与写时复制", "08": "匿名映射：没有文件的 mmap", "09": "数据什么时候真正落盘：一致性、同步与崩溃", "10": "性能真相：mmap 一定比 read 快吗？", "11": "内核视角：一次 mmap 调用在内核里走过的路", "12": "真实世界里的 mmap：谁在用、怎么用、踩过哪些坑", "p13": "大纲"}, UI={"lang": "zh-CN", "toc": "目录", "open_toc": "打开目录", "search": "搜索全书", "in_doc": "本篇小节", "prev": "← 上一篇", "next": "下一篇 →", "found": "{d} 篇，共 {h} 处", "none": "没有找到", "other": "其他", "missing": "缺图", "fig": "图", "dark": "深色模式", "to_light": "切换到浅色模式", "to_dark": "切换到深色模式", "viewer": "查看大图", "zoom_in": "放大", "zoom_out": "缩小", "fit": "适合", "fit_t": "适合屏幕", "close": "关闭", "alert": {"note": "注意", "tip": "提示", "important": "重要", "warning": "警告", "caution": "小心"}};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const side=$('#side'), toc=$('#toc'), q=$('#q'), bar=$('#bar');
 let cur=null, heads=[], jumpToHit=false, lastOn=-2;
