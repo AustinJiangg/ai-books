@@ -26,7 +26,13 @@ if [ ! -d overlaybd-upstream ]; then
   git clone -q --depth 1 https://github.com/containerd/overlaybd overlaybd-upstream
 fi
 
+if [ ! -d deepinfer ]; then
+  git clone -q https://github.com/deepseek-ai/DeepInfer deepinfer
+fi
+git -C deepinfer checkout -q 9bd9cf2
+
 echo "agentenv   $(git -C agentenv rev-parse --short=12 HEAD)  (v0.2.3)"
 echo "fc-aenv    $(git -C fc-aenv rev-parse --short=12 HEAD)  (aenv-deps)"
 echo "e2b-infra  $(git -C e2b-infra rev-parse --short=12 HEAD)  (2026.09)"
 echo "overlaybd  $(git -C overlaybd-upstream rev-parse --short=12 HEAD)  (containerd/overlaybd main)"
+echo "deepinfer  $(git -C deepinfer rev-parse --short=12 HEAD)  (9bd9cf2)"
