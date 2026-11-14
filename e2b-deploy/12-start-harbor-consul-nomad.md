@@ -83,8 +83,10 @@ set -a; source .env; set +a      # 再读一次：上一步可能把新的 Consu
 
 `install-consul.sh` 和 `install-nomad.sh` 做的事情差不多：
 
-1. 从 `/tmp` 取安装包（`-i` 放好的），解压出二进制，放到 `/usr/local/bin`；
+1. 从 `/tmp` 取安装包（`-i` 放好的），解压出二进制，放到 `/opt/consul/bin`、`/opt/nomad/bin`，再在 `/usr/local/bin` 建一个同名软链接，这样命令行里直接敲 `consul`、`nomad` 就能用；
 2. 创建配置目录、数据目录。
+
+一个小细节：Consul 的安装包路径是写死的 `/tmp/consul.zip`，和版本号无关；Nomad 的路径里带版本号（`/tmp/nomad_1.11.2_linux_arm64.zip`），跟着 `.env` 的 `NOMAD_VERSION` 走。所以 `.env` 里的 `CONSUL_VERSION` 实际上不决定装哪个版本，真正决定的是 `build.sh -i` 拷过来的那个文件（第 16 篇）。
 
 ### 3.2 `run-consul.sh --server`
 
