@@ -22,7 +22,7 @@
 
 本书自成一体，不依赖本仓库其他书。网络相关内容只在用到时一句带过，详见《E2B 沙箱网络从零讲透》。
 
-**规模**：18 篇，每篇约 3000～3800 个汉字，合计约 6 万汉字（连同代码、命令和英文约 14 万字符）。
+**规模**：19 篇，每篇约 3000～3800 个汉字，合计约 6.5 万汉字（连同代码、命令和英文约 15 万字符）。
 
 **贯穿全书的几个事实**，正文会反复回到这里：
 
@@ -64,8 +64,9 @@
   - hugetlbfs：`/mnt/hugepages`。
   - 设备：`/dev/nbd0`～`/dev/nbd511`。
   - 运行环境文件：`/fc-kernels`、`/fc-versions`、`/fc-envd`。
-  - 存“数据的数据”的地方：Harbor 存 Docker 镜像，PostgreSQL 存模板和 build 记录，Redis 存运行中沙箱的目录。这些在第 8 篇和第 17 篇简单提一下。
-  - 装了但没用上的 MinIO（第 9 篇解释）。
+  - 镜像仓库 Harbor：模板的“原料”Docker 镜像存在这里（第 8 篇）。
+  - 存“数据的数据”的地方：PostgreSQL 存模板和 build 记录，Redis 存运行中沙箱的目录。这些在第 9 篇和第 18 篇简单提一下。
+  - 装了但没用上的 MinIO（第 10 篇解释）。
 - 本书路线图：每一部分负责全景图上的哪一块。
 
 ### 第 2 篇　存储基础（一）：字节、块、页与文件系统
@@ -78,7 +79,7 @@
 - 文件就是一串字节；一个文件也可以被当成一块“硬盘”来用。镜像文件 `rootfs.ext4` 就是这样一块装在文件里的盘。
 - 稀疏文件：文件“看起来”有 10 GB，实际只占用写过的那部分。`ls -l` 和 `du` 为什么对不上。
   - 后面的 diff 文件、COW 文件、检查点文件都是稀疏文件。
-- 页缓存：读过的文件内容会留在内存里，这对“谁占了内存”的判断有什么影响（第 17 篇的 memcg 上限要用）。
+- 页缓存：读过的文件内容会留在内存里，这对“谁占了内存”的判断有什么影响（第 18 篇的 memcg 上限要用）。
 - tmpfs：放在内存里的文件系统。`/tmp`、`/mnt/snapshot-cache` 都是它，重启即空。
 
 ### 第 3 篇　存储基础（二）：块设备与 NBD
@@ -112,8 +113,8 @@
   - `UFFDIO_COPY`：程序把数据填进去。
   - 写保护（WP）：页在，但写它时要通知我。
   - 类比：仓库按订单现取货；货架上加封条，有人动就报告。
-- `/proc/<pid>/pagemap`：内核告诉你每一页是否在内存里、是否带写保护位（第 14 篇要用）。
-- `process_vm_readv`：直接读另一个进程的内存，不经过文件（第 13 篇要用）。
+- `/proc/<pid>/pagemap`：内核告诉你每一页是否在内存里、是否带写保护位（第 15 篇要用）。
+- `process_vm_readv`：直接读另一个进程的内存，不经过文件（第 14 篇要用）。
 - 脏页：被写过的页。“记下哪些页脏了”有三种办法，本书都会遇到：
   - UFFD 写保护位；
   - KVM 脏页日志；
@@ -130,7 +131,7 @@
   - 链表式：逐层往下找，层越多越慢。
   - 拍平的映射表：查一次表就知道这一块在哪一层的哪个偏移。E2B 的 header 就是这种（第 7 篇）。
 - 拍平的代价：被引用到的每一层都必须留着；删中间一层会打断后代。
-- 压实（compaction）：把层合并起来，免得越叠越多（第 16 篇）。
+- 压实（compaction）：把层合并起来，免得越叠越多（第 17 篇）。
 - 小结：本书后面几乎所有设计，都是“共享不变的部分，只存改过的部分，再用一张表把它们拼起来”。
 
 ### 第 6 篇　虚拟机的“盘”和“内存条”：Firecracker 眼中的存储
@@ -151,7 +152,7 @@
   - 创建快照时不传 `mem_file_path`，Firecracker 只写 vmstate，不导出内存。
   - `GET /memory/dirty`：脏页位图。
   - `GET /memory/mappings`：客户机页到宿主虚拟地址的映射。
-  - 回滚接口（第 15 篇）。
+  - 回滚接口（第 16 篇）。
 - 一张图：Firecracker 进程、`/dev/nbdN`、UFFD socket、大页内存、orchestrator 之间的关系。后面第 11～13 篇逐块展开。
 
 ## 第二部分　模板：沙箱的“出生证”
@@ -175,14 +176,46 @@
 - 全零块：映射到 `uuid.Nil`，读的时候直接给零，不占存储。
 - 举例：一个模板，加两次暂停，得到三代 header 和三个 diff；手工“查表”读出第 N 块。
 - 新旧格式：为什么代码里还留着 `oldMemfileHugePageSize`、`oldRootfsBlockSize`。
-- 持久化存储里的键名与本地路径一一对应，见第 9 篇。
+- 持久化存储里的键名与本地路径一一对应，见第 10 篇。
 
-### 第 8 篇　从 Dockerfile 到 rootfs.ext4：模板构建流水线
+### 第 8 篇　模板的原料仓库：Harbor 与镜像的存放
+
+- 问题：模板的第一行是 `FROM harbor:443/e2b-orchestration/ubuntu:22.04-custom`。这个镜像存在哪，template-manager 又是怎么拿到它的？
+- 镜像仓库（registry）是什么：一个按“仓库名:标签”存取镜像的 HTTP 服务。用“仓库管理员按货号收发货”来类比。
+- OCI 镜像在仓库里怎么存：
+  - 清单（manifest）：这个镜像由哪几层组成，平台是什么。
+  - 配置（config）：环境变量、工作目录、启动命令。
+  - 层（layer）：一个个 tar.gz，按内容的 sha256 命名，相同的层只存一份。
+  - 多平台镜像的索引：为什么补丁把拉取平台固定为 `linux/arm64`，拉到 x86 镜像会直接报错。
+- Harbor 是什么：在 Docker 官方 registry 外面加了项目、用户、网页界面的“仓库管理系统”，自己由一组容器组成。
+- 这套环境怎么装 Harbor：
+  - `-i`：解压社区构建的 aarch64 离线包 `harbor-offline-installer-aarch64-v2.13.0.tgz`，改 `harbor.yml`：注释掉 https，`hostname` 改成本机 IP，HTTP 端口改成 2900。
+  - `-i` 还装了 nginx：`server_name harbor`、`listen 443 ssl`，反代到 `127.0.0.1:2900`；生成自签证书，装进系统信任库和 `/etc/docker/certs.d/harbor:443/`。
+  - `-s`：执行 Harbor 的 `install.sh` 拉起容器，修正配置目录属主（容器内 UID 10000），`docker login`，用 REST API 建公开项目 `e2b-orchestration`。
+  - `-s`：`ensure_harbor_hostname` 往 `/etc/hosts` 写 `<本机IP> harbor` 并重启 dnsmasq。
+  - `-s`：`push_base_image` 把 `dep/ubuntu-22.04-custom.tar.gz` 先 `docker load`，再推成 `e2b-orchestration/ubuntu:22.04-custom`；已有就跳过。
+- 为什么有两个地址：
+  - 推送走 `<本机IP>:2900`（HTTP，`daemon.json` 的 `insecure-registries`），避开 docker daemon 代理设置对 `harbor` 这个名字的误转发。
+  - 拉取走 `harbor:443`（HTTPS，nginx 反代）。
+  - 两个地址背后是同一个仓库。
+- template-manager 怎么拉镜像：
+  - 不经过本机 docker daemon，而是用 Go 的 go-containerregistry 直接按 registry 协议拉（`GetPublicImage`）。
+  - 名字 `harbor` 靠 dnsmasq 读 `/etc/hosts` 解析；证书靠系统信任库，以及 hcl 里的 `SSL_CERT_FILE`。
+  - 拉下来的层在第 9 篇被解包、转成 ext4。
+- `ARTIFACTS_REGISTRY_PROVIDER=Local`：另一条“从 build 记录取镜像”的路径，读的是本机 docker daemon 里的 `templateID:buildID`。本环境建模板走的是 `FROM` 指定的公开路径。
+- 镜像本身存在哪：Harbor 的数据目录（安装包默认 `/data`）。和模板文件、MinIO 是三处互不相干的存储。
+- 常见问题：
+  - `lookup harbor ... server misbehaving`：主机名没解析。
+  - 推送 504：请求被转给了代理。
+  - `docker-compose` 版本太老，解析不了 Harbor 2.13 的 compose 文件。
+  - 拉取报平台不匹配。
+
+### 第 9 篇　从 Dockerfile 到 rootfs.ext4：模板构建流水线
 
 - 入口：
   - 宿主上用 SDK（本环境由 `build.sh -i` 打了补丁：`patch_e2b.py`、`dockerfile_parser.py`、`build_api.py`），或 `benchmark/build_template.py`。
   - 请求到 api，再到 template-manager。
-- 镜像从哪来：本机 Harbor（`$SERVER_IP:2900/e2b-orchestration`）。OCI 镜像就是“一摞 tar 层加一份配置”。
+- 镜像从哪来：本机 Harbor（第 8 篇）。
 - 九个步骤，围绕“磁盘文件怎么一步步变出来”讲：
   1. 拉镜像。
   2. 注入文件：envd、busybox init、hostname、DNS 配置、`provision.sh`。
@@ -200,10 +233,10 @@
   - 换成 glibc 版 busybox（`busybox_1.35_arm64`，RPM 构建时拷进 `systeminit/`）。
   - `provision.sh`、`configure.sh` 的适配。
   - 构建时启动 Firecracker 仍走原来的 `ip netns exec` 路径（网络书第 9 篇）。
-- 构建时的磁盘不走 NBD，而是 Direct 方式：为什么构建和运行要用两种方式（第 11 篇对照）。
-- 构建产物的第一份内存快照：不是从模板恢复的，所以内存走 NoopMemory，并做全零页剔除（第 12 篇）。
+- 构建时的磁盘不走 NBD，而是 Direct 方式：为什么构建和运行要用两种方式（第 12 篇对照）。
+- 构建产物的第一份内存快照：不是从模板恢复的，所以内存走 NoopMemory，并做全零页剔除（第 13 篇）。
 
-### 第 9 篇　模板存到哪：存储后端、Local 与“装了没用”的 MinIO
+### 第 10 篇　模板存到哪：存储后端、Local 与“装了没用”的 MinIO
 
 - 存储后端的抽象 `StorageProvider`：
   - 两种对象：整块读写的 Blob（header、snapfile、metadata），可以随机读的 Seekable（memfile、rootfs）。
@@ -233,7 +266,7 @@
 
 ## 第三部分　一个沙箱的存储栈
 
-### 第 10 篇　节点本地缓存：`/orchestrator` 目录里都是什么
+### 第 11 篇　节点本地缓存：`/orchestrator` 目录里都是什么
 
 - 为什么持久化存储之外还要一层本地缓存：远端（或者哪怕是本地 tmpfs）的对象不能直接给虚拟机当盘、当内存用，需要一个可以 mmap、可以随机读的本地文件。
 - 三个目录与一个 tmpfs：
@@ -255,14 +288,14 @@
   2. 找到那个 build 的本地缓存。
   3. 块没拉过就去存储后端拉。
   4. 从 mmap 里切出数据。
-- 本环境里“远端”其实就在本机 tmpfs 上，所以拉取很快；但缓存这一层依然存在，同一份数据会在内存里出现两次（第 18 篇算账）。
+- 本环境里“远端”其实就在本机 tmpfs 上，所以拉取很快；但缓存这一层依然存在，同一份数据会在内存里出现两次（第 19 篇算账）。
 - `SHARED_CHUNK_CACHE_PATH`（共享的 NFS 块缓存）：本环境为空，所以没有启用。
 - 常见误判：在 `/orchestrator/build` 看到大文件，不代表模板存在这里，也不代表泄漏。
 
-### 第 11 篇　沙箱的硬盘：NBD 加写时复制
+### 第 12 篇　沙箱的硬盘：NBD 加写时复制
 
 - 运行中的沙箱，磁盘由两层拼成：
-  - 下层：模板的 rootfs，只读，经第 10 篇的缓存按需读取。
+  - 下层：模板的 rootfs，只读，经第 11 篇的缓存按需读取。
   - 上层：沙箱自己的 COW 文件 `/orchestrator/sandbox/rootfs-<沙箱ID>-<rand>.cow`，稀疏文件，只记写过的块。
 - overlay 的读写规则：
   - 写一定落到上层，并在位图里记下“这一块是我的”。
@@ -279,13 +312,13 @@
   - `nbds_max=512`：同时运行的沙箱最多 512 个；模块没加载时 orchestrator 启动就报 `NBD module not loaded`。
 - Direct 方式：模板构建时不用 NBD，直接用本地文件当盘，因为构建需要把所有块都标成脏、最后整份导出。
 - ARM 补丁对这一层的改动（只讲作用，不读代码）：
-  - `LayerStack`：用一个每块一个 `uint16` 的索引数组代替逐层查找，为回滚的多层磁盘做准备（第 16 篇）。
+  - `LayerStack`：用一个每块一个 `uint16` 的索引数组代替逐层查找，为回滚的多层磁盘做准备（第 17 篇）。
   - `BlockSet`：用原子位图代替 `sync.Map` 记录“哪些块在这一层”。
   - `populate`：拷贝前用 `MADV_POPULATE_READ/WRITE` 先把页面调进来，避免 Go 协程在缺页时长时间占着调度器。
   - 写缓存时加了越界检查和 SIGBUS 兜底。
 - 一张文字图：客户机 ext4、virtio-blk、`/dev/nbdN`、NBD socket、overlay、COW 文件和模板缓存，逐层标出。
 
-### 第 12 篇　沙箱的内存：UFFD 按需供页与大页
+### 第 13 篇　沙箱的内存：UFFD 按需供页与大页
 
 - 问题：模板的内存有几百 MB 到几 GB，恢复时不可能先全部读进来。
 - UFFD 内存后端的工作方式：
@@ -295,7 +328,7 @@
   4. 客户机继续运行，完全不知道刚才发生过什么。
 - 预取（prefetch）：
   - 模板构建时记下启动过程用到了哪些页（预取映射），恢复时后台先拉取、等 UFFD 就绪后提前填进去。
-  - 好处是少等；第 14 篇会看到，在 ARM 上它的副作用是快照变大。
+  - 好处是少等；第 15 篇会看到，在 ARM 上它的副作用是快照变大。
 - NoopMemory：没有快照可恢复的时候（模板构建时第一次开机），内存由 Firecracker 自己的文件支撑，不走 UFFD。
 - 大页：
   - 客户机内存用 2 MiB 大页，页表更小，缺页次数少 512 倍；代价是每次缺页要拷 2 MiB。
@@ -305,15 +338,15 @@
     - 另外 80% 做超分配，按需分配，用完归还。
     - 补丁把写入路径改成显式的 `hugepages-2048kB`，因为 ARM 的默认大页大小不一定是 2 MiB。
   - 挂载点 `/mnt/hugepages`；停服后静态池不会自动释放，要用 `build.sh --purge-hugepages`。
-  - 为什么客户机内存不计入 Nomad 的内存上限：hugetlb 不记在 memory 控制器里（第 17 篇）。
+  - 为什么客户机内存不计入 Nomad 的内存上限：hugetlb 不记在 memory 控制器里（第 18 篇）。
 - ARM 补丁在这一层的改动：
   - 等待 UFFD socket 的超时从 10 秒放宽到 120 秒，因为 ARM 上 Firecracker 起得慢。
-  - 去掉了 `UFFDIO_COPY_MODE_WP`（第 14 篇专门讲后果）。
+  - 去掉了 `UFFDIO_COPY_MODE_WP`（第 15 篇专门讲后果）。
 - 小结：沙箱的“内存”其实是一层层的：客户机页，大页池，UFFD 处理程序，memfile 本地缓存，持久化存储。
 
 ## 第四部分　快照：暂停、恢复与回滚
 
-### 第 13 篇　暂停与恢复：一次增量快照是怎么做出来的
+### 第 14 篇　暂停与恢复：一次增量快照是怎么做出来的
 
 - 暂停（pause）对用户的意义：沙箱不再占 CPU 和内存，之后可以按同一个 ID 恢复。
 - 打快照的八个步骤，每一步回答“为什么这样做”：
@@ -334,7 +367,7 @@
   - 手工删 `/tmp/templates` 里的目录会打断哪些后代。
 - 中间文件在哪：`/orchestrator/build` 和 `/mnt/snapshot-cache` 各放了什么。
 
-### 第 14 篇　ARM 上的增量为什么“偏大”：脏页判据与实测
+### 第 15 篇　ARM 上的增量为什么“偏大”：脏页判据与实测
 
 - 回顾 x86 上的精确增量：
   - 读缺页时带写保护位填页，写缺页时不带。
@@ -354,10 +387,10 @@
 - 另一条路：硬件或 KVM 记录脏页。
   - 补丁新增的 `dirtytracking.go` 检测 arm64 KVM 的硬件脏状态跟踪能力（HDBSS），由 `FC_TRACK_DIRTY_PAGES` 强制开关。
   - 打开后 Firecracker 维护“写过的页”位图。
-  - 这条路主要服务于回滚（第 15 篇）。
+  - 这条路主要服务于回滚（第 16 篇）。
 - 对使用者的建议：暂停和快照的体积怎么估；为什么 ARM 上不要盲目调大预取。
 
-### 第 15 篇　快照回滚（一）：检查点树与内存
+### 第 16 篇　快照回滚（一）：检查点树与内存
 
 - 问题：AI 在沙箱里跑了十步，第七步把环境搞坏了，想回到第六步之后的状态，而且要快、不换进程、不丢沙箱 ID。
 - 暂停与恢复、模板快照、回滚三者的区别：
@@ -385,7 +418,7 @@
   - 进程重启就没了。
   - 暂停或恢复会换一个“代”（generation），旧检查点作废。
 
-### 第 16 篇　快照回滚（二）：磁盘层、压实与配额
+### 第 17 篇　快照回滚（二）：磁盘层、压实与配额
 
 - 磁盘怎么跟着回滚：
   - 打检查点时把当前写层“封存”（Seal）成只读层文件，换一个新的空写层。
@@ -415,7 +448,7 @@
 
 ## 第五部分　部署、容量与排障
 
-### 第 17 篇　部署里的存储配置：RPM、`build.sh -d`、`-i`、`-s`
+### 第 18 篇　部署里的存储配置：RPM、`build.sh -d`、`-i`、`-s`
 
 - RPM 阶段放了哪些和存储有关的东西，安装到 `/opt/e2b-infra`：
   - `bin/` 下的 orchestrator、envd、`vmlinux.bin`、`vmlinux.bin.openeuler`、`firecracker`。
@@ -453,7 +486,7 @@
   - 内核参数：`nbds_max`。
 - 改这些配置时的注意事项：要改 `dep/` 里的源头；改完只需 `build.sh -r template-manager`；已经运行的沙箱怎么办。
 
-### 第 18 篇　全景、容量规划与排障
+### 第 19 篇　全景、容量规划与排障
 
 - 一次完整生命周期的复盘，把前 17 篇串起来，每一步写出数据在哪、谁在读写：
   1. 构建模板。
