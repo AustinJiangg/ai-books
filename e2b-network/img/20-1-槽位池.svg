@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="798" viewBox="0 0 1600 798" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m5B9BE6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#5B9BE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD6603D" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D6603D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="798" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">网络槽位池：后台一直补货，取时先拿旧的，还时清理后放回</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">建一个槽位要十一步，现场建会拖慢毫秒级的恢复。orchestrator 启动后就在后台预建槽位放进新建队列；创建沙箱时优先拿复用队列里的旧槽位；沙箱结束后清空用户规则，放回复用队列，满了就拆掉。</text>
+<rect x="48.0" y="186.0" width="180.0" height="100.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="138.0" y="218.5" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">后台补货协程</text>
+<text x="138.0" y="241.8" font-size="12.5" fill="#57606A" text-anchor="middle">循环建槽位，放进新建队</text>
+<text x="138.0" y="260.5" font-size="12.5" fill="#57606A" text-anchor="middle">列；满了就等</text>
+<rect x="300.0" y="176.0" width="500.0" height="120.0" rx="12" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.4"/>
+<text x="318.0" y="202.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">新建队列</text>
+<text x="390.0" y="202.0" font-size="12.5" fill="#57606A" text-anchor="start">300 个（上游 32）：从没用过</text>
+<rect x="318.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="365.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="412.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="459.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="1"/>
+<text x="479.5" y="252.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="506.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="1"/>
+<text x="526.5" y="252.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="553.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="1"/>
+<text x="573.5" y="252.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="600.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="1"/>
+<text x="620.5" y="252.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="647.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="1"/>
+<text x="667.5" y="252.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="694.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="1"/>
+<text x="714.5" y="252.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="741.0" y="216.0" width="41.0" height="64.0" rx="5" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="1"/>
+<text x="761.5" y="252.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="300.0" y="386.0" width="500.0" height="120.0" rx="12" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.4"/>
+<text x="318.0" y="412.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">复用队列</text>
+<text x="390.0" y="412.0" font-size="12.5" fill="#57606A" text-anchor="start">1000 个（上游 100）：清理复位后的旧槽位</text>
+<rect x="318.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<rect x="365.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<rect x="412.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<rect x="459.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<rect x="506.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<rect x="553.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#1F9E77" stroke="#1F9E77" stroke-width="1"/>
+<text x="573.5" y="462.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="600.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#1F9E77" stroke="#1F9E77" stroke-width="1"/>
+<text x="620.5" y="462.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="647.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#1F9E77" stroke="#1F9E77" stroke-width="1"/>
+<text x="667.5" y="462.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="694.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#1F9E77" stroke="#1F9E77" stroke-width="1"/>
+<text x="714.5" y="462.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<rect x="741.0" y="426.0" width="41.0" height="64.0" rx="5" fill="#1F9E77" stroke="#1F9E77" stroke-width="1"/>
+<text x="761.5" y="462.0" font-size="11" fill="#FFFFFF" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ns</text>
+<path d="M230.0 236.0 L296.0 236.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="263.0" y="226.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">放入</text>
+<rect x="880.0" y="281.0" width="220.0" height="120.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="990.0" y="323.7" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="middle">取一个槽位</text>
+<text x="990.0" y="347.0" font-size="12.5" fill="#57606A" text-anchor="middle">先看复用队列；没有再从新建队列</text>
+<text x="990.0" y="365.7" font-size="12.5" fill="#57606A" text-anchor="middle">拿（必要时等）</text>
+<path d="M804.0 446.0 L840.0 446.0 L840.0 366.0 L876.0 366.0" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="850.0" y="418.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="start">优先</text>
+<path d="M804.0 236.0 L840.0 236.0 L840.0 316.0 L876.0 316.0" fill="none" stroke="#5B9BE6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m5B9BE6)"/>
+<text x="850.0" y="268.0" font-size="12.5" fill="#1D4F91" font-weight="600" text-anchor="start">复用队列</text>
+<text x="850.0" y="286.0" font-size="12.5" fill="#1D4F91" font-weight="600" text-anchor="start">空时</text>
+<rect x="1180.0" y="176.0" width="372.0" height="110.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1366.0" y="213.7" font-size="15.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱在用</text>
+<text x="1366.0" y="237.0" font-size="12.5" fill="#57606A" text-anchor="middle">ConfigureInternet 装载用户的出站规则；Firecracker</text>
+<text x="1366.0" y="255.7" font-size="12.5" fill="#57606A" text-anchor="middle">在这个命名空间里运行</text>
+<path d="M1104.0 341.0 L1140.0 341.0 L1140.0 231.0 L1176.0 231.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1180.0" y="356.0" width="372.0" height="110.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1366.0" y="403.1" font-size="15.5" fill="#8A5300" font-weight="600" text-anchor="middle">沙箱结束，归还</text>
+<text x="1366.0" y="426.3" font-size="12.5" fill="#57606A" text-anchor="middle">ResetInternet：清空两个用户集合，重填预置集合</text>
+<path d="M1366.0 288.0 L1366.0 352.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1176.0 446.0 L1140.0 446.0 L1140.0 536.0 L740.0 536.0 L740.0 510.0" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="960.0" y="528.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="middle">放回复用队列</text>
+<rect x="1180.0" y="516.0" width="372.0" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1366.0" y="542.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">拆掉：RemoveNetwork</text>
+<text x="1366.0" y="566.2" font-size="12.5" fill="#57606A" text-anchor="middle">复用队列已满，或清理失败</text>
+<path d="M1366.0 468.0 L1366.0 512.0" fill="none" stroke="#D6603D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD6603D)"/>
+<rect x="48.0" y="616.0" width="1504.0" height="82.0" rx="10" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.3"/>
+<text x="70.0" y="648.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">复用时原样保留的</text>
+<text x="70.0" y="674.0" font-size="13.5" fill="#57606A" text-anchor="start">命名空间、网卡、地址、路由、NAT 和 REDIRECT 规则都只和槽位编号有关，不用复位。conntrack 记录不主动清，等它们自己超时；这段“槽位换了主人、内核记录还在”的窗口，也是连接池要按生命周期 ID 分组的原因之一。</text>
+<line x1="48.0" y1="732.0" x2="1552.0" y2="732.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="758.0" font-size="13" fill="#8C959F" text-anchor="start">注：orchestrator 正常退出时会把两条队列里的空闲槽位逐个拆掉；被强杀时它们就成了残骸（第 12、21 篇）。</text></svg>

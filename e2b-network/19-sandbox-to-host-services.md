@@ -95,6 +95,8 @@ INPUT → orchestrator 里的 hyperloop 服务（:5010）
 
 答案是**顺序**。建网时，三条“宿主服务”规则先加，三条“防火墙代理”规则后加。规则从上往下匹配、命中即停，`192.0.2.1:80` 先命中了 hyperloop 规则。
 
+![宿主机的 nat PREROUTING 链](img/19-1-PREROUTING链.svg)
+
 顺序在这里至关重要。第 17 篇讲过一个真实的事故：那条不带 `--dst-type LOCAL` 的全局“80 → 3002”规则在部署时就加上了，**排在所有槽位规则前面**，于是沙箱访问 hyperloop 的请求全被它截到了 client-proxy。
 
 ### 3.3 只有 TCP

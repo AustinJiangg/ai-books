@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="642" viewBox="0 0 1600 642" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="642" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">不解密也能知道域名：HTTP 的 Host 头、TLS 的 SNI 都是明文</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">一个 IP 上常常托管着很多网站，只看目的地址 151.101.0.223:443 分不清要访问哪一个。客户端会在连接一开始就把域名说出来；防火墙代理读的就是这一行（第 16 篇）。</text>
+<rect x="109.2" y="168.0" width="177.5" height="36.0" rx="18.0" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1"/>
+<text x="198.0" y="191.4" font-size="15" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">151.101.0.223:443</text>
+<line x1="308.0" y1="186.0" x2="1220.0" y2="186.0" stroke="#D8DEE4" stroke-width="1.2" stroke-linecap="round"/>
+<text x="338.0" y="176.0" font-size="12.5" fill="#8C959F" text-anchor="start">同一个 IP 上托管着</text>
+<rect x="517.9" y="170.0" width="84.2" height="32.0" rx="16.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="560.0" y="191.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">pypi.org</text>
+<rect x="792.6" y="170.0" width="194.9" height="32.0" rx="16.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="890.0" y="191.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">files.pythonhosted.org</text>
+<rect x="1129.7" y="170.0" width="180.6" height="32.0" rx="16.0" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1220.0" y="191.0" font-size="14" fill="#8C959F" font-weight="600" text-anchor="middle">同一 IP 上的其他网站 …</text>
+<rect x="48.0" y="246.0" width="732.0" height="296.0" rx="14" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="70.0" y="280.0" font-size="17" fill="#1F2328" font-weight="600" text-anchor="start">HTTP（端口 80）</text>
+<text x="70.0" y="304.0" font-size="13" fill="#57606A" text-anchor="start">整个请求都是明文，第一部分就有 Host 头</text>
+<text x="78.0" y="337.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">GET /simple/pandas/ HTTP/1.1</text>
+<rect x="66.0" y="354.0" width="696.0" height="32.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="78.0" y="375.0" font-size="14.5" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">Host: pypi.org</text>
+<text x="78.0" y="413.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">User-Agent: pip/24.0</text>
+<text x="78.0" y="451.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">…</text>
+<rect x="820.0" y="246.0" width="732.0" height="296.0" rx="14" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="842.0" y="280.0" font-size="17" fill="#1F2328" font-weight="600" text-anchor="start">HTTPS（端口 443）</text>
+<text x="842.0" y="304.0" font-size="13" fill="#57606A" text-anchor="start">加密之前先握手；第一条握手消息 ClientHello 是明文</text>
+<text x="850.0" y="337.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ClientHello</text>
+<text x="850.0" y="375.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">  支持的加密算法: …</text>
+<rect x="838.0" y="392.0" width="696.0" height="32.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="850.0" y="413.0" font-size="14.5" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">  SNI: pypi.org</text>
+<text x="850.0" y="451.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">— 握手完成，之后全部加密 —</text>
+<rect x="838.0" y="468.0" width="696.0" height="32.0" rx="6" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="850.0" y="489.0" font-size="14" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">GET /simple/pandas/ …（看不到）</text>
+<line x1="48.0" y1="576.0" x2="1552.0" y2="576.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="602.0" font-size="13" fill="#8C959F" text-anchor="start">注：SNI 必须是明文，因为服务器要先知道客户想访问哪个网站，才能拿出那个网站的证书完成握手。</text></svg>

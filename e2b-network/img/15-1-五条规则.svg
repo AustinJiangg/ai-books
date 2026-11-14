@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="910" viewBox="0 0 1600 910" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD6603D" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D6603D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="910" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">命名空间防火墙的五条规则：从上往下，命中即停</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">每个从 tap0 进来的包（沙箱发出的包）依次回答下面几个问题。前三条对所有协议生效；用户的放行、拦截只管非 TCP，TCP 在这一层放过去，到宿主机交给防火墙代理再判一次。</text>
+<rect x="300.0" y="146.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="620.0" y="175.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">从 tap0 进入 ns-5 的包</text>
+<rect x="300.0" y="222.0" width="640.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="320.0" y="249.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">规则 1</text>
+<text x="390.0" y="249.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">属于已建立的连接？</text>
+<text x="390.0" y="271.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ct state established,related</text>
+<path d="M942.0 254.0 L986.0 254.0" fill="none" stroke="#1F9E77" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="964.0" y="246.0" font-size="12.5" fill="#1F9E77" font-weight="600" text-anchor="middle">是</text>
+<rect x="990.0" y="236.0" width="120.0" height="36.0" rx="18" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1050.0" y="259.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">放行</text>
+<path d="M620.0 196.0 L620.0 219.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="300.0" y="312.0" width="640.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="320.0" y="339.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">规则 2</text>
+<text x="390.0" y="339.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">目的在预置放行集合里？</text>
+<text x="390.0" y="361.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">只有 192.0.2.1</text>
+<path d="M942.0 344.0 L986.0 344.0" fill="none" stroke="#1F9E77" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="964.0" y="336.0" font-size="12.5" fill="#1F9E77" font-weight="600" text-anchor="middle">是</text>
+<rect x="990.0" y="326.0" width="120.0" height="36.0" rx="18" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1050.0" y="349.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">放行</text>
+<path d="M620.0 286.0 L620.0 309.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="630.0" y="303.0" font-size="12.5" fill="#8C959F" font-weight="600" text-anchor="start">否</text>
+<rect x="300.0" y="402.0" width="640.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="320.0" y="429.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">规则 3</text>
+<text x="390.0" y="429.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">目的在预置拦截集合里？</text>
+<text x="390.0" y="451.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10/8 · 172.16/12 · 192.168/16 · 127/8 · 169.254/16</text>
+<path d="M942.0 434.0 L986.0 434.0" fill="none" stroke="#D6603D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD6603D)"/>
+<text x="964.0" y="426.0" font-size="12.5" fill="#D6603D" font-weight="600" text-anchor="middle">是</text>
+<rect x="990.0" y="416.0" width="120.0" height="36.0" rx="18" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1050.0" y="439.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">丢弃</text>
+<path d="M620.0 376.0 L620.0 399.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="630.0" y="393.0" font-size="12.5" fill="#8C959F" font-weight="600" text-anchor="start">否</text>
+<path d="M620.0 492.0 L770.0 524.0 L620.0 556.0 L470.0 524.0 Z" fill="#FFFFFF" stroke="#57606A" stroke-width="1.4"/>
+<text x="620.0" y="529.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">是 TCP 吗？</text>
+<path d="M772.0 524.0 L986.0 524.0" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<text x="879.0" y="516.0" font-size="12.5" fill="#57606A" font-weight="600" text-anchor="middle">是</text>
+<rect x="990.0" y="506.0" width="170.0" height="36.0" rx="18" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1075.0" y="529.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">交给 TCP 代理</text>
+<path d="M620.0 466.0 L620.0 489.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="630.0" y="483.0" font-size="12.5" fill="#8C959F" font-weight="600" text-anchor="start">否</text>
+<rect x="300.0" y="582.0" width="640.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="320.0" y="609.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">规则 4</text>
+<text x="390.0" y="609.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">目的在用户放行集合里？</text>
+<text x="390.0" y="631.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">allowOut 的 IP/CIDR（+ 8.8.8.8）</text>
+<path d="M942.0 614.0 L986.0 614.0" fill="none" stroke="#1F9E77" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="964.0" y="606.0" font-size="12.5" fill="#1F9E77" font-weight="600" text-anchor="middle">是</text>
+<rect x="990.0" y="596.0" width="120.0" height="36.0" rx="18" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1050.0" y="619.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">放行</text>
+<path d="M620.0 556.0 L620.0 579.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="630.0" y="573.0" font-size="12.5" fill="#8C959F" font-weight="600" text-anchor="start">否</text>
+<rect x="300.0" y="672.0" width="640.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="320.0" y="699.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">规则 5</text>
+<text x="390.0" y="699.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">目的在用户拦截集合里？</text>
+<text x="390.0" y="721.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">denyOut，或断网时的 0.0.0.0/0</text>
+<path d="M942.0 704.0 L986.0 704.0" fill="none" stroke="#D6603D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD6603D)"/>
+<text x="964.0" y="696.0" font-size="12.5" fill="#D6603D" font-weight="600" text-anchor="middle">是</text>
+<rect x="990.0" y="686.0" width="120.0" height="36.0" rx="18" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1050.0" y="709.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">丢弃</text>
+<path d="M620.0 646.0 L620.0 669.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="630.0" y="663.0" font-size="12.5" fill="#8C959F" font-weight="600" text-anchor="start">否</text>
+<path d="M620.0 736.0 L620.0 759.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="630.0" y="753.0" font-size="12.5" fill="#8C959F" font-weight="600" text-anchor="start">否</text>
+<rect x="420.0" y="762.0" width="400.0" height="48.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="620.0" y="790.8" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">链的默认策略：放行</text>
+<path d="M286 222.0 h-10 V466.0 h10" fill="none" stroke="#8C959F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="266.0" y="340.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="end">预置规则</text>
+<text x="266.0" y="362.0" font-size="12.5" fill="#57606A" text-anchor="end">所有协议</text>
+<path d="M286 582.0 h-10 V736.0 h10" fill="none" stroke="#8C959F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="266.0" y="655.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="end">用户规则</text>
+<text x="266.0" y="677.0" font-size="12.5" fill="#57606A" text-anchor="end">只管非 TCP</text>
+<rect x="1190.0" y="222.0" width="362.0" height="95.1" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.2"/>
+<rect x="1190.0" y="222.0" width="5.0" height="95.1" rx="2" fill="#D6603D" stroke="#D6603D" stroke-width="0"/>
+<rect x="1194.0" y="222.0" width="358.0" height="95.1" rx="10" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<text x="1212.0" y="251.2" font-size="14.5" fill="#9A3215" font-weight="600" text-anchor="start">规则 3 在规则 4 前面</text>
+<text x="1212.0" y="275.1" font-size="13" fill="#57606A" text-anchor="start">allowOut 写了 10.0.0.5 也没用：包先撞上规则 3 被</text>
+<text x="1212.0" y="294.6" font-size="13" fill="#57606A" text-anchor="start">丢弃。私有地址永远放不出去，这是刻意的。</text>
+<rect x="1190.0" y="335.1" width="362.0" height="95.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="1190.0" y="335.1" width="5.0" height="95.1" rx="2" fill="#1F9E77" stroke="#1F9E77" stroke-width="0"/>
+<rect x="1194.0" y="335.1" width="358.0" height="95.1" rx="10" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<text x="1212.0" y="364.3" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="start">规则 4 在规则 5 前面</text>
+<text x="1212.0" y="388.2" font-size="13" fill="#57606A" text-anchor="start">允许优先：denyOut 0.0.0.0/0 + allowOut</text>
+<text x="1212.0" y="407.7" font-size="13" fill="#57606A" text-anchor="start">1.1.1.1，就是“拒绝一切，只开一个口子”。</text>
+<rect x="1190.0" y="448.3" width="362.0" height="95.1" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.2"/>
+<rect x="1190.0" y="448.3" width="5.0" height="95.1" rx="2" fill="#5B9BE6" stroke="#5B9BE6" stroke-width="0"/>
+<rect x="1194.0" y="448.3" width="358.0" height="95.1" rx="10" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<text x="1212.0" y="477.5" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="start">规则 1 排第一</text>
+<text x="1212.0" y="501.4" font-size="13" fill="#57606A" text-anchor="start">宿主机先发起的连接（比如连 envd），沙箱的回包目的</text>
+<text x="1212.0" y="520.9" font-size="13" fill="#57606A" text-anchor="start">是 10.14.0.10，也在拦截范围内，靠它放行。</text>
+<line x1="48.0" y1="844.0" x2="1552.0" y2="844.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="870.0" font-size="13" fill="#8C959F" text-anchor="start">注：每条规则都以 iifname "tap0" 开头，只检查沙箱发出的包；外面进来的包和回包不受约束。这张表挂在 PREROUTING，优先级 -150，比 NAT 早，看到的是沙箱原本想访问的地址。</text></svg>

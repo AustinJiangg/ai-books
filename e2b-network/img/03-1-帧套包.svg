@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="728" viewBox="0 0 1600 728" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="mD9922B" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D9922B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="728" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">帧套包：每过一站换外层的 MAC，里面的 IP 不变</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">网线上传的是以太网帧。帧头写着这一段的 MAC 地址，里面装着 IP 包，IP 包里装着 TCP 或 UDP。路由器每转发一次，拆掉旧帧头、换上下一段的 MAC；IP 包里的地址原样往下传（NAT 是例外）。</text>
+<rect x="48.0" y="156.0" width="1504.0" height="132.0" rx="12" fill="#F1F0EC" stroke="#A8A69D" stroke-width="1.3"/>
+<text x="64.0" y="180.0" font-size="13.5" fill="#3D3C38" font-weight="600" text-anchor="start">以太网帧（第二层）</text>
+<rect x="64.0" y="194.0" width="150.0" height="78.0" rx="10" fill="#FFFFFF" stroke="#A8A69D" stroke-width="1.3"/>
+<text x="139.0" y="237.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">目的 MAC</text>
+<rect x="224.0" y="194.0" width="150.0" height="78.0" rx="10" fill="#FFFFFF" stroke="#A8A69D" stroke-width="1.3"/>
+<text x="299.0" y="237.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">源 MAC</text>
+<rect x="384.0" y="194.0" width="140.0" height="78.0" rx="10" fill="#FFFFFF" stroke="#A8A69D" stroke-width="1.3"/>
+<text x="454.0" y="237.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">类型 0x0800</text>
+<rect x="540.0" y="186.0" width="996.0" height="88.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="554.0" y="206.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="start">IP 包（第三层）</text>
+<rect x="554.0" y="216.0" width="120.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="614.0" y="245.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">源 IP</text>
+<rect x="682.0" y="216.0" width="120.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="742.0" y="245.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">目的 IP</text>
+<rect x="810.0" y="216.0" width="80.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="850.0" y="245.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">协议</text>
+<rect x="904.0" y="212.0" width="618.0" height="60.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="916.0" y="230.0" font-size="12.5" fill="#4B3FA8" font-weight="600" text-anchor="start">TCP / UDP（第四层）</text>
+<rect x="916.0" y="238.0" width="92.0" height="28.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="962.0" y="256.0" font-size="12.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">源端口</text>
+<rect x="1014.0" y="238.0" width="92.0" height="28.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1060.0" y="256.0" font-size="12.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">目的端口</text>
+<rect x="1112.0" y="238.0" width="398.0" height="28.0" rx="10" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.3"/>
+<text x="1311.0" y="256.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">数据</text>
+<text x="48.0" y="352.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">例子：主机 A 经过路由器 R 发给主机 B</text>
+<text x="381.8" y="352.0" font-size="14" fill="#8C959F" text-anchor="start">两段网线，两张帧头，同一个 IP 包</text>
+<rect x="50.0" y="502.0" width="240.0" height="80.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="170.0" y="524.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">主机 A</text>
+<text x="170.0" y="547.8" font-size="12.5" fill="#57606A" text-anchor="middle">IP 192.168.1.10</text>
+<text x="170.0" y="566.6" font-size="12.5" fill="#57606A" text-anchor="middle">MAC aa:aa</text>
+<rect x="650.0" y="502.0" width="300.0" height="80.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="533.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">路由器 R</text>
+<text x="800.0" y="557.2" font-size="12.5" fill="#57606A" text-anchor="middle">左口 MAC r1:r1 · 右口 MAC r2:r2</text>
+<rect x="1310.0" y="502.0" width="240.0" height="80.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1430.0" y="524.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">主机 B</text>
+<text x="1430.0" y="547.8" font-size="12.5" fill="#57606A" text-anchor="middle">IP 10.0.0.20</text>
+<text x="1430.0" y="566.6" font-size="12.5" fill="#57606A" text-anchor="middle">MAC bb:bb</text>
+<line x1="290.0" y1="542.0" x2="650.0" y2="542.0" stroke="#57606A" stroke-width="2" stroke-linecap="round"/>
+<line x1="950.0" y1="542.0" x2="1310.0" y2="542.0" stroke="#57606A" stroke-width="2" stroke-linecap="round"/>
+<text x="470.0" y="568.0" font-size="12.5" fill="#8C959F" text-anchor="middle">第一段网线</text>
+<text x="1130.0" y="568.0" font-size="12.5" fill="#8C959F" text-anchor="middle">第二段网线</text>
+<rect x="270.0" y="386.0" width="400.0" height="74.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<rect x="278.0" y="394.0" width="160.0" height="58.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="288.0" y="417.0" font-size="12.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">目的 MAC r1:r1</text>
+<text x="288.0" y="439.0" font-size="12.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">源 MAC aa:aa</text>
+<rect x="446.0" y="394.0" width="216.0" height="58.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="460.0" y="417.0" font-size="12.5" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">源 IP 192.168.1.10</text>
+<text x="460.0" y="439.0" font-size="12.5" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">目的 IP 10.0.0.20</text>
+<rect x="930.0" y="386.0" width="400.0" height="74.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<rect x="938.0" y="394.0" width="160.0" height="58.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="948.0" y="417.0" font-size="12.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">目的 MAC bb:bb</text>
+<text x="948.0" y="439.0" font-size="12.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">源 MAC r2:r2</text>
+<rect x="1106.0" y="394.0" width="216.0" height="58.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="1120.0" y="417.0" font-size="12.5" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">源 IP 192.168.1.10</text>
+<text x="1120.0" y="439.0" font-size="12.5" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">目的 IP 10.0.0.20</text>
+<line x1="470.0" y1="462.0" x2="470.0" y2="538.0" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3"/>
+<circle cx="470.0" cy="542.0" r="4" fill="#8C959F" stroke="none" stroke-width="1"/>
+<line x1="1130.0" y1="462.0" x2="1130.0" y2="538.0" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="3 3"/>
+<circle cx="1130.0" cy="542.0" r="4" fill="#8C959F" stroke="none" stroke-width="1"/>
+<path d="M690.0 422.0 L910.0 422.0" fill="none" stroke="#D9922B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<text x="800.0" y="412.0" font-size="12.5" fill="#8A5300" font-weight="600" text-anchor="middle">R 拆掉旧帧头，换上新帧头</text>
+<text x="48.0" y="628.0" font-size="14" text-anchor="start" xml:space="preserve"><tspan fill="#8A5300" font-weight="700">琥珀色</tspan><tspan fill="#57606A">：每段都会变的 MAC 地址。</tspan><tspan fill="#1D4F91" font-weight="700">  蓝色</tspan><tspan fill="#57606A">：从头到尾不变的 IP 地址。R 怎么知道下一段该填 bb:bb？查路由表定下一站，再用 ARP 问到它的 MAC。</tspan></text>
+<line x1="48.0" y1="662.0" x2="1552.0" y2="662.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="688.0" font-size="13" fill="#8C959F" text-anchor="start">注：tap 设备收发的就是这种完整的以太网帧，所以虚拟机的网卡像接了一根真网线（第 6、9 篇）。</text></svg>

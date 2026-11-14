@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="826" viewBox="0 0 1600 826" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="826" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">让 Firecracker 进入 ns-5：ip netns exec 做了太多事，fc-netns-exec 只做两件</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Firecracker 只需要身在 ns-5，才能按名字打开 ns-5 的 tap0。ip netns exec 还要处理挂载、/sys、/etc，其中几步要拿内核里的一把全局锁，高并发创建沙箱时排队；补丁里的 fc-netns-exec 只做 setns 和 exec。</text>
+<rect x="48.0" y="156.0" width="732.0" height="470.0" rx="16" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="72.0" y="192.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">上游：ip netns exec</text>
+<text x="72.0" y="218.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ip netns exec ns-5 firecracker …</text>
+<rect x="820.0" y="156.0" width="732.0" height="470.0" rx="16" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="844.0" y="192.0" font-size="18" fill="#0E6B4F" font-weight="600" text-anchor="start">这套环境：fc-netns-exec</text>
+<text x="844.0" y="218.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">fc-netns-exec ns-5 firecracker …</text>
+<rect x="108.0" y="246.0" width="632.0" height="44.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<circle cx="86.0" cy="268.0" r="12" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="272.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<text x="128.0" y="274.0" font-size="14" fill="#9A3215" text-anchor="start">新开一个挂载命名空间</text>
+<rect x="108.0" y="302.0" width="632.0" height="44.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<circle cx="86.0" cy="324.0" r="12" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="328.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="128.0" y="330.0" font-size="14" fill="#9A3215" text-anchor="start">遍历整棵挂载树，改传播属性</text>
+<rect x="108.0" y="358.0" width="632.0" height="44.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<circle cx="86.0" cy="380.0" r="12" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="384.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<text x="128.0" y="386.0" font-size="14" fill="#9A3215" text-anchor="start">卸载并重新挂载 /sys</text>
+<rect x="108.0" y="414.0" width="632.0" height="44.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<circle cx="86.0" cy="436.0" r="12" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="440.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<text x="128.0" y="442.0" font-size="14" fill="#9A3215" text-anchor="start">把 /etc/netns/ns-5/ 下的文件覆盖到 /etc</text>
+<rect x="108.0" y="470.0" width="632.0" height="44.0" rx="8" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<circle cx="86.0" cy="492.0" r="12" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="86.0" y="496.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<text x="128.0" y="498.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">setns：进入网络命名空间 ns-5</text>
+<rect x="108.0" y="526.0" width="632.0" height="44.0" rx="8" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<circle cx="86.0" cy="548.0" r="12" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="86.0" y="552.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<text x="128.0" y="554.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">exec：变成 Firecracker</text>
+<path d="M750.0 246 h10 V458 h-10" fill="none" stroke="#D6603D" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="78.0" y="596.0" font-size="13.5" text-anchor="start" xml:space="preserve"><tspan fill="#9A3215" font-weight="700">1～4 是挂载相关的操作：</tspan><tspan fill="#57606A">Firecracker 用不上，其中几步要拿全局锁，并发时排队</tspan></text>
+<rect x="880.0" y="246.0" width="632.0" height="44.0" rx="8" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<circle cx="858.0" cy="268.0" r="12" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="858.0" y="272.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<text x="900.0" y="274.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">打开 /run/netns/ns-5，setns 进入</text>
+<rect x="880.0" y="302.0" width="632.0" height="44.0" rx="8" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<circle cx="858.0" cy="324.0" r="12" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="858.0" y="328.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="900.0" y="330.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">exec：变成 Firecracker</text>
+<circle cx="854.0" cy="381.4" r="3.6" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="866.0" y="386.0" font-size="13.5" text-anchor="start" xml:space="preserve"><tspan fill="#1F2328" font-weight="600">开关：</tspan><tspan fill="#57606A">orchestrator 的环境变量 E2B_FC_NETNS_EXEC_HELPER</tspan></text>
+<circle cx="854.0" cy="411.4" r="3.6" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="866.0" y="416.0" font-size="13.5" text-anchor="start" xml:space="preserve"><tspan fill="#1F2328" font-weight="600">设成空、disabled、ip-netns-exec：</tspan><tspan fill="#57606A">退回上游做法</tspan></text>
+<circle cx="854.0" cy="441.4" r="3.6" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="866.0" y="446.0" font-size="13.5" text-anchor="start" xml:space="preserve"><tspan fill="#1F2328" font-weight="600">构建模板时：</tspan><tspan fill="#57606A">仍用 ip netns exec；只有恢复沙箱时用新工具</tspan></text>
+<rect x="48.0" y="656.0" width="1504.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="70.0" y="698.0" font-size="14" text-anchor="start" xml:space="preserve"><tspan fill="#1D4F91" font-weight="700">网络上的结果完全一样：</tspan><tspan fill="#57606A">Firecracker 进程运行在 ns-5 里，打开的是 ns-5 的 tap0。压测记录里，“拉起 Firecracker 并等它就绪”占沙箱启动总耗时的八成以上。</tspan></text>
+<line x1="48.0" y1="760.0" x2="1552.0" y2="760.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="786.0" font-size="13" fill="#8C959F" text-anchor="start">注：fc-netns-exec 是 openEuler 社区的优化，只有几十行 Go：open + setns(CLONE_NEWNET) + exec。</text></svg>

@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="826" viewBox="0 0 1600 826" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m8B7FE0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8B7FE0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD9922B" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D9922B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="826" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">模板只开机一次，沙箱都从同一张快照恢复：网卡配置原样醒来</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">构建模板时，虚拟机真正启动一次，内核按 ip= 参数配好网卡，然后连同内存和设备状态拍成快照。之后每个沙箱都加载这张快照，从拍照那一刻接着运行，所以 IP、MAC、网关全都一样。</text>
+<rect x="48.0" y="156.0" width="512.0" height="470.0" rx="16" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="70.0" y="192.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">构建模板：只做一次</text>
+<rect x="108.0" y="220.0" width="422.0" height="74.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="319.0" y="248.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">准备根文件系统</text>
+<text x="319.0" y="272.2" font-size="12.5" fill="#57606A" text-anchor="middle">装好系统、软件、envd</text>
+<circle cx="82.0" cy="257.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="82.0" y="261.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<path d="M319.0 296.0 L319.0 316.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="108.0" y="318.0" width="422.0" height="74.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="319.0" y="346.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">真正启动一次虚拟机</text>
+<text x="319.0" y="370.2" font-size="12.5" fill="#57606A" text-anchor="middle">内核按 ip= 配好 eth0：169.254.0.21/30</text>
+<circle cx="82.0" cy="355.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="82.0" y="359.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<path d="M319.0 394.0 L319.0 414.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="108.0" y="416.0" width="422.0" height="74.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="319.0" y="444.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">envd 启动</text>
+<text x="319.0" y="468.2" font-size="12.5" fill="#57606A" text-anchor="middle">监听 49983；用户的启动命令也跑起来</text>
+<circle cx="82.0" cy="453.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="82.0" y="457.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<path d="M319.0 492.0 L319.0 512.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="108.0" y="514.0" width="422.0" height="74.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="319.0" y="542.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">拍快照</text>
+<text x="319.0" y="566.2" font-size="12.5" fill="#57606A" text-anchor="middle">内存和设备状态原样存成文件</text>
+<circle cx="82.0" cy="551.0" r="11" fill="#D9922B" stroke="none" stroke-width="1"/>
+<text x="82.0" y="555.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<rect x="600.0" y="331.0" width="180.0" height="120.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="690.0" y="383.6" font-size="17" fill="#8A5300" font-weight="600" text-anchor="middle">快照</text>
+<text x="690.0" y="406.8" font-size="12.5" fill="#57606A" text-anchor="middle">一张，供所有沙箱加载</text>
+<path d="M564.0 551.0 L570.0 551.0 L570.0 391.0 L596.0 391.0" fill="none" stroke="#D9922B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<rect x="860.0" y="166.0" width="692.0" height="140.0" rx="12" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="880.0" y="196.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">沙箱 A</text>
+<text x="880.0" y="218.0" font-size="12.5" fill="#57606A" text-anchor="start">加载快照，接着运行</text>
+<text x="1060.0" y="206.0" font-size="12.5" fill="#8C959F" text-anchor="start">IP</text>
+<text x="1060.0" y="228.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">169.254.0.21/30</text>
+<text x="1290.0" y="206.0" font-size="12.5" fill="#8C959F" text-anchor="start">网关</text>
+<text x="1290.0" y="228.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">169.254.0.22</text>
+<text x="1060.0" y="256.0" font-size="12.5" fill="#8C959F" text-anchor="start">MAC</text>
+<text x="1060.0" y="278.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">02:FC:00:00:00:05</text>
+<text x="1290.0" y="256.0" font-size="12.5" fill="#8C959F" text-anchor="start">tap</text>
+<text x="1290.0" y="278.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">tap0</text>
+<path d="M784.0 391.0 L820.0 391.0 L820.0 236.0 L856.0 236.0" fill="none" stroke="#8B7FE0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<rect x="860.0" y="324.0" width="692.0" height="140.0" rx="12" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="880.0" y="354.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">沙箱 B</text>
+<text x="880.0" y="376.0" font-size="12.5" fill="#57606A" text-anchor="start">加载快照，接着运行</text>
+<text x="1060.0" y="364.0" font-size="12.5" fill="#8C959F" text-anchor="start">IP</text>
+<text x="1060.0" y="386.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">169.254.0.21/30</text>
+<text x="1290.0" y="364.0" font-size="12.5" fill="#8C959F" text-anchor="start">网关</text>
+<text x="1290.0" y="386.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">169.254.0.22</text>
+<text x="1060.0" y="414.0" font-size="12.5" fill="#8C959F" text-anchor="start">MAC</text>
+<text x="1060.0" y="436.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">02:FC:00:00:00:05</text>
+<text x="1290.0" y="414.0" font-size="12.5" fill="#8C959F" text-anchor="start">tap</text>
+<text x="1290.0" y="436.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">tap0</text>
+<path d="M784.0 391.0 L820.0 391.0 L820.0 394.0 L856.0 394.0" fill="none" stroke="#8B7FE0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<rect x="860.0" y="482.0" width="692.0" height="140.0" rx="12" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="880.0" y="512.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">沙箱 C</text>
+<text x="880.0" y="534.0" font-size="12.5" fill="#57606A" text-anchor="start">加载快照，接着运行</text>
+<text x="1060.0" y="522.0" font-size="12.5" fill="#8C959F" text-anchor="start">IP</text>
+<text x="1060.0" y="544.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">169.254.0.21/30</text>
+<text x="1290.0" y="522.0" font-size="12.5" fill="#8C959F" text-anchor="start">网关</text>
+<text x="1290.0" y="544.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">169.254.0.22</text>
+<text x="1060.0" y="572.0" font-size="12.5" fill="#8C959F" text-anchor="start">MAC</text>
+<text x="1060.0" y="594.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">02:FC:00:00:00:05</text>
+<text x="1290.0" y="572.0" font-size="12.5" fill="#8C959F" text-anchor="start">tap</text>
+<text x="1290.0" y="594.0" font-size="14.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">tap0</text>
+<path d="M784.0 391.0 L820.0 391.0 L820.0 552.0 L856.0 552.0" fill="none" stroke="#8B7FE0" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<text x="690.0" y="477.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">恢复：几十到几百毫秒</text>
+<rect x="48.0" y="656.0" width="1504.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="70.0" y="698.0" font-size="14" text-anchor="start" xml:space="preserve"><tspan fill="#9A3215" font-weight="700">后果：</tspan><tspan fill="#57606A">一台宿主机上，所有沙箱的网络身份完全相同；而且所有模板用的是同一组常量，换个模板也一样。客户机不知道自己是第几个副本。</tspan></text>
+<line x1="48.0" y1="760.0" x2="1552.0" y2="760.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="786.0" font-size="13" fill="#8C959F" text-anchor="start">注：网卡配置真正读进客户机，只发生在构建模板时那一次开机；恢复沙箱不会重新开机，也不会重新配置（第 9 篇）。</text></svg>

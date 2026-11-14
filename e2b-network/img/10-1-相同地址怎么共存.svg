@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="792" viewBox="0 0 1600 792" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="792" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">每个沙箱都是 169.254.0.21，靠什么不冲突</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">所有沙箱从同一张快照恢复，客户机的网卡配置完全相同。E2B 不去改客户机，而是改客户机外面：给每个沙箱一个网络命名空间，在命名空间的出口把地址换成各自的 Host IP。</text>
+<rect x="48.0" y="156.0" width="492.0" height="534.0" rx="16" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="72.0" y="177.0" width="61.0" height="26.0" rx="13.0" fill="#D6603D" stroke="#D6603D" stroke-width="1"/>
+<text x="102.5" y="194.7" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">行不通</text>
+<text x="147.0" y="195.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">接到同一个网桥上</text>
+<rect x="88.0" y="265.0" width="200.0" height="58.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="188.0" y="290.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 A</text>
+<text x="188.0" y="310.0" font-size="14" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<line x1="288.0" y1="294.0" x2="352.0" y2="294.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="88.0" y="367.0" width="200.0" height="58.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="188.0" y="392.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 B</text>
+<text x="188.0" y="412.0" font-size="14" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<line x1="288.0" y1="396.0" x2="352.0" y2="396.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="88.0" y="469.0" width="200.0" height="58.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="188.0" y="494.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 C</text>
+<text x="188.0" y="514.0" font-size="14" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<line x1="288.0" y1="498.0" x2="352.0" y2="498.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="345.0" y="262.0" width="14.0" height="268.0" rx="7" fill="#E9E8E3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="352.0" y="248.0" font-size="13" fill="#57606A" font-weight="600" text-anchor="middle">网桥</text>
+<line x1="359.0" y1="396.0" x2="410.0" y2="396.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round"/>
+<rect x="410.0" y="373.0" width="104.0" height="46.0" rx="9" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="462.0" y="401.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">宿主机</text>
+<circle cx="78.0" cy="575.0" r="4" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="92.0" y="580.0" font-size="14.5" text-anchor="start" xml:space="preserve"><tspan fill="#9A3215" font-weight="600">ARP：</tspan><tspan fill="#57606A">问 169.254.0.21 的 MAC，三台同时回答</tspan></text>
+<circle cx="78.0" cy="609.0" r="4" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="92.0" y="614.0" font-size="14.5" text-anchor="start" xml:space="preserve"><tspan fill="#9A3215" font-weight="600">MAC：</tspan><tspan fill="#57606A">同一个 MAC 出现在三个端口</tspan></text>
+<circle cx="78.0" cy="643.0" r="4" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="92.0" y="648.0" font-size="14.5" text-anchor="start" xml:space="preserve"><tspan fill="#9A3215" font-weight="600">回包：</tspan><tspan fill="#57606A">目的地址都一样，不知道交给谁</tspan></text>
+<rect x="580.0" y="156.0" width="972.0" height="534.0" rx="16" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="604.0" y="177.0" width="90.9" height="26.0" rx="13.0" fill="#1F9E77" stroke="#1F9E77" stroke-width="1"/>
+<text x="649.4" y="194.7" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">E2B 的做法</text>
+<text x="708.9" y="195.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">每个沙箱一个命名空间，出口换地址</text>
+<text x="899.0" y="238.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">命名空间里面：三个沙箱完全相同</text>
+<text x="1440.0" y="238.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">宿主机看到：各不相同</text>
+<rect x="608.0" y="252.0" width="582.0" height="84.0" rx="12" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="626.0" y="276.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="start">ns-2</text>
+<rect x="694.0" y="273.0" width="172.0" height="54.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="780.0" y="296.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机</text>
+<text x="780.0" y="316.0" font-size="14" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<line x1="870.0" y1="300.0" x2="920.0" y2="300.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<rect x="924.0" y="273.0" width="132.0" height="54.0" rx="9" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="990.0" y="296.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">tap0</text>
+<text x="990.0" y="316.0" font-size="14" fill="#3D3C38" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.22</text>
+<line x1="1060.0" y1="300.0" x2="1094.0" y2="300.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<rect x="1100.0" y="264.0" width="180.0" height="60.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.6"/>
+<text x="1190.0" y="287.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">SNAT / DNAT</text>
+<text x="1190.0" y="309.0" font-size="14" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle" xml:space="preserve"><tspan fill="#57606A">.21</tspan><tspan fill="#8C959F"> ⇄ </tspan><tspan fill="#8A5300" font-weight="600">10.13.0.2</tspan></text>
+<line x1="1284.0" y1="294.0" x2="1346.0" y2="294.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<text x="1316.0" y="285.0" font-size="12.5" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">e2bv-2</text>
+<rect x="608.0" y="354.0" width="582.0" height="84.0" rx="12" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="626.0" y="378.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="start">ns-3</text>
+<rect x="694.0" y="375.0" width="172.0" height="54.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="780.0" y="398.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机</text>
+<text x="780.0" y="418.0" font-size="14" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<line x1="870.0" y1="402.0" x2="920.0" y2="402.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<rect x="924.0" y="375.0" width="132.0" height="54.0" rx="9" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="990.0" y="398.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">tap0</text>
+<text x="990.0" y="418.0" font-size="14" fill="#3D3C38" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.22</text>
+<line x1="1060.0" y1="402.0" x2="1094.0" y2="402.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<rect x="1100.0" y="366.0" width="180.0" height="60.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.6"/>
+<text x="1190.0" y="389.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">SNAT / DNAT</text>
+<text x="1190.0" y="411.0" font-size="14" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle" xml:space="preserve"><tspan fill="#57606A">.21</tspan><tspan fill="#8C959F"> ⇄ </tspan><tspan fill="#8A5300" font-weight="600">10.13.0.3</tspan></text>
+<line x1="1284.0" y1="396.0" x2="1346.0" y2="396.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<text x="1316.0" y="387.0" font-size="12.5" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">e2bv-3</text>
+<rect x="608.0" y="456.0" width="582.0" height="84.0" rx="12" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="626.0" y="480.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="start">ns-4</text>
+<rect x="694.0" y="477.0" width="172.0" height="54.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="780.0" y="500.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机</text>
+<text x="780.0" y="520.0" font-size="14" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<line x1="870.0" y1="504.0" x2="920.0" y2="504.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<rect x="924.0" y="477.0" width="132.0" height="54.0" rx="9" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="990.0" y="500.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">tap0</text>
+<text x="990.0" y="520.0" font-size="14" fill="#3D3C38" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.22</text>
+<line x1="1060.0" y1="504.0" x2="1094.0" y2="504.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<rect x="1100.0" y="468.0" width="180.0" height="60.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.6"/>
+<text x="1190.0" y="491.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">SNAT / DNAT</text>
+<text x="1190.0" y="513.0" font-size="14" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle" xml:space="preserve"><tspan fill="#57606A">.21</tspan><tspan fill="#8C959F"> ⇄ </tspan><tspan fill="#8A5300" font-weight="600">10.13.0.4</tspan></text>
+<line x1="1284.0" y1="498.0" x2="1346.0" y2="498.0" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" marker-start="url(#m57606A)" marker-end="url(#m57606A)"/>
+<text x="1316.0" y="489.0" font-size="12.5" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">e2bv-4</text>
+<rect x="1352.0" y="252.0" width="176.0" height="288.0" rx="12" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1374.0" y="292.0" font-size="19" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10.13.0.2</text>
+<text x="1374.0" y="314.0" font-size="12.5" fill="#57606A" text-anchor="start">Host IP · 属于 ns-2</text>
+<text x="1374.0" y="394.0" font-size="19" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10.13.0.3</text>
+<text x="1374.0" y="416.0" font-size="12.5" fill="#57606A" text-anchor="start">Host IP · 属于 ns-3</text>
+<text x="1374.0" y="496.0" font-size="19" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10.13.0.4</text>
+<text x="1374.0" y="518.0" font-size="12.5" fill="#57606A" text-anchor="start">Host IP · 属于 ns-4</text>
+<circle cx="610.0" cy="575.0" r="4" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="624.0" y="580.0" font-size="14.5" text-anchor="start" xml:space="preserve"><tspan fill="#0E6B4F" font-weight="600">命名空间里：</tspan><tspan fill="#57606A">只有一个 169.254.0.21、一个 169.254.0.22，不冲突</tspan></text>
+<circle cx="610.0" cy="609.0" r="4" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="624.0" y="614.0" font-size="14.5" text-anchor="start" xml:space="preserve"><tspan fill="#0E6B4F" font-weight="600">出口：</tspan><tspan fill="#57606A">出去的包源地址换成 Host IP（SNAT），进来的包目的地址换回 .21（DNAT）</tspan></text>
+<circle cx="610.0" cy="643.0" r="4" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="624.0" y="648.0" font-size="14.5" text-anchor="start" xml:space="preserve"><tspan fill="#0E6B4F" font-weight="600">回包：</tspan><tspan fill="#57606A">宿主机按各不相同的 Host IP，把回包送回对应的命名空间</tspan></text>
+<line x1="48.0" y1="726.0" x2="1552.0" y2="726.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="752.0" font-size="13" fill="#8C959F" text-anchor="start">注：Host IP 来自地址池 10.13.0.0/16，第 N 号槽位用第 N 个地址（第 11 篇）。命名空间和 NAT 规则在沙箱恢复之前就建好，不拖慢恢复（第 20 篇）。</text></svg>

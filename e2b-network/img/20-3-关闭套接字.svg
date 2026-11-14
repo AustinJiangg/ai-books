@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="542" viewBox="0 0 1600 542" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="542" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">关闭一个 netlink 套接字要 250 毫秒：比回滚本身还慢</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">清理 conntrack 要通过 netlink 套接字。最初每次回滚都临时开一个、用完关掉；在鲲鹏 920（内核 6.6）上实测，关闭时内核要等 nf_tables 的工作队列清空，而建新槽位时这个队列正忙。</text>
+<line x1="360.0" y1="406.0" x2="1180.0" y2="406.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="360.0" y1="406.0" x2="360.0" y2="412.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="360.0" y="430.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<line x1="524.0" y1="406.0" x2="524.0" y2="412.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="524.0" y="430.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">100</text>
+<line x1="688.0" y1="406.0" x2="688.0" y2="412.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="688.0" y="430.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">200</text>
+<line x1="852.0" y1="406.0" x2="852.0" y2="412.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="852.0" y="430.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">300</text>
+<line x1="1016.0" y1="406.0" x2="1016.0" y2="412.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1016.0" y="430.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">400</text>
+<line x1="1180.0" y1="406.0" x2="1180.0" y2="412.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1180.0" y="430.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">500</text>
+<text x="1190.0" y="411.0" font-size="12.5" fill="#57606A" text-anchor="start">毫秒</text>
+<text x="48.0" y="220.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">一次回滚本身</text>
+<rect x="360.0" y="196.0" width="164.0" height="36.0" rx="4" fill="#D9DCE1" stroke="none" stroke-width="0"/>
+<text x="536.0" y="220.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">约 100</text>
+<text x="48.0" y="300.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">关闭一次 netlink 套接字</text>
+<rect x="360.0" y="276.0" width="410.0" height="36.0" rx="4" fill="#D6603D" stroke="none" stroke-width="0"/>
+<line x1="568.3" y1="326.0" x2="1093.1" y2="326.0" stroke="#D6603D" stroke-width="2" stroke-linecap="round"/>
+<line x1="568.3" y1="320.0" x2="568.3" y2="332.0" stroke="#D6603D" stroke-width="2" stroke-linecap="round"/>
+<text x="568.3" y="352.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">最快 127</text>
+<line x1="770.0" y1="320.0" x2="770.0" y2="332.0" stroke="#D6603D" stroke-width="2" stroke-linecap="round"/>
+<text x="770.0" y="352.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">中位 250</text>
+<line x1="1093.1" y1="320.0" x2="1093.1" y2="332.0" stroke="#D6603D" stroke-width="2" stroke-linecap="round"/>
+<text x="1093.1" y="352.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">最慢 447</text>
+<text x="782.0" y="300.0" font-size="14" fill="#9A3215" font-weight="700" text-anchor="start">250</text>
+<rect x="1260.0" y="166.0" width="292.0" height="110.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1278.0" y="202.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">耗时超过 150 毫秒的回滚里</text>
+<text x="1278.0" y="226.7" font-size="13" fill="#57606A" text-anchor="start">87% 能用“某一次关闭套接字”解释；这一</text>
+<text x="1278.0" y="246.2" font-size="13" fill="#57606A" text-anchor="start">步占整个回滚耗时的 90%</text>
+<rect x="1260.0" y="296.0" width="292.0" height="150.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1278.0" y="344.2" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">补丁：回滚路径上不开也不关套接字</text>
+<text x="1278.0" y="367.4" font-size="12.5" fill="#57606A" text-anchor="start">ns-5 这边：建网第 11 步打开，存在槽位里，</text>
+<text x="1278.0" y="386.2" font-size="12.5" fill="#57606A" text-anchor="start">拆网时交给后台协程关闭。宿主机这边：常驻</text>
+<text x="1278.0" y="404.9" font-size="12.5" fill="#57606A" text-anchor="start">清扫器持有一个，批量处理所有沙箱</text>
+<line x1="48.0" y1="476.0" x2="1552.0" y2="476.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="502.0" font-size="13" fill="#8C959F" text-anchor="start">注：某个槽位的套接字坏了，就退回“进命名空间、临时开一个”的老办法，并只打印一次告警。看起来理所当然很快的操作，也要靠实测确认。</text></svg>

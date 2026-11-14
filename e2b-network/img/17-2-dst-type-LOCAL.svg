@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="644" viewBox="0 0 1600 644" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="644" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">--dst-type LOCAL：只改道发给本机的 80 端口流量</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">最早的入口规则没有限制目的地址：任何从网卡进来、去往 80 端口的 TCP 都被改到 3002。它在部署时就加上，排在所有槽位规则前面，于是截走了别人的流量，也截走了 E2B 沙箱访问 hyperloop 的请求。</text>
+<rect x="468.0" y="156.0" width="527.0" height="64.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.4"/>
+<text x="731.5" y="184.0" font-size="17" fill="#9A3215" font-weight="600" text-anchor="middle">旧规则</text>
+<text x="731.5" y="206.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">-p tcp --dport 80 -j REDIRECT --to-port 3002</text>
+<rect x="1025.0" y="156.0" width="527.0" height="64.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.4"/>
+<text x="1288.5" y="184.0" font-size="17" fill="#0E6B4F" font-weight="600" text-anchor="middle">新规则</text>
+<text x="1288.5" y="206.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">… --dport 80 -m addrtype --dst-type LOCAL …</text>
+<rect x="48.0" y="240.0" width="1504.0" height="96.0" rx="10" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<text x="66.0" y="280.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">别的机器访问本机 IP 的 80 端口</text>
+<text x="66.0" y="304.0" font-size="13" fill="#57606A" text-anchor="start">目的是本机</text>
+<rect x="484.0" y="256.0" width="495.0" height="64.0" rx="9" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="502.0" y="284.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">改到 3002</text>
+<text x="502.0" y="306.0" font-size="12.5" fill="#57606A" text-anchor="start">本来就该这样</text>
+<rect x="1041.0" y="256.0" width="495.0" height="64.0" rx="9" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="1059.0" y="284.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">改到 3002</text>
+<text x="1059.0" y="306.0" font-size="12.5" fill="#57606A" text-anchor="start">目的是本机，照常改道</text>
+<text x="66.0" y="384.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">AgentENV、Docker 容器访问外网 http 网站</text>
+<text x="66.0" y="408.0" font-size="13" fill="#57606A" text-anchor="start">路过宿主机，被转发</text>
+<rect x="484.0" y="360.0" width="495.0" height="64.0" rx="9" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.2"/>
+<text x="502.0" y="388.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">被截到 client-proxy</text>
+<text x="502.0" y="410.0" font-size="12.5" fill="#57606A" text-anchor="start">别人的流量出不去</text>
+<rect x="1041.0" y="360.0" width="495.0" height="64.0" rx="9" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="1059.0" y="388.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">不改道</text>
+<text x="1059.0" y="410.0" font-size="12.5" fill="#57606A" text-anchor="start">目的不是本机，正常转发</text>
+<rect x="48.0" y="448.0" width="1504.0" height="96.0" rx="10" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<text x="66.0" y="488.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">E2B 沙箱访问 192.0.2.1:80（hyperloop）</text>
+<text x="66.0" y="512.0" font-size="13" fill="#57606A" text-anchor="start">槽位规则加在链尾，排在后面</text>
+<rect x="484.0" y="464.0" width="495.0" height="64.0" rx="9" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.2"/>
+<text x="502.0" y="492.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">被截到 client-proxy</text>
+<text x="502.0" y="514.0" font-size="12.5" fill="#57606A" text-anchor="start">invalid host 日志：16 个沙箱两小时约 9 GB</text>
+<rect x="1041.0" y="464.0" width="495.0" height="64.0" rx="9" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="1059.0" y="492.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">不改道</text>
+<text x="1059.0" y="514.0" font-size="12.5" fill="#57606A" text-anchor="start">192.0.2.1 不是本机地址，留给后面的槽位规则 → 5010</text>
+<line x1="48.0" y1="578.0" x2="1552.0" y2="578.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="604.0" font-size="13" fill="#8C959F" text-anchor="start">注：部署脚本会先把不带 --dst-type LOCAL 的老规则循环删干净，再加新规则，避免升级后新旧并存。本机程序访问 127.0.0.1:80 由另一条 OUTPUT -o lo 规则处理。</text></svg>

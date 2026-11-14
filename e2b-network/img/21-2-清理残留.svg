@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="786" viewBox="0 0 1600 786" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="786" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">build.sh -d 只清自己的残留：认名字、看进程、先停 orchestrator</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">宿主机上不只有 E2B 的网络。清理脚本只认 ns-&lt;数字&gt; 和 e2bv-&lt;数字&gt;；命名空间里有进程的是在用的，保留。空闲的池中槽位和泄漏的残骸在宿主机上看起来一样，所以必须先停掉 orchestrator，剩下的空闲命名空间才</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">都算残骸。</text>
+<rect x="48.0" y="180.0" width="481.3" height="250.0" rx="14" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1.3"/>
+<text x="70.0" y="214.0" font-size="16.5" fill="#1F2328" font-weight="600" text-anchor="start">不是 E2B 的：不碰</text>
+<rect x="70.0" y="236.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="86.0" y="260.0" font-size="13.5" fill="#1F2328" text-anchor="start">veth-4（AgentENV）</text>
+<rect x="70.0" y="282.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="86.0" y="306.0" font-size="13.5" fill="#1F2328" text-anchor="start">docker0、容器的 veth</text>
+<rect x="70.0" y="328.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="86.0" y="352.0" font-size="13.5" fill="#1F2328" text-anchor="start">cni0、vethab12（k3s）</text>
+<rect x="70.0" y="374.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="86.0" y="398.0" font-size="13.5" fill="#1F2328" text-anchor="start">virbr0（libvirt）</text>
+<rect x="559.3" y="180.0" width="481.3" height="250.0" rx="14" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="581.3" y="214.0" font-size="16.5" fill="#0E6B4F" font-weight="600" text-anchor="start">E2B 的、在用：保留</text>
+<rect x="581.3" y="236.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="597.3" y="260.0" font-size="13.5" fill="#1F2328" text-anchor="start">ns-2：里面有 Firecracker 进程</text>
+<rect x="581.3" y="282.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="597.3" y="306.0" font-size="13.5" fill="#1F2328" text-anchor="start">e2bv-2</text>
+<rect x="581.3" y="328.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="597.3" y="352.0" font-size="13.5" fill="#1F2328" text-anchor="start">它的 9 条 iptables 规则</text>
+<rect x="1070.7" y="180.0" width="481.3" height="250.0" rx="14" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1092.7" y="214.0" font-size="16.5" fill="#9A3215" font-weight="600" text-anchor="start">E2B 的、空闲：删除</text>
+<rect x="1092.7" y="236.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#D6603D" stroke-width="1"/>
+<text x="1108.7" y="260.0" font-size="13.5" fill="#1F2328" text-anchor="start">ns-3、ns-7：里面没有进程</text>
+<rect x="1092.7" y="282.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#D6603D" stroke-width="1"/>
+<text x="1108.7" y="306.0" font-size="13.5" fill="#1F2328" text-anchor="start">e2bv-3、e2bv-7 等孤儿 veth</text>
+<rect x="1092.7" y="328.0" width="437.3" height="36.0" rx="8" fill="#FFFFFF" stroke="#D6603D" stroke-width="1"/>
+<text x="1108.7" y="352.0" font-size="13.5" fill="#1F2328" text-anchor="start">它们的 iptables 规则</text>
+<text x="1092.7" y="412.0" font-size="12.5" fill="#9A3215" font-weight="600" text-anchor="start">前提：orchestrator 已停（池子只在它内存里）</text>
+<text x="48.0" y="470.0" font-size="17" fill="#1F2328" font-weight="600" text-anchor="start">残留的 iptables 规则怎么删</text>
+<rect x="48.0" y="488.0" width="737.0" height="110.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="68.0" y="534.7" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">逐条 iptables -D</text>
+<text x="68.0" y="558.6" font-size="13" fill="#57606A" text-anchor="start">每删一条都要把整张表读出来再写回去；上万条规则要跑几个小时。同机 k3s 的 kube-proxy 还在抢锁。</text>
+<rect x="815.0" y="488.0" width="737.0" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="835.0" y="525.0" font-size="15.5" fill="#0E6B4F" font-weight="600" text-anchor="start">iptables-restore --noflush</text>
+<text x="835.0" y="548.9" font-size="13" fill="#57606A" text-anchor="start">把所有删除指令拼成一份文件一次提交；--noflush 只执行这些删除、不清空整张表，Docker、k3s 的规则不受影响。</text>
+<text x="835.0" y="568.4" font-size="13" fill="#57606A" text-anchor="start">例：nat 25000 → 120。</text>
+<text x="48.0" y="630.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">怎么认出残留规则</text>
+<circle cx="52.0" cy="655.4" r="3.6" fill="#8C959F" stroke="none" stroke-width="1"/>
+<text x="64.0" y="660.0" font-size="13.5" text-anchor="start" xml:space="preserve"><tspan fill="#1F2328" font-weight="600">REDIRECT 6 条、FORWARD 2 条：</tspan><tspan fill="#57606A">匹配 -i/-o e2bv-&lt;数字&gt;；排除在用槽位时匹配 "e2bv-5 "（带尾随空格，免得连 e2bv-50 一起排除）</tspan></text>
+<circle cx="52.0" cy="685.4" r="3.6" fill="#8C959F" stroke="none" stroke-width="1"/>
+<text x="64.0" y="690.0" font-size="13.5" text-anchor="start" xml:space="preserve"><tspan fill="#1F2328" font-weight="600">MASQUERADE：</tspan><tspan fill="#57606A">不带网卡名，按源地址是 Host 池里的某个 /32 识别；在用槽位按“池起点 + 编号”算出 Host IP 来排除</tspan></text>
+<line x1="48.0" y1="720.0" x2="1552.0" y2="720.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="746.0" font-size="13" fill="#8C959F" text-anchor="start">注：-d 最先用 nomad job stop 优雅停 template-manager（最多等 40 秒），让它自己拆槽位池；直接 kill -9 会把几百个槽位当场变成残骸。只想清沙箱网络时用 --recycle-netns：停 template-manager → 清理 → 重新拉起。</text></svg>

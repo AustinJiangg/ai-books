@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="822" viewBox="0 0 1600 822" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="mD9922B" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D9922B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="822" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">四种地址转换：改源还是改目的，换成写死的地址还是自动选</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">按两件事把 NAT 分成四格：改的是源地址还是目的地址（决定挂在哪个钩子上），新地址是写死的还是自动选的。每格都是 E2B 里真实用到的一条规则。</text>
+<text x="530.5" y="176.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="middle">改源地址</text>
+<text x="530.5" y="200.0" font-size="13" fill="#57606A" text-anchor="middle">在 POSTROUTING 做：要先知道从哪块网卡出去</text>
+<text x="1219.5" y="176.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="middle">改目的地址</text>
+<text x="1219.5" y="200.0" font-size="13" fill="#57606A" text-anchor="middle">在 PREROUTING 做：要赶在路由判断之前</text>
+<text x="48.0" y="346.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">写死新地址</text>
+<rect x="198.0" y="226.0" width="665.0" height="236.0" rx="14" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="220.0" y="262.0" font-size="20" fill="#1F2328" font-weight="700" text-anchor="start">SNAT</text>
+<text x="291.7" y="262.0" font-size="13.5" fill="#57606A" text-anchor="start">ns-5 出口</text>
+<text x="220.0" y="324.0" font-size="13.5" fill="#8C959F" text-anchor="start">源</text>
+<rect x="264.0" y="300.0" width="220.0" height="38.0" rx="8" fill="#F4F5F7" stroke="none" stroke-width="0"/>
+<text x="374.0" y="325.0" font-size="14.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<path d="M494.0 319.0 L544.0 319.0" fill="none" stroke="#D9922B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<rect x="554.0" y="300.0" width="220.0" height="38.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="664.0" y="325.0" font-size="14.5" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">10.13.0.5</text>
+<text x="220.0" y="372.0" font-size="13.5" fill="#1F2328" text-anchor="start">沙箱的地址换成它的 Host IP</text>
+<rect x="214.0" y="392.0" width="633.0" height="46.0" rx="8" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<text x="226.0" y="412.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">-o eth0 -s 169.254.0.21 -j SNAT --to 10.13.0.5</text>
+<rect x="887.0" y="226.0" width="665.0" height="236.0" rx="14" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="909.0" y="262.0" font-size="20" fill="#1F2328" font-weight="700" text-anchor="start">DNAT</text>
+<text x="980.7" y="262.0" font-size="13.5" fill="#57606A" text-anchor="start">ns-5 入口</text>
+<text x="909.0" y="324.0" font-size="13.5" fill="#8C959F" text-anchor="start">目的</text>
+<rect x="953.0" y="300.0" width="220.0" height="38.0" rx="8" fill="#F4F5F7" stroke="none" stroke-width="0"/>
+<text x="1063.0" y="325.0" font-size="14.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">10.13.0.5</text>
+<path d="M1183.0 319.0 L1233.0 319.0" fill="none" stroke="#D9922B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<rect x="1243.0" y="300.0" width="220.0" height="38.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1353.0" y="325.0" font-size="14.5" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<text x="909.0" y="372.0" font-size="13.5" fill="#1F2328" text-anchor="start">发给 Host IP 的包换回客户机地址</text>
+<rect x="903.0" y="392.0" width="633.0" height="46.0" rx="8" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<text x="915.0" y="412.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">-i eth0 -d 10.13.0.5 -j DNAT --to 169.254.0.21</text>
+<text x="48.0" y="606.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">自动选地址</text>
+<rect x="198.0" y="486.0" width="665.0" height="236.0" rx="14" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="220.0" y="522.0" font-size="20" fill="#1F2328" font-weight="700" text-anchor="start">MASQUERADE</text>
+<text x="378.1" y="522.0" font-size="13.5" fill="#57606A" text-anchor="start">宿主机出口</text>
+<text x="220.0" y="584.0" font-size="13.5" fill="#8C959F" text-anchor="start">源</text>
+<rect x="264.0" y="560.0" width="220.0" height="38.0" rx="8" fill="#F4F5F7" stroke="none" stroke-width="0"/>
+<text x="374.0" y="585.0" font-size="14.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">10.13.0.5</text>
+<path d="M494.0 579.0 L544.0 579.0" fill="none" stroke="#D9922B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<rect x="554.0" y="560.0" width="220.0" height="38.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="664.0" y="585.0" font-size="14.5" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">192.168.10.23</text>
+<text x="220.0" y="632.0" font-size="13.5" fill="#1F2328" text-anchor="start">自动用出口网卡当前的地址</text>
+<rect x="214.0" y="652.0" width="633.0" height="46.0" rx="8" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<text x="226.0" y="672.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">-s 10.13.0.5/32 -o enp125s0f0 -j MASQUERADE</text>
+<rect x="887.0" y="486.0" width="665.0" height="236.0" rx="14" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="909.0" y="522.0" font-size="20" fill="#1F2328" font-weight="700" text-anchor="start">REDIRECT</text>
+<text x="1038.3" y="522.0" font-size="13.5" fill="#57606A" text-anchor="start">宿主机，从 e2bv-5 进来的 TCP</text>
+<text x="909.0" y="584.0" font-size="13.5" fill="#8C959F" text-anchor="start">目的</text>
+<rect x="953.0" y="560.0" width="220.0" height="38.0" rx="8" fill="#F4F5F7" stroke="none" stroke-width="0"/>
+<text x="1063.0" y="585.0" font-size="14.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">151.101.0.223:443</text>
+<path d="M1183.0 579.0 L1233.0 579.0" fill="none" stroke="#D9922B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<rect x="1243.0" y="560.0" width="220.0" height="38.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1353.0" y="585.0" font-size="14.5" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">10.14.0.10:5017</text>
+<text x="909.0" y="632.0" font-size="13.5" fill="#1F2328" text-anchor="start">改成本机（进来那块网卡的地址），交给本机程序</text>
+<rect x="903.0" y="652.0" width="633.0" height="46.0" rx="8" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<text x="915.0" y="672.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">-i e2bv-5 -p tcp --dport 443 -j REDIRECT --to-port 5017</text>
+<line x1="48.0" y1="756.0" x2="1552.0" y2="756.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="782.0" font-size="13" fill="#8C959F" text-anchor="start">注：这些规则只描述新连接的第一个包怎么改；同一条连接的后续包和回包，由 conntrack 按记录处理（见下一节）。被 REDIRECT 的程序用 SO_ORIGINAL_DST 向内核要回原始目的地址。</text></svg>

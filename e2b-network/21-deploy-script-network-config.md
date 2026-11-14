@@ -55,18 +55,9 @@ local=/e2b.app/
 
 `-s` 做的事情很多，和网络相关的步骤按执行顺序排列如下：
 
-```
-1. 安装并启动 Harbor
-2. start-server.sh：启动 Consul / Nomad 服务端
-3. start-client.sh：启动 Consul / Nomad 客户端
-     └─ 改 /etc/resolv.conf、加 Consul 转发、调网络 sysctl      ← 3.1
-4. init-client.sh：沙箱节点初始化
-     └─ 确保 net.ipv4.ip_forward = 1                            ← 3.2
-5. 往 /etc/hosts 加 "<本机IP> harbor"                            ← 3.3
-6. deploy.sh：用 Nomad 启动 redis、template-manager、edge、api
-     └─ template-manager（即 orchestrator）启动，开始建槽位池      ← 3.4
-7. 加入口 iptables 规则：80 → 3002                               ← 3.5
-```
+![build.sh -s 的顺序](img/21-1-部署顺序.svg)
+
+图中第 3～7 步依次对应下面的 3.1～3.5 节。
 
 ### 3.1 start-client.sh：DNS 和网络参数
 
@@ -193,6 +184,8 @@ ENVIRONMENT                  = "${ENVIRONMENT}"                   # local
 最后是**怎么删**。如果用 `iptables -D` 逐条删除，每删一条都要整表读写一次，上万条要跑**几个小时**。脚本改用 `iptables-restore --noflush` 批量处理：把所有删除指令拼成一份文件，一次性交给内核。`--noflush` 表示只执行给出的这些删除，**不清空整张表**，所以同机 Docker、k3s 的规则不受影响。
 
 脚本最后会打印清理前后规则数量的对比，例如 “nat 25000 → 120”。
+
+![build.sh -d 只清自己的残留](img/21-2-清理残留.svg)
 
 ### 4.5 `--recycle-netns`：只回收沙箱网络
 

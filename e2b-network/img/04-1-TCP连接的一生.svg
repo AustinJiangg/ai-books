@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1070" viewBox="0 0 1600 1070" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="1070" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一条 TCP 连接的一生：两端各记一份状态</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">以沙箱里的 pip 连接 pypi.org 为例。中间是来回的包，两侧是两端各自记下的连接状态。连接不是一根线，而是两端内存里对得上的两份记录：对方的地址和端口、序列号、确认号、所处阶段。</text>
+<rect x="430.0" y="156.0" width="260.0" height="58.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="560.0" y="176.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">客户端</text>
+<text x="560.0" y="200.2" font-size="12.5" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21:51234</text>
+<rect x="910.0" y="156.0" width="260.0" height="58.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1040.0" y="176.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">服务端</text>
+<text x="1040.0" y="200.2" font-size="12.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">151.101.0.223:443</text>
+<path d="M564.0 264.0 L1034.0 282.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="262.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">SYN  seq=x</text>
+<text x="800.0" y="298.0" font-size="12" fill="#8C959F" text-anchor="middle">我想连你，我的起始编号是 x</text>
+<path d="M1036.0 336.0 L566.0 354.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="334.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">SYN+ACK  seq=y ack=x+1</text>
+<text x="800.0" y="370.0" font-size="12" fill="#8C959F" text-anchor="middle">好，我的起始编号是 y</text>
+<path d="M564.0 408.0 L1034.0 426.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="406.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ACK  ack=y+1</text>
+<path d="M564.0 506.0 L1034.0 524.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="504.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">数据  seq=x+1</text>
+<text x="800.0" y="540.0" font-size="12" fill="#8C959F" text-anchor="middle">带上这段数据的编号</text>
+<path d="M1036.0 578.0 L566.0 596.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="576.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ACK  ack=x+1+长度</text>
+<text x="800.0" y="612.0" font-size="12" fill="#8C959F" text-anchor="middle">收到这里之前的全部数据</text>
+<path d="M564.0 676.0 L1034.0 694.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="674.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">FIN</text>
+<text x="800.0" y="710.0" font-size="12" fill="#8C959F" text-anchor="middle">我说完了</text>
+<path d="M1036.0 748.0 L566.0 766.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="746.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ACK</text>
+<path d="M1036.0 820.0 L566.0 838.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="818.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">FIN</text>
+<text x="800.0" y="854.0" font-size="12" fill="#8C959F" text-anchor="middle">我也说完了</text>
+<path d="M564.0 892.0 L1034.0 910.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="890.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ACK</text>
+<line x1="560.0" y1="214.0" x2="560.0" y2="974.0" stroke="#AEB6BE" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line x1="1040.0" y1="214.0" x2="1040.0" y2="974.0" stroke="#AEB6BE" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="407.0" y="224.0" width="65.9" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="440.0" y="240.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">CLOSED</text>
+<line x1="477.0" y1="236.0" x2="556.0" y2="236.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="399.7" y="252.0" width="80.6" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="440.0" y="268.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">SYN_SENT</text>
+<line x1="484.3" y1="264.0" x2="556.0" y2="264.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="388.7" y="342.0" width="102.5" height="24.0" rx="12.0" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="440.0" y="358.3" font-size="12" fill="#0E6B4F" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ESTABLISHED</text>
+<line x1="495.3" y1="354.0" x2="556.0" y2="354.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="392.4" y="664.0" width="95.2" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="440.0" y="680.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">FIN_WAIT_1</text>
+<line x1="491.6" y1="676.0" x2="556.0" y2="676.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="392.4" y="754.0" width="95.2" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="440.0" y="770.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">FIN_WAIT_2</text>
+<line x1="491.6" y1="766.0" x2="556.0" y2="766.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="396.1" y="826.0" width="87.9" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="440.0" y="842.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">TIME_WAIT</text>
+<line x1="487.9" y1="838.0" x2="556.0" y2="838.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="1127.0" y="224.0" width="65.9" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="1160.0" y="240.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">LISTEN</text>
+<line x1="1044.0" y1="236.0" x2="1123.0" y2="236.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="1119.7" y="324.0" width="80.6" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="1160.0" y="340.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">SYN_RCVD</text>
+<line x1="1044.0" y1="336.0" x2="1115.7" y2="336.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="1108.7" y="414.0" width="102.5" height="24.0" rx="12.0" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="1160.0" y="430.3" font-size="12" fill="#0E6B4F" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ESTABLISHED</text>
+<line x1="1044.0" y1="426.0" x2="1104.7" y2="426.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="1112.4" y="682.0" width="95.2" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="1160.0" y="698.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">CLOSE_WAIT</text>
+<line x1="1044.0" y1="694.0" x2="1108.4" y2="694.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="1119.7" y="808.0" width="80.6" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="1160.0" y="824.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">LAST_ACK</text>
+<line x1="1044.0" y1="820.0" x2="1115.7" y2="820.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<rect x="1127.0" y="898.0" width="65.9" height="24.0" rx="12.0" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="1160.0" y="914.3" font-size="12" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">CLOSED</text>
+<line x1="1044.0" y1="910.0" x2="1123.0" y2="910.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="2 3"/>
+<path d="M198 252 h-10 V440 h10" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="176.0" y="351.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="end">三次握手</text>
+<path d="M198 494 h-10 V610 h10" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="176.0" y="557.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="end">传数据</text>
+<path d="M198 664 h-10 V924 h10" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="176.0" y="799.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="end">四次挥手</text>
+<rect x="1270.0" y="334.0" width="282.0" height="280.0" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1288.0" y="364.0" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="start">每一端记着的东西</text>
+<circle cx="1292.0" cy="391.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1304.0" y="396.0" font-size="13.5" fill="#1F2328" text-anchor="start">对方的 IP 和端口</text>
+<circle cx="1292.0" cy="419.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1304.0" y="424.0" font-size="13.5" fill="#1F2328" text-anchor="start">我发到哪个编号了</text>
+<circle cx="1292.0" cy="447.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1304.0" y="452.0" font-size="13.5" fill="#1F2328" text-anchor="start">对方确认到哪了</text>
+<circle cx="1292.0" cy="475.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1304.0" y="480.0" font-size="13.5" fill="#1F2328" text-anchor="start">连接处于哪个阶段</text>
+<text x="1288.0" y="526.0" font-size="13" fill="#57606A" text-anchor="start">两份记录对不上，比如一端被快照回滚到</text>
+<text x="1288.0" y="546.0" font-size="13" fill="#57606A" text-anchor="start">几秒前，包就会被当成无效包，连接卡死</text>
+<text x="1288.0" y="566.0" font-size="13" fill="#57606A" text-anchor="start">（第 20 篇）。</text>
+<line x1="48.0" y1="1004.0" x2="1552.0" y2="1004.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="1030.0" font-size="13" fill="#8C959F" text-anchor="start">注：x、y 是两端各自随机选的起始序列号。TIME_WAIT 会再等一段时间才彻底关闭，防止迟到的包被误认成新连接的。</text></svg>

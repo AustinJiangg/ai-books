@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="810" viewBox="0 0 1600 810" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="810" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">快照回滚后连接为什么卡死：客户机回到了过去，conntrack 没有</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">回滚把运行中的沙箱恢复到检查点，复用同一个槽位。客户机的 TCP 状态回到检查点那一刻，但 ns-5 和宿主机的 conntrack 表还记着回滚前的最新状态。两边对不上，包被判 INVALID 丢弃。图中的序列号是示意。</text>
+<rect x="48.0" y="154.0" width="64.0" height="28.0" rx="14.0" fill="#D6603D" stroke="#D6603D" stroke-width="1"/>
+<text x="80.0" y="173.0" font-size="14" fill="#FFFFFF" font-weight="600" text-anchor="middle">不清理</text>
+<rect x="900.0" y="196.0" width="180.0" height="100.0" rx="0" fill="#F1F2F4" stroke="none" stroke-width="0"/>
+<text x="990.0" y="250.0" font-size="12.5" fill="#8C959F" text-anchor="middle">虚拟机停着</text>
+<text x="48.0" y="226.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">客户机的 TCP 状态</text>
+<rect x="302.0" y="204.0" width="596.0" height="36.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="600.0" y="227.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">seq 1000 → 一路推进到 5000</text>
+<rect x="1082.0" y="204.0" width="468.0" height="36.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="1316.0" y="227.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">回到 seq 1000（快照里的状态）</text>
+<text x="48.0" y="274.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">conntrack 记录</text>
+<rect x="302.0" y="252.0" width="596.0" height="36.0" rx="8" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="600.0" y="275.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">跟着推进到 5000</text>
+<rect x="1082.0" y="252.0" width="468.0" height="36.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="1316.0" y="275.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">仍记着 5000</text>
+<line x1="300.0" y1="306.0" x2="1552.0" y2="306.0" stroke="#C9D1D9" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="300.0" y1="302.0" x2="300.0" y2="310.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="300.0" y="328.0" font-size="12.5" fill="#57606A" text-anchor="middle">检查点</text>
+<line x1="900.0" y1="302.0" x2="900.0" y2="310.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="900.0" y="328.0" font-size="12.5" fill="#57606A" text-anchor="middle">停旧 Firecracker</text>
+<line x1="1080.0" y1="302.0" x2="1080.0" y2="310.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1080.0" y="328.0" font-size="12.5" fill="#57606A" text-anchor="middle">新 Firecracker 恢复</text>
+<text x="300.0" y="356.0" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">对不上：内核把客户机的包判为 INVALID 丢弃。连接不报错，只是卡住，客户机不停重发直到超时</text>
+<rect x="48.0" y="384.0" width="197.2" height="28.0" rx="14.0" fill="#1F9E77" stroke="#1F9E77" stroke-width="1"/>
+<text x="146.6" y="403.0" font-size="14" fill="#FFFFFF" font-weight="600" text-anchor="middle">补丁：回滚时清 conntrack</text>
+<rect x="900.0" y="426.0" width="180.0" height="100.0" rx="0" fill="#F1F2F4" stroke="none" stroke-width="0"/>
+<text x="990.0" y="480.0" font-size="12.5" fill="#8C959F" text-anchor="middle">虚拟机停着</text>
+<rect x="914.0" y="492.0" width="152.0" height="28.0" rx="14" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="990.0" y="511.0" font-size="12.5" fill="#0E6B4F" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">FlushConntrack</text>
+<text x="48.0" y="456.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">客户机的 TCP 状态</text>
+<rect x="302.0" y="434.0" width="596.0" height="36.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="600.0" y="457.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">seq 1000 → 一路推进到 5000</text>
+<rect x="1082.0" y="434.0" width="468.0" height="36.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="1316.0" y="457.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">回到 seq 1000（快照里的状态）</text>
+<text x="48.0" y="504.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">conntrack 记录</text>
+<rect x="302.0" y="482.0" width="596.0" height="36.0" rx="8" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="600.0" y="505.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">跟着推进到 5000</text>
+<rect x="1082.0" y="482.0" width="468.0" height="36.0" rx="8" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="1316.0" y="505.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="middle">空：之后的包按新连接处理</text>
+<line x1="300.0" y1="536.0" x2="1552.0" y2="536.0" stroke="#C9D1D9" stroke-width="1.2" stroke-linecap="round"/>
+<line x1="300.0" y1="532.0" x2="300.0" y2="540.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="300.0" y="558.0" font-size="12.5" fill="#57606A" text-anchor="middle">检查点</text>
+<line x1="900.0" y1="532.0" x2="900.0" y2="540.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="900.0" y="558.0" font-size="12.5" fill="#57606A" text-anchor="middle">停旧 Firecracker</text>
+<line x1="1080.0" y1="532.0" x2="1080.0" y2="540.0" stroke="#57606A" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1080.0" y="558.0" font-size="12.5" fill="#57606A" text-anchor="middle">新 Firecracker 恢复</text>
+<text x="300.0" y="586.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">FlushConntrack 在虚拟机停着的窗口里执行，没有流量，不会边清边产生新记录</text>
+<rect x="48.0" y="626.0" width="737.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="68.0" y="659.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">ns-5 的 conntrack 表：整张清空</text>
+<text x="68.0" y="683.5" font-size="13" fill="#57606A" text-anchor="start">这张表里只有这一个沙箱的连接</text>
+<rect x="815.0" y="626.0" width="737.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="835.0" y="659.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">宿主机的 conntrack 表：只删和 10.13.0.5 有关的</text>
+<text x="835.0" y="683.5" font-size="13" fill="#57606A" text-anchor="start">原始方向源地址或目的地址是这个 Host IP 的记录；这张表所有沙箱共用，不能误删</text>
+<line x1="48.0" y1="744.0" x2="1552.0" y2="744.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="770.0" font-size="13" fill="#8C959F" text-anchor="start">注：两张表同时清，互不依赖。代理层也配合：回滚中到达的请求立即返回明确错误；跨越回滚失败的请求返回“沙箱已回滚”（第 18 篇）。</text></svg>

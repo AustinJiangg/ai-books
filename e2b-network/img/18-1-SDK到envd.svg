@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="712" viewBox="0 0 1600 712" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="712" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">从 SDK 到 envd：一次沙箱请求的八跳</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">SDK 执行 sbx.commands.run("whoami")。前三跳把请求送到本机 3002（第 17 篇）；中间两层代理先找节点、再找 Host IP；最后三跳和第 13 篇的“宿主机连沙箱”一样。响应沿原路返回。</text>
+<rect x="48.0" y="156.0" width="346.0" height="108.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="221.0" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">① SDK</text>
+<text x="221.0" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">http://49983-&lt;ID&gt;.e2b.app/…</text>
+<path d="M398.0 210.0 L430.0 210.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="434.0" y="156.0" width="346.0" height="108.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="607.0" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">② dnsmasq</text>
+<text x="607.0" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">*.e2b.app → 127.0.0.1</text>
+<path d="M784.0 210.0 L816.0 210.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="820.0" y="156.0" width="346.0" height="108.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="993.0" y="201.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">③ iptables OUTPUT</text>
+<text x="993.0" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">127.0.0.1:80 → :3002</text>
+<path d="M1170.0 210.0 L1202.0 210.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1206.0" y="156.0" width="346.0" height="108.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1379.0" y="201.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">④ client-proxy :3002</text>
+<text x="1379.0" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">从 Host 头取端口和沙箱 ID；查目录得到节点 IP</text>
+<rect x="1206.0" y="334.0" width="346.0" height="108.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1379.0" y="370.6" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">⑤ orchestrator 代理 :5007</text>
+<text x="1379.0" y="393.8" font-size="12.5" fill="#57606A" text-anchor="middle">再解析一次 Host；在内存里找到沙箱的 Host IP；校验</text>
+<text x="1379.0" y="412.6" font-size="12.5" fill="#57606A" text-anchor="middle">流量令牌；失败最多重试 5 次</text>
+<path d="M1202.0 388.0 L1170.0 388.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="820.0" y="334.0" width="346.0" height="108.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="993.0" y="379.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">⑥ 宿主机路由</text>
+<text x="993.0" y="403.2" font-size="12.5" fill="#57606A" text-anchor="middle">10.13.0.5 via 10.14.0.11 dev e2bv-5</text>
+<path d="M816.0 388.0 L784.0 388.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="434.0" y="334.0" width="346.0" height="108.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="607.0" y="379.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">⑦ ns-5 DNAT</text>
+<text x="607.0" y="403.2" font-size="12.5" fill="#57606A" text-anchor="middle">10.13.0.5 → 169.254.0.21</text>
+<path d="M430.0 388.0 L398.0 388.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="48.0" y="334.0" width="346.0" height="108.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="221.0" y="370.6" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">⑧ envd :49983</text>
+<text x="221.0" y="393.8" font-size="12.5" fill="#57606A" text-anchor="middle">tap0 → Firecracker → 客户机；envd 用 MMDS 里的</text>
+<text x="221.0" y="412.6" font-size="12.5" fill="#57606A" text-anchor="middle">哈希校验令牌</text>
+<path d="M1379.0 266.0 L1379.0 330.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="1367.0" y="302.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="end">转发到节点 IP:5007，Host 头不变</text>
+<text x="48.0" y="492.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">两层代理都这样解析 Host 头</text>
+<rect x="48.0" y="516.0" width="1504.0" height="96.0" rx="12" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="72.0" y="556.0" font-size="16" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">Host:</text>
+<rect x="144.0" y="534.0" width="56.8" height="32.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="148.0" y="556.0" font-size="16" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">49983</text>
+<text x="172.4" y="592.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">端口</text>
+<text x="204.8" y="556.0" font-size="16" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">-</text>
+<rect x="212.6" y="534.0" width="164.2" height="32.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="216.6" y="556.0" font-size="16" fill="#1D4F91" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">i2k5fx3h0qa9z1m7</text>
+<text x="294.6" y="592.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">沙箱 ID</text>
+<text x="380.7" y="556.0" font-size="16" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">.e2b.app</text>
+<text x="520.8" y="556.0" font-size="14" fill="#57606A" text-anchor="start">取第一个点之前的部分，按 - 切开</text>
+<text x="520.8" y="582.0" font-size="13" fill="#8C959F" text-anchor="start">也可以用请求头 E2b-Sandbox-Id / E2b-Sandbox-Port 指定</text>
+<line x1="48.0" y1="646.0" x2="1552.0" y2="646.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="672.0" font-size="13" fill="#8C959F" text-anchor="start">注：两层代理是为多节点设计的：client-proxy 是集群入口，只负责找到沙箱在哪个节点（Redis 里的沙箱目录）；orchestrator 代理是节点入口，只有它知道本机沙箱的 Host IP。单机部署时两层在同一台机器上。</text></svg>

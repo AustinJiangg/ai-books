@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="742" viewBox="0 0 1600 742" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="742" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一个帧从客户机走到 tap0：中间隔着一个普通程序 Firecracker</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">客户机的 virtio-net 驱动把帧放进和 Firecracker 共享的内存队列；Firecracker 取出来，写进 tap0 的文件描述符，帧就进了 ns-5 的网络栈。发往 169.254.169.254 的 MMDS 请求在 Firecracker 这里就被截下回</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">答，不会出现在 tap0 上。</text>
+<rect x="48.0" y="174.0" width="1504.0" height="136.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="68.0" y="204.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">客户机</text>
+<text x="68.0" y="226.0" font-size="12.5" fill="#57606A" text-anchor="start">虚拟机内部</text>
+<rect x="48.0" y="340.0" width="1504.0" height="136.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="68.0" y="370.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">Firecracker 进程</text>
+<text x="68.0" y="392.0" font-size="12.5" fill="#57606A" text-anchor="start">用户态，运行在 ns-5 里</text>
+<rect x="48.0" y="506.0" width="1504.0" height="136.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="68.0" y="536.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">宿主机内核</text>
+<text x="68.0" y="558.0" font-size="12.5" fill="#57606A" text-anchor="start">ns-5 的网络栈</text>
+<rect x="210.0" y="214.0" width="180.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="300.0" y="238.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">程序</text>
+<text x="300.0" y="260.6" font-size="12" fill="#57606A" text-anchor="middle">例如 pip</text>
+<rect x="440.0" y="214.0" width="180.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="530.0" y="238.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机内核</text>
+<text x="530.0" y="260.6" font-size="12" fill="#57606A" text-anchor="middle">查路由，交给网关</text>
+<rect x="670.0" y="214.0" width="180.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="760.0" y="238.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">virtio-net 驱动</text>
+<text x="760.0" y="260.6" font-size="12" fill="#57606A" text-anchor="middle">知道自己在虚拟机里</text>
+<path d="M390.0 246.0 L436.0 246.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M620.0 246.0 L666.0 246.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1000.0" y="244.0" width="180.0" height="162.0" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.5" stroke-dasharray="5 4"/>
+<text x="1090.0" y="270.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">共享内存</text>
+<rect x="1020.0" y="284.0" width="140.0" height="34.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1090.0" y="306.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">发送队列</text>
+<rect x="1020.0" y="330.0" width="140.0" height="34.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1090.0" y="352.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">接收队列</text>
+<path d="M850.0 246.0 L994.0 246.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="925.0" y="236.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">放进发送队列</text>
+<text x="925.0" y="268.0" font-size="12" fill="#57606A" text-anchor="middle">敲门铃通知</text>
+<path d="M996.0 414.0 L874.4 414.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="935.2" y="404.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">取出帧</text>
+<path d="M780 380 L868.4 414 L780 448 L691.6 414 Z" fill="#FFFFFF" stroke="#57606A" stroke-width="1.4"/>
+<text x="780.0" y="410.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">目的是</text>
+<text x="780.0" y="428.0" font-size="12.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.169.254？</text>
+<path d="M691.6 414.0 L564.0 414.0" fill="none" stroke="#1F9E77" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="627.8" y="406.0" font-size="12.5" fill="#1F9E77" font-weight="600" text-anchor="middle">是</text>
+<rect x="300.0" y="378.0" width="260.0" height="72.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="430.0" y="406.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">MMDS</text>
+<text x="430.0" y="428.6" font-size="12" fill="#57606A" text-anchor="middle">Firecracker 自己回答，放进接收队列</text>
+<path d="M780.0 448.0 L780.0 548.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="792.0" y="497.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">否：write(tap fd, 帧)</text>
+<rect x="680.0" y="552.0" width="200.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="780.0" y="576.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">tap0</text>
+<text x="780.0" y="598.6" font-size="12" fill="#57606A" text-anchor="middle">“收到”一个以太网帧</text>
+<rect x="300.0" y="552.0" width="260.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="430.0" y="576.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">ns-5 的网络栈</text>
+<text x="430.0" y="598.6" font-size="12" fill="#57606A" text-anchor="middle">PREROUTING …（第 13 篇接着讲）</text>
+<path d="M676.0 584.0 L564.0 584.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="676.0" x2="1552.0" y2="676.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="702.0" font-size="13" fill="#8C959F" text-anchor="start">注：反方向一样：ns-5 把发给客户机的帧从 tap0 发出，Firecracker read 到它，放进接收队列，再用中断通知客户机。对宿主机内核来说，tap0 就像一根网线，另一头接着一台 169.254.0.21。</text></svg>

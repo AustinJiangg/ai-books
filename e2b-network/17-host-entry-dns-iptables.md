@@ -31,6 +31,8 @@ http://49983-<沙箱ID>.e2b.app
 
 所以要在本机“劫持”这个域名：凡是 `*.e2b.app`，一律解析成本机。这就是 dnsmasq 的工作。
 
+![宿主机的入口](img/17-1-宿主机入口.svg)
+
 ---
 
 ## 二、宿主机 DNS 的三层
@@ -171,6 +173,8 @@ iptables -t nat -A PREROUTING -p tcp --dport 80 -j REDIRECT --to-port 3002
 - 外部访问本机 IP 的 80 端口：目的地址是本机 → 改道。
 - AgentENV、Docker 容器访问外网：目的地址是外网 → 不改道。
 - 沙箱访问 `192.0.2.1:80`：`192.0.2.1` 不是本机任何网卡上的地址 → 不改道，留给后面的 hyperloop 规则。
+
+![--dst-type LOCAL 前后对比](img/17-2-dst-type-LOCAL.svg)
 
 部署脚本还会先把老规则（不带 `--dst-type LOCAL` 的那条）**循环删除干净**，再加新规则，确保升级后不会新旧并存。
 

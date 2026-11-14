@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="530" viewBox="0 0 1600 530" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="530" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">tcpdump 在哪块网卡抓：同一个包，三处看到三种源地址</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">沙箱发往 8.8.8.8 的 DNS 查询，在三块网卡上分别是下面的样子。对比同一个包在几处的样子，就能判断它在哪一层被丢了、地址在哪一步被改了。</text>
+<rect x="48.0" y="156.0" width="282.0" height="274.0" rx="0" fill="#F3F0FF" stroke="none" stroke-width="0"/>
+<text x="189.0" y="186.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机</text>
+<rect x="330.0" y="156.0" width="460.0" height="274.0" rx="0" fill="#EDF4FD" stroke="none" stroke-width="0"/>
+<text x="560.0" y="186.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">ns-5</text>
+<rect x="790.0" y="156.0" width="520.0" height="274.0" rx="0" fill="#F6F6F3" stroke="none" stroke-width="0"/>
+<text x="1050.0" y="186.0" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">宿主机</text>
+<rect x="1310.0" y="156.0" width="242.0" height="274.0" rx="0" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<text x="1431.0" y="186.0" font-size="15" fill="#57606A" font-weight="600" text-anchor="middle">互联网</text>
+<rect x="48.0" y="156.0" width="1504.0" height="274.0" rx="14" fill="none" stroke="#D8DEE4" stroke-width="1"/>
+<line x1="188.0" y1="286.0" x2="1450.0" y2="286.0" stroke="#1F2328" stroke-width="2.2" stroke-linecap="round" marker-end="url(#m1F2328)"/>
+<rect x="68.0" y="266.0" width="120.0" height="40.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="128.0" y="290.7" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">dig pypi.org</text>
+<rect x="1455.0" y="266.0" width="90.0" height="40.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1500.0" y="290.7" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">8.8.8.8</text>
+<line x1="330.0" y1="206.0" x2="330.0" y2="420.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="205.0" y="252.0" width="250.0" height="68.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="219.0" y="276.0" font-size="12" fill="#8C959F" text-anchor="start">源</text>
+<text x="249.0" y="276.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">169.254.0.21:41234</text>
+<text x="219.0" y="306.0" font-size="12" fill="#8C959F" text-anchor="start">目的</text>
+<text x="249.0" y="306.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">8.8.8.8:53</text>
+<rect x="304.4" y="207.0" width="51.3" height="22.0" rx="11.0" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1"/>
+<text x="330.0" y="222.3" font-size="12" fill="#57606A" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">tap0</text>
+<text x="330.0" y="352.0" font-size="13" fill="#57606A" text-anchor="middle">原始包，还没改地址</text>
+<rect x="130.0" y="372.0" width="400.0" height="32.0" rx="6" fill="#1F2328" stroke="none" stroke-width="0"/>
+<text x="330.0" y="393.0" font-size="12.5" fill="#F6F8FA" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ip netns exec ns-5 tcpdump -i tap0</text>
+<line x1="790.0" y1="206.0" x2="790.0" y2="420.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="665.0" y="252.0" width="250.0" height="68.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<rect x="671.0" y="258.0" width="238.0" height="26.0" rx="5" fill="#FDF0D9" stroke="#FDF0D9" stroke-width="0"/>
+<text x="679.0" y="276.0" font-size="12" fill="#8C959F" text-anchor="start">源</text>
+<text x="709.0" y="276.0" font-size="14" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10.13.0.5:41234</text>
+<text x="679.0" y="306.0" font-size="12" fill="#8C959F" text-anchor="start">目的</text>
+<text x="709.0" y="306.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">8.8.8.8:53</text>
+<rect x="757.0" y="207.0" width="65.9" height="22.0" rx="11.0" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1"/>
+<text x="790.0" y="222.3" font-size="12" fill="#57606A" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">e2bv-5</text>
+<text x="790.0" y="352.0" font-size="13" fill="#57606A" text-anchor="middle">ns-5 的 SNAT 之后</text>
+<rect x="590.0" y="372.0" width="400.0" height="32.0" rx="6" fill="#1F2328" stroke="none" stroke-width="0"/>
+<text x="790.0" y="393.0" font-size="12.5" fill="#F6F8FA" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">tcpdump -i e2bv-5</text>
+<line x1="1310.0" y1="206.0" x2="1310.0" y2="420.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="1185.0" y="252.0" width="250.0" height="68.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<rect x="1191.0" y="258.0" width="238.0" height="26.0" rx="5" fill="#FDF0D9" stroke="#FDF0D9" stroke-width="0"/>
+<text x="1199.0" y="276.0" font-size="12" fill="#8C959F" text-anchor="start">源</text>
+<text x="1229.0" y="276.0" font-size="14" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">192.168.10.23:41234</text>
+<text x="1199.0" y="306.0" font-size="12" fill="#8C959F" text-anchor="start">目的</text>
+<text x="1229.0" y="306.0" font-size="14" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">8.8.8.8:53</text>
+<rect x="1262.4" y="207.0" width="95.2" height="22.0" rx="11.0" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1"/>
+<text x="1310.0" y="222.3" font-size="12" fill="#57606A" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">enp125s0f0</text>
+<text x="1310.0" y="352.0" font-size="13" fill="#57606A" text-anchor="middle">宿主机 MASQUERADE 之后</text>
+<rect x="1110.0" y="372.0" width="400.0" height="32.0" rx="6" fill="#1F2328" stroke="none" stroke-width="0"/>
+<text x="1310.0" y="393.0" font-size="12.5" fill="#F6F8FA" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">tcpdump -i enp125s0f0</text>
+<line x1="48.0" y1="464.0" x2="1552.0" y2="464.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="490.0" font-size="13" fill="#8C959F" text-anchor="start">注：去 pypi.org 的 TCP 包在 e2bv-5 上还能看到，但不会出现在物理网卡上：它被 REDIRECT 给了防火墙代理，物理网卡上看到的是代理另开的那条连接（第 13、16 篇）。</text></svg>

@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="814" viewBox="0 0 1600 814" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m8C959F" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8C959F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD9922B" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D9922B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="814" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">集合：一条规则判断“在不在集合里”，元素可以单独增删</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">要拦五个网段，iptables 得写五条规则，包要逐条比较；nftables 把网段放进一个集合，一条规则查一次。集合内容可以单独修改，规则不动；一批修改还能一次原子提交。</text>
+<rect x="48.0" y="156.0" width="732.0" height="446.0" rx="16" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="72.0" y="192.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">iptables：五条规则</text>
+<text x="72.0" y="216.0" font-size="13.5" fill="#57606A" text-anchor="start">一条规则只能匹配一个地址段</text>
+<rect x="820.0" y="156.0" width="732.0" height="446.0" rx="16" fill="#FCFBFA" stroke="#D8DEE4" stroke-width="1"/>
+<text x="844.0" y="192.0" font-size="18" fill="#1F2328" font-weight="600" text-anchor="start">nftables：一条规则 + 一个集合</text>
+<text x="844.0" y="216.0" font-size="13.5" fill="#57606A" text-anchor="start">集合用区间存储，元素再多查一次也很快</text>
+<rect x="99.4" y="245.0" width="137.3" height="30.0" rx="15.0" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="168.0" y="264.9" font-size="13.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">目的 192.168.1.9</text>
+<rect x="108.0" y="288.0" width="612.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="128.0" y="314.0" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iptables … -d 10.0.0.0/8 -j DROP</text>
+<text x="704.0" y="314.0" font-size="12.5" fill="#8C959F" text-anchor="end">不匹配，下一条</text>
+<rect x="108.0" y="338.0" width="612.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="128.0" y="364.0" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iptables … -d 127.0.0.0/8 -j DROP</text>
+<text x="704.0" y="364.0" font-size="12.5" fill="#8C959F" text-anchor="end">不匹配，下一条</text>
+<rect x="108.0" y="388.0" width="612.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="128.0" y="414.0" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iptables … -d 169.254.0.0/16 -j DROP</text>
+<text x="704.0" y="414.0" font-size="12.5" fill="#8C959F" text-anchor="end">不匹配，下一条</text>
+<rect x="108.0" y="438.0" width="612.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="128.0" y="464.0" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iptables … -d 172.16.0.0/12 -j DROP</text>
+<text x="704.0" y="464.0" font-size="12.5" fill="#8C959F" text-anchor="end">不匹配，下一条</text>
+<rect x="108.0" y="488.0" width="612.0" height="40.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="128.0" y="514.0" font-size="13" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iptables … -d 192.168.0.0/16 -j DROP</text>
+<text x="704.0" y="514.0" font-size="12.5" fill="#8A5300" font-weight="600" text-anchor="end">命中，丢弃</text>
+<line x1="88.0" y1="276.0" x2="88.0" y2="508.0" stroke="#8C959F" stroke-width="1.4" stroke-linecap="round" marker-end="url(#m8C959F)"/>
+<text x="72.0" y="572.0" font-size="13.5" fill="#57606A" text-anchor="start">比较了 5 次。规则越多，比得越多；改一条规则还要整表重写。</text>
+<rect x="871.4" y="245.0" width="137.3" height="30.0" rx="15.0" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="940.0" y="264.9" font-size="13.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">目的 192.168.1.9</text>
+<rect x="860.0" y="288.0" width="652.0" height="46.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="878.0" y="317.0" font-size="12.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iifname "tap0" ip daddr @filtered_always_denylist drop</text>
+<rect x="860.0" y="356.0" width="652.0" height="150.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="878.0" y="382.0" font-size="12.5" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">集合 filtered_always_denylist（type ipv4_addr; flags interval）</text>
+<rect x="878.0" y="404.0" width="190.0" height="34.0" rx="17" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="973.0" y="426.0" font-size="13" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">10.0.0.0/8</text>
+<rect x="1088.0" y="404.0" width="190.0" height="34.0" rx="17" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="1183.0" y="426.0" font-size="13" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">127.0.0.0/8</text>
+<rect x="1298.0" y="404.0" width="190.0" height="34.0" rx="17" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="1393.0" y="426.0" font-size="13" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.0/16</text>
+<rect x="878.0" y="450.0" width="190.0" height="34.0" rx="17" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="973.0" y="472.0" font-size="13" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">172.16.0.0/12</text>
+<rect x="1088.0" y="450.0" width="190.0" height="34.0" rx="17" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1183.0" y="472.0" font-size="13" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">192.168.0.0/16</text>
+<line x1="1186.0" y1="334.0" x2="1186.0" y2="354.0" stroke="#D9922B" stroke-width="1.4" stroke-linecap="round" marker-end="url(#mD9922B)"/>
+<text x="844.0" y="572.0" font-size="13.5" fill="#57606A" text-anchor="start">查一次集合就知道。用户的 allowOut/denyOut 只往用户集合里填元素。</text>
+<rect x="48.0" y="632.0" width="1504.0" height="82.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="70.0" y="664.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">原子提交：没有“改了一半”的窗口</text>
+<text x="70.0" y="690.0" font-size="13.5" fill="#57606A" text-anchor="start">E2B 先在内存里攒好建表、建链、建集合、加规则、填元素这一批操作，最后调用一次 Flush 提交；内核要么全部生效，要么全部不生效。</text>
+<line x1="48.0" y1="748.0" x2="1552.0" y2="748.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="774.0" font-size="13" fill="#8C959F" text-anchor="start">注：图中的集合是“预置拦截”集合，内容固定；另有预置放行和两个用户集合，第 15 篇逐条讲。</text></svg>

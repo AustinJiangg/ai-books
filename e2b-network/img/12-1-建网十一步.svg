@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1112" viewBox="0 0 1600 1112" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="1112" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">建网十一步：线程在宿主机和 ns-5 之间来回切换</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">“当前在哪个网络命名空间”是线程的属性。CreateNetwork 先把协程钉在一个线程上，再用 setns 在两个命名空间之间来回切，每一步建的东西就落在线程当时所在的命名空间里。左列是宿主机，右列是 ns-5，粗线是线程</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">的位置。</text>
+<rect x="108.0" y="180.0" width="594.0" height="40.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="405.0" y="206.0" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">宿主机命名空间</text>
+<rect x="918.0" y="180.0" width="634.0" height="40.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="1241.0" y="206.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">ns-5</text>
+<rect x="120.0" y="240.0" width="570.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="164.0" y="261.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">锁线程，记下宿主机命名空间</text>
+<text x="164.0" y="280.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">LockOSThread；hostNS := netns.Get()</text>
+<rect x="930.0" y="300.0" width="610.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.2"/>
+<circle cx="952.0" cy="325.0" r="12" fill="#1D4F91" stroke="none" stroke-width="1"/>
+<text x="952.0" y="329.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<text x="974.0" y="321.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">创建 ns-5，线程随即进入</text>
+<text x="974.0" y="340.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ip netns add ns-5</text>
+<rect x="930.0" y="360.0" width="610.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.2"/>
+<circle cx="952.0" cy="385.0" r="12" fill="#1D4F91" stroke="none" stroke-width="1"/>
+<text x="952.0" y="389.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="974.0" y="381.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">建 veth 对，配 vpeer</text>
+<text x="974.0" y="400.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">eth0 = 10.14.0.11/31；e2bv-5 这头送回宿主机</text>
+<rect x="120.0" y="420.0" width="570.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#B7B5AC" stroke-width="1.2"/>
+<circle cx="142.0" cy="445.0" r="12" fill="#3D3C38" stroke="none" stroke-width="1"/>
+<text x="142.0" y="449.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<text x="164.0" y="441.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">配宿主机这一头</text>
+<text x="164.0" y="460.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">e2bv-5 = 10.14.0.10/31</text>
+<rect x="930.0" y="480.0" width="610.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.2"/>
+<circle cx="952.0" cy="505.0" r="12" fill="#1D4F91" stroke="none" stroke-width="1"/>
+<text x="952.0" y="509.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<text x="974.0" y="501.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">建 tap0，启用 lo</text>
+<text x="974.0" y="520.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">tap0 = 169.254.0.22/30</text>
+<rect x="930.0" y="540.0" width="610.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.2"/>
+<circle cx="952.0" cy="565.0" r="12" fill="#1D4F91" stroke="none" stroke-width="1"/>
+<text x="952.0" y="569.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<text x="974.0" y="561.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">默认路由</text>
+<text x="974.0" y="580.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">default via 10.14.0.10</text>
+<rect x="930.0" y="600.0" width="610.0" height="50.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<circle cx="952.0" cy="625.0" r="12" fill="#D9922B" stroke="none" stroke-width="1"/>
+<text x="952.0" y="629.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<text x="974.0" y="621.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="start">两条 NAT</text>
+<text x="974.0" y="640.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">SNAT 169.254.0.21 → 10.13.0.5；DNAT 反过来</text>
+<rect x="930.0" y="660.0" width="610.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.2"/>
+<circle cx="952.0" cy="685.0" r="12" fill="#1D4F91" stroke="none" stroke-width="1"/>
+<text x="952.0" y="689.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">7</text>
+<text x="974.0" y="681.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">nftables 防火墙</text>
+<text x="974.0" y="700.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">表 slot-firewall：4 个集合、5 条规则</text>
+<rect x="120.0" y="720.0" width="570.0" height="50.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<circle cx="142.0" cy="745.0" r="12" fill="#D9922B" stroke="none" stroke-width="1"/>
+<text x="142.0" y="749.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">8</text>
+<text x="164.0" y="741.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="start">到 Host IP 的路由</text>
+<text x="164.0" y="760.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10.13.0.5/32 via 10.14.0.11</text>
+<rect x="120.0" y="780.0" width="570.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#B7B5AC" stroke-width="1.2"/>
+<circle cx="142.0" cy="805.0" r="12" fill="#3D3C38" stroke="none" stroke-width="1"/>
+<text x="142.0" y="809.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">9</text>
+<text x="164.0" y="801.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">转发放行 + MASQUERADE</text>
+<text x="164.0" y="820.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">FORWARD × 2；-s 10.13.0.5/32 -j MASQUERADE</text>
+<rect x="120.0" y="840.0" width="570.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#B7B5AC" stroke-width="1.2"/>
+<circle cx="142.0" cy="865.0" r="12" fill="#3D3C38" stroke="none" stroke-width="1"/>
+<text x="142.0" y="869.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">10</text>
+<text x="164.0" y="861.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">六条 REDIRECT</text>
+<text x="164.0" y="880.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">192.0.2.1 的 3 条 + 防火墙代理 3 条</text>
+<rect x="120.0" y="900.0" width="1420.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#B7B5AC" stroke-width="1.2" stroke-dasharray="5 4"/>
+<circle cx="142.0" cy="925.0" r="12" fill="#1D4F91" stroke="none" stroke-width="1"/>
+<text x="142.0" y="929.1" font-size="11.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">11</text>
+<text x="164.0" y="921.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">为 ns-5 打开一个 conntrack 句柄（补丁新增）</text>
+<text x="164.0" y="940.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">netlink 套接字，为第 20 篇的回滚清理做准备；打开失败也不影响使用</text>
+<rect x="120.0" y="960.0" width="570.0" height="50.0" rx="8" fill="#FFFFFF" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="164.0" y="981.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">defer：回到宿主机</text>
+<text x="164.0" y="1000.0" font-size="12" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">无论成败，最后都切回宿主机</text>
+<path d="M724 265.0 L896 325.0 L896 385.0 L724 445.0 L896 505.0 L896 565.0 L896 625.0 L896 685.0 L724 745.0 L724 805.0 L724 865.0 L724 985.0" fill="none" stroke="#1F2328" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="724.0" cy="265.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="729.0" y1="265.0" x2="692.0" y2="265.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="896.0" cy="325.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="891.0" y1="325.0" x2="928.0" y2="325.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="896.0" cy="385.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="891.0" y1="385.0" x2="928.0" y2="385.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="724.0" cy="445.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="729.0" y1="445.0" x2="692.0" y2="445.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="896.0" cy="505.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="891.0" y1="505.0" x2="928.0" y2="505.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="896.0" cy="565.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="891.0" y1="565.0" x2="928.0" y2="565.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="896.0" cy="625.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="891.0" y1="625.0" x2="928.0" y2="625.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="896.0" cy="685.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="891.0" y1="685.0" x2="928.0" y2="685.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="724.0" cy="745.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="729.0" y1="745.0" x2="692.0" y2="745.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="724.0" cy="805.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="729.0" y1="805.0" x2="692.0" y2="805.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="724.0" cy="865.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="729.0" y1="865.0" x2="692.0" y2="865.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<circle cx="724.0" cy="985.0" r="5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<line x1="729.0" y1="985.0" x2="692.0" y2="985.0" stroke="#C9D1D9" stroke-width="1" stroke-linecap="round"/>
+<rect x="784.0" y="284.0" width="52.0" height="20.0" rx="10" fill="#FFFFFF" stroke="#C9D1D9" stroke-width="1"/>
+<text x="810.0" y="299.0" font-size="11.5" fill="#57606A" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">setns</text>
+<rect x="784.0" y="404.0" width="52.0" height="20.0" rx="10" fill="#FFFFFF" stroke="#C9D1D9" stroke-width="1"/>
+<text x="810.0" y="419.0" font-size="11.5" fill="#57606A" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">setns</text>
+<rect x="784.0" y="464.0" width="52.0" height="20.0" rx="10" fill="#FFFFFF" stroke="#C9D1D9" stroke-width="1"/>
+<text x="810.0" y="479.0" font-size="11.5" fill="#57606A" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">setns</text>
+<rect x="784.0" y="704.0" width="52.0" height="20.0" rx="10" fill="#FFFFFF" stroke="#C9D1D9" stroke-width="1"/>
+<text x="810.0" y="719.0" font-size="11.5" fill="#57606A" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">setns</text>
+<line x1="48.0" y1="1046.0" x2="1552.0" y2="1046.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="1072.0" font-size="13" fill="#8C959F" text-anchor="start">注：步骤 1 的 netns.NewNamed 建好命名空间后会让当前线程进入它；步骤 2 建的 veth 两头起初都在 ns-5，所以要把 e2bv-5 这头送回宿主机。如果不锁线程，Go 调度器把协程挪到别的线程上，后面的规则就会落到错误的命名空间。</text></svg>

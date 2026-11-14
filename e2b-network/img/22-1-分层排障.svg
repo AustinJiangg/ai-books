@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="774" viewBox="0 0 1600 774" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m5B9BE6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#5B9BE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="774" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">分层排障：从外到内一层层排除</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">把这套网络分成七层。入站问题（SDK、浏览器访问不了沙箱）从第 1 层往下查到第 6 层；出站问题（沙箱访问不了外部）从第 6 层查到第 7 层。右边是每层最先看的命令。</text>
+<rect x="220.0" y="152.0" width="1332.0" height="66.0" rx="10" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<circle cx="246.0" cy="185.0" r="14" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="246.0" y="189.9" font-size="13.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<text x="272.0" y="180.0" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">DNS</text>
+<text x="272.0" y="202.0" font-size="12" fill="#8C959F" text-anchor="start">第 17 篇</text>
+<text x="390.0" y="180.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">宿主机能否把域名解析对？</text>
+<text x="390.0" y="202.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">dig 49983-xxx.e2b.app @127.0.0.1　·　dig pypi.org @127.0.0.1</text>
+<rect x="220.0" y="228.0" width="1332.0" height="66.0" rx="10" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<circle cx="246.0" cy="261.0" r="14" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="246.0" y="265.9" font-size="13.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="272.0" y="256.0" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">入口</text>
+<text x="272.0" y="278.0" font-size="12" fill="#8C959F" text-anchor="start">第 17 篇</text>
+<text x="390.0" y="256.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">80 端口的流量送到 3002 了吗？</text>
+<text x="390.0" y="278.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iptables -t nat -S | grep 3002</text>
+<rect x="220.0" y="304.0" width="1332.0" height="66.0" rx="10" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<circle cx="246.0" cy="337.0" r="14" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="246.0" y="341.9" font-size="13.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<text x="272.0" y="332.0" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">代理</text>
+<text x="272.0" y="354.0" font-size="12" fill="#8C959F" text-anchor="start">第 18 篇</text>
+<text x="390.0" y="332.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">client-proxy、orchestrator 代理正常？目录里有这个沙箱？</text>
+<text x="390.0" y="354.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ss -lntp | grep -E '3002|5007'　·　api、client-proxy 日志</text>
+<rect x="220.0" y="380.0" width="1332.0" height="66.0" rx="10" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<circle cx="246.0" cy="413.0" r="14" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="246.0" y="417.9" font-size="13.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<text x="272.0" y="408.0" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">槽位</text>
+<text x="272.0" y="430.0" font-size="12" fill="#8C959F" text-anchor="start">第 11 篇</text>
+<text x="390.0" y="408.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">槽位网络完整？宿主机到 Host IP 通不通？</text>
+<text x="390.0" y="430.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ip route get 10.13.0.5　·　iptables -t nat -S | grep e2bv-5</text>
+<rect x="220.0" y="456.0" width="1332.0" height="66.0" rx="10" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<circle cx="246.0" cy="489.0" r="14" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="246.0" y="493.9" font-size="13.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<text x="272.0" y="484.0" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">命名空间</text>
+<text x="272.0" y="506.0" font-size="12" fill="#8C959F" text-anchor="start">第 15 篇</text>
+<text x="390.0" y="484.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">NAT、nftables 正确？</text>
+<text x="390.0" y="506.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ip netns exec ns-5 iptables -t nat -S　·　ip netns exec ns-5 nft list ruleset</text>
+<rect x="220.0" y="532.0" width="1332.0" height="66.0" rx="10" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<circle cx="246.0" cy="565.0" r="14" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="246.0" y="569.9" font-size="13.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<text x="272.0" y="560.0" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">客户机</text>
+<text x="272.0" y="582.0" font-size="12" fill="#8C959F" text-anchor="start">第 14 篇</text>
+<text x="390.0" y="560.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">服务在监听吗？DNS 配置对吗？</text>
+<text x="390.0" y="582.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">进沙箱看监听端口和 /etc/resolv.conf</text>
+<rect x="220.0" y="608.0" width="1332.0" height="66.0" rx="10" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<circle cx="246.0" cy="641.0" r="14" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="246.0" y="645.9" font-size="13.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">7</text>
+<text x="272.0" y="636.0" font-size="15.5" fill="#1F2328" font-weight="600" text-anchor="start">出站</text>
+<text x="272.0" y="658.0" font-size="12" fill="#8C959F" text-anchor="start">第 16 篇</text>
+<text x="390.0" y="636.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">TCP 代理怎么判的？宿主机能访问目标吗？</text>
+<text x="390.0" y="658.0" font-size="12.5" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">ss -lnt | grep 501[6-8]　·　orchestrator 日志　·　宿主机 curl 目标</text>
+<path d="M98.0 158.0 L98.0 592.0" fill="none" stroke="#5B9BE6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m5B9BE6)"/>
+<text x="112.0" y="365.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">入站</text>
+<text x="112.0" y="385.0" font-size="13" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">1 → 6</text>
+<path d="M178.0 540.0 L178.0 668.0" fill="none" stroke="#1F9E77" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="192.0" y="602.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">出站</text>
+<text x="192.0" y="622.0" font-size="13" fill="#0E6B4F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">6 → 7</text>
+<line x1="48.0" y1="708.0" x2="1552.0" y2="708.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="734.0" font-size="13" fill="#8C959F" text-anchor="start">注：确定是哪一层之后，再用 tcpdump 在那一层前后的网卡上抓包对比（见下图）。常见问题速查见下表。</text></svg>

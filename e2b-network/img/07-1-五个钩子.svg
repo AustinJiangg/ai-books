@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="880" viewBox="0 0 1600 880" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m5B9BE6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#5B9BE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m8B7FE0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8B7FE0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="880" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">五个钩子，三条路：先看包是哪一种</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">包在内核里经过五个固定位置，每个位置都能挂规则。走哪几个钩子取决于包的种类：给本机的、本机发出的、路过的。分析 E2B 的每条规则，都先问这个包走的是哪条路。</text>
+<path d="M168 219 H1240" fill="none" stroke="#5B9BE6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m5B9BE6)"/>
+<path d="M168 233 H567 V486" fill="none" stroke="#1F9E77" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<path d="M860 486 V376 H1057 V233 H1240" fill="none" stroke="#8B7FE0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<rect x="48.0" y="203.0" width="120.0" height="46.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="108.0" y="230.9" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">网卡（进）</text>
+<rect x="240.0" y="200.0" width="180.0" height="52.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="330.0" y="230.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">PREROUTING</text>
+<path d="M560 180 L633.6 226 L560 272 L486.4 226 Z" fill="#FFFFFF" stroke="#57606A" stroke-width="1.4"/>
+<text x="560.0" y="231.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">路由判断</text>
+<rect x="710.0" y="200.0" width="180.0" height="52.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="230.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">FORWARD</text>
+<rect x="960.0" y="200.0" width="180.0" height="52.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1050.0" y="230.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">POSTROUTING</text>
+<rect x="1240.0" y="203.0" width="120.0" height="46.0" rx="9" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1300.0" y="230.9" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">网卡（出）</text>
+<rect x="470.0" y="350.0" width="180.0" height="52.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="560.0" y="380.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">INPUT</text>
+<rect x="770.0" y="350.0" width="180.0" height="52.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="860.0" y="380.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">OUTPUT</text>
+<rect x="470.0" y="486.0" width="480.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="710.0" y="520.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">本机程序</text>
+<line x1="48.0" y1="596.0" x2="88.0" y2="596.0" stroke="#5B9BE6" stroke-width="3" stroke-linecap="round"/>
+<text x="100.0" y="601.0" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="start">路过（转发）</text>
+<text x="238.0" y="601.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">PREROUTING → FORWARD → POSTROUTING</text>
+<text x="608.0" y="601.0" font-size="13.5" fill="#57606A" text-anchor="start">例：沙箱的 UDP 包经过宿主机</text>
+<line x1="48.0" y1="628.0" x2="88.0" y2="628.0" stroke="#1F9E77" stroke-width="3" stroke-linecap="round"/>
+<text x="100.0" y="633.0" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="start">给本机</text>
+<text x="238.0" y="633.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">PREROUTING → INPUT</text>
+<text x="608.0" y="633.0" font-size="13.5" fill="#57606A" text-anchor="start">例：被 REDIRECT 给防火墙代理的 TCP</text>
+<line x1="48.0" y1="660.0" x2="88.0" y2="660.0" stroke="#8B7FE0" stroke-width="3" stroke-linecap="round"/>
+<text x="100.0" y="665.0" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="start">本机发出</text>
+<text x="238.0" y="665.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">OUTPUT → POSTROUTING</text>
+<text x="608.0" y="665.0" font-size="13.5" fill="#57606A" text-anchor="start">例：orchestrator 连沙箱里的 envd</text>
+<rect x="48.0" y="702.0" width="1504.0" height="78.0" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="70.0" y="734.0" font-size="15.5" fill="#8A5300" font-weight="600" text-anchor="start">PREROUTING 在路由判断之前</text>
+<text x="70.0" y="760.0" font-size="13.5" fill="#57606A" text-anchor="start">在这里改了目的地址（DNAT、REDIRECT），路由判断就按新地址走。REDIRECT 把一个本来要转发的包变成给本机的包，靠的就是这一点。</text>
+<line x1="48.0" y1="814.0" x2="1552.0" y2="814.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="840.0" font-size="13" fill="#8C959F" text-anchor="start">注：iptables、nftables 都只是给这五个钩子写规则的前端，真正干活的是内核里的 Netfilter。</text></svg>

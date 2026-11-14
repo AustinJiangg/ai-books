@@ -65,6 +65,8 @@ iptables -t nat -A PREROUTING -i e2bv-5 -p tcp             -j REDIRECT --to-port
 
 ## 三、代理接到一个连接后做什么
 
+![TCP 防火墙代理的处理步骤](img/16-1-防火墙代理.svg)
+
 ### 3.1 第一步：这是哪个沙箱
 
 代理看到的对方地址，是 SNAT 之后的 **Host IP**，比如 `10.13.0.5`。代理拿着这个 IP，在本机所有正在运行的沙箱里查找“谁的 Host IP 是它”，就找到了对应的沙箱及其网络配置。
@@ -148,6 +150,8 @@ sbx := sandboxes.GetByHostIP(conn.RemoteAddr().IP)
 ### 4.2 E2B 的做法
 
 代理按域名放行时，**连接的是域名而不是 IP**：它在宿主机上自己解析 `pypi.org`，连到真正的 PyPI。沙箱在 `/etc/hosts` 里写什么、用什么 DNS，都影响不了最终的目标。代码注释说得很清楚：这是为了防止“沙箱修改 `/etc/hosts`，把允许的域名指向任意 IP”。
+
+![防绕过](img/16-2-防绕过.svg)
 
 ### 4.3 再防一层：解析结果不能是内网
 

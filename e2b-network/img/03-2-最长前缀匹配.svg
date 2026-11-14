@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="700" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">最长前缀匹配：去 10.13.0.5 的包选最具体的那条路由</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">一个目的地址可能同时匹配好几条路由，内核选前缀最长的一条。下面是宿主机的路由表，逐条检查目的地址 10.13.0.5 落不落在这一段里。</text>
+<rect x="88.4" y="155.0" width="159.2" height="34.0" rx="17.0" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="168.0" y="177.4" font-size="15" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">目的 IP 10.13.0.5</text>
+<text x="62.0" y="216.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">路由</text>
+<text x="534.0" y="216.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">这一段的范围</text>
+<text x="834.0" y="216.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">前缀长度</text>
+<text x="1024.0" y="216.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">包含 10.13.0.5？</text>
+<text x="1224.0" y="216.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">结果</text>
+<rect x="48.0" y="230.0" width="1504.0" height="54.0" rx="8" fill="#F7F8FA" stroke="none" stroke-width="0"/>
+<text x="62.0" y="263.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">default via 192.168.10.1 dev enp125s0f0</text>
+<text x="534.0" y="263.0" font-size="13.5" fill="#57606A" text-anchor="start">0.0.0.0/0：所有地址</text>
+<rect x="834.0" y="251.0" width="150.0" height="12.0" rx="6" fill="#E6E8EB" stroke="none" stroke-width="0"/>
+<text x="994.0" y="262.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">/0</text>
+<text x="1024.0" y="263.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="start">是</text>
+<text x="1224.0" y="263.0" font-size="14" fill="#57606A" text-anchor="start">匹配，但只有 0 位</text>
+<rect x="48.0" y="294.0" width="1504.0" height="54.0" rx="8" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<text x="62.0" y="327.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">192.168.10.0/24 dev enp125s0f0</text>
+<text x="534.0" y="327.0" font-size="13.5" fill="#57606A" text-anchor="start">192.168.10.0 ～ .255</text>
+<rect x="834.0" y="315.0" width="150.0" height="12.0" rx="6" fill="#E6E8EB" stroke="none" stroke-width="0"/>
+<rect x="834.0" y="315.0" width="112.5" height="12.0" rx="6" fill="#5B9BE6" stroke="none" stroke-width="0"/>
+<text x="994.0" y="326.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">/24</text>
+<text x="1024.0" y="327.0" font-size="14" fill="#8C959F" text-anchor="start">否</text>
+<rect x="48.0" y="358.0" width="1504.0" height="54.0" rx="8" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.4"/>
+<text x="62.0" y="391.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10.13.0.5 via 10.14.0.11 dev e2bv-5</text>
+<text x="534.0" y="391.0" font-size="13.5" fill="#57606A" text-anchor="start">只有 10.13.0.5 自己</text>
+<rect x="834.0" y="379.0" width="150.0" height="12.0" rx="6" fill="#E6E8EB" stroke="none" stroke-width="0"/>
+<rect x="834.0" y="379.0" width="150.0" height="12.0" rx="6" fill="#5B9BE6" stroke="none" stroke-width="0"/>
+<text x="994.0" y="390.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">/32</text>
+<text x="1024.0" y="391.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="start">是</text>
+<text x="1224.0" y="391.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="start">选中：最长</text>
+<rect x="48.0" y="422.0" width="1504.0" height="54.0" rx="8" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<text x="62.0" y="455.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">10.14.0.10/31 dev e2bv-5</text>
+<text x="534.0" y="455.0" font-size="13.5" fill="#57606A" text-anchor="start">10.14.0.10 ～ .11</text>
+<rect x="834.0" y="443.0" width="150.0" height="12.0" rx="6" fill="#E6E8EB" stroke="none" stroke-width="0"/>
+<rect x="834.0" y="443.0" width="145.3" height="12.0" rx="6" fill="#5B9BE6" stroke="none" stroke-width="0"/>
+<text x="994.0" y="454.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">/31</text>
+<text x="1024.0" y="455.0" font-size="14" fill="#8C959F" text-anchor="start">否</text>
+<rect x="48.0" y="516.0" width="1504.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="70.0" y="548.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">结果：从 e2bv-5 发出，下一跳 10.14.0.11</text>
+<text x="70.0" y="576.0" font-size="14" fill="#57606A" text-anchor="start">“via” 只决定把帧交给谁：内核用 ARP 查到 10.14.0.11 的 MAC 填进帧头；包里的目的 IP 仍然是 10.13.0.5。</text>
+<line x1="48.0" y1="634.0" x2="1552.0" y2="634.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="660.0" font-size="13" fill="#8C959F" text-anchor="start">注：一条默认路由兜底，再用更具体的路由处理特殊目的地。E2B 每建一个槽位，就在宿主机上加一条这样的 /32 路由（第 12 篇）。</text></svg>
