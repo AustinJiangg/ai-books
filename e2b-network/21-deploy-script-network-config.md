@@ -262,6 +262,8 @@ bash /opt/e2b-infra/build.sh --recycle-netns
 | `E2B_HTTP_SSL` | `false` | 17 |
 | `patch_e2b.py` | SDK 的 https 改 http | 17 |
 
+SDK 跑在别的机器上时，上面四项照样要配，`E2B_API_URL` 写宿主机的内网地址。另外还要在那台机器上把 `*.e2b.app` 解析到宿主机地址，比如装一个 dnsmasq 写 `address=/.e2b.app/192.168.10.23`；宿主机的防火墙也要放行 80 和 3000 端口（第 17 篇 5.1 节）。部署脚本不管这些，需要手动配。
+
 ---
 
 ## 六、与 AgentENV 同机部署

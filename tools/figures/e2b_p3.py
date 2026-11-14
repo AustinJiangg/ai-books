@@ -289,13 +289,13 @@ def fig_17_entry():
     box(s, 1014, cy - 44, W - M - 1014, 88, GOOD, "client-proxy :3002", "按 Host 头找沙箱（第 18 篇）", 16, 13)
     # 外部机器
     ey = cy + 120
-    box(s, M, ey - 40, 210, 80, WHITE, "别的机器", "访问本机 IP:80", 15, 12.5, style="outline")
+    box(s, M, ey - 52, 210, 104, WHITE, "别的机器上的 SDK", "自己把 *.e2b.app 解析到\n192.168.10.23，\n经物理网卡访问它的 80 端口", 15, 12, style="outline")
     arrow(s, [(SX1 + 2, ey), (DX0 - 4, ey)], INK, 1.6)
     box(s, DX0, ey - 34, DX1 - DX0, 68, NAT, "iptables nat PREROUTING", "-p tcp --dport 80 --dst-type LOCAL → REDIRECT 3002", 14.5, 12.5)
     arrow(s, [(DX1 + 4, ey), (940, ey), (940, cy + 22), (1010, cy + 22)], INK, 1.6)
     s.text(1014, ey + 6, "本机发出的包不经过 PREROUTING，所以两条规则都要有", 13, SUB)
-    yy = s.footer(ey + 74, "注：DNS 只能给地址，不能给端口，所以要 iptables 改端口。这两条规则只在内存里，机器重启后要重新执行 build.sh -s。"
-                           "SDK 默认用 https，build.sh -i 运行 patch_e2b.py 把它改成 http。")
+    yy = s.footer(ey + 82, "注：DNS 只能给地址，不能给端口，所以要 iptables 改端口。这两条规则只在内存里，机器重启后要重新执行 build.sh -s。"
+                           "SDK 默认用 https，build.sh -i 运行 patch_e2b.py 把它改成 http。别的机器上的 SDK 发控制请求时，同样直连 api 的 3000 端口，只是包从物理网卡进来（本篇 5.1 节）。")
     save(s, "17-1-宿主机入口.svg", yy + 20)
 
 
