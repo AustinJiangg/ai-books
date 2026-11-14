@@ -336,7 +336,7 @@
     - 先给宿主留够普通内存。
     - 剩下的 20% 做静态池，上限 `HUGEPAGES_BASE_MAX_MIB`（64 GiB），开机就占住、不归还。
     - 另外 80% 做超分配，按需分配，用完归还。
-    - 补丁把写入路径改成显式的 `hugepages-2048kB`，因为 ARM 的默认大页大小不一定是 2 MiB。
+    - 大页大小从 `/proc/meminfo` 读，不写死，因为 ARM 的默认大页大小不一定是 2 MiB。
   - 挂载点 `/mnt/hugepages`；停服后静态池不会自动释放，要用 `build.sh --purge-hugepages`。
   - 为什么客户机内存不计入 Nomad 的内存上限：hugetlb 不记在 memory 控制器里（第 18 篇）。
 - ARM 补丁在这一层的改动：
