@@ -214,7 +214,7 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <div class="brandrow"><div class="brand">E2B 沙箱存储从零讲透</div><button class="theme-toggle" id="theme-toggle" type="button" aria-label="深色模式" aria-pressed="false"><svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg><svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg></button></div>
 <label class="search"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input id="q" type="search" placeholder="搜索全书" aria-label="搜索全书" autocomplete="off"><kbd>/</kbd></label>
 <div class="sres" id="sres" aria-live="polite"></div>
-<nav class="navlist"><a href="#dp0" data-n="p0"><span class="nt">导读</span><em class="hit"></em></a><div class="ng">第一部分 打地基：够用的存储知识</div><a href="#d01" data-n="01"><span class="nn">01</span><span class="nt">从“毫秒开一台虚拟机”说起：E2B 的存储要解决什么问题</span><em class="hit"></em></a><a href="#d02" data-n="02"><span class="nn">02</span><span class="nt">存储基础（一）：字节、块、页与文件系统</span><em class="hit"></em></a><a href="#d03" data-n="03"><span class="nn">03</span><span class="nt">存储基础（二）：块设备与 NBD</span><em class="hit"></em></a><a href="#d04" data-n="04"><span class="nn">04</span><span class="nt">存储基础（三）：虚拟内存、mmap、缺页与 userfaultfd</span><em class="hit"></em></a><a href="#d05" data-n="05"><span class="nn">05</span><span class="nt">写时复制与分层：只存改动的思想</span><em class="hit"></em></a><a href="#d06" data-n="06"><span class="nn">06</span><span class="nt">虚拟机的“盘”和“内存条”：Firecracker 眼中的存储</span><em class="hit"></em></a><div class="ng">第二部分 模板：沙箱的“出生证”</div><a href="#d07" data-n="07"><span class="nn">07</span><span class="nt">模板长什么样：一个 buildID 目录里的六个文件</span><em class="hit"></em></a><a href="#d08" data-n="08"><span class="nn">08</span><span class="nt">模板的原料仓库：Harbor 与镜像的存放</span><em class="hit"></em></a><a href="#d09" data-n="09"><span class="nn">09</span><span class="nt">从 Dockerfile 到 rootfs.ext4：模板构建流水线</span><em class="hit"></em></a><a href="#d10" data-n="10"><span class="nn">10</span><span class="nt">模板存到哪：存储后端、Local 与“装了没用”的 MinIO</span><em class="hit"></em></a><div class="ng">第三部分 一个沙箱的存储栈</div><a href="#d11" data-n="11"><span class="nn">11</span><span class="nt">节点本地缓存：/orchestrator 目录里都是什么</span><em class="hit"></em></a><a href="#d12" data-n="12"><span class="nn">12</span><span class="nt">沙箱的硬盘：NBD 加写时复制</span><em class="hit"></em></a><a href="#d13" data-n="13"><span class="nn">13</span><span class="nt">沙箱的内存：UFFD 按需供页与大页</span><em class="hit"></em></a><div class="ng">第四部分 快照：暂停、恢复与回滚</div><a href="#d14" data-n="14"><span class="nn">14</span><span class="nt">暂停与恢复：一次增量快照是怎么做出来的</span><em class="hit"></em></a><a href="#d15" data-n="15"><span class="nn">15</span><span class="nt">ARM 上的增量为什么“偏大”：脏页判据与实测</span><em class="hit"></em></a><a href="#d16" data-n="16"><span class="nn">16</span><span class="nt">快照回滚（一）：检查点树与内存</span><em class="hit"></em></a><a href="#d17" data-n="17"><span class="nn">17</span><span class="nt">快照回滚（二）：磁盘层、压实与配额</span><em class="hit"></em></a><div class="ng">第五部分 部署、容量与排障</div><a href="#d18" data-n="18"><span class="nn">18</span><span class="nt">部署里的存储配置：RPM、build.sh -d、-i、-s</span><em class="hit"></em></a><a href="#d19" data-n="19"><span class="nn">19</span><span class="nt">全景、容量规划与排障</span><em class="hit"></em></a><div class="ng">写作说明</div><a href="#dp20" data-n="p20"><span class="nt">大纲</span><em class="hit"></em></a></nav>
+<nav class="navlist"><a href="#dp0" data-n="p0"><span class="nt">导读</span><em class="hit"></em></a><div class="ng">第一部分 打地基：够用的存储知识</div><a href="#d01" data-n="01"><span class="nn">01</span><span class="nt">从“毫秒开一台虚拟机”说起：E2B 的存储要解决什么问题</span><em class="hit"></em></a><a href="#d02" data-n="02"><span class="nn">02</span><span class="nt">存储基础（一）：字节、块、页与文件系统</span><em class="hit"></em></a><a href="#d03" data-n="03"><span class="nn">03</span><span class="nt">存储基础（二）：块设备与 NBD</span><em class="hit"></em></a><a href="#d04" data-n="04"><span class="nn">04</span><span class="nt">存储基础（三）：虚拟内存、mmap、缺页与 userfaultfd</span><em class="hit"></em></a><a href="#d05" data-n="05"><span class="nn">05</span><span class="nt">写时复制与分层：只存改动的思想</span><em class="hit"></em></a><a href="#d06" data-n="06"><span class="nn">06</span><span class="nt">虚拟机的“盘”和“内存条”：Firecracker 眼中的存储</span><em class="hit"></em></a><div class="ng">第二部分 模板：沙箱的“出生证”</div><a href="#d07" data-n="07"><span class="nn">07</span><span class="nt">模板长什么样：一个 buildID 目录里的六个文件</span><em class="hit"></em></a><a href="#d08" data-n="08"><span class="nn">08</span><span class="nt">存数据的数据：Harbor、PostgreSQL 与 Redis</span><em class="hit"></em></a><a href="#d09" data-n="09"><span class="nn">09</span><span class="nt">从 Dockerfile 到 rootfs.ext4：模板构建流水线</span><em class="hit"></em></a><a href="#d10" data-n="10"><span class="nn">10</span><span class="nt">模板存到哪：存储后端、Local 与“装了没用”的 MinIO</span><em class="hit"></em></a><div class="ng">第三部分 一个沙箱的存储栈</div><a href="#d11" data-n="11"><span class="nn">11</span><span class="nt">节点本地缓存：/orchestrator 目录里都是什么</span><em class="hit"></em></a><a href="#d12" data-n="12"><span class="nn">12</span><span class="nt">沙箱的硬盘：NBD 加写时复制</span><em class="hit"></em></a><a href="#d13" data-n="13"><span class="nn">13</span><span class="nt">沙箱的内存：UFFD 按需供页与大页</span><em class="hit"></em></a><div class="ng">第四部分 快照：暂停、恢复与回滚</div><a href="#d14" data-n="14"><span class="nn">14</span><span class="nt">暂停与恢复：一次增量快照是怎么做出来的</span><em class="hit"></em></a><a href="#d15" data-n="15"><span class="nn">15</span><span class="nt">ARM 上的增量为什么“偏大”：脏页判据与实测</span><em class="hit"></em></a><a href="#d16" data-n="16"><span class="nn">16</span><span class="nt">快照回滚（一）：检查点树与内存</span><em class="hit"></em></a><a href="#d17" data-n="17"><span class="nn">17</span><span class="nt">快照回滚（二）：磁盘层、压实与配额</span><em class="hit"></em></a><div class="ng">第五部分 部署、容量与排障</div><a href="#d18" data-n="18"><span class="nn">18</span><span class="nt">部署里的存储配置：RPM、build.sh -d、-i、-s</span><em class="hit"></em></a><a href="#d19" data-n="19"><span class="nn">19</span><span class="nt">全景、容量规划与排障</span><em class="hit"></em></a><div class="ng">写作说明</div><a href="#dp20" data-n="p20"><span class="nt">大纲</span><em class="hit"></em></a></nav>
 </aside>
 <div class="scrim" id="scrim"></div>
 <main><article id="vp0" class="doc" hidden><h1 id="dp0-e2b-沙箱存储从零讲透">E2B 沙箱存储从零讲透</h1>
@@ -227,7 +227,7 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <p>前 6 篇是够用的存储基础：块与页、文件系统、稀疏文件、tmpfs、块设备与 NBD、虚拟内存与 mmap、大页、userfaultfd、写时复制与分层，以及 Firecracker 眼中的磁盘和内存。</p>
 <p>之后顺着一个沙箱的存储一生往下讲：</p>
 <ol>
-<li>模板：一个 buildID 目录里的六个文件和“拍平的映射表” header；模板的原料仓库 Harbor；从 Dockerfile 到 <code>rootfs.ext4</code> 的构建流水线；存储后端，以及为什么 <code>.env</code> 写了 MinIO、模板却落在 tmpfs 上的 <code>/tmp/templates</code>。</li>
+<li>模板：一个 buildID 目录里的六个文件和“拍平的映射表” header；“存数据的数据”：原料镜像所在的 Harbor、记模板和 build 的 PostgreSQL、记运行中沙箱的 Redis；从 Dockerfile 到 <code>rootfs.ext4</code> 的构建流水线；存储后端，以及为什么 <code>.env</code> 写了 MinIO、模板却落在 tmpfs 上的 <code>/tmp/templates</code>。</li>
 <li>一个沙箱的存储栈：<code>/orchestrator</code> 下的本地缓存与 4 MiB 分块拉取；NBD 加写时复制的根盘；UFFD 按需供页与大页预留。</li>
 <li>快照：暂停与恢复怎么产生一个增量 build；ARM 上内存增量为什么偏大、写跟踪位图怎么补回来；补丁新增的检查点回滚，包括检查点树、内存还原、磁盘封存层、压实与配额。</li>
 </ol>
@@ -247,7 +247,7 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <h3 id="dp0-第二部分-模板沙箱的出生证">第二部分　模板：沙箱的“出生证”</h3>
 <ul>
 <li><a href="#d07">第 7 篇　模板长什么样：一个 buildID 目录里的六个文件</a></li>
-<li><a href="#d08">第 8 篇　模板的原料仓库：Harbor 与镜像的存放</a></li>
+<li><a href="#d08">第 8 篇　存数据的数据：Harbor、PostgreSQL 与 Redis</a></li>
 <li><a href="#d09">第 9 篇　从 Dockerfile 到 rootfs.ext4：模板构建流水线</a></li>
 <li><a href="#d10">第 10 篇　模板存到哪：存储后端、Local 与“装了没用”的 MinIO</a></li>
 </ul>
@@ -303,7 +303,11 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 </tr>
 <tr>
 <td>通过 API 删模板、删快照只删数据库记录，存储里的文件故意不删</td>
-<td>14</td>
+<td>8、14</td>
+</tr>
+<tr>
+<td>重跑 <code>build.sh -i</code> 会重建 PostgreSQL 容器，记录全部清空，而模板文件还在</td>
+<td>8、18</td>
 </tr>
 <tr>
 <td>每个运行中的沙箱占一台 NBD 设备，自编译模块最多 512 台</td>
@@ -403,7 +407,7 @@ sbx.run_code(&quot;print(1 + 1)&quot;)    # 在里面跑代码
 
 <ul>
 <li><strong>第一部分（第 1～6 篇）</strong>：打地基。块、页、文件系统、块设备、虚拟内存、写时复制、Firecracker 的存储设备。不涉及 E2B 的代码。</li>
-<li><strong>第二部分（第 7～10 篇）</strong>：模板。一个模板由哪六个文件组成；做模板的原料（Docker 镜像）存在 Harbor 里；镜像怎么变成磁盘镜像和内存快照；做好的模板存到哪里。</li>
+<li><strong>第二部分（第 7～10 篇）</strong>：模板。一个模板由哪六个文件组成；“存数据的数据”存在哪：原料镜像在 Harbor，模板和 build 的记录在 PostgreSQL，运行中的沙箱在 Redis；镜像怎么变成磁盘镜像和内存快照；做好的模板存到哪里。</li>
 <li><strong>第三部分（第 11～13 篇）</strong>：一个沙箱运行时的存储栈。节点本地缓存、沙箱的硬盘、沙箱的内存。</li>
 <li><strong>第四部分（第 14～17 篇）</strong>：快照。暂停与恢复、ARM 上增量快照的特点、检查点回滚。</li>
 <li><strong>第五部分（第 18～19 篇）</strong>：部署脚本为存储做了什么，以及容量和排障。</li>
@@ -433,7 +437,7 @@ sbx.run_code(&quot;print(1 + 1)&quot;)    # 在里面跑代码
 </code></pre>
 <p>这个进程的可执行文件叫 <code>/usr/bin/template-manager</code>，和 <code>/usr/bin/orchestrator</code> 是同一个二进制的两份拷贝。所以本书说“orchestrator”或“template-manager”时，指的都是这一个进程。它下面挂着一个个 Firecracker 进程，每个 Firecracker 就是一台虚拟机。</p>
 <h3 id="d01-53-全景图存储相关的东西都在哪">5.3 全景图：存储相关的东西都在哪</h3>
-<figure class="paper"><img loading="lazy" alt="全景图：存储相关的东西都在哪" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9Ijg1NiIgdmlld0JveD0iMCAwIDE2MDAgODU2IiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im01NzYwNkEiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PG1hcmtlciBpZD0ibUQ5OTIyQiIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTTEgMS4yTDguNiA1TDEgOC44IiBmaWxsPSJub25lIiBzdHJva2U9IiNEOTkyMkIiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iODU2IiBmaWxsPSIjRkZGRkZGIi8+PHRleHQgeD0iNDguMCIgeT0iNTguMCIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lhajmma/lm77vvJrov5nlpZfnjq/looPph4zlkozlrZjlgqjmnInlhbPnmoTkuJzopb/pg73lnKjlk6o8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjkyLjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiA5Y+w6bKy6bmP5pyN5Yqh5Zmo77yM5LiA5LiqIHRlbXBsYXRlLW1hbmFnZXIg6L+b56iL5ZCM5pe25b2TIG9yY2hlc3RyYXRvciDlkozmqKHmnb/mnoTlu7rlmajjgILpopzoibLooajnpLrop5LoibLvvJrmqZnoibLmmK/mqKHmnb/mlofku7bnmoTlrrbvvIzok53oibLmmK8gb3JjaGVzdHJhdG9yIOeahOacrOWcsOe8k+WtmO+8jOe0q+iJsuaYr+e7meiZmuaLn+acuueUqOeahO+8jOe6ouiJsuaYr+WFtuWunuWcqOWQg+WGheWtmOeahOWcsOaWueOAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTg2LjAiIHdpZHRoPSIyNjAuMCIgaGVpZ2h0PSIxMjAuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE3OC4wIiB5PSIyMTkuMiIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzNEM0MzOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SGFyYm9yIOmVnOWDj+S7k+W6kzwvdGV4dD4KPHRleHQgeD0iMTc4LjAiIHk9IjI0Mi40IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWBmuaooeadv+eahOWOn+aWmTwvdGV4dD4KPHRleHQgeD0iMTc4LjAiIHk9IjI2MS4yIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPm5naW54IGhhcmJvcjo0NDMg4oaSIDI5MDA8L3RleHQ+Cjx0ZXh0IHg9IjE3OC4wIiB5PSIyNzkuOSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mlbDmja7lnKggL2RhdGE8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjE2Ni4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOEM5NTlGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWOn+aWmTwvdGV4dD4KPHJlY3QgeD0iNDIwLjAiIHk9IjE4Ni4wIiB3aWR0aD0iNTIwLjAiIGhlaWdodD0iMTIwLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2ODAuMCIgeT0iMjI4LjkiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi91c3IvYmluL3RlbXBsYXRlLW1hbmFnZXI8L3RleHQ+Cjx0ZXh0IHg9IjY4MC4wIiB5PSIyNTIuMSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7kuIDkuKrov5vnqIsgPSBvcmNoZXN0cmF0b3IgKyDmqKHmnb/mnoTlu7rvvIjnrKwgMeOAgTE4IOevh++8iTwvdGV4dD4KPHRleHQgeD0iNjgwLjAiIHk9IjI3MC45IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuivu+WGmeaooeadv+OAgeeuoeeQhuacrOWcsOe8k+WtmOOAgeWbnuetlCBOQkQg5ZKMIFVGRkQ8L3RleHQ+Cjx0ZXh0IHg9IjQyMC4wIiB5PSIxNjYuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzhDOTU5RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ov5vnqIs8L3RleHQ+CjxwYXRoIGQ9Ik0zMTQuMCAyNDYuMCBMNDE0LjAgMjQ2LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNTc2MDZBKSIvPgo8dGV4dCB4PSIzNjQuMCIgeT0iMjM2LjAiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5ouJ6ZWc5YOPPC90ZXh0Pgo8dGV4dCB4PSIzNjcuMCIgeT0iMjcwLjAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuesrCA4IOevhzwvdGV4dD4KPHJlY3QgeD0iMTA2MC4wIiB5PSIxODYuMCIgd2lkdGg9IjQ5Mi4wIiBoZWlnaHQ9IjEyMC4wIiByeD0iMTAiIGZpbGw9IiNGQ0VERTgiIHN0cm9rZT0iI0Q2NjAzRCIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTMwNi4wIiB5PSIyMjguNSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzlBMzIxNSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L3RtcC90ZW1wbGF0ZXMvJmx0O2J1aWxkSUQmZ3Q7LzwvdGV4dD4KPHRleHQgeD0iMTMwNi4wIiB5PSIyNTEuOCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mqKHmnb/lkozlv6vnhafnmoTlha3kuKrmlofku7bvvIhMb2NhbCDlkI7nq6/vvIk8L3RleHQ+Cjx0ZXh0IHg9IjEzMDYuMCIgeT0iMjcwLjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L3RtcCDmmK8gdG1wZnPvvJrljaDlhoXlrZjjgIHph43lkK/ljbPkuKLvvIjnrKwgMTAg56+H77yJPC90ZXh0Pgo8dGV4dCB4PSIxMDYwLjAiIHk9IjE2Ni4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOEM5NTlGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaooeadv+eahOWutjwvdGV4dD4KPHBhdGggZD0iTTk0Ni4wIDIzMS4wIEwxMDU0LjAgMjMxLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtRDk5MjJCKSIvPgo8dGV4dCB4PSIxMDAwLjAiIHk9IjIyMy4wIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiNEOTkyMkIiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuS4iuS8oDwvdGV4dD4KPHBhdGggZD0iTTEwNTQuMCAyNzEuMCBMOTQ2LjAgMjcxLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtRDk5MjJCKSIvPgo8dGV4dCB4PSIxMDAwLjAiIHk9IjI4OS4wIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiNEOTkyMkIiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaMiemcgOivuzwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iMzUyLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4Qzk1OUYiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pys5Zyw57yT5a2Y77yI56ysIDExIOevh++8iTwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMzY2LjAiIHdpZHRoPSIzNTguMCIgaGVpZ2h0PSI5Ni4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjI3LjAiIHk9IjQwNi4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4vb3JjaGVzdHJhdG9yL3RlbXBsYXRlPC90ZXh0Pgo8dGV4dCB4PSIyMjcuMCIgeT0iNDI4LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNuYXBmaWxl44CBbWV0YWRhdGEuanNvbjwvdGV4dD4KPHJlY3QgeD0iNDMwLjAiIHk9IjM2Ni4wIiB3aWR0aD0iMzU4LjAiIGhlaWdodD0iOTYuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYwOS4wIiB5PSIzOTcuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L29yY2hlc3RyYXRvci9idWlsZDwvdGV4dD4KPHRleHQgeD0iNjA5LjAiIHk9IjQxOS42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5tZW1maWxl44CBcm9vdGZzIOeahOeogOeWj+WJr+acrDwvdGV4dD4KPHRleHQgeD0iNjA5LjAiIHk9IjQzNy42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lkK/liqjml7bmuIXnqbrvvJvmo4Dmn6XngrnkuZ/lnKjov5k8L3RleHQ+CjxyZWN0IHg9IjgxMi4wIiB5PSIzNjYuMCIgd2lkdGg9IjM1OC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI5OTEuMCIgeT0iMzk3LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9vcmNoZXN0cmF0b3Ivc2FuZGJveDwvdGV4dD4KPHRleHQgeD0iOTkxLjAiIHk9IjQxOS42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mr4/kuKrmspnnrrHnmoQgQ09XIOaWh+S7tjwvdGV4dD4KPHRleHQgeD0iOTkxLjAiIHk9IjQzNy42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lkozmjIflkJEgTkJEIOeahCAubGluazwvdGV4dD4KPHJlY3QgeD0iMTE5NC4wIiB5PSIzNjYuMCIgd2lkdGg9IjM1OC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzczLjAiIHk9IjM5Ny4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4vbW50L3NuYXBzaG90LWNhY2hlPC90ZXh0Pgo8dGV4dCB4PSIxMzczLjAiIHk9IjQxOS42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj50bXBmcyA2NUc8L3RleHQ+Cjx0ZXh0IHg9IjEzNzMuMCIgeT0iNDM3LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuacrOeJiOS7o+eggeS4jeWGmTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iNTAyLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4Qzk1OUYiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uZ6Jma5ouf5py655So55qEPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSI1MTYuMCIgd2lkdGg9IjQ4NS4zIiBoZWlnaHQ9Ijg0LjAiIHJ4PSIxMCIgZmlsbD0iI0YzRjBGRiIgc3Ryb2tlPSIjOEI3RkUwIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyOTAuNyIgeT0iNTUwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM0QjNGQTgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9kZXYvbmJkMCDigKYgbmJkNTExPC90ZXh0Pgo8dGV4dCB4PSIyOTAuNyIgeT0iNTcyLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaymeeuseeahOKAnOehrOebmOKAne+8jOiHque8luivkeaooeWdlyA1MTIg5Y+w77yI56ysIDPjgIExMiDnr4fvvIk8L3RleHQ+CjxyZWN0IHg9IjU1Ny4zIiB5PSI1MTYuMCIgd2lkdGg9IjQ4NS4zIiBoZWlnaHQ9Ijg0LjAiIHJ4PSIxMCIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI4MDAuMCIgeT0iNTUwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5QTMyMTUiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9tbnQvaHVnZXBhZ2VzPC90ZXh0Pgo8dGV4dCB4PSI4MDAuMCIgeT0iNTcyLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaymeeuseKAnOWGheWtmOKAneiDjOWQjueahCAyIE1pQiDlpKfpobXmsaDvvIjnrKwgMTMg56+H77yJPC90ZXh0Pgo8cmVjdCB4PSIxMDY2LjciIHk9IjUxNi4wIiB3aWR0aD0iNDg1LjMiIGhlaWdodD0iODQuMCIgcng9IjEwIiBmaWxsPSIjRjNGMEZGIiBzdHJva2U9IiM4QjdGRTAiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzMDkuMyIgeT0iNTUwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM0QjNGQTgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9mYy1rZXJuZWxzICAvZmMtdmVyc2lvbnMgIC9mYy1lbnZkPC90ZXh0Pgo8dGV4dCB4PSIxMzA5LjMiIHk9IjU3Mi42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lhoXmoLjjgIHlrprliLYgRmlyZWNyYWNrZXLjgIFlbnZk77yI56ysIDYg56+H77yJPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSI2NDAuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzhDOTU5RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lhbbku5Y8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjY1NC4wIiB3aWR0aD0iNjIwLjAiIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjM1OC4wIiB5PSI2ODEuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TWluSU8gIC9yb290L2RhdGEvbWluaW88L3RleHQ+Cjx0ZXh0IHg9IjM1OC4wIiB5PSI3MDMuNiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6KOF5LqG44CB5YGl5bq35qOA5p+l6YCa6L+H77yM5L2G5rKh5bu65qG244CB5rKh5Lq65YaZ77yI56ysIDEwIOevh++8iTwvdGV4dD4KPHJlY3QgeD0iNjkyLjAiIHk9IjY1NC4wIiB3aWR0aD0iNDIwLjAiIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjkwMi4wIiB5PSI2ODEuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UG9zdGdyZVNRTDwvdGV4dD4KPHRleHQgeD0iOTAyLjAiIHk9IjcwMy42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mqKHmnb/lkowgYnVpbGQg55qE6K6w5b2VPC90ZXh0Pgo8cmVjdCB4PSIxMTM2LjAiIHk9IjY1NC4wIiB3aWR0aD0iNDE2LjAiIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzNDQuMCIgeT0iNjgxLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlJlZGlzPC90ZXh0Pgo8dGV4dCB4PSIxMzQ0LjAiIHk9IjcwMy42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7ov5DooYzkuK3nmoTmspnnrrHlnKjlk6rlj7DmnLrlmajkuIo8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9Ijc1My4wIiB3aWR0aD0iMTYuMCIgaGVpZ2h0PSIxNi4wIiByeD0iNCIgZmlsbD0iI0ZERjBEOSIgc3Ryb2tlPSIjRDk5MjJCIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8dGV4dCB4PSI3Mi4wIiB5PSI3NjYuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mqKHmnb/mlofku7Y8L3RleHQ+CjxyZWN0IHg9IjE1Mi4wIiB5PSI3NTMuMCIgd2lkdGg9IjE2LjAiIGhlaWdodD0iMTYuMCIgcng9IjQiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMTc2LjAiIHk9Ijc2Ni4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPm9yY2hlc3RyYXRvciDkuI7mnKzlnLDnvJPlrZg8L3RleHQ+CjxyZWN0IHg9IjM2My4yIiB5PSI3NTMuMCIgd2lkdGg9IjE2LjAiIGhlaWdodD0iMTYuMCIgcng9IjQiIGZpbGw9IiNGM0YwRkYiIHN0cm9rZT0iIzhCN0ZFMCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMzg3LjIiIHk9Ijc2Ni4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPue7meiZmuaLn+acuueUqOeahDwvdGV4dD4KPHJlY3QgeD0iNDkzLjIiIHk9Ijc1My4wIiB3aWR0aD0iMTYuMCIgaGVpZ2h0PSIxNi4wIiByeD0iNCIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8dGV4dCB4PSI1MTcuMiIgeT0iNzY2LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+5YW25a6e5Zyo5ZCD5YaF5a2YPC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9Ijc5MC4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNzkwLjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iODE2LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+5rOo77ya6ZWc5YOP77yISGFyYm9y77yJ44CB5qih5p2/77yIL3RtcC90ZW1wbGF0ZXPvvInjgIFNaW5JTyDmmK/kuInlpITkupLkuI3nm7jlubLnmoTlrZjlgqjjgILplZzlg4/lj5jmiJDmqKHmnb/ku6XlkI7vvIzmspnnrrHlsLHkuI3lho3nlKjliLAgSGFyYm9yIOmHjOeahOmVnOWDj+S6huOAgjwvdGV4dD48L3N2Zz4="><figcaption><b>图 1-1</b>全景图：存储相关的东西都在哪</figcaption></figure>
+<figure class="paper"><img loading="lazy" alt="全景图：存储相关的东西都在哪" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9Ijg1NiIgdmlld0JveD0iMCAwIDE2MDAgODU2IiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im01NzYwNkEiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PG1hcmtlciBpZD0ibUQ5OTIyQiIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTTEgMS4yTDguNiA1TDEgOC44IiBmaWxsPSJub25lIiBzdHJva2U9IiNEOTkyMkIiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iODU2IiBmaWxsPSIjRkZGRkZGIi8+PHRleHQgeD0iNDguMCIgeT0iNTguMCIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lhajmma/lm77vvJrov5nlpZfnjq/looPph4zlkozlrZjlgqjmnInlhbPnmoTkuJzopb/pg73lnKjlk6o8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjkyLjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiA5Y+w6bKy6bmP5pyN5Yqh5Zmo77yM5LiA5LiqIHRlbXBsYXRlLW1hbmFnZXIg6L+b56iL5ZCM5pe25b2TIG9yY2hlc3RyYXRvciDlkozmqKHmnb/mnoTlu7rlmajjgILpopzoibLooajnpLrop5LoibLvvJrmqZnoibLmmK/mqKHmnb/mlofku7bnmoTlrrbvvIzok53oibLmmK8gb3JjaGVzdHJhdG9yIOeahOacrOWcsOe8k+WtmO+8jOe0q+iJsuaYr+e7meiZmuaLn+acuueUqOeahO+8jOe6ouiJsuaYr+WFtuWunuWcqOWQg+WGheWtmOeahOWcsOaWueOAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTg2LjAiIHdpZHRoPSIyNjAuMCIgaGVpZ2h0PSIxMjAuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE3OC4wIiB5PSIyMTkuMiIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzNEM0MzOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SGFyYm9yIOmVnOWDj+S7k+W6kzwvdGV4dD4KPHRleHQgeD0iMTc4LjAiIHk9IjI0Mi40IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWBmuaooeadv+eahOWOn+aWmTwvdGV4dD4KPHRleHQgeD0iMTc4LjAiIHk9IjI2MS4yIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPm5naW54IGhhcmJvcjo0NDMg4oaSIDI5MDA8L3RleHQ+Cjx0ZXh0IHg9IjE3OC4wIiB5PSIyNzkuOSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mlbDmja7lnKggL2RhdGE8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjE2Ni4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOEM5NTlGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWOn+aWmTwvdGV4dD4KPHJlY3QgeD0iNDIwLjAiIHk9IjE4Ni4wIiB3aWR0aD0iNTIwLjAiIGhlaWdodD0iMTIwLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2ODAuMCIgeT0iMjI4LjkiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi91c3IvYmluL3RlbXBsYXRlLW1hbmFnZXI8L3RleHQ+Cjx0ZXh0IHg9IjY4MC4wIiB5PSIyNTIuMSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7kuIDkuKrov5vnqIsgPSBvcmNoZXN0cmF0b3IgKyDmqKHmnb/mnoTlu7rvvIjnrKwgMeOAgTE4IOevh++8iTwvdGV4dD4KPHRleHQgeD0iNjgwLjAiIHk9IjI3MC45IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuivu+WGmeaooeadv+OAgeeuoeeQhuacrOWcsOe8k+WtmOOAgeWbnuetlCBOQkQg5ZKMIFVGRkQ8L3RleHQ+Cjx0ZXh0IHg9IjQyMC4wIiB5PSIxNjYuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzhDOTU5RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ov5vnqIs8L3RleHQ+CjxwYXRoIGQ9Ik0zMTQuMCAyNDYuMCBMNDE0LjAgMjQ2LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNTc2MDZBKSIvPgo8dGV4dCB4PSIzNjQuMCIgeT0iMjM2LjAiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5ouJ6ZWc5YOPPC90ZXh0Pgo8dGV4dCB4PSIzNjcuMCIgeT0iMjcwLjAiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuesrCA4IOevhzwvdGV4dD4KPHJlY3QgeD0iMTA2MC4wIiB5PSIxODYuMCIgd2lkdGg9IjQ5Mi4wIiBoZWlnaHQ9IjEyMC4wIiByeD0iMTAiIGZpbGw9IiNGQ0VERTgiIHN0cm9rZT0iI0Q2NjAzRCIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTMwNi4wIiB5PSIyMjguNSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzlBMzIxNSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L3RtcC90ZW1wbGF0ZXMvJmx0O2J1aWxkSUQmZ3Q7LzwvdGV4dD4KPHRleHQgeD0iMTMwNi4wIiB5PSIyNTEuOCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mqKHmnb/lkozlv6vnhafnmoTlha3kuKrmlofku7bvvIhMb2NhbCDlkI7nq6/vvIk8L3RleHQ+Cjx0ZXh0IHg9IjEzMDYuMCIgeT0iMjcwLjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L3RtcCDmmK8gdG1wZnPvvJrljaDlhoXlrZjjgIHph43lkK/ljbPkuKLvvIjnrKwgMTAg56+H77yJPC90ZXh0Pgo8dGV4dCB4PSIxMDYwLjAiIHk9IjE2Ni4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOEM5NTlGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaooeadv+eahOWutjwvdGV4dD4KPHBhdGggZD0iTTk0Ni4wIDIzMS4wIEwxMDU0LjAgMjMxLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtRDk5MjJCKSIvPgo8dGV4dCB4PSIxMDAwLjAiIHk9IjIyMy4wIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiNEOTkyMkIiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuS4iuS8oDwvdGV4dD4KPHBhdGggZD0iTTEwNTQuMCAyNzEuMCBMOTQ2LjAgMjcxLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtRDk5MjJCKSIvPgo8dGV4dCB4PSIxMDAwLjAiIHk9IjI4OS4wIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiNEOTkyMkIiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaMiemcgOivuzwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iMzUyLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4Qzk1OUYiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pys5Zyw57yT5a2Y77yI56ysIDExIOevh++8iTwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMzY2LjAiIHdpZHRoPSIzNTguMCIgaGVpZ2h0PSI5Ni4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjI3LjAiIHk9IjQwNi4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4vb3JjaGVzdHJhdG9yL3RlbXBsYXRlPC90ZXh0Pgo8dGV4dCB4PSIyMjcuMCIgeT0iNDI4LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNuYXBmaWxl44CBbWV0YWRhdGEuanNvbjwvdGV4dD4KPHJlY3QgeD0iNDMwLjAiIHk9IjM2Ni4wIiB3aWR0aD0iMzU4LjAiIGhlaWdodD0iOTYuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYwOS4wIiB5PSIzOTcuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L29yY2hlc3RyYXRvci9idWlsZDwvdGV4dD4KPHRleHQgeD0iNjA5LjAiIHk9IjQxOS42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5tZW1maWxl44CBcm9vdGZzIOeahOeogOeWj+WJr+acrDwvdGV4dD4KPHRleHQgeD0iNjA5LjAiIHk9IjQzNy42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lkK/liqjml7bmuIXnqbrvvJvmo4Dmn6XngrnkuZ/lnKjov5k8L3RleHQ+CjxyZWN0IHg9IjgxMi4wIiB5PSIzNjYuMCIgd2lkdGg9IjM1OC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI5OTEuMCIgeT0iMzk3LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9vcmNoZXN0cmF0b3Ivc2FuZGJveDwvdGV4dD4KPHRleHQgeD0iOTkxLjAiIHk9IjQxOS42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mr4/kuKrmspnnrrHnmoQgQ09XIOaWh+S7tjwvdGV4dD4KPHRleHQgeD0iOTkxLjAiIHk9IjQzNy42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lkozmjIflkJEgTkJEIOeahCAubGluazwvdGV4dD4KPHJlY3QgeD0iMTE5NC4wIiB5PSIzNjYuMCIgd2lkdGg9IjM1OC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzczLjAiIHk9IjM5Ny4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4vbW50L3NuYXBzaG90LWNhY2hlPC90ZXh0Pgo8dGV4dCB4PSIxMzczLjAiIHk9IjQxOS42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj50bXBmcyA2NUc8L3RleHQ+Cjx0ZXh0IHg9IjEzNzMuMCIgeT0iNDM3LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuacrOeJiOS7o+eggeS4jeWGmTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iNTAyLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4Qzk1OUYiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+57uZ6Jma5ouf5py655So55qEPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSI1MTYuMCIgd2lkdGg9IjQ4NS4zIiBoZWlnaHQ9Ijg0LjAiIHJ4PSIxMCIgZmlsbD0iI0YzRjBGRiIgc3Ryb2tlPSIjOEI3RkUwIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyOTAuNyIgeT0iNTUwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM0QjNGQTgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9kZXYvbmJkMCDigKYgbmJkNTExPC90ZXh0Pgo8dGV4dCB4PSIyOTAuNyIgeT0iNTcyLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaymeeuseeahOKAnOehrOebmOKAne+8jOiHque8luivkeaooeWdlyA1MTIg5Y+w77yI56ysIDPjgIExMiDnr4fvvIk8L3RleHQ+CjxyZWN0IHg9IjU1Ny4zIiB5PSI1MTYuMCIgd2lkdGg9IjQ4NS4zIiBoZWlnaHQ9Ijg0LjAiIHJ4PSIxMCIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI4MDAuMCIgeT0iNTUwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5QTMyMTUiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9tbnQvaHVnZXBhZ2VzPC90ZXh0Pgo8dGV4dCB4PSI4MDAuMCIgeT0iNTcyLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaymeeuseKAnOWGheWtmOKAneiDjOWQjueahCAyIE1pQiDlpKfpobXmsaDvvIjnrKwgMTMg56+H77yJPC90ZXh0Pgo8cmVjdCB4PSIxMDY2LjciIHk9IjUxNi4wIiB3aWR0aD0iNDg1LjMiIGhlaWdodD0iODQuMCIgcng9IjEwIiBmaWxsPSIjRjNGMEZGIiBzdHJva2U9IiM4QjdGRTAiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzMDkuMyIgeT0iNTUwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM0QjNGQTgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPi9mYy1rZXJuZWxzICAvZmMtdmVyc2lvbnMgIC9mYy1lbnZkPC90ZXh0Pgo8dGV4dCB4PSIxMzA5LjMiIHk9IjU3Mi42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lhoXmoLjjgIHlrprliLYgRmlyZWNyYWNrZXLjgIFlbnZk77yI56ysIDYg56+H77yJPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSI2NDAuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzhDOTU5RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lhbbku5bvvJtQb3N0Z3JlU1FM44CBUmVkaXMg5ZKMIEhhcmJvciDlkIjnp7DigJzlrZjmlbDmja7nmoTmlbDmja7igJ3vvIjnrKwgOCDnr4fvvIk8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjY1NC4wIiB3aWR0aD0iNjIwLjAiIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjM1OC4wIiB5PSI2ODEuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+TWluSU8gIC9yb290L2RhdGEvbWluaW88L3RleHQ+Cjx0ZXh0IHg9IjM1OC4wIiB5PSI3MDMuNiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6KOF5LqG44CB5YGl5bq35qOA5p+l6YCa6L+H77yM5L2G5rKh5bu65qG244CB5rKh5Lq65YaZ77yI56ysIDEwIOevh++8iTwvdGV4dD4KPHJlY3QgeD0iNjkyLjAiIHk9IjY1NC4wIiB3aWR0aD0iNDIwLjAiIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjkwMi4wIiB5PSI2ODEuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UG9zdGdyZVNRTDwvdGV4dD4KPHRleHQgeD0iOTAyLjAiIHk9IjcwMy42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mqKHmnb/jgIFidWlsZOOAgeW/q+eFp+eahOiusOW9le+8iGRvY2tlciDlrrnlmajvvIk8L3RleHQ+CjxyZWN0IHg9IjExMzYuMCIgeT0iNjU0LjAiIHdpZHRoPSI0MTYuMCIgaGVpZ2h0PSI3MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTM0NC4wIiB5PSI2ODEuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmVkaXM8L3RleHQ+Cjx0ZXh0IHg9IjEzNDQuMCIgeT0iNzAzLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPui/kOihjOS4reeahOaymeeuseWcqOWTqu+8iE5vbWFkIGpvYu+8jOaXoOaMgeS5heWNt++8iTwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iNzUzLjAiIHdpZHRoPSIxNi4wIiBoZWlnaHQ9IjE2LjAiIHJ4PSI0IiBmaWxsPSIjRkRGMEQ5IiBzdHJva2U9IiNEOTkyMkIiIHN0cm9rZS13aWR0aD0iMS4yIi8+Cjx0ZXh0IHg9IjcyLjAiIHk9Ijc2Ni4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaooeadv+aWh+S7tjwvdGV4dD4KPHJlY3QgeD0iMTUyLjAiIHk9Ijc1My4wIiB3aWR0aD0iMTYuMCIgaGVpZ2h0PSIxNi4wIiByeD0iNCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8dGV4dCB4PSIxNzYuMCIgeT0iNzY2LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+b3JjaGVzdHJhdG9yIOS4juacrOWcsOe8k+WtmDwvdGV4dD4KPHJlY3QgeD0iMzYzLjIiIHk9Ijc1My4wIiB3aWR0aD0iMTYuMCIgaGVpZ2h0PSIxNi4wIiByeD0iNCIgZmlsbD0iI0YzRjBGRiIgc3Ryb2tlPSIjOEI3RkUwIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8dGV4dCB4PSIzODcuMiIgeT0iNzY2LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+57uZ6Jma5ouf5py655So55qEPC90ZXh0Pgo8cmVjdCB4PSI0OTMuMiIgeT0iNzUzLjAiIHdpZHRoPSIxNi4wIiBoZWlnaHQ9IjE2LjAiIHJ4PSI0IiBmaWxsPSIjRkNFREU4IiBzdHJva2U9IiNENjYwM0QiIHN0cm9rZS13aWR0aD0iMS4yIi8+Cjx0ZXh0IHg9IjUxNy4yIiB5PSI3NjYuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lhbblrp7lnKjlkIPlhoXlrZg8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNzkwLjAiIHgyPSIxNTUyLjAiIHkyPSI3OTAuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI0OC4wIiB5PSI4MTYuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzhDOTU5RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ms6jvvJrplZzlg4/vvIhIYXJib3LvvInjgIHmqKHmnb/vvIgvdG1wL3RlbXBsYXRlc++8ieOAgU1pbklPIOaYr+S4ieWkhOS6kuS4jeebuOW5sueahOWtmOWCqOOAgumVnOWDj+WPmOaIkOaooeadv+S7peWQju+8jOaymeeuseWwseS4jeWGjeeUqOWIsCBIYXJib3Ig6YeM55qE6ZWc5YOP5LqG44CCPC90ZXh0Pjwvc3ZnPg=="><figcaption><b>图 1-1</b>全景图：存储相关的东西都在哪</figcaption></figure>
 
 <p>逐行解释一下，后面各篇会展开：</p>
 <ul>
@@ -443,7 +447,7 @@ sbx.run_code(&quot;print(1 + 1)&quot;)    # 在里面跑代码
 <li><strong><code>/dev/nbdN</code></strong>：每个运行中的沙箱占一个，作为它的根盘（第 12 篇）。</li>
 <li><strong><code>/mnt/hugepages</code></strong>：沙箱的内存用 2 MiB 大页，开机时由部署脚本预留（第 13 篇）。</li>
 <li><strong>MinIO</strong>：一个对象存储服务。部署脚本把它装好了，配置里也写了它，但实际上没有任何组件往里写模板（第 10 篇解释为什么）。</li>
-<li><strong>PostgreSQL、Redis</strong>：它们存的不是磁盘和内存数据，而是“哪个模板有哪些 build”“哪个沙箱在哪台机器上”这类记录。本书不展开，只在用到时提一句。</li>
+<li><strong>PostgreSQL、Redis</strong>：它们存的不是磁盘和内存数据，而是“哪个模板现在用哪个 build”“哪个沙箱在哪台机器上”这类记录。它们和 Harbor 一起，是本书说的“存数据的数据”（第 8 篇）。</li>
 </ul>
 <h3 id="d01-54-六个贯穿全书的事实">5.4 六个贯穿全书的事实</h3>
 <p>这套环境有几处和“标准 E2B”不同的地方，后面会反复回到这里：</p>
@@ -534,7 +538,11 @@ sbx.run_code(&quot;print(1 + 1)&quot;)    # 在里面跑代码
 </tr>
 <tr>
 <td>Harbor</td>
-<td>存做模板用的 Docker 镜像</td>
+<td>存做模板用的原料镜像和各服务的镜像</td>
+</tr>
+<tr>
+<td>PostgreSQL、Redis</td>
+<td>存模板和 build 的记录、运行中沙箱的位置</td>
 </tr>
 <tr>
 <td>MinIO</td>
@@ -2152,239 +2160,348 @@ metadata := 上一代.Metadata.NextGeneration(新buildID) // 代数 +1，BaseBui
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d08">《模板的原料仓库：Harbor 与镜像的存放》</a>。知道了模板长什么样，接下来看它是怎么做出来的。做模板的第一步是拿到一个 Docker 镜像，比如 <code>harbor:443/e2b-orchestration/ubuntu:22.04-custom</code>。下一篇讲这个镜像存在哪、镜像在仓库里是怎么存的、这套环境的 Harbor 是怎么装起来的，以及 template-manager 是怎么从 Harbor 拿到镜像的。</p><nav class="pager" data-n="07"></nav></article><article id="v08" class="doc" hidden><h1 id="d08-模板的原料仓库harbor-与镜像的存放">模板的原料仓库：Harbor 与镜像的存放</h1>
+<p><strong>下一篇预告</strong>：<a href="#d08">《存数据的数据：Harbor、PostgreSQL 与 Redis》</a>。六个文件只是数据本身。“哪个模板现在用哪个 build”“暂停中的沙箱对应哪个快照”“运行中的沙箱在哪台机器上”“做模板的原料镜像在哪”，这些关于数据的记录存在另外三个组件里。下一篇讲 Harbor、PostgreSQL、Redis 各存什么、怎么装、数据落在哪，以及它们和 <code>/tmp/templates</code> 里的文件对不上时会出什么问题。</p><nav class="pager" data-n="07"></nav></article><article id="v08" class="doc" hidden><h1 id="d08-存数据的数据harborpostgresql-与-redis">存数据的数据：Harbor、PostgreSQL 与 Redis</h1>
 <blockquote>
-<p><strong>本篇目标</strong>：模板的第一行写着 <code>FROM harbor:443/e2b-orchestration/ubuntu:22.04-custom</code>。这个镜像存在哪？它在仓库里是什么样子？template-manager 又是怎么拿到它的？本篇讲镜像仓库和 OCI 镜像的存储格式，然后一步步看这套环境的 Harbor 是怎么装起来、怎么被用的，以及部署和建模板时最常遇到的几个 Harbor 问题。</p>
+<p><strong>本篇目标</strong>：前一篇讲了模板的六个文件。可光有文件还不够：哪个模板现在用的是哪个 build？暂停中的沙箱对应哪个快照？正在运行的沙箱在哪台机器上？做模板的原料镜像放在哪？这些“关于数据的数据”分别存在三个组件里：Harbor、PostgreSQL、Redis。本篇讲清楚它们各存什么、在这套环境里怎么装、数据落在哪、谁来读写，以及它们和 <code>/tmp/templates</code> 里的文件对不上时会出什么问题。</p>
 </blockquote>
 <hr />
-<h2 id="d08-一问题模板的原料从哪来">一、问题：模板的原料从哪来</h2>
-<p>第 9 篇会讲模板构建的完整流水线。流水线的第一步是：<strong>拿到一个 Docker 镜像</strong>，把它变成虚拟机的根盘。</p>
-<p>这套环境做测试用的模板（<code>benchmark/build_template.py</code>）是这样写的：</p>
-<pre><code class="language-python">Template().from_dockerfile('FROM harbor:443/e2b-orchestration/ubuntu:22.04-custom')
-</code></pre>
-<p>意思是：以 <code>harbor:443</code> 这台仓库上、<code>e2b-orchestration</code> 项目里、名叫 <code>ubuntu</code>、标签为 <code>22.04-custom</code> 的镜像为起点。</p>
-<p>要理解这一行背后发生了什么，先要知道镜像仓库是什么、镜像在仓库里是怎么存的。</p>
-<hr />
-<h2 id="d08-二镜像仓库按名字标签收发镜像">二、镜像仓库：按“名字:标签”收发镜像</h2>
-<h3 id="d08-21-是什么">2.1 是什么</h3>
-<p><strong>镜像仓库</strong>（registry）是一个 HTTP 服务，专门存放容器镜像。它对外提供一套标准接口（OCI Distribution 规范）：</p>
-<ul>
-<li>推送：<code>docker push 仓库地址/名字:标签</code>；</li>
-<li>拉取：<code>docker pull 仓库地址/名字:标签</code>；</li>
-<li>查询有哪些标签：<code>GET /v2/&lt;名字&gt;/tags/list</code>。</li>
-</ul>
-<p>用一个比喻：镜像仓库是一个按<strong>货号</strong>收发货的仓库。货号就是“名字:标签”，比如 <code>e2b-orchestration/ubuntu:22.04-custom</code>。你报货号，它发货；你送货来，它按货号入库。</p>
-<p>最有名的公共仓库是 Docker Hub。这套环境是离线部署，不依赖外网，所以在本机自建了一个仓库：Harbor。</p>
-<h3 id="d08-22-一个镜像的完整名字">2.2 一个镜像的完整名字</h3>
-<pre><code>harbor:443 / e2b-orchestration / ubuntu : 22.04-custom
-└──┬────┘    └──────┬───────┘   └─┬──┘   └────┬─────┘
- 仓库地址          项目          仓库名        标签
-</code></pre>
-<p>如果名字里没写仓库地址，比如 <code>ubuntu:22.04</code>，默认就是 Docker Hub。</p>
-<hr />
-<h2 id="d08-三oci-镜像在仓库里怎么存">三、OCI 镜像在仓库里怎么存</h2>
-<h3 id="d08-31-三样东西">3.1 三样东西</h3>
-<p>一个镜像在仓库里不是“一个大文件”，而是由三类东西组成的：</p>
+<h2 id="d08-一文件之外还要记什么">一、文件之外，还要记什么</h2>
+<p>设想 SDK 发来一个请求：“用模板 <code>base</code> 创建一个沙箱”。orchestrator 能干活之前，有好几个问题要先回答：</p>
 <div class="tw"><table>
 <thead>
 <tr>
-<th>组成部分</th>
-<th>是什么</th>
-<th>例子</th>
+<th>问题</th>
+<th>谁来回答</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><strong>清单</strong>（manifest）</td>
-<td>一个小 JSON：这个镜像由哪个配置、哪几层组成，每样东西的 sha256 是什么</td>
-<td>几 KB</td>
+<td><code>base</code> 是哪个模板？它现在的标签 <code>default</code> 指向哪个 buildID？</td>
+<td>PostgreSQL</td>
 </tr>
 <tr>
-<td><strong>配置</strong>（config）</td>
-<td>一个小 JSON：平台（<code>linux/arm64</code>）、环境变量、工作目录、默认启动命令、层的历史</td>
-<td>几 KB</td>
+<td>这个 team 还能不能再开沙箱？配额多少？</td>
+<td>PostgreSQL</td>
 </tr>
 <tr>
-<td><strong>层</strong>（layer）</td>
-<td>一个个 <code>tar.gz</code> 压缩包，每层记录相对下层的文件改动（第 5 篇）</td>
-<td>几 MB 到几百 MB</td>
+<td>新沙箱开在哪台机器上？开好以后，访问它的请求该转给谁？</td>
+<td>Redis</td>
+</tr>
+<tr>
+<td>这个模板最初是用哪个镜像做的？api、client-proxy 这些服务本身的镜像从哪拉？</td>
+<td>Harbor</td>
 </tr>
 </tbody>
 </table></div>
-<p>清单大致是这样（简化）：</p>
-<pre><code class="language-json">{
-  &quot;mediaType&quot;: &quot;application/vnd.oci.image.manifest.v1+json&quot;,
-  &quot;config&quot;: { &quot;digest&quot;: &quot;sha256:3f1a...&quot;, &quot;size&quot;: 2310 },
-  &quot;layers&quot;: [
-    { &quot;digest&quot;: &quot;sha256:9c2b...&quot;, &quot;size&quot;: 29531234 },
-    { &quot;digest&quot;: &quot;sha256:a17e...&quot;, &quot;size&quot;: 51203311 },
-    { &quot;digest&quot;: &quot;sha256:0d44...&quot;, &quot;size&quot;: 1024 }
-  ]
-}
-</code></pre>
-<h3 id="d08-32-按内容命名">3.2 按内容命名</h3>
-<p>注意每样东西都用它内容的 <strong>sha256</strong> 来标识，叫<strong>摘要</strong>（digest）。这有两个好处：</p>
-<ul>
-<li><strong>去重</strong>：两个镜像共享同一个 ubuntu 基础层，那一层的 sha256 一样，仓库只存一份。这就是第 5 篇说的“共享不变的部分”。</li>
-<li><strong>防篡改</strong>：拉下来的内容重新算一遍 sha256，对不上就说明坏了。</li>
-</ul>
-<p>标签（<code>22.04-custom</code>）只是一个指向某份清单的<strong>可变指针</strong>；摘要才是镜像内容的真正身份。</p>
-<h3 id="d08-33-多平台镜像">3.3 多平台镜像</h3>
-<p>同一个名字可以对应多个平台的镜像，比如 <code>linux/amd64</code> 一份、<code>linux/arm64</code> 一份。这时标签指向的不是清单，而是一个<strong>索引</strong>（index），里面列出各平台各自的清单。拉取方按自己的平台挑一份。</p>
-<p>这套环境的 ARM 补丁把 template-manager 拉镜像时的平台<strong>固定成了 <code>linux/arm64</code></strong>：</p>
-<pre><code class="language-go">var DefaultPlatform = containerregistry.Platform{
-    OS:           &quot;linux&quot;,
-    Architecture: &quot;arm64&quot;,
-}
-</code></pre>
-<p>拉下来之后还会检查一遍平台。所以，<strong>如果有人往 Harbor 里推了一个 x86 镜像，用它建模板会直接报平台不匹配</strong>，而不是装出一个跑不起来的根盘。</p>
-<figure class="paper"><img loading="lazy" alt="镜像在仓库里怎么存" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjY4MiIgdmlld0JveD0iMCAwIDE2MDAgNjgyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PG1hcmtlciBpZD0ibTU3NjA2QSIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTTEgMS4yTDguNiA1TDEgOC44IiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iNjgyIiBmaWxsPSIjRkZGRkZGIi8+PHRleHQgeD0iNDguMCIgeT0iNTguMCIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7plZzlg4/lnKjku5PlupPph4zmgI7kuYjlrZjvvJrmoIfnrb7mjIflkJHmuIXljZXvvIzmuIXljZXliJflh7rphY3nva7lkozlsYLvvIzkuIDliIfmjIkgc2hhMjU2IOWRveWQjTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7moIfnrb7lj6rmmK/kuIDkuKrlj6/lj5jnmoTmjIfpkojvvIzmkZjopoHvvIhzaGEyNTbvvInmiY3mmK/lhoXlrrnnmoTouqvku73jgILkuKTkuKrplZzlg4/lhbHkuqvlkIzkuIDkuKogdWJ1bnR1IOWfuuehgOWxgu+8jOmCo+S4gOWxguWcqOS7k+W6k+mHjOWPquWtmOS4gOS7veOAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTk2LjAiIHdpZHRoPSIzNjAuMCIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjI4LjAiIHk9IjIxNy44IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmUyYi1vcmNoZXN0cmF0aW9uL3VidW50dToyMi4wNC1jdXN0b208L3RleHQ+Cjx0ZXh0IHg9IjIyOC4wIiB5PSIyNDAuNCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5qCH562+77yI5Y+v5Y+Y5oyH6ZKI77yJPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSI0MjYuMCIgd2lkdGg9IjM2MC4wIiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0Y0RjVGNyIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyMjguMCIgeT0iNDQ3LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZTJiLW9yY2hlc3RyYXRpb24vbXlhcHA6djE8L3RleHQ+Cjx0ZXh0IHg9IjIyOC4wIiB5PSI0NzAuNCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5qCH562+77yI5Y+v5Y+Y5oyH6ZKI77yJPC90ZXh0Pgo8cmVjdCB4PSI0NzAuMCIgeT0iMTc2LjAiIHdpZHRoPSIzMDAuMCIgaGVpZ2h0PSIxMDAuMCIgcng9IjEwIiBmaWxsPSIjRkRGMEQ5IiBzdHJva2U9IiNEOTkyMkIiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYyMC4wIiB5PSIyMDguNSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzhBNTMwMCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5riF5Y2VIG1hbmlmZXN0PC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iMjMxLjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2hhMjU2OjRlMWPigKY8L3RleHQ+Cjx0ZXh0IHg9IjYyMC4wIiB5PSIyNTAuNSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5jb25maWcgKyBsYXllcnMg55qE5pGY6KaBPC90ZXh0Pgo8cGF0aCBkPSJNNDE0LjAgMjI2LjAgTDQ2NC4wIDIyNi4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iNDcwLjAiIHk9IjQwNi4wIiB3aWR0aD0iMzAwLjAiIGhlaWdodD0iMTAwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZERjBEOSIgc3Ryb2tlPSIjRDk5MjJCIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjAuMCIgeT0iNDM4LjYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM4QTUzMDAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPua4heWNlSBtYW5pZmVzdDwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9IjQ2MS44IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNoYTI1NjpiMDdh4oCmPC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iNDgwLjYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Y29uZmlnICsgbGF5ZXJzIOeahOaRmOimgTwvdGV4dD4KPHBhdGggZD0iTTQxNC4wIDQ1Ni4wIEw0NjQuMCA0NTYuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9IjkwMC4wIiB5PSIxNTYuMCIgd2lkdGg9IjY1Mi4wIiBoZWlnaHQ9IjQyMC4wIiByeD0iMTQiIGZpbGw9IiNGNkY2RjMiIHN0cm9rZT0iI0I3QjVBQyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iOTIwLjAiIHk9IjE4Ni4wIiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+YmxvYnMvc2hhMjU2L++8iOaMieWGheWuueW5s+mTuu+8jOebuOWQjOWGheWuueWPquWtmOS4gOS7ve+8iTwvdGV4dD4KPHJlY3QgeD0iOTMwLjAiIHk9IjIwNi4wIiB3aWR0aD0iNTkyLjAiIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iMjI4LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPumFjee9riAzZjFh4oCmPC90ZXh0Pgo8dGV4dCB4PSIxMjI2LjAiIHk9IjI1MC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lubPlj7AgbGludXgvYXJtNjTjgIHnjq/looPlj5jph4/jgIHlkK/liqjlkb3ku6Q8L3RleHQ+CjxyZWN0IHg9IjkzMC4wIiB5PSIyNzguMCIgd2lkdGg9IjU5Mi4wIiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0UzRjVFRSIgc3Ryb2tlPSIjMUY5RTc3IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMjI2LjAiIHk9IjMwMC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMEU2QjRGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lsYIgOWMyYuKApu+8iHVidW50dSDln7rnoYDlsYLvvIk8L3RleHQ+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iMzIyLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnRhci5neu+8jDI5IE1CPC90ZXh0Pgo8cmVjdCB4PSI5MzAuMCIgeT0iMzUwLjAiIHdpZHRoPSI1OTIuMCIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTIyNi4wIiB5PSIzNzIuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5bGCIGExN2XigKY8L3RleHQ+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iMzk0LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnRhci5neu+8jDUxIE1CPC90ZXh0Pgo8cmVjdCB4PSI5MzAuMCIgeT0iNDIyLjAiIHdpZHRoPSI1OTIuMCIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTIyNi4wIiB5PSI0NDQuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6YWN572uIDc3ZDDigKY8L3RleHQ+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iNDY2LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPm15YXBwIOeahOmFjee9rjwvdGV4dD4KPHJlY3QgeD0iOTMwLjAiIHk9IjQ5NC4wIiB3aWR0aD0iNTkyLjAiIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iNTE2LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWxgiAwZDQ04oCmPC90ZXh0Pgo8dGV4dCB4PSIxMjI2LjAiIHk9IjUzOC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DT1BZIGFwcC5wee+8jDEgS0I8L3RleHQ+CjxwYXRoIGQ9Ik03NzYuMCAyMjYuMCBMOTI0LjAgMjM2LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNTc2MDZBKSIvPgo8cGF0aCBkPSJNNzc2LjAgMjI2LjAgTDkyNC4wIDMwOC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTU3NjA2QSkiLz4KPHBhdGggZD0iTTc3Ni4wIDIyNi4wIEw5MjQuMCAzODAuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI201NzYwNkEpIi8+CjxwYXRoIGQ9Ik03NzYuMCA0NTYuMCBMOTI0LjAgMzA4LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNTc2MDZBKSIvPgo8cGF0aCBkPSJNNzc2LjAgNDU2LjAgTDkyNC4wIDQ1Mi4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTU3NjA2QSkiLz4KPHBhdGggZD0iTTc3Ni4wIDQ1Ni4wIEw5MjQuMCA1MjQuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI201NzYwNkEpIi8+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNjE2LjAiIHgyPSIxNTUyLjAiIHkyPSI2MTYuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI0OC4wIiB5PSI2NDIuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzhDOTU5RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ms6jvvJrlpJrlubPlj7DplZzlg4/nmoTmoIfnrb7mjIflkJHkuIDkuKrntKLlvJXvvIzlho3mjInlubPlj7DmjJHmuIXljZXjgIJBUk0g6KGl5LiB5oqKIHRlbXBsYXRlLW1hbmFnZXIg5ouJ5Y+W55qE5bmz5Y+w5Zu65a6a5Li6IGxpbnV4L2FybTY077yM5ouJ5YiwIHg4NiDplZzlg4/kvJrnm7TmjqXmiqXlubPlj7DkuI3ljLnphY3jgII8L3RleHQ+PC9zdmc+"><figcaption><b>图 8-1</b>镜像在仓库里怎么存</figcaption></figure>
+<p>这三个组件存的都不是沙箱的磁盘或内存，而是<strong>指向</strong>这些数据的记录和原料。本书叫它们“存数据的数据”。</p>
+<figure class="paper"><img loading="lazy" alt="三个存数据的数据的组件" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjczNCIgdmlld0JveD0iMCAwIDE2MDAgNzM0IiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjwvZGVmcz48cmVjdCB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI3MzQiIGZpbGw9IiNGRkZGRkYiLz48dGV4dCB4PSI0OC4wIiB5PSI1OC4wIiBmb250LXNpemU9IjI4IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWtmOaVsOaNrueahOaVsOaNru+8muS4ieS4que7hOS7tuWQhOiusOS7gOS5iDwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lroPku6zpg73kuI3lrZjmspnnrrHnmoTno4Hnm5jlkozlhoXlrZjvvIzogIzmmK/lrZjigJzljp/mlpnlnKjlk6rjgIHmqKHmnb/njrDlnKjnlKjlk6rkuKogYnVpbGTjgIHov5DooYzkuK3nmoTmspnnrrHlnKjlk6rlj7DmnLrlmajkuIrigJ3jgIJvcmNoZXN0cmF0b3Ig5LiN55u05o6l6K+75YaZIFBvc3RncmVTUUwg5ZKMIFJlZGlz77yM5Y+q6K6kIGFwaSDkuqTnu5nlroPnmoQgYnVpbGRJROOAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTU2LjAiIHdpZHRoPSI0ODEuMyIgaGVpZ2h0PSI3MC4wIiByeD0iMTAiIGZpbGw9IiNGNkY2RjMiIHN0cm9rZT0iI0I3QjVBQyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjg4LjciIHk9IjE4My41IiBmb250LXNpemU9IjE4IiBmaWxsPSIjM0QzQzM4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5IYXJib3I8L3RleHQ+Cjx0ZXh0IHg9IjI4OC43IiB5PSIyMDcuNCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6ZWc5YOP5LuT5bqTPC90ZXh0Pgo8cmVjdCB4PSI2Mi4wIiB5PSIyNDYuMCIgd2lkdGg9IjQ1My4zIiBoZWlnaHQ9IjQwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyODguNyIgeT0iMjY5LjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5qih5p2/5Y6f5paZIHVidW50dToyMi4wNC1jdXN0b208L3RleHQ+CjxyZWN0IHg9IjYyLjAiIHk9IjI5Ni4wIiB3aWR0aD0iNDUzLjMiIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjI4OC43IiB5PSIzMTYuNCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mnI3liqHplZzlg48gYXBp44CBY2xpZW50LXByb3h544CBPC90ZXh0Pgo8dGV4dCB4PSIyODguNyIgeT0iMzM1LjEiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZGItbWlncmF0b3LjgIFyZWRpczwvdGV4dD4KPHJlY3QgeD0iNjIuMCIgeT0iMzU4LjAiIHdpZHRoPSI0NTMuMyIgaGVpZ2h0PSI0MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjg4LjciIHk9IjM4MS44IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmRvY2tlciBjb21wb3NlIOWuueWZqOe7hO+8jC1zIOWQr+WKqDwvdGV4dD4KPHJlY3QgeD0iNjIuMCIgeT0iNDA4LjAiIHdpZHRoPSI0NTMuMyIgaGVpZ2h0PSI0MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjg4LjciIHk9IjQzMS44IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaVsOaNru+8muWuv+S4uyAvZGF0YTwvdGV4dD4KPHJlY3QgeD0iNTU5LjMiIHk9IjE1Ni4wIiB3aWR0aD0iNDgxLjMiIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkRGMEQ5IiBzdHJva2U9IiNEOTkyMkIiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIxODMuNSIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzhBNTMwMCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UG9zdGdyZVNRTDwvdGV4dD4KPHRleHQgeD0iODAwLjAiIHk9IjIwNy40IiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mqKHmnb/lkowgYnVpbGQg55qE6LSm5pysPC90ZXh0Pgo8cmVjdCB4PSI1NzMuMyIgeT0iMjQ2LjAiIHdpZHRoPSI0NTMuMyIgaGVpZ2h0PSI0MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iODAwLjAiIHk9IjI2OS44IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWboumYn+OAgemFjemineOAgeWvhumSpTwvdGV4dD4KPHJlY3QgeD0iNTczLjMiIHk9IjI5Ni4wIiB3aWR0aD0iNDUzLjMiIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIzMTYuNCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mqKHmnb/jgIHliKvlkI3jgIFidWlsZO+8iGlkIOWNsyBidWlsZElE77yJ44CBPC90ZXh0Pgo8dGV4dCB4PSI4MDAuMCIgeT0iMzM1LjEiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5qCH562+5oyH5rS+44CB5b+r54WnPC90ZXh0Pgo8cmVjdCB4PSI1NzMuMyIgeT0iMzU4LjAiIHdpZHRoPSI0NTMuMyIgaGVpZ2h0PSI0MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iODAwLjAiIHk9IjM4MS44IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmRvY2tlciBydW4g55qE5a655Zmo77yM56uv5Y+jIDU0MzI8L3RleHQ+CjxyZWN0IHg9IjU3My4zIiB5PSI0MDguMCIgd2lkdGg9IjQ1My4zIiBoZWlnaHQ9IjQwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI4MDAuMCIgeT0iNDMxLjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5pWw5o2u77ya5a655Zmo55qE5Yy/5ZCN5Y2377yM6YeN6LeRIC1pIOS8muaNouaWsOWNtzwvdGV4dD4KPHJlY3QgeD0iMTA3MC43IiB5PSIxNTYuMCIgd2lkdGg9IjQ4MS4zIiBoZWlnaHQ9IjcwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzExLjMiIHk9IjE4My41IiBmb250LXNpemU9IjE4IiBmaWxsPSIjOUEzMjE1IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5SZWRpczwvdGV4dD4KPHRleHQgeD0iMTMxMS4zIiB5PSIyMDcuNCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6L+Q6KGM5Lit55qE5rKZ566x5Zyo5ZOqPC90ZXh0Pgo8cmVjdCB4PSIxMDg0LjciIHk9IjI0Ni4wIiB3aWR0aD0iNDUzLjMiIGhlaWdodD0iNDAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzMTEuMyIgeT0iMjY5LjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2FuZGJveDpzdG9yYWdlOuKApiAg5rKZ566x54q25oCB5LiO6L+H5pyf5pe26Ze0PC90ZXh0Pgo8cmVjdCB4PSIxMDg0LjciIHk9IjI5Ni4wIiB3aWR0aD0iNDUzLjMiIGhlaWdodD0iNDAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzMTEuMyIgeT0iMzE5LjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2FuZGJveDpjYXRhbG9nOiZsdDtJRCZndDsgIOWcqOWTquWPsCBvcmNoZXN0cmF0b3I8L3RleHQ+CjxyZWN0IHg9IjEwODQuNyIgeT0iMzQ2LjAiIHdpZHRoPSI0NTMuMyIgaGVpZ2h0PSI0MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTMxMS4zIiB5PSIzNjkuOCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5Ob21hZCDnmoQgcmVkaXMgam9i77yM56uv5Y+jIDYzNzk8L3RleHQ+CjxyZWN0IHg9IjEwODQuNyIgeT0iMzk2LjAiIHdpZHRoPSI0NTMuMyIgaGVpZ2h0PSI0MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTMxMS4zIiB5PSI0MTkuOCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mlbDmja7vvJrlrrnlmajlhoXlrZjvvIzmsqHmnInmjIHkuYXljbc8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjU0MC4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuiwgeWcqOeUqOWug+S7rDwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iNTU2LjAiIHdpZHRoPSIzNTguMCIgaGVpZ2h0PSI3Ni4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjI3LjAiIHk9IjU4NS45IiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj50ZW1wbGF0ZS1tYW5hZ2VyPC90ZXh0Pgo8dGV4dCB4PSIyMjcuMCIgeT0iNjA5LjIiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5bu65qih5p2/5pe25LuOIEhhcmJvciDmi4nljp/mlpk8L3RleHQ+CjxyZWN0IHg9IjQzMC4wIiB5PSI1NTYuMCIgd2lkdGg9IjM1OC4wIiBoZWlnaHQ9Ijc2LjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MDkuMCIgeT0iNTg1LjkiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk5vbWFkPC90ZXh0Pgo8dGV4dCB4PSI2MDkuMCIgeT0iNjA5LjIiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6LW3IGFwaeOAgWVkZ2XjgIFyZWRpcyDml7bku44gSGFyYm9yIOaLieacjeWKoemVnOWDjzwvdGV4dD4KPHJlY3QgeD0iODEyLjAiIHk9IjU1Ni4wIiB3aWR0aD0iMzU4LjAiIGhlaWdodD0iNzYuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9Ijk5MS4wIiB5PSI1ODUuOSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YXBpPC90ZXh0Pgo8dGV4dCB4PSI5OTEuMCIgeT0iNjA5LjIiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6K+75YaZIFBvc3RncmVTUUwg5ZKMIFJlZGlzPC90ZXh0Pgo8cmVjdCB4PSIxMTk0LjAiIHk9IjU1Ni4wIiB3aWR0aD0iMzU4LjAiIGhlaWdodD0iNzYuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzNzMuMCIgeT0iNTg1LjkiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmNsaWVudC1wcm94eTwvdGV4dD4KPHRleHQgeD0iMTM3My4wIiB5PSI2MDkuMiIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mn6UgUmVkaXMg55qEIHNhbmRib3g6Y2F0YWxvZyDlhrPlrprovaznu5nosIE8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNjY4LjAiIHgyPSIxNTUyLjAiIHkyPSI2NjguMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI0OC4wIiB5PSI2OTQuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzhDOTU5RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ms6jvvJpIYXJib3Ig6Ieq5bim55qE5pWw5o2u5bqT5ZKMIFJlZGlzIOWPque7mSBIYXJib3Ig6Ieq5bex55So77yM5ZKM6L+Z6YeM55qEIFBvc3RncmVTUUzjgIFSZWRpcyDml6DlhbPjgII8L3RleHQ+PC9zdmc+"><figcaption><b>图 8-1</b>三个存数据的数据的组件</figcaption></figure>
 
-<h3 id="d08-34-在仓库的磁盘上长什么样">3.4 在仓库的磁盘上长什么样</h3>
-<p>标准的仓库服务（Docker 官方的 distribution，Harbor 内部用的也是它）把数据存在一个目录里，大致是：</p>
-<pre><code>&lt;数据目录&gt;/docker/registry/v2/
-├── blobs/sha256/
-│   ├── 3f/3f1a.../data      ← 配置
-│   ├── 9c/9c2b.../data      ← 层
-│   └── a1/a17e.../data      ← 层
-└── repositories/
-    └── e2b-orchestration/ubuntu/
-        ├── _manifests/tags/22.04-custom/current/link   ← 标签指向哪份清单
-        └── _layers/...                                  ← 这个仓库引用了哪些层
-</code></pre>
-<p>所有内容按 sha256 平铺在 <code>blobs</code> 下，<code>repositories</code> 下只放“引用”。</p>
-<hr />
-<h2 id="d08-四harbor-是什么">四、Harbor 是什么</h2>
-<p><strong>Harbor</strong> 是一个开源的企业级镜像仓库。它的核心存储就是上面那个标准仓库服务，外面又加了一圈：</p>
-<ul>
-<li><strong>项目</strong>：镜像按项目分组，项目可以设为公开或私有；</li>
-<li><strong>用户和权限</strong>：谁能推、谁能拉；</li>
-<li><strong>网页界面</strong>：浏览镜像、标签、层；</li>
-<li>还有漏洞扫描、复制同步等功能，这套环境没用到。</li>
-</ul>
-<p>Harbor 本身由一组容器组成：核心服务、仓库服务、自带的数据库和 Redis、一个 nginx 入口等，用 <code>docker compose</code> 拉起。它自带的数据库和 Redis 与 E2B 用的 PostgreSQL、Redis <strong>毫无关系</strong>，各管各的。</p>
-<hr />
-<h2 id="d08-五这套环境的-harbor-是怎么装起来的">五、这套环境的 Harbor 是怎么装起来的</h2>
-<p>Harbor 的安装分散在 <code>build.sh -i</code> 和 <code>build.sh -s</code> 两步里。</p>
-<h3 id="d08-51--i解压改配置配-nginx">5.1 <code>-i</code>：解压、改配置、配 nginx</h3>
-<p><strong>解压离线安装包</strong>。Harbor 官方没有 aarch64 的离线安装包，这套环境用的是社区构建的 <code>harbor-offline-installer-aarch64-v2.13.0.tgz</code>，解压到 <code>build.sh</code> 所在目录下的 <code>harbor/</code>。</p>
-<p><strong>改 <code>harbor.yml</code></strong>，三处：</p>
-<pre><code class="language-bash">sed -i '/^https:/ s/^/#/' harbor.yml                         # 关掉 Harbor 自己的 https
-sed -i &quot;s/^hostname: .*/hostname: $HOST_IP/&quot; harbor.yml      # 主机名改成本机 IP
-sed -i &quot;/^  port: [0-9]\+/ s/[0-9]\+$/2900/&quot; harbor.yml      # HTTP 端口改成 2900
-</code></pre>
-<p>数据目录没改，用安装包的默认值（<code>data_volume: /data</code>）。所以镜像的层实际存在宿主机的 <code>/data</code> 下。</p>
-<p><strong>装 nginx，在 Harbor 前面加一层 https</strong>：</p>
-<pre><code class="language-nginx">server {
-    listen 443 ssl;
-    server_name harbor;
-    ssl_certificate     /etc/nginx/ssl/harbor.crt;   # 自签证书
-    ssl_certificate_key /etc/nginx/ssl/harbor.key;
-    location / {
-        proxy_pass http://127.0.0.1:2900;            # 转给 Harbor
-    }
-}
-</code></pre>
-<p>为什么 Harbor 自己关掉 https，再让 nginx 来做？因为两种用法对 https 的要求不一样（见第六节）。</p>
-<p><strong>生成自签证书，并让两边都信任它</strong>：</p>
-<pre><code class="language-bash">openssl req -x509 ... -out /etc/nginx/ssl/harbor.crt   # 证书的名字是 harbor
-# 装进系统信任库：Go 程序（template-manager）读这里
-cp harbor.crt /etc/pki/ca-trust/source/anchors/harbor-ca.crt &amp;&amp; update-ca-trust extract
-# 装进 docker 的信任目录：docker daemon 读这里
-cp harbor.crt /etc/docker/certs.d/harbor:443/ca.crt
-</code></pre>
-<h3 id="d08-52--s拉起建项目推基础镜像">5.2 <code>-s</code>：拉起、建项目、推基础镜像</h3>
-<p><code>build.sh -s</code> 一开始就执行 Harbor 的 <code>install.sh</code>，用 <code>docker compose</code> 拉起 Harbor 的那组容器。接着修正两个配置目录的属主（Harbor 容器里的进程以 UID 10000 运行，读不了 root 的文件），重启仓库和入口容器。</p>
-<p>然后在 Nomad 起来之后，做四件事：</p>
-<ol>
-<li><strong>登录</strong>：<code>docker login -u admin -p Harbor12345 &lt;本机IP&gt;:2900</code>。</li>
-<li><strong>建项目</strong>：用 Harbor 的 REST API 建一个<strong>公开</strong>项目 <code>e2b-orchestration</code>。公开意味着拉取不需要登录，template-manager 拉镜像时就不用带凭证。</li>
-<li><strong>让 <code>harbor</code> 这个名字能解析</strong>（<code>ensure_harbor_hostname</code>）：往 <code>/etc/hosts</code> 追加一行 <code>&lt;本机IP&gt; harbor</code>，再重启 dnsmasq。dnsmasq 只在启动时读 <code>/etc/hosts</code>，所以必须重启。已有这一行就跳过；指向别的地址就只告警。</li>
-<li><strong>推基础镜像</strong>（<code>push_base_image</code>）：先查 Harbor 里有没有 <code>e2b-orchestration/ubuntu:22.04-custom</code>，没有才推：</li>
-</ol>
-<pre><code class="language-bash">docker load -i dep/ubuntu-22.04-custom.tar.gz              # 得到本地镜像 ubuntu:22.04-custom
-docker tag  ubuntu:22.04-custom &lt;本机IP&gt;:2900/e2b-orchestration/ubuntu:22.04-custom
-docker push &lt;本机IP&gt;:2900/e2b-orchestration/ubuntu:22.04-custom
-</code></pre>
-<p><code>ubuntu-22.04-custom.tar.gz</code> 是 RPM 里带的一个预先准备好的 arm64 镜像（<code>docker save</code> 的产物），在 RPM 构建时被拷进部署包。推失败只告警、不中断部署。</p>
-<hr />
-<h2 id="d08-六为什么有两个地址">六、为什么有两个地址</h2>
-<p>细心的读者会发现：推镜像用的是 <code>&lt;本机IP&gt;:2900</code>，模板里拉镜像写的却是 <code>harbor:443</code>。这是同一个仓库的两个门。</p>
-<figure class="paper"><img loading="lazy" alt="推送和拉取的两个地址" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9Ijc3NiIgdmlld0JveD0iMCAwIDE2MDAgNzc2IiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PG1hcmtlciBpZD0ibTU3NjA2QSIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTTEgMS4yTDguNiA1TDEgOC44IiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L21hcmtlcj48bWFya2VyIGlkPSJtNUI5QkU2IiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjgiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj48cGF0aCBkPSJNMSAxLjJMOC42IDVMMSA4LjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvbWFya2VyPjwvZGVmcz48cmVjdCB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI3NzYiIGZpbGw9IiNGRkZGRkYiLz48dGV4dCB4PSI0OC4wIiB5PSI1OC4wIiBmb250LXNpemU9IjI4IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWQjOS4gOS4qiBIYXJib3LvvIzkuKTkuKrpl6jvvJrmjqjpgIHotbAgJmx0O+acrOacuklQJmd0OzoyOTAw77yM5ouJ5Y+W6LWwIGhhcmJvcjo0NDM8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjkyLjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+ZG9ja2VyIGRhZW1vbiDmjqjplZzlg4/ml7blpoLmnpzphY3kuobku6PnkIbvvIzkuI3orqTor4blj6rlhpnlnKggL2V0Yy9ob3N0cyDph4znmoQgaGFyYm9y77yM5Lya6KKr6L2s57uZ5Luj55CG6ICMIDUwNO+8jOaJgOS7peaOqOmAgeeUqCBJUCDlkowgSFRUUOOAgnRlbXBsYXRlLW1hbmFnZXIg55SoIEdvIOW6k+ebtOaOpeaLie+8jOimgeaxgiBIVFRQUyDkuJTor4HkuablkI3lr7nlvpfkuIrvvIzmiYDku6Xmi4nlj5bnlKg8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjExNi4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmhhcmJvcjo0NDPjgII8L3RleHQ+CjxyZWN0IHg9IjExODAuMCIgeT0iMTgwLjAiIHdpZHRoPSIzNzIuMCIgaGVpZ2h0PSIzNTAuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzNjYuMCIgeT0iMzI3LjciIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkhhcmJvcjwvdGV4dD4KPHRleHQgeD0iMTM2Ni4wIiB5PSIzNTEuNiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUCAyOTAwPC90ZXh0Pgo8dGV4dCB4PSIxMzY2LjAiIHk9IjM3MS4xIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7pobnnm64gZTJiLW9yY2hlc3RyYXRpb27vvIjlhazlvIDvvIk8L3RleHQ+Cjx0ZXh0IHg9IjEzNjYuMCIgeT0iMzkwLjYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaVsOaNruebruW9lSAvZGF0YTwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTgwLjAiIHdpZHRoPSIzODAuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjM4LjAiIHk9IjIwOC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5idWlsZC5zaCAtc++8mnB1c2hfYmFzZV9pbWFnZTwvdGV4dD4KPHRleHQgeD0iMjM4LjAiIHk9IjIzMC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5kb2NrZXIgbG9hZCBkZXAvdWJ1bnR1LTIyLjA0LWN1c3RvbS50YXIuZ3o8L3RleHQ+Cjx0ZXh0IHg9IjIzOC4wIiB5PSIyNDguNiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZG9ja2VyIHB1c2ggJmx0O0lQJmd0OzoyOTAwL+KApjwvdGV4dD4KPHBhdGggZD0iTTQzNC4wIDIyNS4wIEwxMTc0LjAgMjI1LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8dGV4dCB4PSI4MDQuMCIgeT0iMjE1LjAiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUCAmbHQ75pys5py6SVAmZ3Q7OjI5MDDvvIhkYWVtb24uanNvbiDnmoQgaW5zZWN1cmUtcmVnaXN0cmllc++8iTwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iNDQwLjAiIHdpZHRoPSIzODAuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjM4LjAiIHk9IjQ2OC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj50ZW1wbGF0ZS1tYW5hZ2VyIOW7uuaooeadvzwvdGV4dD4KPHRleHQgeD0iMjM4LjAiIHk9IjQ5MC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5GUk9NIGhhcmJvcjo0NDMvZTJiLW9yY2hlc3RyYXRpb24v4oCmPC90ZXh0Pgo8dGV4dCB4PSIyMzguMCIgeT0iNTA4LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdvIOW6kyByZW1vdGUuSW1hZ2XvvIzkuI3nu4/ov4cgZG9ja2VyPC90ZXh0Pgo8cmVjdCB4PSI2NDAuMCIgeT0iNDQwLjAiIHdpZHRoPSIzMDAuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNzkwLjAiIHk9IjQ2OC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5uZ2lueCAgc2VydmVyX25hbWUgaGFyYm9yPC90ZXh0Pgo8dGV4dCB4PSI3OTAuMCIgeT0iNDkwLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmxpc3RlbiA0NDMgc3NsIOKGkiAxMjcuMC4wLjE6MjkwMDwvdGV4dD4KPHRleHQgeD0iNzkwLjAiIHk9IjUwOC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7oh6rnrb7or4HkuabvvIxDTj1oYXJib3I8L3RleHQ+CjxwYXRoIGQ9Ik00MzQuMCA0ODUuMCBMNjM0LjAgNDg1LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNUI5QkU2KSIvPgo8dGV4dCB4PSI1MzQuMCIgeT0iNDc1LjAiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzVCOUJFNiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUFM8L3RleHQ+CjxwYXRoIGQ9Ik05NDYuMCA0ODUuMCBMMTE3NC4wIDQ4NS4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTU3NjA2QSkiLz4KPHRleHQgeD0iMTA2MC4wIiB5PSI0NzUuMCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5IVFRQIDEyNy4wLjAuMToyOTAwPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSI1ODAuMCIgd2lkdGg9Ijc0MC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI0MTguMCIgeT0iNjEwLjYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWQjeWtlyBoYXJib3Ig5oCO5LmI6Kej5p6QPC90ZXh0Pgo8dGV4dCB4PSI0MTguMCIgeT0iNjMzLjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L2V0Yy9yZXNvbHYuY29uZiDihpIgMTI3LjAuMC4xIGRuc21hc3Eg4oaSIC9ldGMvaG9zdHMg6YeM55qEICZsdDvmnKzmnLpJUCZndDsgaGFyYm9yPC90ZXh0Pgo8dGV4dCB4PSI0MTguMCIgeT0iNjUyLjYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+77yILXMg5YaZ5YWl5ZCO6KaB6YeN5ZCvIGRuc21hc3HvvIk8L3RleHQ+CjxyZWN0IHg9IjgxMi4wIiB5PSI1ODAuMCIgd2lkdGg9Ijc0MC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMTgyLjAiIHk9IjYxMC42IiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7or4HkuabmgI7kuYjooqvkv6Hku7s8L3RleHQ+Cjx0ZXh0IHg9IjExODIuMCIgeT0iNjMzLjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+57O757uf5L+h5Lu75bqTIC9ldGMvcGtpL2NhLXRydXN0L+KApi9oYXJib3ItY2EuY3J0PC90ZXh0Pgo8dGV4dCB4PSIxMTgyLjAiIHk9IjY1Mi42IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmhjbCDph4wgU1NMX0NFUlRfRklMRT0vZXRjL2RvY2tlci9jZXJ0cy5kL2hhcmJvcjo0NDMvY2EuY3J0PC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjcxMC4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNzEwLjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iNzM2LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+5rOo77ya5Lik5Liq6Zeo6IOM5ZCO5piv5ZCM5LiA5Liq5LuT5bqT44CCZG9ja2VyIGRhZW1vbiDnmoTku6PnkIbjgIFpbnNlY3VyZS1yZWdpc3RyaWVzIOiuvue9ruWvuSB0ZW1wbGF0ZS1tYW5hZ2VyIOS4jei1t+S9nOeUqOOAgjwvdGV4dD48L3N2Zz4="><figcaption><b>图 8-2</b>推送和拉取的两个地址</figcaption></figure>
-
-<p><strong>推送走 2900（HTTP）</strong>：</p>
-<ul>
-<li>docker daemon 默认只肯用 https 和仓库通信。要用 http，得把地址加进 <code>/etc/docker/daemon.json</code> 的 <code>insecure-registries</code>。部署文档要求加上 <code>"&lt;本机IP&gt;:2900"</code>。</li>
-<li>为什么不用 <code>harbor:443</code> 推？如果 docker daemon 配了代理（<code>HTTP(S)_PROXY</code>），它的 <code>NO_PROXY</code> 通常只列了本机 IP，不认识 <code>harbor</code> 这个只写在本机 <code>/etc/hosts</code> 里的名字，请求会被转给代理，代理回一个 <code>504 Gateway Timeout</code>。用 IP 推就没这个问题。</li>
-</ul>
-<p><strong>拉取走 harbor:443（HTTPS）</strong>：</p>
-<ul>
-<li>template-manager 用的 Go 库默认要求 https，并且校验证书的名字。证书是签给 <code>harbor</code> 的，所以地址必须写 <code>harbor</code>。</li>
-<li>部署文件 <code>dep/template-manager.hcl</code> 里还专门给它设了一个环境变量，指向这张证书：</li>
-</ul>
-<pre><code class="language-hcl">SSL_CERT_FILE = &quot;/etc/docker/certs.d/harbor:443/ca.crt&quot;
-</code></pre>
-<hr />
-<h2 id="d08-七template-manager-怎么拉镜像">七、template-manager 怎么拉镜像</h2>
-<h3 id="d08-71-不经过-docker">7.1 不经过 docker</h3>
-<p>一个容易误解的地方：template-manager 拉镜像<strong>不经过本机的 docker daemon</strong>。它用 Go 的 go-containerregistry 库，自己按 registry 协议直接跟仓库对话：</p>
-<pre><code class="language-go">// 简化自 GetPublicImage
-ref := name.ParseReference(&quot;harbor:443/e2b-orchestration/ubuntu:22.04-custom&quot;)
-img := remote.Image(ref, remote.WithPlatform(linux/arm64))  // 直接 HTTPS 请求 harbor:443
-verifyImagePlatform(img, linux/arm64)                        // 平台对不上就报错
-</code></pre>
-<p>所以：</p>
-<ul>
-<li>docker daemon 的代理、<code>insecure-registries</code> 设置，对 template-manager <strong>不起作用</strong>；</li>
-<li>template-manager 能不能拉到镜像，取决于三件事：<code>harbor</code> 能否解析、443 能否连通、证书是否被信任。</li>
-</ul>
-<h3 id="d08-72-解析-harbor">7.2 解析 <code>harbor</code></h3>
-<p>template-manager 查 DNS 的路径是：<code>/etc/resolv.conf</code> 第一行指向 <code>127.0.0.1</code>，也就是本机的 dnsmasq；dnsmasq 读 <code>/etc/hosts</code>，答出本机 IP。（DNS 的细节见《E2B 沙箱网络从零讲透》第 17 篇。）</p>
-<h3 id="d08-73-按需拉层">7.3 按需拉层</h3>
-<p><code>remote.Image</code> 返回的只是一个“镜像句柄”，此时只拉了清单和配置。真正的层，要到下一步解包时才一层层拉下来（第 9 篇）。</p>
-<hr />
-<h2 id="d08-八另一条路artifacts_registry_providerlocal">八、另一条路：<code>ARTIFACTS_REGISTRY_PROVIDER=Local</code></h2>
-<p><code>.env</code> 里有一行：</p>
-<pre><code class="language-bash">export ARTIFACTS_REGISTRY_PROVIDER=Local
-</code></pre>
-<p>这是 E2B 的另一种取镜像方式。在官方的云上部署里，用户提交 Dockerfile 后，平台先在别处把镜像构建好，推到云厂商的镜像仓库，名字是“模板 ID:buildID”；template-manager 再按这个名字去取。<code>Local</code> 实现的意思是“去本机 docker daemon 里找 <code>模板ID:buildID</code> 这个镜像”。</p>
-<p>这套环境建模板走的是 <code>FROM</code> 指定镜像的那条路（上一节），不走这里。知道有这么个配置就行。</p>
-<hr />
-<h2 id="d08-九三处存储互不相干">九、三处存储，互不相干</h2>
-<p>到这里，这套环境里已经出现了三个“存东西的地方”，名字容易混：</p>
+<p>下面这张表先给个全貌，后面逐个展开：</p>
 <div class="tw"><table>
 <thead>
 <tr>
-<th>存储</th>
+<th>组件</th>
 <th>存什么</th>
-<th>在磁盘上的位置</th>
-<th>谁用</th>
+<th>这套环境怎么跑</th>
+<th>数据在哪</th>
+<th>谁读写</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Harbor</td>
-<td>做模板用的 Docker 镜像（原料）</td>
-<td><code>/data</code>（Harbor 数据目录）</td>
-<td>建模板时 template-manager 拉</td>
+<td>做模板的原料镜像；api、client-proxy、db-migrator、redis 的服务镜像</td>
+<td>一组 docker compose 容器，<code>-s</code> 启动</td>
+<td>宿主 <code>/data</code></td>
+<td>建模板时 template-manager 拉；Nomad 起服务时拉</td>
 </tr>
 <tr>
-<td>模板存储</td>
-<td>做好的模板和快照（六个文件）</td>
-<td><code>/tmp/templates</code>（第 10 篇）</td>
-<td>template-manager 读写</td>
+<td>PostgreSQL</td>
+<td>团队、配额、模板、别名、build、快照的记录</td>
+<td>一个 <code>docker run</code> 起的容器，端口 5432</td>
+<td>容器的匿名数据卷</td>
+<td>api</td>
 </tr>
 <tr>
-<td>MinIO</td>
-<td>本来设计用来存模板，实际没用</td>
-<td><code>/root/data/minio</code></td>
-<td>没人</td>
+<td>Redis</td>
+<td>正在运行的沙箱的状态、它在哪台机器上</td>
+<td>Nomad 的 <code>redis</code> job，端口 6379</td>
+<td>容器内存，没有持久卷</td>
+<td>api、client-proxy</td>
 </tr>
 </tbody>
 </table></div>
-<p>镜像变成模板之后，Harbor 里的镜像就<strong>不再被沙箱用到</strong>了。删掉 Harbor 里的镜像，不影响已经建好的模板；但以后重建这个模板会失败。</p>
+<p>注意 orchestrator 一个都不直接读写 PostgreSQL 和 Redis。它只认 api 发来的 buildID，然后去存储后端找文件（第 10 篇）。</p>
 <hr />
-<h2 id="d08-十常见问题">十、常见问题</h2>
+<h2 id="d08-二harbor镜像仓库">二、Harbor：镜像仓库</h2>
+<h3 id="d08-21-镜像仓库存什么">2.1 镜像仓库存什么</h3>
+<p><strong>镜像仓库</strong>（registry）是一个按“名字:标签”存取容器镜像的 HTTP 服务。一个镜像的完整名字是：</p>
+<pre><code>harbor:443 / e2b-orchestration / ubuntu : 22.04-custom
+└──┬────┘    └──────┬───────┘   └─┬──┘   └────┬─────┘
+ 仓库地址          项目          仓库名        标签
+</code></pre>
+<p>一个镜像在仓库里由三类东西组成，都按内容的 sha256 命名：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>组成部分</th>
+<th>是什么</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>清单</strong>（manifest）</td>
+<td>一个小 JSON，列出这个镜像由哪个配置、哪几层组成</td>
+</tr>
+<tr>
+<td><strong>配置</strong>（config）</td>
+<td>平台（<code>linux/arm64</code>）、环境变量、工作目录、默认启动命令</td>
+</tr>
+<tr>
+<td><strong>层</strong>（layer）</td>
+<td>一个个 <code>tar.gz</code>，每层记录相对下层的文件改动（第 5 篇）</td>
+</tr>
+</tbody>
+</table></div>
+<p>按内容命名的好处是<strong>去重</strong>：两个镜像共享同一个 ubuntu 基础层，仓库里只存一份。标签只是一个指向某份清单的可变指针。</p>
+<figure class="paper"><img loading="lazy" alt="镜像在仓库里怎么存" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjY4MiIgdmlld0JveD0iMCAwIDE2MDAgNjgyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PG1hcmtlciBpZD0ibTU3NjA2QSIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTTEgMS4yTDguNiA1TDEgOC44IiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iNjgyIiBmaWxsPSIjRkZGRkZGIi8+PHRleHQgeD0iNDguMCIgeT0iNTguMCIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7plZzlg4/lnKjku5PlupPph4zmgI7kuYjlrZjvvJrmoIfnrb7mjIflkJHmuIXljZXvvIzmuIXljZXliJflh7rphY3nva7lkozlsYLvvIzkuIDliIfmjIkgc2hhMjU2IOWRveWQjTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7moIfnrb7lj6rmmK/kuIDkuKrlj6/lj5jnmoTmjIfpkojvvIzmkZjopoHvvIhzaGEyNTbvvInmiY3mmK/lhoXlrrnnmoTouqvku73jgILkuKTkuKrplZzlg4/lhbHkuqvlkIzkuIDkuKogdWJ1bnR1IOWfuuehgOWxgu+8jOmCo+S4gOWxguWcqOS7k+W6k+mHjOWPquWtmOS4gOS7veOAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTk2LjAiIHdpZHRoPSIzNjAuMCIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjI4LjAiIHk9IjIxNy44IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmUyYi1vcmNoZXN0cmF0aW9uL3VidW50dToyMi4wNC1jdXN0b208L3RleHQ+Cjx0ZXh0IHg9IjIyOC4wIiB5PSIyNDAuNCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5qCH562+77yI5Y+v5Y+Y5oyH6ZKI77yJPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSI0MjYuMCIgd2lkdGg9IjM2MC4wIiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0Y0RjVGNyIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyMjguMCIgeT0iNDQ3LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZTJiLW9yY2hlc3RyYXRpb24vbXlhcHA6djE8L3RleHQ+Cjx0ZXh0IHg9IjIyOC4wIiB5PSI0NzAuNCIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5qCH562+77yI5Y+v5Y+Y5oyH6ZKI77yJPC90ZXh0Pgo8cmVjdCB4PSI0NzAuMCIgeT0iMTc2LjAiIHdpZHRoPSIzMDAuMCIgaGVpZ2h0PSIxMDAuMCIgcng9IjEwIiBmaWxsPSIjRkRGMEQ5IiBzdHJva2U9IiNEOTkyMkIiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYyMC4wIiB5PSIyMDguNSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzhBNTMwMCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5riF5Y2VIG1hbmlmZXN0PC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iMjMxLjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+c2hhMjU2OjRlMWPigKY8L3RleHQ+Cjx0ZXh0IHg9IjYyMC4wIiB5PSIyNTAuNSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5jb25maWcgKyBsYXllcnMg55qE5pGY6KaBPC90ZXh0Pgo8cGF0aCBkPSJNNDE0LjAgMjI2LjAgTDQ2NC4wIDIyNi4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iNDcwLjAiIHk9IjQwNi4wIiB3aWR0aD0iMzAwLjAiIGhlaWdodD0iMTAwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZERjBEOSIgc3Ryb2tlPSIjRDk5MjJCIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjAuMCIgeT0iNDM4LjYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM4QTUzMDAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPua4heWNlSBtYW5pZmVzdDwvdGV4dD4KPHRleHQgeD0iNjIwLjAiIHk9IjQ2MS44IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNoYTI1NjpiMDdh4oCmPC90ZXh0Pgo8dGV4dCB4PSI2MjAuMCIgeT0iNDgwLjYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Y29uZmlnICsgbGF5ZXJzIOeahOaRmOimgTwvdGV4dD4KPHBhdGggZD0iTTQxNC4wIDQ1Ni4wIEw0NjQuMCA0NTYuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9IjkwMC4wIiB5PSIxNTYuMCIgd2lkdGg9IjY1Mi4wIiBoZWlnaHQ9IjQyMC4wIiByeD0iMTQiIGZpbGw9IiNGNkY2RjMiIHN0cm9rZT0iI0I3QjVBQyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iOTIwLjAiIHk9IjE4Ni4wIiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+YmxvYnMvc2hhMjU2L++8iOaMieWGheWuueW5s+mTuu+8jOebuOWQjOWGheWuueWPquWtmOS4gOS7ve+8iTwvdGV4dD4KPHJlY3QgeD0iOTMwLjAiIHk9IjIwNi4wIiB3aWR0aD0iNTkyLjAiIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iMjI4LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPumFjee9riAzZjFh4oCmPC90ZXh0Pgo8dGV4dCB4PSIxMjI2LjAiIHk9IjI1MC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lubPlj7AgbGludXgvYXJtNjTjgIHnjq/looPlj5jph4/jgIHlkK/liqjlkb3ku6Q8L3RleHQ+CjxyZWN0IHg9IjkzMC4wIiB5PSIyNzguMCIgd2lkdGg9IjU5Mi4wIiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0UzRjVFRSIgc3Ryb2tlPSIjMUY5RTc3IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMjI2LjAiIHk9IjMwMC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMEU2QjRGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lsYIgOWMyYuKApu+8iHVidW50dSDln7rnoYDlsYLvvIk8L3RleHQ+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iMzIyLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnRhci5neu+8jDI5IE1CPC90ZXh0Pgo8cmVjdCB4PSI5MzAuMCIgeT0iMzUwLjAiIHdpZHRoPSI1OTIuMCIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTIyNi4wIiB5PSIzNzIuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5bGCIGExN2XigKY8L3RleHQ+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iMzk0LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnRhci5neu+8jDUxIE1CPC90ZXh0Pgo8cmVjdCB4PSI5MzAuMCIgeT0iNDIyLjAiIHdpZHRoPSI1OTIuMCIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTIyNi4wIiB5PSI0NDQuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6YWN572uIDc3ZDDigKY8L3RleHQ+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iNDY2LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPm15YXBwIOeahOmFjee9rjwvdGV4dD4KPHJlY3QgeD0iOTMwLjAiIHk9IjQ5NC4wIiB3aWR0aD0iNTkyLjAiIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEyMjYuMCIgeT0iNTE2LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWxgiAwZDQ04oCmPC90ZXh0Pgo8dGV4dCB4PSIxMjI2LjAiIHk9IjUzOC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DT1BZIGFwcC5wee+8jDEgS0I8L3RleHQ+CjxwYXRoIGQ9Ik03NzYuMCAyMjYuMCBMOTI0LjAgMjM2LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNTc2MDZBKSIvPgo8cGF0aCBkPSJNNzc2LjAgMjI2LjAgTDkyNC4wIDMwOC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTU3NjA2QSkiLz4KPHBhdGggZD0iTTc3Ni4wIDIyNi4wIEw5MjQuMCAzODAuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI201NzYwNkEpIi8+CjxwYXRoIGQ9Ik03NzYuMCA0NTYuMCBMOTI0LjAgMzA4LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNTc2MDZBKSIvPgo8cGF0aCBkPSJNNzc2LjAgNDU2LjAgTDkyNC4wIDQ1Mi4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTU3NjA2QSkiLz4KPHBhdGggZD0iTTc3Ni4wIDQ1Ni4wIEw5MjQuMCA1MjQuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI201NzYwNkEpIi8+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNjE2LjAiIHgyPSIxNTUyLjAiIHkyPSI2MTYuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI0OC4wIiB5PSI2NDIuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzhDOTU5RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ms6jvvJrlpJrlubPlj7DplZzlg4/nmoTmoIfnrb7mjIflkJHkuIDkuKrntKLlvJXvvIzlho3mjInlubPlj7DmjJHmuIXljZXjgIJBUk0g6KGl5LiB5oqKIHRlbXBsYXRlLW1hbmFnZXIg5ouJ5Y+W55qE5bmz5Y+w5Zu65a6a5Li6IGxpbnV4L2FybTY077yM5ouJ5YiwIHg4NiDplZzlg4/kvJrnm7TmjqXmiqXlubPlj7DkuI3ljLnphY3jgII8L3RleHQ+PC9zdmc+"><figcaption><b>图 8-2</b>镜像在仓库里怎么存</figcaption></figure>
+
+<p>同一个名字可以对应多个平台的镜像。ARM 补丁把 template-manager 拉镜像时的平台<strong>固定为 <code>linux/arm64</code></strong>，拉下来还会检查一遍。往 Harbor 推了一个 x86 镜像，用它建模板会直接报平台不匹配。</p>
+<p><strong>Harbor</strong> 在标准仓库服务外面加了项目、用户权限和网页界面，自己由一组容器组成（核心服务、仓库服务、自带的数据库和 Redis、入口 nginx 等）。它自带的数据库和 Redis 只给 Harbor 自己用，和下面讲的 E2B 的 PostgreSQL、Redis 毫无关系。</p>
+<h3 id="d08-22-这套环境里-harbor-存了两类镜像">2.2 这套环境里 Harbor 存了两类镜像</h3>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>镜像</th>
+<th>谁推进去</th>
+<th>谁拉</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>模板原料 <code>e2b-orchestration/ubuntu:22.04-custom</code></td>
+<td><code>build.sh -s</code> 的 <code>push_base_image</code>：<code>docker load</code> RPM 里带的 <code>ubuntu-22.04-custom.tar.gz</code> 再推送</td>
+<td>建模板时 template-manager</td>
+</tr>
+<tr>
+<td>服务镜像 <code>api</code>、<code>client-proxy</code>、<code>db-migrator</code>、<code>redis:7.4.4-alpine</code></td>
+<td><code>deploy.sh</code>：在 <code>/opt/e2b-infra/bin</code> 下按各 Dockerfile 构建，再 <code>docker push</code> 到 <code>&lt;本机IP&gt;:2900/e2b-orchestration/</code></td>
+<td>Nomad 启动 api、edge、redis 这几个 job 时</td>
+</tr>
+</tbody>
+</table></div>
+<p>第二类很容易被忽略：<strong>Harbor 不只是建模板用的</strong>。如果 Harbor 没起来，Nomad 重新调度 api、edge、redis 这几个 job 时就拉不到镜像。</p>
+<h3 id="d08-23-怎么装">2.3 怎么装</h3>
+<p>安装分散在 <code>build.sh -i</code> 和 <code>-s</code> 两步：</p>
+<ul>
+<li><strong><code>-i</code></strong>：解压社区构建的 aarch64 离线包 <code>harbor-offline-installer-aarch64-v2.13.0.tgz</code>（官方没有 aarch64 离线包），改 <code>harbor.yml</code>：关掉 https、主机名改成本机 IP、HTTP 端口改成 2900。数据目录用默认的 <code>/data</code>。再装一个 nginx，<code>server_name harbor</code>、<code>listen 443 ssl</code>，反代到 <code>127.0.0.1:2900</code>；生成自签证书，装进系统信任库和 <code>/etc/docker/certs.d/harbor:443/</code>。</li>
+<li><strong><code>-s</code></strong>：执行 Harbor 的 <code>install.sh</code> 拉起容器，修正配置目录属主（容器里的进程以 UID 10000 运行），<code>docker login</code>，用 REST API 建一个<strong>公开</strong>项目 <code>e2b-orchestration</code>（拉取不用登录），往 <code>/etc/hosts</code> 写 <code>&lt;本机IP&gt; harbor</code> 并重启 dnsmasq，最后推基础镜像。</li>
+</ul>
+<h3 id="d08-24-同一个仓库两个门">2.4 同一个仓库，两个门</h3>
+<p>推送和拉取用的不是同一个地址：</p>
+<figure class="paper"><img loading="lazy" alt="推送和拉取的两个地址" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9Ijc3NiIgdmlld0JveD0iMCAwIDE2MDAgNzc2IiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PG1hcmtlciBpZD0ibTU3NjA2QSIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTTEgMS4yTDguNiA1TDEgOC44IiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L21hcmtlcj48bWFya2VyIGlkPSJtNUI5QkU2IiB2aWV3Qm94PSIwIDAgMTAgMTAiIHJlZlg9IjgiIHJlZlk9IjUiIG1hcmtlcldpZHRoPSI3IiBtYXJrZXJIZWlnaHQ9IjciIG9yaWVudD0iYXV0by1zdGFydC1yZXZlcnNlIj48cGF0aCBkPSJNMSAxLjJMOC42IDVMMSA4LjgiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIvPjwvbWFya2VyPjwvZGVmcz48cmVjdCB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI3NzYiIGZpbGw9IiNGRkZGRkYiLz48dGV4dCB4PSI0OC4wIiB5PSI1OC4wIiBmb250LXNpemU9IjI4IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWQjOS4gOS4qiBIYXJib3LvvIzkuKTkuKrpl6jvvJrmjqjpgIHotbAgJmx0O+acrOacuklQJmd0OzoyOTAw77yM5ouJ5Y+W6LWwIGhhcmJvcjo0NDM8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjkyLjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+ZG9ja2VyIGRhZW1vbiDmjqjplZzlg4/ml7blpoLmnpzphY3kuobku6PnkIbvvIzkuI3orqTor4blj6rlhpnlnKggL2V0Yy9ob3N0cyDph4znmoQgaGFyYm9y77yM5Lya6KKr6L2s57uZ5Luj55CG6ICMIDUwNO+8jOaJgOS7peaOqOmAgeeUqCBJUCDlkowgSFRUUOOAgnRlbXBsYXRlLW1hbmFnZXIg55SoIEdvIOW6k+ebtOaOpeaLie+8jOimgeaxgiBIVFRQUyDkuJTor4HkuablkI3lr7nlvpfkuIrvvIzmiYDku6Xmi4nlj5bnlKg8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjExNi4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmhhcmJvcjo0NDPjgII8L3RleHQ+CjxyZWN0IHg9IjExODAuMCIgeT0iMTgwLjAiIHdpZHRoPSIzNzIuMCIgaGVpZ2h0PSIzNTAuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzNjYuMCIgeT0iMzI3LjciIGZvbnQtc2l6ZT0iMTciIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkhhcmJvcjwvdGV4dD4KPHRleHQgeD0iMTM2Ni4wIiB5PSIzNTEuNiIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUCAyOTAwPC90ZXh0Pgo8dGV4dCB4PSIxMzY2LjAiIHk9IjM3MS4xIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7pobnnm64gZTJiLW9yY2hlc3RyYXRpb27vvIjlhazlvIDvvIk8L3RleHQ+Cjx0ZXh0IHg9IjEzNjYuMCIgeT0iMzkwLjYiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaVsOaNruebruW9lSAvZGF0YTwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTgwLjAiIHdpZHRoPSIzODAuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjM4LjAiIHk9IjIwOC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5idWlsZC5zaCAtc++8mnB1c2hfYmFzZV9pbWFnZTwvdGV4dD4KPHRleHQgeD0iMjM4LjAiIHk9IjIzMC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5kb2NrZXIgbG9hZCBkZXAvdWJ1bnR1LTIyLjA0LWN1c3RvbS50YXIuZ3o8L3RleHQ+Cjx0ZXh0IHg9IjIzOC4wIiB5PSIyNDguNiIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZG9ja2VyIHB1c2ggJmx0O0lQJmd0OzoyOTAwL+KApjwvdGV4dD4KPHBhdGggZD0iTTQzNC4wIDIyNS4wIEwxMTc0LjAgMjI1LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8dGV4dCB4PSI4MDQuMCIgeT0iMjE1LjAiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUCAmbHQ75pys5py6SVAmZ3Q7OjI5MDDvvIhkYWVtb24uanNvbiDnmoQgaW5zZWN1cmUtcmVnaXN0cmllc++8iTwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iNDQwLjAiIHdpZHRoPSIzODAuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjM4LjAiIHk9IjQ2OC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj50ZW1wbGF0ZS1tYW5hZ2VyIOW7uuaooeadvzwvdGV4dD4KPHRleHQgeD0iMjM4LjAiIHk9IjQ5MC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5GUk9NIGhhcmJvcjo0NDMvZTJiLW9yY2hlc3RyYXRpb24v4oCmPC90ZXh0Pgo8dGV4dCB4PSIyMzguMCIgeT0iNTA4LjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkdvIOW6kyByZW1vdGUuSW1hZ2XvvIzkuI3nu4/ov4cgZG9ja2VyPC90ZXh0Pgo8cmVjdCB4PSI2NDAuMCIgeT0iNDQwLjAiIHdpZHRoPSIzMDAuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNzkwLjAiIHk9IjQ2OC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5uZ2lueCAgc2VydmVyX25hbWUgaGFyYm9yPC90ZXh0Pgo8dGV4dCB4PSI3OTAuMCIgeT0iNDkwLjYiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmxpc3RlbiA0NDMgc3NsIOKGkiAxMjcuMC4wLjE6MjkwMDwvdGV4dD4KPHRleHQgeD0iNzkwLjAiIHk9IjUwOC42IiBmb250LXNpemU9IjEyIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7oh6rnrb7or4HkuabvvIxDTj1oYXJib3I8L3RleHQ+CjxwYXRoIGQ9Ik00MzQuMCA0ODUuMCBMNjM0LjAgNDg1LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjciIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtNUI5QkU2KSIvPgo8dGV4dCB4PSI1MzQuMCIgeT0iNDc1LjAiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzVCOUJFNiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUFM8L3RleHQ+CjxwYXRoIGQ9Ik05NDYuMCA0ODUuMCBMMTE3NC4wIDQ4NS4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS43IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTU3NjA2QSkiLz4KPHRleHQgeD0iMTA2MC4wIiB5PSI0NzUuMCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5IVFRQIDEyNy4wLjAuMToyOTAwPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSI1ODAuMCIgd2lkdGg9Ijc0MC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI0MTguMCIgeT0iNjEwLjYiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWQjeWtlyBoYXJib3Ig5oCO5LmI6Kej5p6QPC90ZXh0Pgo8dGV4dCB4PSI0MTguMCIgeT0iNjMzLjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L2V0Yy9yZXNvbHYuY29uZiDihpIgMTI3LjAuMC4xIGRuc21hc3Eg4oaSIC9ldGMvaG9zdHMg6YeM55qEICZsdDvmnKzmnLpJUCZndDsgaGFyYm9yPC90ZXh0Pgo8dGV4dCB4PSI0MTguMCIgeT0iNjUyLjYiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+77yILXMg5YaZ5YWl5ZCO6KaB6YeN5ZCvIGRuc21hc3HvvIk8L3RleHQ+CjxyZWN0IHg9IjgxMi4wIiB5PSI1ODAuMCIgd2lkdGg9Ijc0MC4wIiBoZWlnaHQ9Ijk2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMTgyLjAiIHk9IjYxMC42IiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7or4HkuabmgI7kuYjooqvkv6Hku7s8L3RleHQ+Cjx0ZXh0IHg9IjExODIuMCIgeT0iNjMzLjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+57O757uf5L+h5Lu75bqTIC9ldGMvcGtpL2NhLXRydXN0L+KApi9oYXJib3ItY2EuY3J0PC90ZXh0Pgo8dGV4dCB4PSIxMTgyLjAiIHk9IjY1Mi42IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmhjbCDph4wgU1NMX0NFUlRfRklMRT0vZXRjL2RvY2tlci9jZXJ0cy5kL2hhcmJvcjo0NDMvY2EuY3J0PC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjcxMC4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNzEwLjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iNzM2LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+5rOo77ya5Lik5Liq6Zeo6IOM5ZCO5piv5ZCM5LiA5Liq5LuT5bqT44CCZG9ja2VyIGRhZW1vbiDnmoTku6PnkIbjgIFpbnNlY3VyZS1yZWdpc3RyaWVzIOiuvue9ruWvuSB0ZW1wbGF0ZS1tYW5hZ2VyIOS4jei1t+S9nOeUqOOAgjwvdGV4dD48L3N2Zz4="><figcaption><b>图 8-3</b>推送和拉取的两个地址</figcaption></figure>
+
+<ul>
+<li><strong>推送走 <code>&lt;本机IP&gt;:2900</code>（HTTP）</strong>：docker daemon 要用 http 必须把地址加进 <code>daemon.json</code> 的 <code>insecure-registries</code>。不用 <code>harbor:443</code> 推，是因为 docker daemon 配了代理时，它的 <code>NO_PROXY</code> 一般不认识只写在本机 <code>/etc/hosts</code> 里的 <code>harbor</code>，请求被转给代理，返回 504。</li>
+<li><strong>拉取走 <code>harbor:443</code>（HTTPS）</strong>：template-manager 不经过 docker daemon，而是用 Go 的 go-containerregistry 库直接按 registry 协议拉，要求 HTTPS 且证书名对得上。名字 <code>harbor</code> 靠 dnsmasq 读 <code>/etc/hosts</code> 解析，证书靠系统信任库和 <code>dep/template-manager.hcl</code> 里的 <code>SSL_CERT_FILE</code>。</li>
+</ul>
+<p>所以 docker daemon 的代理、<code>insecure-registries</code> 设置，对 template-manager 都不起作用。</p>
+<h3 id="d08-25-artifacts_registry_providerlocal">2.5 <code>ARTIFACTS_REGISTRY_PROVIDER=Local</code></h3>
+<p><code>.env</code> 里还有这一行。它对应 E2B 的另一种取镜像方式：按“模板 ID:buildID”去本机 docker daemon 里找镜像，给官方云部署那种“先在别处把 Dockerfile 构建成镜像”的流程用。这套环境建模板走的是 <code>FROM</code> 指定镜像那条路，不走这里。</p>
+<hr />
+<h2 id="d08-三postgresql模板和-build-的账本">三、PostgreSQL：模板和 build 的账本</h2>
+<h3 id="d08-31-怎么装数据在哪">3.1 怎么装、数据在哪</h3>
+<p><code>build.sh -i</code> 的 <code>install_postgre</code> 是一条 <code>docker run</code>：</p>
+<pre><code class="language-bash">docker run -d --name postgres \
+    -e POSTGRES_USER=postgres -e POSTGRES_PASSWORD=local -e POSTGRES_DB=mydatabase \
+    -p 5432:5432 --restart=always \
+    --health-cmd=&quot;pg_isready -U postgres&quot; \
+    postgres:latest
+</code></pre>
+<p>api 用 <code>.env</code> 里的连接串访问它：</p>
+<pre><code class="language-bash">POSTGRES_CONNECTION_STRING=&quot;postgresql://postgres:local@localhost:5432/mydatabase?sslmode=disable&quot;
+</code></pre>
+<p>注意命令里<strong>没有 <code>-v</code></strong>，没有把数据目录映射到宿主机。PostgreSQL 官方镜像声明了一个数据卷，docker 会自动建一个<strong>匿名卷</strong>放数据，在 <code>/var/lib/docker/volumes/&lt;一串哈希&gt;/_data</code> 下。这带来一个容易踩的坑，第五节讲。</p>
+<h3 id="d08-32-表是谁建的初始数据是谁写的">3.2 表是谁建的、初始数据是谁写的</h3>
+<ul>
+<li><strong>建表</strong>：api 这个 Nomad job 里有一个 <code>db-migrator</code> 任务，作为启动前的钩子（prestart）先跑完。它是一个基于 goose 的小程序，按顺序执行 <code>packages/db/migrations/</code> 下的迁移脚本（这一版有 85 个），把表结构升到最新。RPM 也把这些脚本装到了 <code>/opt/e2b-infra/bin/migrations</code>。</li>
+<li><strong>初始数据</strong>：<code>deploy.sh</code> 最后查一下有没有名叫 <code>E2B</code> 的 team，没有就运行 <code>seed-db</code>，建一个 team、一个用户、访问令牌和 API key，并把它们写进 <code>/root/.e2b/config.json</code> 给 SDK 用。</li>
+<li><strong>放开配额</strong>：<code>deploy.sh</code> 还会执行一条 SQL，把 <code>base_v1</code> 这一档的并发沙箱数和最长存活时间都改成 10000。</li>
+</ul>
+<h3 id="d08-33-和存储有关的几张表">3.3 和存储有关的几张表</h3>
+<p>数据库里有十几张表，和本书相关的是这几张：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>表</th>
+<th>一行代表什么</th>
+<th>关键列</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>envs</code></td>
+<td>一个模板（快照在这里也算一种模板）</td>
+<td><code>id</code>：模板 ID</td>
+</tr>
+<tr>
+<td><code>env_aliases</code></td>
+<td>模板的别名，比如 <code>base</code></td>
+<td><code>alias</code> → <code>env_id</code></td>
+</tr>
+<tr>
+<td><code>env_builds</code></td>
+<td>一个 build</td>
+<td><code>id</code> <strong>就是 buildID</strong>；<code>status</code>；<code>vcpu</code>、<code>ram_mb</code>、磁盘大小；<code>kernel_version</code>、<code>firecracker_version</code>、<code>envd_version</code></td>
+</tr>
+<tr>
+<td><code>env_build_assignments</code></td>
+<td>模板的某个标签指向哪个 build</td>
+<td>模板 ID、<code>tag</code>（如 <code>default</code>）、buildID</td>
+</tr>
+<tr>
+<td><code>snapshots</code></td>
+<td>一个暂停中的沙箱</td>
+<td><code>sandbox_id</code>、对应的快照模板 ID、<code>base_env_id</code>（最初的模板）</td>
+</tr>
+<tr>
+<td><code>teams</code>、<code>tiers</code>、<code>team_api_keys</code>…</td>
+<td>团队、配额档位、密钥</td>
+<td>第 3.2 节说的初始数据</td>
+</tr>
+</tbody>
+</table></div>
+<p>从一个名字找到文件，走的是这样一条链：</p>
+<figure class="paper"><img loading="lazy" alt="数据库里的记录怎么指到文件" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjYzOCIgdmlld0JveD0iMCAwIDE2MDAgNjM4IiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PG1hcmtlciBpZD0ibUQ2NjAzRCIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSI4IiByZWZZPSI1IiBtYXJrZXJXaWR0aD0iNyIgbWFya2VySGVpZ2h0PSI3IiBvcmllbnQ9ImF1dG8tc3RhcnQtcmV2ZXJzZSI+PHBhdGggZD0iTTEgMS4yTDguNiA1TDEgOC44IiBmaWxsPSJub25lIiBzdHJva2U9IiNENjYwM0QiIHN0cm9rZS13aWR0aD0iMS44IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiLz48L21hcmtlcj48L2RlZnM+PHJlY3Qgd2lkdGg9IjE2MDAiIGhlaWdodD0iNjM4IiBmaWxsPSIjRkZGRkZGIi8+PHRleHQgeD0iNDguMCIgeT0iNTguMCIgZm9udC1zaXplPSIyOCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ku47kuIDkuKrlkI3lrZfmib7liLDmlofku7bvvJrmlbDmja7lupPph4znmoTorrDlvZXmgI7kuYjmjIfliLAgL3RtcC90ZW1wbGF0ZXM8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjkyLjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+5Yir5ZCNIOKGkiDmqKHmnb8g4oaSIOagh+etvuaMh+a0viDihpIgYnVpbGTjgIJlbnZfYnVpbGRzIOeahOS4u+mUruWwseaYryBidWlsZElE77yM5Lmf5bCx5pivIC90bXAvdGVtcGxhdGVzIOS4i+eahOebruW9leWQjeOAguaaguWBnOS4gOS4quaymeeuseaXtu+8jGFwaSDlnKjkuIDkuKrkuovliqHph4zlvoDlm5vlvKDooajlkITlhpnkuIDooYzjgII8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjE1Ni4wIiB3aWR0aD0iMjYzLjUiIGhlaWdodD0iMTEwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZERjBEOSIgc3Ryb2tlPSIjRDk5MjJCIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNzkuOCIgeT0iMTkzLjUiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM4QTUzMDAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmVudl9hbGlhc2VzPC90ZXh0Pgo8dGV4dCB4PSIxNzkuOCIgeT0iMjE2LjgiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YWxpYXMgPSBiYXNlPC90ZXh0Pgo8dGV4dCB4PSIxNzkuOCIgeT0iMjM1LjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZW52X2lkID0gOXgya+KApjwvdGV4dD4KPHBhdGggZD0iTTMxNy41IDIxMS4wIEwzNTUuNSAyMTEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9IjM2MS41IiB5PSIxNTYuMCIgd2lkdGg9IjI2My41IiBoZWlnaHQ9IjExMC4wIiByeD0iMTAiIGZpbGw9IiNGREYwRDkiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNDkzLjIiIHk9IjIwMi45IiBmb250LXNpemU9IjE1IiBmaWxsPSIjOEE1MzAwIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5lbnZzPC90ZXh0Pgo8dGV4dCB4PSI0OTMuMiIgeT0iMjI2LjIiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+aWQgPSA5eDJr4oCm77yI5qih5p2/IElE77yJPC90ZXh0Pgo8cGF0aCBkPSJNNjMxLjAgMjExLjAgTDY2OS4wIDIxMS4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iNjc1LjAiIHk9IjE1Ni4wIiB3aWR0aD0iMjYzLjUiIGhlaWdodD0iMTEwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZERjBEOSIgc3Ryb2tlPSIjRDk5MjJCIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI4MDYuOCIgeT0iMTkzLjUiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiM4QTUzMDAiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmVudl9idWlsZF9hc3NpZ25tZW50czwvdGV4dD4KPHRleHQgeD0iODA2LjgiIHk9IjIxNi44IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmVudl9pZCA9IDl4MmvigKYgIHRhZyA9IGRlZmF1bHQ8L3RleHQ+Cjx0ZXh0IHg9IjgwNi44IiB5PSIyMzUuNSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5idWlsZF9pZCA9IDdjMWU5YjUyLeKApjwvdGV4dD4KPHBhdGggZD0iTTk0NC41IDIxMS4wIEw5ODIuNSAyMTEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9Ijk4OC41IiB5PSIxNTYuMCIgd2lkdGg9IjI2My41IiBoZWlnaHQ9IjExMC4wIiByeD0iMTAiIGZpbGw9IiNGREYwRDkiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTEyMC4yIiB5PSIxODQuMiIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzhBNTMwMCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZW52X2J1aWxkczwvdGV4dD4KPHRleHQgeD0iMTEyMC4yIiB5PSIyMDcuNCIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5pZCA9IDdjMWU5YjUyLeKApu+8iD0gYnVpbGRJRO+8iTwvdGV4dD4KPHRleHQgeD0iMTEyMC4yIiB5PSIyMjYuMiIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5zdGF0dXPjgIF2Y3B144CBcmFtX21i44CBPC90ZXh0Pgo8dGV4dCB4PSIxMTIwLjIiIHk9IjI0NC45IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmtlcm5lbF92ZXJzaW9u4oCmPC90ZXh0Pgo8cmVjdCB4PSIxMzAyLjAiIHk9IjE1Ni4wIiB3aWR0aD0iMjUwLjAiIGhlaWdodD0iMTEwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNDI3LjAiIHk9IjIwMi42IiBmb250LXNpemU9IjE0IiBmaWxsPSIjOUEzMjE1IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj4vdG1wL3RlbXBsYXRlcy83YzFlOWI1Mi3igKYvPC90ZXh0Pgo8dGV4dCB4PSIxNDI3LjAiIHk9IjIyNS45IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWFreS4quaWh+S7tu+8iOesrCA3IOevh++8iTwvdGV4dD4KPHBhdGggZD0iTTEyNTguMCAyMTEuMCBMMTI5Ni4wIDIxMS4wIiBmaWxsPSJub25lIiBzdHJva2U9IiNENjYwM0QiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbUQ2NjAzRCkiLz4KPHRleHQgeD0iNDguMCIgeT0iMzI2LjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5pqC5YGc5rKZ566xIGk0Zm9r4oCmIOaXtu+8jGFwaSDlnKjkuIDkuKrkuovliqHph4zlhpnvvJo8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjM0Ni4wIiB3aWR0aD0iMzU4LjAiIGhlaWdodD0iODYuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjIyNy4wIiB5PSIzODAuOCIgZm9udC1zaXplPSIxNC41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5lbnZzPC90ZXh0Pgo8dGV4dCB4PSIyMjcuMCIgeT0iNDA0LjAiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+57uZ6L+Z5Liq5b+r54Wn5bu65LiA5Liq5qih5p2/PC90ZXh0Pgo8cmVjdCB4PSI0MzAuMCIgeT0iMzQ2LjAiIHdpZHRoPSIzNTguMCIgaGVpZ2h0PSI4Ni4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNjA5LjAiIHk9IjM3MS40IiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNuYXBzaG90czwvdGV4dD4KPHRleHQgeD0iNjA5LjAiIHk9IjM5NC42IiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPnNhbmRib3hfaWQgPSBpNGZva+KApiDihpIg5b+r54Wn5qih5p2/PC90ZXh0Pgo8dGV4dCB4PSI2MDkuMCIgeT0iNDEzLjQiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YmFzZV9lbnZfaWQgPSDmnIDliJ3nmoTmqKHmnb88L3RleHQ+CjxyZWN0IHg9IjgxMi4wIiB5PSIzNDYuMCIgd2lkdGg9IjM1OC4wIiBoZWlnaHQ9Ijg2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI5OTEuMCIgeT0iMzgwLjgiIGZvbnQtc2l6ZT0iMTQuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZW52X2J1aWxkczwvdGV4dD4KPHRleHQgeD0iOTkxLjAiIHk9IjQwNC4wIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaWsCBidWlsZO+8jOW+l+WIsOaWsCBidWlsZElEPC90ZXh0Pgo8cmVjdCB4PSIxMTk0LjAiIHk9IjM0Ni4wIiB3aWR0aD0iMzU4LjAiIGhlaWdodD0iODYuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEzNzMuMCIgeT0iMzgwLjgiIGZvbnQtc2l6ZT0iMTQuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZW52X2J1aWxkX2Fzc2lnbm1lbnRzPC90ZXh0Pgo8dGV4dCB4PSIxMzczLjAiIHk9IjQwNC4wIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuW/q+eFp+aooeadv+eahOagh+etvuaMh+WQkeaWsCBidWlsZDwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iNDY2LjAiIHdpZHRoPSIxNTA0LjAiIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkNFREU4IiBzdHJva2U9IiNENjYwM0QiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSI0OTIuOSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzlBMzIxNSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5Yig5qih5p2/44CB5Yig5b+r54Wn77ya5Y+q5Yig6L+Z5Lqb6KGM77yI5YigIGVudnMg5Lya57qn6IGU5Yig5o6J5Yir5ZCN44CB5qCH562+5oyH5rS+562J77yJ77yM5LiN5YigIC90bXAvdGVtcGxhdGVzIOmHjOeahOaWh+S7tjwvdGV4dD4KPHRleHQgeD0iODAwLjAiIHk9IjUxNi4yIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPumHjei3kSBidWlsZC5zaCAtaSDliJnnm7jlj43vvJpQb3N0Z3JlU1FMIOWuueWZqOiiq+mHjeW7uu+8jOaNouS6huaWsOeahOWMv+WQjeWNt++8jOiusOW9leWFqOayoeS6hu+8jOaWh+S7tui/mOWcqDwvdGV4dD4KPGxpbmUgeDE9IjQ4LjAiIHkxPSI1NzIuMCIgeDI9IjE1NTIuMCIgeTI9IjU3Mi4wIiBzdHJva2U9IiNEOERFRTQiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjU5OC4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjOEM5NTlGIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuazqO+8mlNESyDov5Tlm57nmoQgbDF4anN2ZjFkOGgzdW1yOGQxMXk6ZGVmYXVsdCDmmK/igJzmqKHmnb8gSUQ65qCH562+4oCd77yM6KaB57uP6L+HIGVudl9idWlsZF9hc3NpZ25tZW50cyDmiY3og73mn6XliLAgYnVpbGRJROOAgjwvdGV4dD48L3N2Zz4="><figcaption><b>图 8-4</b>数据库里的记录怎么指到文件</figcaption></figure>
+
+<p>暂停一个沙箱时（第 14 篇），api 在一个事务里写四张表：<code>envs</code> 里给这个快照建一个模板，<code>snapshots</code> 里记下“这个沙箱 ID 对应这个快照模板”，<code>env_builds</code> 里插一条新 build 得到新的 buildID，<code>env_build_assignments</code> 里让快照模板的标签指向它。恢复时反过来查，拿到 buildID 交给 orchestrator。</p>
+<p>第 7 篇说过的那个误会也在这里解开：SDK 返回的 <code>l1xjsvf1d8h3umr8d11y:default</code> 是“模板 ID:标签”，要经过 <code>env_build_assignments</code> 才能查到 buildID。</p>
+<h3 id="d08-34-删除只删这里">3.4 删除只删这里</h3>
+<p>用户通过 API 删模板、删快照时，api 只删 PostgreSQL 里的这些行（删 <code>envs</code> 这一行，数据库会级联删掉它的别名、标签指派等关联行），<strong>不删 <code>/tmp/templates</code> 里的文件</strong>。理由是 build 是分层的 diff，可能还被别的 build 的 header 引用（第 14 篇第七节）。</p>
+<hr />
+<h2 id="d08-四redis运行中的沙箱在哪">四、Redis：运行中的沙箱在哪</h2>
+<h3 id="d08-41-怎么装">4.1 怎么装</h3>
+<p>Redis 是 Nomad 提交的四个 job 之一（<code>dep/deploy.sh</code> 的 <code>JOBS</code> 里排第一个）：</p>
+<pre><code class="language-hcl">job &quot;redis&quot; {
+  task &quot;start&quot; {
+    driver = &quot;docker&quot;
+    config {
+      network_mode = &quot;host&quot;
+      image        = &quot;&lt;本机IP&gt;:2900/e2b-orchestration/redis:7.4.4-alpine&quot;   # 从 Harbor 拉
+      args         = [&quot;redis-server&quot;, &quot;--port&quot;, &quot;6379&quot;]
+    }
+  }
+}
+</code></pre>
+<p>它在 Consul 里注册为 <code>redis</code> 服务，api 和 client-proxy 用 <code>redis.service.consul:6379</code> 访问它（DNS 见《E2B 沙箱网络从零讲透》第 17 篇）。</p>
+<p><strong>没有挂任何持久卷</strong>。Redis 的数据在这个容器里；Nomad 重新调度这个 job（重启、<code>build.sh -d</code> 后再 <code>-s</code>、宿主重启）时，新容器从空的开始。</p>
+<h3 id="d08-42-api-用它记沙箱状态">4.2 api 用它记沙箱状态</h3>
+<p><code>.env</code> 里有一行：</p>
+<pre><code class="language-bash">export SANDBOX_STORAGE_BACKEND=redis
+</code></pre>
+<p>它决定 api 把“正在运行的沙箱”记在哪：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>取值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>memory</code></td>
+<td>主存储在 api 进程内存里，同时写一份到 Redis</td>
+</tr>
+<tr>
+<td><code>redis</code>（本环境）</td>
+<td><strong>Redis 就是主存储</strong>，预留沙箱名额的记录也放在 Redis</td>
+</tr>
+</tbody>
+</table></div>
+<p>api 在 Redis 里用 <code>sandbox:storage:…</code> 开头的一组键记每个沙箱：属于哪个 team、什么时候过期、当前处于什么状态（运行、暂停中……），状态切换时还会写 <code>transition:…</code> 键，防止两个操作同时改同一个沙箱。</p>
+<h3 id="d08-43-client-proxy-用它找沙箱">4.3 client-proxy 用它找沙箱</h3>
+<p>SDK 访问 <code>49983-&lt;沙箱ID&gt;.e2b.app</code> 时，入口的 client-proxy 要知道这个沙箱在哪台机器的 orchestrator 上（网络书第 18 篇）。它查的就是 Redis 里的<strong>沙箱目录</strong>：</p>
+<pre><code>键：  sandbox:catalog:&lt;沙箱ID&gt;
+值：  {&quot;orchestrator_id&quot;: &quot;…&quot;, &quot;orchestrator_ip&quot;: &quot;…&quot;, &quot;execution_id&quot;: &quot;…&quot;,
+       &quot;sandbox_started_at&quot;: &quot;…&quot;, &quot;sandbox_max_length_in_hours&quot;: …}
+</code></pre>
+<p>client-proxy 在本地缓存查到的结果 500 毫秒，每次查 Redis 最多等 1 秒。单机部署里答案永远是本机，但这一步照样要走。</p>
+<h3 id="d08-44-orchestrator-不碰-redis">4.4 orchestrator 不碰 Redis</h3>
+<p><code>dep/template-manager.hcl</code> 里没有 <code>REDIS_URL</code>。orchestrator 自己在进程内存里知道本机跑着哪些沙箱，不依赖 Redis。所以 Redis 数据丢了，沙箱进程本身照样在跑，但 api 和 client-proxy 不再知道它们，SDK 也就找不到它们了。</p>
+<hr />
+<h2 id="d08-五记录和文件对不上的时候">五、记录和文件对不上的时候</h2>
+<p>三个组件和 <code>/tmp/templates</code> 里的文件，生命周期各不相同。下面这些事件发生时，它们会“对不上”：</p>
+<div class="tw"><table>
+<thead>
+<tr>
+<th>事件</th>
+<th>文件（<code>/tmp/templates</code>）</th>
+<th>PostgreSQL</th>
+<th>Redis</th>
+<th>表现</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>宿主重启</td>
+<td><strong>全丢</strong>（tmpfs）</td>
+<td>还在（容器 <code>--restart=always</code> 自动起来，数据卷还在）</td>
+<td>丢（容器重建）</td>
+<td>模板和别名还在数据库里，但文件没了：用它建沙箱报“对象不存在”；重建模板报别名已被占用，要先删掉旧记录</td>
+</tr>
+<tr>
+<td>重跑 <code>build.sh -i</code></td>
+<td>还在</td>
+<td><strong>清空</strong>：<code>install_postgre</code> 先 <code>docker rm</code> 旧容器再新建，新容器配一个新的匿名卷</td>
+<td>不受影响</td>
+<td>文件都在，但数据库不认识它们了：所有模板、快照记录消失，要重新 seed、重新建模板；旧文件成了没人引用的孤儿</td>
+</tr>
+<tr>
+<td>通过 API 删模板或快照</td>
+<td>还在</td>
+<td>删除相关行</td>
+<td>—</td>
+<td>设计如此，<code>/tmp/templates</code> 只增不减</td>
+</tr>
+<tr>
+<td>Redis job 重新调度</td>
+<td>—</td>
+<td>—</td>
+<td>清空</td>
+<td>正在运行的沙箱从 api 和 client-proxy 眼里消失，但进程还在跑</td>
+</tr>
+<tr>
+<td>Harbor 没起来</td>
+<td>—</td>
+<td>—</td>
+<td>—</td>
+<td>建模板拉不到原料；Nomad 重新调度 api、edge、redis 时拉不到服务镜像</td>
+</tr>
+</tbody>
+</table></div>
+<p>第二行值得特别留意：<code>build.sh -i</code> 不是“只装缺的东西”，它会<strong>重建</strong> PostgreSQL 容器。旧的匿名卷不会被删，还留在 <code>/var/lib/docker/volumes/</code> 下，但新容器不会用它。</p>
+<hr />
+<h2 id="d08-六看一眼">六、看一眼</h2>
+<pre><code class="language-bash"># Harbor：基础镜像在不在
+curl -s -u admin:Harbor12345 http://127.0.0.1:2900/v2/e2b-orchestration/ubuntu/tags/list
+#   {&quot;name&quot;:&quot;e2b-orchestration/ubuntu&quot;,&quot;tags&quot;:[&quot;22.04-custom&quot;]}
+
+# PostgreSQL：别名 base 现在指向哪个 build
+docker exec postgres psql -U postgres -d mydatabase -c &quot;
+  SELECT a.alias, b.tag, b.build_id
+  FROM env_aliases a JOIN env_build_assignments b ON b.env_id = a.env_id
+  WHERE a.alias = 'base';&quot;
+ls /tmp/templates/&lt;上面查到的 build_id&gt;/
+
+# PostgreSQL 的数据卷在哪
+docker inspect postgres --format '{{range .Mounts}}{{.Source}}{{end}}'
+
+# Redis：现在记着哪些沙箱
+redis-cli -h 127.0.0.1 -p 6379 --scan --pattern 'sandbox:catalog:*' | head
+</code></pre>
+<p>（<code>redis-cli</code> 宿主上不一定装了，可以用 <code>docker exec</code> 进 Redis 容器执行。）</p>
+<hr />
+<h2 id="d08-七常见问题">七、常见问题</h2>
 <div class="tw"><table>
 <thead>
 <tr>
@@ -2396,39 +2513,51 @@ verifyImagePlatform(img, linux/arm64)                        // 平台对不上�
 <tbody>
 <tr>
 <td>建模板报 <code>lookup harbor on 127.0.0.1:53: server misbehaving</code></td>
-<td><code>/etc/hosts</code> 里没有 <code>harbor</code>，或加了之后没重启 dnsmasq</td>
+<td><code>/etc/hosts</code> 没有 <code>harbor</code>，或加了之后没重启 dnsmasq</td>
 <td><code>getent hosts harbor</code></td>
 </tr>
 <tr>
 <td><code>docker push</code> 报 504</td>
-<td>推的地址用了 <code>harbor:443</code>，被 docker 的代理设置转走了</td>
+<td>推送地址用了 <code>harbor:443</code>，被 docker 的代理设置转走</td>
 <td>改用 <code>&lt;本机IP&gt;:2900</code></td>
 </tr>
 <tr>
-<td><code>build.sh -s</code> 装 Harbor 时报 <code>Unsupported config option for services</code></td>
-<td>系统里的 <code>docker-compose</code> 是 2018 年的 1.x 版本，看不懂 Harbor 2.13 的 compose 文件</td>
-<td>装 Docker Compose v2 插件</td>
+<td><code>-s</code> 装 Harbor 时报 <code>Unsupported config option for services</code></td>
+<td>系统里是老版 <code>docker-compose</code>，看不懂 Harbor 2.13 的 compose 文件</td>
+<td>装 Docker Compose v2</td>
 </tr>
 <tr>
 <td>建模板报平台不匹配</td>
 <td>Harbor 里那个标签是 x86 镜像</td>
-<td>推 arm64 的镜像</td>
+<td>推 arm64 镜像</td>
 </tr>
 <tr>
-<td>建模板报证书错误</td>
-<td>证书没装进系统信任库，或证书已重新生成但 template-manager 没重启</td>
-<td><code>/etc/pki/ca-trust/source/anchors/harbor-ca.crt</code></td>
+<td>api、edge 起不来，Nomad 报拉镜像失败</td>
+<td>Harbor 没启动或服务镜像没推进去</td>
+<td>Harbor 状态；<code>deploy.sh</code> 的构建推送日志</td>
 </tr>
 <tr>
-<td>Harbor 里查不到 <code>ubuntu:22.04-custom</code></td>
-<td><code>-s</code> 时推送失败（只告警不中断）</td>
-<td><code>curl -u admin:Harbor12345 http://127.0.0.1:2900/v2/e2b-orchestration/ubuntu/tags/list</code></td>
+<td>重启后建沙箱报“对象不存在”</td>
+<td>文件在 tmpfs 里丢了，数据库记录还在</td>
+<td><code>ls /tmp/templates</code>（第 10 篇）</td>
+</tr>
+<tr>
+<td>重建模板报别名已被占用</td>
+<td>数据库里还有旧模板</td>
+<td>先通过 API 删掉旧模板，或清理记录</td>
+</tr>
+<tr>
+<td>重跑 <code>-i</code> 后模板和快照全没了</td>
+<td>PostgreSQL 容器被重建，数据在旧的匿名卷里</td>
+<td><code>docker volume ls</code>；<code>/tmp/templates</code> 文件还在</td>
+</tr>
+<tr>
+<td>SDK 连不上一个明明还在跑的沙箱</td>
+<td>Redis 重启丢了沙箱目录</td>
+<td><code>sandbox:catalog:&lt;ID&gt;</code> 键在不在</td>
 </tr>
 </tbody>
 </table></div>
-<p>最后一条的正常输出是：</p>
-<pre><code class="language-json">{&quot;name&quot;:&quot;e2b-orchestration/ubuntu&quot;,&quot;tags&quot;:[&quot;22.04-custom&quot;]}
-</code></pre>
 <hr />
 <h2 id="d08-本篇小结">本篇小结</h2>
 <div class="tw"><table>
@@ -2440,54 +2569,54 @@ verifyImagePlatform(img, linux/arm64)                        // 平台对不上�
 </thead>
 <tbody>
 <tr>
-<td>镜像仓库</td>
-<td>按“名字:标签”收发镜像的 HTTP 服务</td>
-</tr>
-<tr>
-<td>清单、配置、层</td>
-<td>一个镜像的三部分，都按 sha256 命名</td>
-</tr>
-<tr>
-<td>摘要</td>
-<td>内容的 sha256，相同的层只存一份</td>
-</tr>
-<tr>
-<td>多平台索引</td>
-<td>一个标签对应多个平台；补丁把拉取平台固定为 <code>linux/arm64</code></td>
+<td>存数据的数据</td>
+<td>不存磁盘和内存数据本身，而是存“它们在哪、属于谁”的记录和原料</td>
 </tr>
 <tr>
 <td>Harbor</td>
-<td>在标准仓库外加了项目、权限、界面；数据在 <code>/data</code></td>
+<td>镜像仓库，数据在 <code>/data</code>；存模板原料和 api、client-proxy、db-migrator、redis 的服务镜像</td>
 </tr>
 <tr>
-<td>nginx 反代</td>
-<td><code>harbor:443</code>（HTTPS，自签证书）转给 Harbor 的 2900</td>
-</tr>
-<tr>
-<td>两个地址</td>
-<td>推送走 <code>&lt;本机IP&gt;:2900</code>，拉取走 <code>harbor:443</code></td>
-</tr>
-<tr>
-<td><code>e2b-orchestration</code></td>
-<td><code>-s</code> 用 API 建的公开项目，拉取不用登录</td>
-</tr>
-<tr>
-<td><code>push_base_image</code></td>
-<td><code>-s</code> 把 RPM 带的 <code>ubuntu:22.04-custom</code> 推进 Harbor</td>
+<td>两个门</td>
+<td>推送走 <code>&lt;本机IP&gt;:2900</code>（HTTP），拉取走 <code>harbor:443</code>（nginx HTTPS，自签证书）</td>
 </tr>
 <tr>
 <td>template-manager 拉镜像</td>
-<td>用 Go 库直接按 registry 协议拉，不经过 docker daemon</td>
+<td>用 Go 库直接拉，平台固定 <code>linux/arm64</code>，不经过 docker daemon</td>
 </tr>
 <tr>
-<td><code>ARTIFACTS_REGISTRY_PROVIDER=Local</code></td>
-<td>另一条按 buildID 取镜像的路，本环境建模板不走它</td>
+<td>PostgreSQL</td>
+<td><code>docker run</code> 起的容器，数据在匿名卷；db-migrator 建表，seed-db 写初始数据</td>
+</tr>
+<tr>
+<td><code>env_builds.id</code></td>
+<td>就是 buildID，对应 <code>/tmp/templates/&lt;buildID&gt;/</code></td>
+</tr>
+<tr>
+<td>名字到文件</td>
+<td>别名 → 模板 → 标签指派 → buildID → 目录</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td>Nomad job，没有持久卷；<code>SANDBOX_STORAGE_BACKEND=redis</code> 下是运行中沙箱的主存储</td>
+</tr>
+<tr>
+<td><code>sandbox:catalog:&lt;ID&gt;</code></td>
+<td>client-proxy 查沙箱在哪台 orchestrator 上</td>
+</tr>
+<tr>
+<td>orchestrator</td>
+<td>不直接读写 PostgreSQL 和 Redis，只认 buildID</td>
+</tr>
+<tr>
+<td>对不上</td>
+<td>重启丢文件和 Redis；重跑 <code>-i</code> 清空数据库；删除只删记录</td>
 </tr>
 </tbody>
 </table></div>
-<p><strong>下一篇预告</strong>：<a href="#d09">《从 Dockerfile 到 rootfs.ext4：模板构建流水线》</a>。镜像拿到了，下一篇看它怎么一步步变成虚拟机的根盘，又怎么变成一份能毫秒恢复的内存快照：解包、转 ext4、扩容、两次开机、逐步执行模板步骤、层缓存，最后打快照、上传。</p><nav class="pager" data-n="08"></nav></article><article id="v09" class="doc" hidden><h1 id="d09-从-dockerfile-到-rootfsext4模板构建流水线">从 Dockerfile 到 rootfs.ext4：模板构建流水线</h1>
+<p><strong>下一篇预告</strong>：<a href="#d09">《从 Dockerfile 到 rootfs.ext4：模板构建流水线》</a>。原料在 Harbor，账本在 PostgreSQL。下一篇看 template-manager 怎么把镜像一步步变成虚拟机的根盘和一份能毫秒恢复的内存快照：解包、转 ext4、扩容、两次开机、逐步执行模板步骤、层缓存，最后打快照、上传。</p><nav class="pager" data-n="08"></nav></article><article id="v09" class="doc" hidden><h1 id="d09-从-dockerfile-到-rootfsext4模板构建流水线">从 Dockerfile 到 rootfs.ext4：模板构建流水线</h1>
 <blockquote>
-<p><strong>本篇目标</strong>：上一篇拿到了 Docker 镜像。本篇看它怎么一步步变成第 7 篇说的那六个文件：镜像怎么变成一块 ext4 根盘，虚拟机为什么要开机两次，模板里的每一步命令怎么变成一层，层缓存为什么能让第二次构建快很多，最后的“预取映射”又是怎么录出来的。全程只盯着一件事：<strong>磁盘和内存数据是怎么产生、存到哪的</strong>。</p>
+<p><strong>本篇目标</strong>：上一篇讲了原料镜像存在 Harbor、构建记录存在 PostgreSQL。本篇看镜像怎么一步步变成第 7 篇说的那六个文件：镜像怎么变成一块 ext4 根盘，虚拟机为什么要开机两次，模板里的每一步命令怎么变成一层，层缓存为什么能让第二次构建快很多，最后的“预取映射”又是怎么录出来的。全程只盯着一件事：<strong>磁盘和内存数据是怎么产生、存到哪的</strong>。</p>
 </blockquote>
 <hr />
 <h2 id="d09-一入口一次构建请求">一、入口：一次构建请求</h2>
@@ -5412,16 +5541,19 @@ ls /dev/nbd* | wc -l                        # 512
 </ul>
 <hr />
 <h2 id="d18-四buildsh--i安装">四、<code>build.sh -i</code>：安装</h2>
-<p><code>-i</code> 依次执行：检查 <code>SERVER_IP</code> 是否是本机地址 → 装系统包 → PostgreSQL → <strong>MinIO</strong> → <strong>Harbor</strong> → <strong>nginx</strong> → <strong>e2b</strong>。和存储相关的：</p>
-<h3 id="d18-41-minio">4.1 MinIO</h3>
+<p><code>-i</code> 依次执行：检查 <code>SERVER_IP</code> 是否是本机地址 → 装系统包 → <strong>PostgreSQL</strong> → <strong>MinIO</strong> → <strong>Harbor</strong> → <strong>nginx</strong> → <strong>e2b</strong>。和存储相关的：</p>
+<h3 id="d18-41-postgresql注意它会被重建">4.1 PostgreSQL：注意它会被重建</h3>
+<p><code>install_postgre</code> 用 <code>docker run</code> 起一个 <code>postgres:latest</code> 容器（数据库 <code>mydatabase</code>，端口 5432，<code>--restart=always</code>），没有 <code>-v</code>，数据在 docker 自动建的匿名卷里。如果已经有名叫 <code>postgres</code> 的容器，它会先 <code>docker stop</code>、<code>docker rm</code> 再新建，新容器配一个新的匿名卷。</p>
+<p>所以<strong>重跑 <code>-i</code> 等于清空数据库</strong>：所有模板、别名、build、快照记录都没了，而 <code>/tmp/templates</code> 里的文件还在，成了没人引用的孤儿。旧数据其实还在旧的匿名卷里，没被删除。表结构由 api job 的 <code>db-migrator</code> 任务建，初始的 team 和密钥由 <code>deploy.sh</code> 调 <code>seed-db</code> 写入（第 8 篇）。</p>
+<h3 id="d18-42-minio">4.2 MinIO</h3>
 <pre><code>/usr/local/bin/minio                 二进制
 /etc/default/minio.yml               账号 minioadmin/minioadmin，数据目录 /root/data/minio
 /etc/systemd/system/minio.service    systemd 服务，开机自启
 </code></pre>
 <p>启动后反复探测 <code>http://127.0.0.1:9000/minio/health/ready</code>，等到返回 200。它装好了、跑着，但不存模板（第 10 篇）。</p>
-<h3 id="d18-42-harbor-和-nginx">4.2 Harbor 和 nginx</h3>
+<h3 id="d18-43-harbor-和-nginx">4.3 Harbor 和 nginx</h3>
 <p>解压 Harbor 离线包，改 <code>harbor.yml</code>（关 https、主机名改成本机 IP、端口改成 2900）；装 nginx 做 <code>harbor:443</code> 的 https 反代，生成自签证书并装进系统信任库和 docker 信任目录（第 8 篇）。此时 Harbor <strong>还没启动</strong>，要等 <code>-s</code>。</p>
-<h3 id="d18-43-e2b">4.3 e2b</h3>
+<h3 id="d18-44-e2b">4.4 e2b</h3>
 <ul>
 <li><code>pip install</code> 指定版本的 e2b SDK 和 code interpreter SDK；</li>
 <li>用 <code>dep/</code> 下的文件覆盖 <code>/opt/e2b-infra/</code> 下的 <code>.env</code>、<code>template-manager.hcl</code>、<code>start-client.sh</code>、<code>init-client.sh</code>、<code>deploy.sh</code> 等；</li>
@@ -5568,6 +5700,16 @@ cp bin/firecracker /fc-versions/v1.13.1/firecracker
 <td>大页静态池</td>
 <td>不动</td>
 <td><code>--purge-hugepages</code> 或重启</td>
+</tr>
+<tr>
+<td>PostgreSQL</td>
+<td>不动（容器不是 Nomad 管的，<code>-d</code> 不停它）</td>
+<td>重跑 <code>-i</code> 时被重建，记录清空（第 8 篇）</td>
+</tr>
+<tr>
+<td>Redis</td>
+<td><strong>清空</strong>：<code>-d</code> 结束 redis 进程，job 没有持久卷</td>
+<td>运行中沙箱的记录本来也随沙箱一起没了</td>
 </tr>
 <tr>
 <td>MinIO、Harbor 的数据</td>
@@ -5876,7 +6018,7 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 </tr>
 <tr>
 <td><code>-i</code></td>
-<td>装 MinIO、Harbor、nginx、SDK 和补丁</td>
+<td>重建 PostgreSQL（清空记录），装 MinIO、Harbor、nginx、SDK 和补丁</td>
 </tr>
 <tr>
 <td><code>-s</code></td>
@@ -6051,8 +6193,20 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 <tr>
 <td>Harbor（<code>/data</code>）</td>
 <td>硬盘</td>
-<td>镜像层</td>
+<td>原料镜像和服务镜像的层</td>
 <td>在 Harbor 里删镜像</td>
+</tr>
+<tr>
+<td>PostgreSQL（docker 匿名卷）</td>
+<td>硬盘</td>
+<td>模板、build、快照记录，很小</td>
+<td>重跑 <code>build.sh -i</code> 时换新卷（旧卷留着）</td>
+</tr>
+<tr>
+<td>Redis（容器内存）</td>
+<td>内存，很小</td>
+<td>运行中沙箱的记录</td>
+<td>Redis job 重新调度时清空</td>
 </tr>
 <tr>
 <td>MinIO（<code>/root/data/minio</code>）</td>
@@ -6196,6 +6350,24 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 <td><code>/tmp</code> 是 tmpfs</td>
 <td>重建模板；长期办法是把模板存储搬到硬盘</td>
 <td>10</td>
+</tr>
+<tr>
+<td>重启后重建模板报别名已被占用</td>
+<td>文件没了，PostgreSQL 里的旧记录还在</td>
+<td>先通过 API 删掉旧模板</td>
+<td>8</td>
+</tr>
+<tr>
+<td>重跑 <code>build.sh -i</code> 后模板、快照记录全没了</td>
+<td>PostgreSQL 容器被重建，换了新匿名卷</td>
+<td><code>docker volume ls</code>；文件还在 <code>/tmp/templates</code></td>
+<td>8、18</td>
+</tr>
+<tr>
+<td>SDK 连不上一个还在跑的沙箱</td>
+<td>Redis 重新调度，丢了 <code>sandbox:catalog</code></td>
+<td>Redis 里的键</td>
+<td>8</td>
 </tr>
 <tr>
 <td>一个十几天没用的模板突然恢复失败</td>
@@ -6402,7 +6574,7 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 </tr>
 <tr>
 <td>二、模板（7～10）</td>
-<td>六个文件、header、Harbor、构建流水线、存储后端</td>
+<td>六个文件、header、存数据的数据、构建流水线、存储后端</td>
 <td>一个模板是一串 build，header 把它们拍平成一张表</td>
 </tr>
 <tr>
@@ -6516,6 +6688,18 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 <td>镜像仓库</td>
 <td>registry / Harbor</td>
 <td>按名字:标签存取镜像</td>
+<td>8</td>
+</tr>
+<tr>
+<td>存数据的数据</td>
+<td>Harbor / PostgreSQL / Redis</td>
+<td>存原料镜像、模板与 build 记录、运行中沙箱位置的组件</td>
+<td>8</td>
+</tr>
+<tr>
+<td>沙箱目录</td>
+<td>sandbox catalog</td>
+<td>Redis 里 <code>sandbox:catalog:&lt;ID&gt;</code>，记沙箱在哪台 orchestrator</td>
 <td>8</td>
 </tr>
 <tr>
@@ -6753,8 +6937,7 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 <li>hugetlbfs：<code>/mnt/hugepages</code>。</li>
 <li>设备：<code>/dev/nbd0</code>～<code>/dev/nbd511</code>。</li>
 <li>运行环境文件：<code>/fc-kernels</code>、<code>/fc-versions</code>、<code>/fc-envd</code>。</li>
-<li>镜像仓库 Harbor：模板的“原料”Docker 镜像存在这里（第 8 篇）。</li>
-<li>存“数据的数据”的地方：PostgreSQL 存模板和 build 记录，Redis 存运行中沙箱的目录。这些在第 9 篇和第 18 篇简单提一下。</li>
+<li>存“数据的数据”的地方（第 8 篇）：Harbor 存原料镜像和服务镜像，PostgreSQL 存模板和 build 记录，Redis 存运行中沙箱的目录。</li>
 <li>装了但没用上的 MinIO（第 10 篇解释）。</li>
 </ul>
 </li>
@@ -6908,47 +7091,35 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 <li>新旧格式：为什么代码里还留着 <code>oldMemfileHugePageSize</code>、<code>oldRootfsBlockSize</code>。</li>
 <li>持久化存储里的键名与本地路径一一对应，见第 10 篇。</li>
 </ul>
-<h3 id="dp20-第-8-篇-模板的原料仓库harbor-与镜像的存放">第 8 篇　模板的原料仓库：Harbor 与镜像的存放</h3>
+<h3 id="dp20-第-8-篇-存数据的数据harborpostgresql-与-redis">第 8 篇　存数据的数据：Harbor、PostgreSQL 与 Redis</h3>
 <ul>
-<li>问题：模板的第一行是 <code>FROM harbor:443/e2b-orchestration/ubuntu:22.04-custom</code>。这个镜像存在哪，template-manager 又是怎么拿到它的？</li>
-<li>镜像仓库（registry）是什么：一个按“仓库名:标签”存取镜像的 HTTP 服务。用“仓库管理员按货号收发货”来类比。</li>
-<li>OCI 镜像在仓库里怎么存：<ul>
-<li>清单（manifest）：这个镜像由哪几层组成，平台是什么。</li>
-<li>配置（config）：环境变量、工作目录、启动命令。</li>
-<li>层（layer）：一个个 tar.gz，按内容的 sha256 命名，相同的层只存一份。</li>
-<li>多平台镜像的索引：为什么补丁把拉取平台固定为 <code>linux/arm64</code>，拉到 x86 镜像会直接报错。</li>
+<li>问题：光有六个文件不够。哪个模板现在用哪个 build？暂停中的沙箱对应哪个快照？运行中的沙箱在哪台机器上？原料镜像在哪？这些“关于数据的数据”存在三个组件里。</li>
+<li>一张总表：三个组件各存什么、怎么跑、数据在哪、谁读写。orchestrator 不直接读写 PostgreSQL 和 Redis，只认 api 交给它的 buildID。</li>
+<li>Harbor（镜像仓库）：<ul>
+<li>镜像在仓库里怎么存：清单、配置、层，都按 sha256 命名；标签是可变指针；多平台索引，补丁把拉取平台固定为 <code>linux/arm64</code>。</li>
+<li>这套环境里存两类镜像：模板原料 <code>ubuntu:22.04-custom</code>（<code>-s</code> 推入），以及 <code>deploy.sh</code> 构建推送的 api、client-proxy、db-migrator、redis 服务镜像。Harbor 不可用时，Nomad 重新调度这些 job 会拉不到镜像。</li>
+<li>安装：<code>-i</code> 解压社区 aarch64 离线包、改 <code>harbor.yml</code>、装 nginx 做 <code>harbor:443</code> 反代并配自签证书；<code>-s</code> 启动、建公开项目、写 <code>/etc/hosts</code>、推基础镜像。数据在 <code>/data</code>。</li>
+<li>两个门：推送走 <code>&lt;本机IP&gt;:2900</code>，拉取走 <code>harbor:443</code>；template-manager 用 Go 库直接拉，不经过 docker daemon。</li>
+<li><code>ARTIFACTS_REGISTRY_PROVIDER=Local</code> 是另一条取镜像的路，本环境不走。</li>
 </ul>
 </li>
-<li>Harbor 是什么：在 Docker 官方 registry 外面加了项目、用户、网页界面的“仓库管理系统”，自己由一组容器组成。</li>
-<li>这套环境怎么装 Harbor：<ul>
-<li><code>-i</code>：解压社区构建的 aarch64 离线包 <code>harbor-offline-installer-aarch64-v2.13.0.tgz</code>，改 <code>harbor.yml</code>：注释掉 https，<code>hostname</code> 改成本机 IP，HTTP 端口改成 2900。</li>
-<li><code>-i</code> 还装了 nginx：<code>server_name harbor</code>、<code>listen 443 ssl</code>，反代到 <code>127.0.0.1:2900</code>；生成自签证书，装进系统信任库和 <code>/etc/docker/certs.d/harbor:443/</code>。</li>
-<li><code>-s</code>：执行 Harbor 的 <code>install.sh</code> 拉起容器，修正配置目录属主（容器内 UID 10000），<code>docker login</code>，用 REST API 建公开项目 <code>e2b-orchestration</code>。</li>
-<li><code>-s</code>：<code>ensure_harbor_hostname</code> 往 <code>/etc/hosts</code> 写 <code>&lt;本机IP&gt; harbor</code> 并重启 dnsmasq。</li>
-<li><code>-s</code>：<code>push_base_image</code> 把 <code>dep/ubuntu-22.04-custom.tar.gz</code> 先 <code>docker load</code>，再推成 <code>e2b-orchestration/ubuntu:22.04-custom</code>；已有就跳过。</li>
+<li>PostgreSQL（模板和 build 的账本）：<ul>
+<li><code>-i</code> 用 <code>docker run</code> 起 <code>postgres:latest</code>，数据库 <code>mydatabase</code>，没有 <code>-v</code>，数据在匿名卷。</li>
+<li>表由 api job 的 <code>db-migrator</code>（goose）建；<code>deploy.sh</code> 调 <code>seed-db</code> 写初始 team 和密钥，并放开 <code>base_v1</code> 配额。</li>
+<li>和存储有关的表：<code>envs</code>、<code>env_aliases</code>、<code>env_builds</code>（主键即 buildID）、<code>env_build_assignments</code>、<code>snapshots</code>。从别名到 <code>/tmp/templates/&lt;buildID&gt;/</code> 的查找链；暂停时一个事务写四张表。</li>
+<li>删模板、删快照只删这些行，不删文件。</li>
 </ul>
 </li>
-<li>为什么有两个地址：<ul>
-<li>推送走 <code>&lt;本机IP&gt;:2900</code>（HTTP，<code>daemon.json</code> 的 <code>insecure-registries</code>），避开 docker daemon 代理设置对 <code>harbor</code> 这个名字的误转发。</li>
-<li>拉取走 <code>harbor:443</code>（HTTPS，nginx 反代）。</li>
-<li>两个地址背后是同一个仓库。</li>
+<li>Redis（运行中的沙箱在哪）：<ul>
+<li>Nomad 的 <code>redis</code> job，镜像从 Harbor 拉，<code>redis.service.consul:6379</code>，没有持久卷。</li>
+<li><code>SANDBOX_STORAGE_BACKEND=redis</code>：api 把运行中沙箱的状态、过期时间、状态切换锁记在 <code>sandbox:storage:…</code> 一组键里。</li>
+<li>client-proxy 查 <code>sandbox:catalog:&lt;沙箱ID&gt;</code> 决定请求转给哪台 orchestrator，本地缓存 500 毫秒。</li>
+<li>orchestrator 不用 Redis。</li>
 </ul>
 </li>
-<li>template-manager 怎么拉镜像：<ul>
-<li>不经过本机 docker daemon，而是用 Go 的 go-containerregistry 直接按 registry 协议拉（<code>GetPublicImage</code>）。</li>
-<li>名字 <code>harbor</code> 靠 dnsmasq 读 <code>/etc/hosts</code> 解析；证书靠系统信任库，以及 hcl 里的 <code>SSL_CERT_FILE</code>。</li>
-<li>拉下来的层在第 9 篇被解包、转成 ext4。</li>
-</ul>
-</li>
-<li><code>ARTIFACTS_REGISTRY_PROVIDER=Local</code>：另一条“从 build 记录取镜像”的路径，读的是本机 docker daemon 里的 <code>templateID:buildID</code>。本环境建模板走的是 <code>FROM</code> 指定的公开路径。</li>
-<li>镜像本身存在哪：Harbor 的数据目录（安装包默认 <code>/data</code>）。和模板文件、MinIO 是三处互不相干的存储。</li>
-<li>常见问题：<ul>
-<li><code>lookup harbor ... server misbehaving</code>：主机名没解析。</li>
-<li>推送 504：请求被转给了代理。</li>
-<li><code>docker-compose</code> 版本太老，解析不了 Harbor 2.13 的 compose 文件。</li>
-<li>拉取报平台不匹配。</li>
-</ul>
-</li>
+<li>记录和文件对不上的几种情况：宿主重启（文件和 Redis 丢、数据库在）、重跑 <code>-i</code>（数据库清空、文件在）、API 删除（记录删、文件在）、Redis 重新调度、Harbor 不可用。</li>
+<li>怎么看：查 Harbor 标签、用 SQL 从别名查到 buildID、看 PostgreSQL 数据卷、扫 Redis 的 <code>sandbox:catalog:*</code>。</li>
+<li>常见问题速查。</li>
 </ul>
 <h3 id="dp20-第-9-篇-从-dockerfile-到-rootfsext4模板构建流水线">第 9 篇　从 Dockerfile 到 rootfs.ext4：模板构建流水线</h3>
 <ul>
@@ -6957,7 +7128,7 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 <li>请求到 api，再到 template-manager。</li>
 </ul>
 </li>
-<li>镜像从哪来：本机 Harbor（第 8 篇）。</li>
+<li>镜像从哪来：本机 Harbor（第 8 篇）；build 记录在 PostgreSQL。</li>
 <li>九个步骤，围绕“磁盘文件怎么一步步变出来”讲：<ol>
 <li>拉镜像。</li>
 <li>注入文件：envd、busybox init、hostname、DNS 配置、<code>provision.sh</code>。</li>
@@ -7405,7 +7576,7 @@ cat /orchestrator/build/checkpoint-capabilities.json</code></pre>
 <span class="pct" id="lbpct"></span><button id="lbin" type="button" aria-label="放大" title="放大 (+)">+</button>
 <button id="lbfit" type="button" title="适合屏幕 (0)">适合</button><button id="lbclose" type="button" aria-label="关闭" title="关闭 (Esc)"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div></div>
 <script>
-const ORDER=["p0", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "p20"], T={"p0": "E2B 沙箱存储从零讲透", "01": "从“毫秒开一台虚拟机”说起：E2B 的存储要解决什么问题", "02": "存储基础（一）：字节、块、页与文件系统", "03": "存储基础（二）：块设备与 NBD", "04": "存储基础（三）：虚拟内存、mmap、缺页与 userfaultfd", "05": "写时复制与分层：只存改动的思想", "06": "虚拟机的“盘”和“内存条”：Firecracker 眼中的存储", "07": "模板长什么样：一个 buildID 目录里的六个文件", "08": "模板的原料仓库：Harbor 与镜像的存放", "09": "从 Dockerfile 到 rootfs.ext4：模板构建流水线", "10": "模板存到哪：存储后端、Local 与“装了没用”的 MinIO", "11": "节点本地缓存：/orchestrator 目录里都是什么", "12": "沙箱的硬盘：NBD 加写时复制", "13": "沙箱的内存：UFFD 按需供页与大页", "14": "暂停与恢复：一次增量快照是怎么做出来的", "15": "ARM 上的增量为什么“偏大”：脏页判据与实测", "16": "快照回滚（一）：检查点树与内存", "17": "快照回滚（二）：磁盘层、压实与配额", "18": "部署里的存储配置：RPM、build.sh -d、-i、-s", "19": "全景、容量规划与排障", "p20": "大纲"}, UI={"lang": "zh-CN", "toc": "目录", "open_toc": "打开目录", "search": "搜索全书", "in_doc": "本篇小节", "prev": "← 上一篇", "next": "下一篇 →", "found": "{d} 篇，共 {h} 处", "none": "没有找到", "other": "其他", "intro": "导读", "missing": "缺图", "fig": "图", "dark": "深色模式", "to_light": "切换到浅色模式", "to_dark": "切换到深色模式", "viewer": "查看大图", "zoom_in": "放大", "zoom_out": "缩小", "fit": "适合", "fit_t": "适合屏幕", "close": "关闭", "alert": {"note": "注意", "tip": "提示", "important": "重要", "warning": "警告", "caution": "小心"}};
+const ORDER=["p0", "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "p20"], T={"p0": "E2B 沙箱存储从零讲透", "01": "从“毫秒开一台虚拟机”说起：E2B 的存储要解决什么问题", "02": "存储基础（一）：字节、块、页与文件系统", "03": "存储基础（二）：块设备与 NBD", "04": "存储基础（三）：虚拟内存、mmap、缺页与 userfaultfd", "05": "写时复制与分层：只存改动的思想", "06": "虚拟机的“盘”和“内存条”：Firecracker 眼中的存储", "07": "模板长什么样：一个 buildID 目录里的六个文件", "08": "存数据的数据：Harbor、PostgreSQL 与 Redis", "09": "从 Dockerfile 到 rootfs.ext4：模板构建流水线", "10": "模板存到哪：存储后端、Local 与“装了没用”的 MinIO", "11": "节点本地缓存：/orchestrator 目录里都是什么", "12": "沙箱的硬盘：NBD 加写时复制", "13": "沙箱的内存：UFFD 按需供页与大页", "14": "暂停与恢复：一次增量快照是怎么做出来的", "15": "ARM 上的增量为什么“偏大”：脏页判据与实测", "16": "快照回滚（一）：检查点树与内存", "17": "快照回滚（二）：磁盘层、压实与配额", "18": "部署里的存储配置：RPM、build.sh -d、-i、-s", "19": "全景、容量规划与排障", "p20": "大纲"}, UI={"lang": "zh-CN", "toc": "目录", "open_toc": "打开目录", "search": "搜索全书", "in_doc": "本篇小节", "prev": "← 上一篇", "next": "下一篇 →", "found": "{d} 篇，共 {h} 处", "none": "没有找到", "other": "其他", "intro": "导读", "missing": "缺图", "fig": "图", "dark": "深色模式", "to_light": "切换到浅色模式", "to_dark": "切换到深色模式", "viewer": "查看大图", "zoom_in": "放大", "zoom_out": "缩小", "fit": "适合", "fit_t": "适合屏幕", "close": "关闭", "alert": {"note": "注意", "tip": "提示", "important": "重要", "warning": "警告", "caution": "小心"}};
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const side=$('#side'), toc=$('#toc'), q=$('#q'), bar=$('#bar');
 let cur=null, heads=[], jumpToHit=false, lastOn=-2;

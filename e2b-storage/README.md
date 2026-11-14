@@ -10,7 +10,7 @@
 
 之后顺着一个沙箱的存储一生往下讲：
 
-1. 模板：一个 buildID 目录里的六个文件和“拍平的映射表” header；模板的原料仓库 Harbor；从 Dockerfile 到 `rootfs.ext4` 的构建流水线；存储后端，以及为什么 `.env` 写了 MinIO、模板却落在 tmpfs 上的 `/tmp/templates`。
+1. 模板：一个 buildID 目录里的六个文件和“拍平的映射表” header；“存数据的数据”：原料镜像所在的 Harbor、记模板和 build 的 PostgreSQL、记运行中沙箱的 Redis；从 Dockerfile 到 `rootfs.ext4` 的构建流水线；存储后端，以及为什么 `.env` 写了 MinIO、模板却落在 tmpfs 上的 `/tmp/templates`。
 2. 一个沙箱的存储栈：`/orchestrator` 下的本地缓存与 4 MiB 分块拉取；NBD 加写时复制的根盘；UFFD 按需供页与大页预留。
 3. 快照：暂停与恢复怎么产生一个增量 build；ARM 上内存增量为什么偏大、写跟踪位图怎么补回来；补丁新增的检查点回滚，包括检查点树、内存还原、磁盘封存层、压实与配额。
 
@@ -34,7 +34,7 @@
 ### 第二部分　模板：沙箱的“出生证”
 
 - [第 7 篇　模板长什么样：一个 buildID 目录里的六个文件](07-template-six-files.md)
-- [第 8 篇　模板的原料仓库：Harbor 与镜像的存放](08-harbor-image-registry.md)
+- [第 8 篇　存数据的数据：Harbor、PostgreSQL 与 Redis](08-data-about-data.md)
 - [第 9 篇　从 Dockerfile 到 rootfs.ext4：模板构建流水线](09-template-build-pipeline.md)
 - [第 10 篇　模板存到哪：存储后端、Local 与“装了没用”的 MinIO](10-storage-backends.md)
 
@@ -75,7 +75,8 @@
 | orchestrator 和 template-manager 是同一个进程 | 1、18 |
 | `.env` 写的是 MinIO，实际生效的是 `Local`，模板在 `/tmp/templates` | 10 |
 | openEuler 的 `/tmp` 是 tmpfs：模板占内存、重启就丢、10 天不用会被清 | 10、19 |
-| 通过 API 删模板、删快照只删数据库记录，存储里的文件故意不删 | 14 |
+| 通过 API 删模板、删快照只删数据库记录，存储里的文件故意不删 | 8、14 |
+| 重跑 `build.sh -i` 会重建 PostgreSQL 容器，记录全部清空，而模板文件还在 | 8、18 |
 | 每个运行中的沙箱占一台 NBD 设备，自编译模块最多 512 台 | 3、12 |
 | 客户机内存走 2 MiB 大页，不算在 template-manager 的 32 GiB 上限里 | 13、18 |
 | 没有硬件脏页跟踪的 ARM 机器上，每次暂停的内存增量至少是一个工作集 | 15 |

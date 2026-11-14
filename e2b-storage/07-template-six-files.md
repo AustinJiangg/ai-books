@@ -271,4 +271,4 @@ E2B 的做法是：映射的 `BuildId` 可以是一个特殊值 **`uuid.Nil`**�
 | `uuid.Nil` | 全零的一段，不占存储，读时直接给零 |
 | metadata.json | 内核和 FC 版本、运行上下文、启动命令、预取映射 |
 
-**下一篇预告**：[《模板的原料仓库：Harbor 与镜像的存放》](08-harbor-image-registry.md)。知道了模板长什么样，接下来看它是怎么做出来的。做模板的第一步是拿到一个 Docker 镜像，比如 `harbor:443/e2b-orchestration/ubuntu:22.04-custom`。下一篇讲这个镜像存在哪、镜像在仓库里是怎么存的、这套环境的 Harbor 是怎么装起来的，以及 template-manager 是怎么从 Harbor 拿到镜像的。
+**下一篇预告**：[《存数据的数据：Harbor、PostgreSQL 与 Redis》](08-data-about-data.md)。六个文件只是数据本身。“哪个模板现在用哪个 build”“暂停中的沙箱对应哪个快照”“运行中的沙箱在哪台机器上”“做模板的原料镜像在哪”，这些关于数据的记录存在另外三个组件里。下一篇讲 Harbor、PostgreSQL、Redis 各存什么、怎么装、数据落在哪，以及它们和 `/tmp/templates` 里的文件对不上时会出什么问题。

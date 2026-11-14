@@ -77,9 +77,15 @@ ls /dev/nbd* | wc -l                        # 512
 
 ## 四、`build.sh -i`：安装
 
-`-i` 依次执行：检查 `SERVER_IP` 是否是本机地址 → 装系统包 → PostgreSQL → **MinIO** → **Harbor** → **nginx** → **e2b**。和存储相关的：
+`-i` 依次执行：检查 `SERVER_IP` 是否是本机地址 → 装系统包 → **PostgreSQL** → **MinIO** → **Harbor** → **nginx** → **e2b**。和存储相关的：
 
-### 4.1 MinIO
+### 4.1 PostgreSQL：注意它会被重建
+
+`install_postgre` 用 `docker run` 起一个 `postgres:latest` 容器（数据库 `mydatabase`，端口 5432，`--restart=always`），没有 `-v`，数据在 docker 自动建的匿名卷里。如果已经有名叫 `postgres` 的容器，它会先 `docker stop`、`docker rm` 再新建，新容器配一个新的匿名卷。
+
+所以**重跑 `-i` 等于清空数据库**：所有模板、别名、build、快照记录都没了，而 `/tmp/templates` 里的文件还在，成了没人引用的孤儿。旧数据其实还在旧的匿名卷里，没被删除。表结构由 api job 的 `db-migrator` 任务建，初始的 team 和密钥由 `deploy.sh` 调 `seed-db` 写入（第 8 篇）。
+
+### 4.2 MinIO
 
 ```
 /usr/local/bin/minio                 二进制
@@ -89,11 +95,11 @@ ls /dev/nbd* | wc -l                        # 512
 
 启动后反复探测 `http://127.0.0.1:9000/minio/health/ready`，等到返回 200。它装好了、跑着，但不存模板（第 10 篇）。
 
-### 4.2 Harbor 和 nginx
+### 4.3 Harbor 和 nginx
 
 解压 Harbor 离线包，改 `harbor.yml`（关 https、主机名改成本机 IP、端口改成 2900）；装 nginx 做 `harbor:443` 的 https 反代，生成自签证书并装进系统信任库和 docker 信任目录（第 8 篇）。此时 Harbor **还没启动**，要等 `-s`。
 
-### 4.3 e2b
+### 4.4 e2b
 
 - `pip install` 指定版本的 e2b SDK 和 code interpreter SDK；
 - 用 `dep/` 下的文件覆盖 `/opt/e2b-infra/` 下的 `.env`、`template-manager.hcl`、`start-client.sh`、`init-client.sh`、`deploy.sh` 等；
@@ -232,6 +238,8 @@ resources {
 | `/orchestrator/sandbox` | 不动 | 正常退出的沙箱会删自己的文件；被强杀的沙箱留下的 COW 文件，代码里没有启动时的清理，会一直留着 |
 | 检查点 | 随 orchestrator 进程作废 | 文件在 `/orchestrator/build/checkpoints/`，下次启动清空 |
 | 大页静态池 | 不动 | `--purge-hugepages` 或重启 |
+| PostgreSQL | 不动（容器不是 Nomad 管的，`-d` 不停它） | 重跑 `-i` 时被重建，记录清空（第 8 篇） |
+| Redis | **清空**：`-d` 结束 redis 进程，job 没有持久卷 | 运行中沙箱的记录本来也随沙箱一起没了 |
 | MinIO、Harbor 的数据 | 不动 | — |
 | `/dev/nbdN` | 进程被杀后内核会断开 | — |
 
@@ -337,7 +345,7 @@ resources {
 | RPM | 源码+补丁+内核+定制 FC+部署包，装到 `/opt/e2b-infra` |
 | `dep/` 覆盖 | `-i` 用部署包版本覆盖上游版本，实际生效的是 `dep/` |
 | nbd 前提 | 手工固化自编译模块，`nbds_max=512`；升级内核要重做 |
-| `-i` | 装 MinIO、Harbor、nginx、SDK 和补丁 |
+| `-i` | 重建 PostgreSQL（清空记录），装 MinIO、Harbor、nginx、SDK 和补丁 |
 | `-s` | 起 Harbor；建目录、交换文件、tmpfs、udev 规则、大页；放内核、FC、envd；提交四个 job |
 | 先删再拷 | 避开 `Text file busy` |
 | 32 GiB 上限 | 记 orchestrator 堆和页缓存，不记客户机大页 |

@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="734" viewBox="0 0 1600 734" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="734" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">存数据的数据：三个组件各记什么</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">它们都不存沙箱的磁盘和内存，而是存“原料在哪、模板现在用哪个 build、运行中的沙箱在哪台机器上”。orchestrator 不直接读写 PostgreSQL 和 Redis，只认 api 交给它的 buildID。</text>
+<rect x="48.0" y="156.0" width="481.3" height="70.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="288.7" y="183.5" font-size="18" fill="#3D3C38" font-weight="600" text-anchor="middle">Harbor</text>
+<text x="288.7" y="207.4" font-size="13" fill="#57606A" text-anchor="middle">镜像仓库</text>
+<rect x="62.0" y="246.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="288.7" y="269.8" font-size="12.5" fill="#57606A" text-anchor="middle">模板原料 ubuntu:22.04-custom</text>
+<rect x="62.0" y="296.0" width="453.3" height="52.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="288.7" y="316.4" font-size="12.5" fill="#57606A" text-anchor="middle">服务镜像 api、client-proxy、</text>
+<text x="288.7" y="335.1" font-size="12.5" fill="#57606A" text-anchor="middle">db-migrator、redis</text>
+<rect x="62.0" y="358.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="288.7" y="381.8" font-size="12.5" fill="#57606A" text-anchor="middle">docker compose 容器组，-s 启动</text>
+<rect x="62.0" y="408.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="288.7" y="431.8" font-size="12.5" fill="#57606A" text-anchor="middle">数据：宿主 /data</text>
+<rect x="559.3" y="156.0" width="481.3" height="70.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="800.0" y="183.5" font-size="18" fill="#8A5300" font-weight="600" text-anchor="middle">PostgreSQL</text>
+<text x="800.0" y="207.4" font-size="13" fill="#57606A" text-anchor="middle">模板和 build 的账本</text>
+<rect x="573.3" y="246.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="269.8" font-size="12.5" fill="#57606A" text-anchor="middle">团队、配额、密钥</text>
+<rect x="573.3" y="296.0" width="453.3" height="52.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="316.4" font-size="12.5" fill="#57606A" text-anchor="middle">模板、别名、build（id 即 buildID）、</text>
+<text x="800.0" y="335.1" font-size="12.5" fill="#57606A" text-anchor="middle">标签指派、快照</text>
+<rect x="573.3" y="358.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="381.8" font-size="12.5" fill="#57606A" text-anchor="middle">docker run 的容器，端口 5432</text>
+<rect x="573.3" y="408.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="431.8" font-size="12.5" fill="#57606A" text-anchor="middle">数据：容器的匿名卷，重跑 -i 会换新卷</text>
+<rect x="1070.7" y="156.0" width="481.3" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1311.3" y="183.5" font-size="18" fill="#9A3215" font-weight="600" text-anchor="middle">Redis</text>
+<text x="1311.3" y="207.4" font-size="13" fill="#57606A" text-anchor="middle">运行中的沙箱在哪</text>
+<rect x="1084.7" y="246.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1311.3" y="269.8" font-size="12.5" fill="#57606A" text-anchor="middle">sandbox:storage:…  沙箱状态与过期时间</text>
+<rect x="1084.7" y="296.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1311.3" y="319.8" font-size="12.5" fill="#57606A" text-anchor="middle">sandbox:catalog:&lt;ID&gt;  在哪台 orchestrator</text>
+<rect x="1084.7" y="346.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1311.3" y="369.8" font-size="12.5" fill="#57606A" text-anchor="middle">Nomad 的 redis job，端口 6379</text>
+<rect x="1084.7" y="396.0" width="453.3" height="40.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1311.3" y="419.8" font-size="12.5" fill="#57606A" text-anchor="middle">数据：容器内存，没有持久卷</text>
+<text x="48.0" y="540.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">谁在用它们</text>
+<rect x="48.0" y="556.0" width="358.0" height="76.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="227.0" y="585.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">template-manager</text>
+<text x="227.0" y="609.2" font-size="12.5" fill="#57606A" text-anchor="middle">建模板时从 Harbor 拉原料</text>
+<rect x="430.0" y="556.0" width="358.0" height="76.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="609.0" y="585.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">Nomad</text>
+<text x="609.0" y="609.2" font-size="12.5" fill="#57606A" text-anchor="middle">起 api、edge、redis 时从 Harbor 拉服务镜像</text>
+<rect x="812.0" y="556.0" width="358.0" height="76.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="991.0" y="585.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">api</text>
+<text x="991.0" y="609.2" font-size="12.5" fill="#57606A" text-anchor="middle">读写 PostgreSQL 和 Redis</text>
+<rect x="1194.0" y="556.0" width="358.0" height="76.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1373.0" y="585.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">client-proxy</text>
+<text x="1373.0" y="609.2" font-size="12.5" fill="#57606A" text-anchor="middle">查 Redis 的 sandbox:catalog 决定转给谁</text>
+<line x1="48.0" y1="668.0" x2="1552.0" y2="668.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="694.0" font-size="13" fill="#8C959F" text-anchor="start">注：Harbor 自带的数据库和 Redis 只给 Harbor 自己用，和这里的 PostgreSQL、Redis 无关。</text></svg>

@@ -64,8 +64,7 @@
   - hugetlbfs：`/mnt/hugepages`。
   - 设备：`/dev/nbd0`～`/dev/nbd511`。
   - 运行环境文件：`/fc-kernels`、`/fc-versions`、`/fc-envd`。
-  - 镜像仓库 Harbor：模板的“原料”Docker 镜像存在这里（第 8 篇）。
-  - 存“数据的数据”的地方：PostgreSQL 存模板和 build 记录，Redis 存运行中沙箱的目录。这些在第 9 篇和第 18 篇简单提一下。
+  - 存“数据的数据”的地方（第 8 篇）：Harbor 存原料镜像和服务镜像，PostgreSQL 存模板和 build 记录，Redis 存运行中沙箱的目录。
   - 装了但没用上的 MinIO（第 10 篇解释）。
 - 本书路线图：每一部分负责全景图上的哪一块。
 
@@ -178,44 +177,36 @@
 - 新旧格式：为什么代码里还留着 `oldMemfileHugePageSize`、`oldRootfsBlockSize`。
 - 持久化存储里的键名与本地路径一一对应，见第 10 篇。
 
-### 第 8 篇　模板的原料仓库：Harbor 与镜像的存放
+### 第 8 篇　存数据的数据：Harbor、PostgreSQL 与 Redis
 
-- 问题：模板的第一行是 `FROM harbor:443/e2b-orchestration/ubuntu:22.04-custom`。这个镜像存在哪，template-manager 又是怎么拿到它的？
-- 镜像仓库（registry）是什么：一个按“仓库名:标签”存取镜像的 HTTP 服务。用“仓库管理员按货号收发货”来类比。
-- OCI 镜像在仓库里怎么存：
-  - 清单（manifest）：这个镜像由哪几层组成，平台是什么。
-  - 配置（config）：环境变量、工作目录、启动命令。
-  - 层（layer）：一个个 tar.gz，按内容的 sha256 命名，相同的层只存一份。
-  - 多平台镜像的索引：为什么补丁把拉取平台固定为 `linux/arm64`，拉到 x86 镜像会直接报错。
-- Harbor 是什么：在 Docker 官方 registry 外面加了项目、用户、网页界面的“仓库管理系统”，自己由一组容器组成。
-- 这套环境怎么装 Harbor：
-  - `-i`：解压社区构建的 aarch64 离线包 `harbor-offline-installer-aarch64-v2.13.0.tgz`，改 `harbor.yml`：注释掉 https，`hostname` 改成本机 IP，HTTP 端口改成 2900。
-  - `-i` 还装了 nginx：`server_name harbor`、`listen 443 ssl`，反代到 `127.0.0.1:2900`；生成自签证书，装进系统信任库和 `/etc/docker/certs.d/harbor:443/`。
-  - `-s`：执行 Harbor 的 `install.sh` 拉起容器，修正配置目录属主（容器内 UID 10000），`docker login`，用 REST API 建公开项目 `e2b-orchestration`。
-  - `-s`：`ensure_harbor_hostname` 往 `/etc/hosts` 写 `<本机IP> harbor` 并重启 dnsmasq。
-  - `-s`：`push_base_image` 把 `dep/ubuntu-22.04-custom.tar.gz` 先 `docker load`，再推成 `e2b-orchestration/ubuntu:22.04-custom`；已有就跳过。
-- 为什么有两个地址：
-  - 推送走 `<本机IP>:2900`（HTTP，`daemon.json` 的 `insecure-registries`），避开 docker daemon 代理设置对 `harbor` 这个名字的误转发。
-  - 拉取走 `harbor:443`（HTTPS，nginx 反代）。
-  - 两个地址背后是同一个仓库。
-- template-manager 怎么拉镜像：
-  - 不经过本机 docker daemon，而是用 Go 的 go-containerregistry 直接按 registry 协议拉（`GetPublicImage`）。
-  - 名字 `harbor` 靠 dnsmasq 读 `/etc/hosts` 解析；证书靠系统信任库，以及 hcl 里的 `SSL_CERT_FILE`。
-  - 拉下来的层在第 9 篇被解包、转成 ext4。
-- `ARTIFACTS_REGISTRY_PROVIDER=Local`：另一条“从 build 记录取镜像”的路径，读的是本机 docker daemon 里的 `templateID:buildID`。本环境建模板走的是 `FROM` 指定的公开路径。
-- 镜像本身存在哪：Harbor 的数据目录（安装包默认 `/data`）。和模板文件、MinIO 是三处互不相干的存储。
-- 常见问题：
-  - `lookup harbor ... server misbehaving`：主机名没解析。
-  - 推送 504：请求被转给了代理。
-  - `docker-compose` 版本太老，解析不了 Harbor 2.13 的 compose 文件。
-  - 拉取报平台不匹配。
+- 问题：光有六个文件不够。哪个模板现在用哪个 build？暂停中的沙箱对应哪个快照？运行中的沙箱在哪台机器上？原料镜像在哪？这些“关于数据的数据”存在三个组件里。
+- 一张总表：三个组件各存什么、怎么跑、数据在哪、谁读写。orchestrator 不直接读写 PostgreSQL 和 Redis，只认 api 交给它的 buildID。
+- Harbor（镜像仓库）：
+  - 镜像在仓库里怎么存：清单、配置、层，都按 sha256 命名；标签是可变指针；多平台索引，补丁把拉取平台固定为 `linux/arm64`。
+  - 这套环境里存两类镜像：模板原料 `ubuntu:22.04-custom`（`-s` 推入），以及 `deploy.sh` 构建推送的 api、client-proxy、db-migrator、redis 服务镜像。Harbor 不可用时，Nomad 重新调度这些 job 会拉不到镜像。
+  - 安装：`-i` 解压社区 aarch64 离线包、改 `harbor.yml`、装 nginx 做 `harbor:443` 反代并配自签证书；`-s` 启动、建公开项目、写 `/etc/hosts`、推基础镜像。数据在 `/data`。
+  - 两个门：推送走 `<本机IP>:2900`，拉取走 `harbor:443`；template-manager 用 Go 库直接拉，不经过 docker daemon。
+  - `ARTIFACTS_REGISTRY_PROVIDER=Local` 是另一条取镜像的路，本环境不走。
+- PostgreSQL（模板和 build 的账本）：
+  - `-i` 用 `docker run` 起 `postgres:latest`，数据库 `mydatabase`，没有 `-v`，数据在匿名卷。
+  - 表由 api job 的 `db-migrator`（goose）建；`deploy.sh` 调 `seed-db` 写初始 team 和密钥，并放开 `base_v1` 配额。
+  - 和存储有关的表：`envs`、`env_aliases`、`env_builds`（主键即 buildID）、`env_build_assignments`、`snapshots`。从别名到 `/tmp/templates/<buildID>/` 的查找链；暂停时一个事务写四张表。
+  - 删模板、删快照只删这些行，不删文件。
+- Redis（运行中的沙箱在哪）：
+  - Nomad 的 `redis` job，镜像从 Harbor 拉，`redis.service.consul:6379`，没有持久卷。
+  - `SANDBOX_STORAGE_BACKEND=redis`：api 把运行中沙箱的状态、过期时间、状态切换锁记在 `sandbox:storage:…` 一组键里。
+  - client-proxy 查 `sandbox:catalog:<沙箱ID>` 决定请求转给哪台 orchestrator，本地缓存 500 毫秒。
+  - orchestrator 不用 Redis。
+- 记录和文件对不上的几种情况：宿主重启（文件和 Redis 丢、数据库在）、重跑 `-i`（数据库清空、文件在）、API 删除（记录删、文件在）、Redis 重新调度、Harbor 不可用。
+- 怎么看：查 Harbor 标签、用 SQL 从别名查到 buildID、看 PostgreSQL 数据卷、扫 Redis 的 `sandbox:catalog:*`。
+- 常见问题速查。
 
 ### 第 9 篇　从 Dockerfile 到 rootfs.ext4：模板构建流水线
 
 - 入口：
   - 宿主上用 SDK（本环境由 `build.sh -i` 打了补丁：`patch_e2b.py`、`dockerfile_parser.py`、`build_api.py`），或 `benchmark/build_template.py`。
   - 请求到 api，再到 template-manager。
-- 镜像从哪来：本机 Harbor（第 8 篇）。
+- 镜像从哪来：本机 Harbor（第 8 篇）；build 记录在 PostgreSQL。
 - 九个步骤，围绕“磁盘文件怎么一步步变出来”讲：
   1. 拉镜像。
   2. 注入文件：envd、busybox init、hostname、DNS 配置、`provision.sh`。

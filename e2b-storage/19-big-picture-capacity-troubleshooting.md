@@ -109,7 +109,9 @@
 | `/orchestrator/sandbox` | 硬盘 | 硬盘，每个运行中沙箱写过的块 | 沙箱结束（被强杀的除外） |
 | `/orchestrator/template` | 硬盘 | 很小 | 缓存项过期 |
 | `/mnt/snapshot-cache` | tmpfs | 不占（没人写） | — |
-| Harbor（`/data`） | 硬盘 | 镜像层 | 在 Harbor 里删镜像 |
+| Harbor（`/data`） | 硬盘 | 原料镜像和服务镜像的层 | 在 Harbor 里删镜像 |
+| PostgreSQL（docker 匿名卷） | 硬盘 | 模板、build、快照记录，很小 | 重跑 `build.sh -i` 时换新卷（旧卷留着） |
+| Redis（容器内存） | 内存，很小 | 运行中沙箱的记录 | Redis job 重新调度时清空 |
 | MinIO（`/root/data/minio`） | 硬盘 | 几乎为零 | — |
 
 ### 2.2 内存怎么分
@@ -178,6 +180,9 @@
 | 现象 | 原因 | 看哪里、怎么办 | 篇 |
 |---|---|---|---|
 | 宿主重启后所有模板都没了 | `/tmp` 是 tmpfs | 重建模板；长期办法是把模板存储搬到硬盘 | 10 |
+| 重启后重建模板报别名已被占用 | 文件没了，PostgreSQL 里的旧记录还在 | 先通过 API 删掉旧模板 | 8 |
+| 重跑 `build.sh -i` 后模板、快照记录全没了 | PostgreSQL 容器被重建，换了新匿名卷 | `docker volume ls`；文件还在 `/tmp/templates` | 8、18 |
+| SDK 连不上一个还在跑的沙箱 | Redis 重新调度，丢了 `sandbox:catalog` | Redis 里的键 | 8 |
 | 一个十几天没用的模板突然恢复失败 | `systemd-tmpfiles` 清掉了 10 天未访问的文件 | 同上 | 10 |
 | 恢复报“对象不存在” | build 目录被清掉或手工删了，或换了存储后端没搬数据 | `ls /tmp/templates/<buildID>` | 7、10、14 |
 | orchestrator 起不来，`NBD module not loaded` | nbd 模块没加载 | 按部署前提固化模块 | 3、18 |
@@ -223,7 +228,7 @@
 | 部分 | 讲了什么 | 一句话 |
 |---|---|---|
 | 一、打地基（1～6） | 块、页、文件系统、NBD、虚拟内存、UFFD、写时复制、Firecracker 的存储 | 磁盘靠 NBD 按需取，内存靠 UFFD 按需取，改动靠写时复制只存一份 |
-| 二、模板（7～10） | 六个文件、header、Harbor、构建流水线、存储后端 | 一个模板是一串 build，header 把它们拍平成一张表 |
+| 二、模板（7～10） | 六个文件、header、存数据的数据、构建流水线、存储后端 | 一个模板是一串 build，header 把它们拍平成一张表 |
 | 三、沙箱存储栈（11～13） | 本地缓存、NBD + COW、UFFD + 大页 | 远端 → 本地缓存 → overlay/UFFD → 客户机 |
 | 四、快照（14～17） | 暂停恢复、ARM 增量、检查点树、封存层与压实 | 暂停产生 build，检查点只活在进程里 |
 | 五、部署与运维（18～19） | 部署流程、配置总表、容量、排障 | 很多存储其实在吃内存 |
@@ -248,6 +253,8 @@
 | 映射表 | header | 每段数据在哪个 build 的哪个偏移 | 7 |
 | 代数 | generation | header 的第几代 | 7 |
 | 镜像仓库 | registry / Harbor | 按名字:标签存取镜像 | 8 |
+| 存数据的数据 | Harbor / PostgreSQL / Redis | 存原料镜像、模板与 build 记录、运行中沙箱位置的组件 | 8 |
+| 沙箱目录 | sandbox catalog | Redis 里 `sandbox:catalog:<ID>`，记沙箱在哪台 orchestrator | 8 |
 | 镜像清单 / 层 | manifest / layer | 镜像的组成部分，按 sha256 命名 | 8 |
 | 层缓存 | build cache / HashIndex | 按哈希复用模板构建的层 | 9 |
 | 存储后端 | StorageProvider | Local、MinIO、GCP、AWS | 10 |

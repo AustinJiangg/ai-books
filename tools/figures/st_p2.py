@@ -144,7 +144,7 @@ def fig_08_oci():
             arrow(s, [(MX + 306, yy), (BX + 24, ty)], SUB, 1.2)
     yy = s.footer(T + 460, "注：多平台镜像的标签指向一个索引，再按平台挑清单。ARM 补丁把 template-manager 拉取的平台固定为 linux/arm64，"
                            "拉到 x86 镜像会直接报平台不匹配。")
-    save(s, "08-1-镜像在仓库里.svg", yy + 20)
+    save(s, "08-2-镜像在仓库里.svg", yy + 20)
 
 
 def fig_08_two():
@@ -173,7 +173,75 @@ def fig_08_two():
     for i, (t, d) in enumerate(items):
         box(s, M + i * (cw + 24), T2, cw, 96, WHITE, t, d, 15, 12.5)
     yy = s.footer(T2 + 130, "注：两个门背后是同一个仓库。docker daemon 的代理、insecure-registries 设置对 template-manager 不起作用。")
-    save(s, "08-2-两个地址.svg", yy + 20)
+    save(s, "08-3-两个地址.svg", yy + 20)
+
+
+def fig_08_three():
+    s = Svg()
+    y0 = s.header("存数据的数据：三个组件各记什么",
+                  "它们都不存沙箱的磁盘和内存，而是存“原料在哪、模板现在用哪个 build、运行中的沙箱在哪台机器上”。"
+                  "orchestrator 不直接读写 PostgreSQL 和 Redis，只认 api 交给它的 buildID。")
+    T = y0 + 40
+    cw = (W - 2 * M - 2 * 30) / 3
+    comps = [("Harbor", "镜像仓库", HOST,
+              ["模板原料 ubuntu:22.04-custom", "服务镜像 api、client-proxy、\ndb-migrator、redis",
+               "docker compose 容器组，-s 启动", "数据：宿主 /data"]),
+             ("PostgreSQL", "模板和 build 的账本", STORE,
+              ["团队、配额、密钥", "模板、别名、build（id 即 buildID）、\n标签指派、快照", "docker run 的容器，端口 5432",
+               "数据：容器的匿名卷，重跑 -i 会换新卷"]),
+             ("Redis", "运行中的沙箱在哪", RISK,
+              ["sandbox:storage:…  沙箱状态与过期时间", "sandbox:catalog:<ID>  在哪台 orchestrator",
+               "Nomad 的 redis job，端口 6379", "数据：容器内存，没有持久卷"])]
+    for i, (n, d, role, items) in enumerate(comps):
+        x = M + i * (cw + 30)
+        box(s, x, T, cw, 70, role, n, d, 18, 13)
+        y = T + 90
+        for it in items:
+            h = 52 if "\n" in it else 40
+            box(s, x + 14, y, cw - 28, h, WHITE, None, it, 13, 12.5)
+            y += h + 10
+    T2 = T + 400
+    s.text(M, T2 - 16, "谁在用它们", 15, INK, 600)
+    who = [("template-manager", "建模板时从 Harbor 拉原料", 0), ("Nomad", "起 api、edge、redis 时从 Harbor 拉服务镜像", 0),
+           ("api", "读写 PostgreSQL 和 Redis", 1), ("client-proxy", "查 Redis 的 sandbox:catalog 决定转给谁", 2)]
+    bw = (W - 2 * M - 3 * 24) / 4
+    for i, (n, d, tgt) in enumerate(who):
+        x = M + i * (bw + 24)
+        box(s, x, T2, bw, 76, ORCH, n, d, 15, 12.5)
+    yy = s.footer(T2 + 112, "注：Harbor 自带的数据库和 Redis 只给 Harbor 自己用，和这里的 PostgreSQL、Redis 无关。")
+    save(s, "08-1-三个组件.svg", yy + 20)
+
+
+def fig_08_records():
+    s = Svg()
+    y0 = s.header("从一个名字找到文件：数据库里的记录怎么指到 /tmp/templates",
+                  "别名 → 模板 → 标签指派 → build。env_builds 的主键就是 buildID，也就是 /tmp/templates 下的目录名。"
+                  "暂停一个沙箱时，api 在一个事务里往四张表各写一行。")
+    T = y0 + 40
+    rows = [("env_aliases", "alias = base\nenv_id = 9x2k…", STORE), ("envs", "id = 9x2k…（模板 ID）", STORE),
+            ("env_build_assignments", "env_id = 9x2k…  tag = default\nbuild_id = 7c1e9b52-…", STORE),
+            ("env_builds", "id = 7c1e9b52-…（= buildID）\nstatus、vcpu、ram_mb、kernel_version…", STORE)]
+    bw = (W - 2 * M - 3 * 50 - 300) / 4
+    for i, (n, d, role) in enumerate(rows):
+        x = M + i * (bw + 50)
+        box(s, x, T, bw, 110, role, n, d, 15, 12.5)
+        if i < 3:
+            arrow(s, [(x + bw + 6, T + 55), (x + bw + 44, T + 55)], INK, 1.6)
+    FX = M + 4 * (bw + 50)
+    box(s, FX, T, W - M - FX, 110, RISK, "/tmp/templates/7c1e9b52-…/", "六个文件（第 7 篇）", 14, 12.5)
+    arrow(s, [(FX - 44, T + 55), (FX - 6, T + 55)], RISK[1], 1.6)
+    T2 = T + 170
+    s.text(M, T2, "暂停沙箱 i4fok… 时，api 在一个事务里写：", 15, INK, 600)
+    writes = [("envs", "给这个快照建一个模板"), ("snapshots", "sandbox_id = i4fok… → 快照模板\nbase_env_id = 最初的模板"),
+              ("env_builds", "新 build，得到新 buildID"), ("env_build_assignments", "快照模板的标签指向新 build")]
+    cw = (W - 2 * M - 3 * 24) / 4
+    for i, (n, d) in enumerate(writes):
+        box(s, M + i * (cw + 24), T2 + 20, cw, 86, WHITE, n, d, 14.5, 12.5)
+    T3 = T2 + 140
+    box(s, M, T3, W - 2 * M, 70, RISK, "删模板、删快照：只删这些行（删 envs 会级联删掉别名、标签指派等），不删 /tmp/templates 里的文件",
+        "重跑 build.sh -i 则相反：PostgreSQL 容器被重建，换了新的匿名卷，记录全没了，文件还在", 15, 12.5)
+    yy = s.footer(T3 + 106, "注：SDK 返回的 l1xjsvf1d8h3umr8d11y:default 是“模板 ID:标签”，要经过 env_build_assignments 才能查到 buildID。")
+    save(s, "08-4-记录指到文件.svg", yy + 20)
 
 
 # ------------------------------------------------------------------ 第 9 篇

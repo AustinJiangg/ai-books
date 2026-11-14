@@ -52,10 +52,10 @@ def fig_01_map():
         box(s, M + i * (cw3 + 24), y3, cw3, 84, role, t, sub, 14, 12)
     # 第四行：其他
     y4 = y3 + 138
-    s.text(M, y4 - 14, "其他", 14, MUTED, 600)
+    s.text(M, y4 - 14, "其他；PostgreSQL、Redis 和 Harbor 合称“存数据的数据”（第 8 篇）", 14, MUTED, 600)
     items = [("MinIO  /root/data/minio", "装了、健康检查通过，但没建桶、没人写（第 10 篇）"),
-             ("PostgreSQL", "模板和 build 的记录"),
-             ("Redis", "运行中的沙箱在哪台机器上")]
+             ("PostgreSQL", "模板、build、快照的记录（docker 容器）"),
+             ("Redis", "运行中的沙箱在哪（Nomad job，无持久卷）")]
     ws = [620, 420, W - 2 * M - 620 - 420 - 48]
     x = M
     for (t, sub), w in zip(items, ws):
