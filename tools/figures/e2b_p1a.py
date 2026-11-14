@@ -18,37 +18,71 @@ def save(s, name, h):
 def fig_01_map():
     s = Svg()
     y0 = s.header("全书地图：一个沙箱的网络，和进出它的四类流量",
-                  "以单机部署、槽位 5 为例。每个部件下方的灰色标签是详细讲它的篇目；带圈数字是四类流量："
-                  "① 出站（沙箱访问外部） ② 入站（SDK、浏览器访问沙箱） ③ 控制（orchestrator 直接调用 envd） ④ 内部服务（沙箱访问宿主机上的服务）。")
+                  "以单机部署、槽位 5 为例。“出站 / 入站”以沙箱为准、看谁发起连接。每个部件下方的灰色标签是详细讲它的篇目；带圈数字是四类流量："
+                  "① 出站（沙箱访问外部） ② 入站（其他机器或本机上的 SDK、浏览器访问沙箱） ③ 控制（orchestrator 直接调用 envd） "
+                  "④ 内部服务（沙箱访问宿主机上的服务）。")
     T = y0 + 26
-    # 宿主机外：SDK 与互联网
-    box(s, M, T, 250, 56, WHITE, "SDK / 浏览器", None, 15, style="outline")
-    box(s, W - M - 250, T, 250, 56, WHITE, "互联网 · pypi.org", None, 15, style="outline")
-    HT = T + 96
-    HB = HT + 58 + 76 + 70 + 300 + 30
+    BX = 300                                   # 入站请求汇合的竖线 x
+    # 宿主机外：其他机器与互联网
+    box(s, BX - 150, T, 300, 64, WHITE, "其他机器上的 SDK / 浏览器", "自备 DNS：*.e2b.app → 192.168.10.23", 14.5, 12.5,
+        style="outline")
+    box(s, W - M - 250, T, 250, 64, WHITE, "互联网 · pypi.org", None, 15, style="outline")
+    HT = T + 64 + 50
+    # 物理网卡：进出宿主机都经过它
+    NB0, NB1 = HT + 46, HT + 86
+    yA = NB1 + 34                              # 控制面一行
+    hA = 64
+    yB = yA + hA + 38                          # 数据面一行
+    hB = 84
+    sy = yB + hB + 70                          # 命名空间
+    nsh = 300
+    HB = sy + nsh + 30
     s.rect(M, HT, W - 2 * M, HB - HT, HOST[0], HOST[1], 1.4, rx=16)
     s.text(M + 20, HT + 30, "宿主机", 16, HOST[2], 600)
+    s.rect(84, NB0, W - 168, NB1 - NB0, "#FFFFFF", HOST[1], 1.4, rx=8)
+    s.rich(800, NB0 + 25, [("物理网卡 enp125s0f0", HOST[2], 600), ("　192.168.10.23", SUB, 400)], 14, "middle")
+    tag(s, 1380, NB0 + 10, "第 13、17 篇", "end")
 
-    # 入口一侧
-    ey = HT + 58
-    eh = 76
+    # 入站来源：其他机器（经物理网卡）、本机 SDK（只走 lo）
+    s.line(BX, T + 64, BX, yB + hB / 2, INK, 1.8)
+    num(s, BX + 22, (T + 64 + HT) / 2 + 4, 2)
+    s.text(BX + 40, (T + 64 + HT) / 2 + 9, "经物理网卡进入宿主机", 12.5, SUB)
+    box(s, 84, yB, 176, hB, WHITE, "本机上的 SDK", "dnsmasq：\n*.e2b.app → 127.0.0.1", 14.5, 12, style="outline")
+    tag(s, 172, yB + hB + 8, "第 17 篇", "middle")
+    s.line(260, yB + hB / 2, BX, yB + hB / 2, INK, 1.8)
+    num(s, 172, yB - 18, 2)
+    s.text(188, yB - 13, "只走 lo，不经网卡", 12.5, SUB)
+    for jy in (yA + hA / 2, yB + hB / 2):
+        s.circle(BX, jy, 4.5, INK)
+
+    # 控制面：api
+    CX0, CX1 = 450, 730
+    box(s, CX0, yA, CX1 - CX0, hA, KEY, "api　:3000", "创建 / 暂停 / 销毁沙箱，校验密钥", 14.5, 12.5)
+    tag(s, (CX0 + CX1) / 2, yA + hA + 8, "第 17 篇", "middle")
+    arrow(s, [(BX, yA + hA / 2), (CX0 - 4, yA + hA / 2)], INK, 1.8)
+    s.pill((BX + CX0) / 2, yA + hA / 2 - 17, "控制面", KEY, 12)
+    # 数据面：入口 → client-proxy
+    box(s, CX0, yB, CX1 - CX0, hB, WHITE, "宿主机入口 iptables：80 → 3002",
+        "外机：PREROUTING（--dst-type LOCAL）\n本机：OUTPUT -o lo", 14, 12, style="outline")
+    tag(s, (CX0 + CX1) / 2, yB + hB + 8, "第 17 篇", "middle")
+    arrow(s, [(BX, yB + hB / 2), (CX0 - 4, yB + hB / 2)], INK, 1.8)
+    s.pill((BX + CX0) / 2, yB + hB / 2 - 17, "数据面", KEY, 12)
+    PX0, PX1 = 770, 930
+    box(s, PX0, yB, PX1 - PX0, hB, WHITE, "client-proxy", ":3002\n按沙箱 ID 转发", 14.5, 12.5, style="outline")
+    tag(s, (PX0 + PX1) / 2, yB + hB + 8, "第 18 篇", "middle")
+    arrow(s, [(CX1, yB + hB / 2), (PX0 - 4, yB + hB / 2)], INK, 1.8)
+
+    # orchestrator：同时接控制面（gRPC）和数据面（代理 :5007）
     EX = 1040                                  # e2bv-5 与 Host IP 竖线的 x
-    box(s, 84, ey, 300, eh, WHITE, "宿主机入口", "dnsmasq：*.e2b.app → 127.0.0.1\niptables：80 → 3002", 14.5, 12.5,
-        style="outline")
-    tag(s, 234, ey + eh + 8, "第 17 篇", "middle")
-    box(s, 460, ey, 220, eh, WHITE, "client-proxy", ":3002　按沙箱 ID 转发", 14.5, 12.5, style="outline")
-    tag(s, 570, ey + eh + 8, "第 18 篇", "middle")
-    box(s, 756, ey, 360, eh, WHITE, "orchestrator", "代理 :5007；也负责建网、运行防火墙代理", 14.5, 12.5, style="outline")
-    tag(s, 936, ey + eh + 8, "第 12、18 篇", "middle")
-    arrow(s, [(M + 125, T + 56), (M + 125, ey)], INK, 1.8)
-    num(s, M + 146, (T + 56 + ey) / 2 + 2, 2)
-    arrow(s, [(384, ey + eh / 2), (456, ey + eh / 2)], INK, 1.8)
-    arrow(s, [(680, ey + eh / 2), (752, ey + eh / 2)], INK, 1.8)
+    OX0, OX1 = 960, 1120
+    box(s, OX0, yA, OX1 - OX0, yB + hB - yA, WHITE, "orchestrator",
+        "接 api 的 gRPC：\n建沙箱、建网\n代理 :5007\n运行防火墙代理", 14.5, 12.5, style="outline")
+    tag(s, OX1 + 10, yB + hB - 22, "第 12、18 篇")
+    arrow(s, [(CX1, yA + hA / 2), (OX0 - 4, yA + hA / 2)], INK, 1.8, label="gRPC", ldy=-9)
+    arrow(s, [(PX1, yB + hB / 2), (OX0 - 4, yB + hB / 2)], INK, 1.8)
 
     # 沙箱一侧
-    sy = ey + eh + 70
     NS0, NS1 = 84, 934
-    nsh = 300
     LY = sy + 210
     s.rect(NS0, sy, NS1 - NS0, nsh, NS[0], NS[1], 1.4, rx=14)
     s.text(NS0 + 18, sy + 28, "网络命名空间 ns-5", 15, NS[2], 600)
@@ -73,11 +107,11 @@ def fig_01_map():
     s.text((NS1 + EX - 55) / 2 + 2, LY - 14, "veth", 12.5, SUB, 600, "middle")
     tag(s, (NS1 + EX - 55) / 2 + 2, LY + 12, "第 6 篇", "middle")
     # orchestrator → Host IP → e2bv-5
-    arrow(s, [(EX, ey + eh), (EX, LY - 28)], INK, 1.8)
-    s.text(EX + 14, ey + eh + 56, "Host IP 10.13.0.5:49983", 13, NAT[2], 700, mono=True)
-    s.text(EX + 14, ey + eh + 76, "按 /32 路由交给 e2bv-5", 12.5, SUB)
-    num(s, EX - 20, ey + eh + 52, 2)
-    num(s, EX - 20, ey + eh + 80, 3)
+    arrow(s, [(EX, yB + hB), (EX, LY - 28)], INK, 1.8)
+    s.text(EX + 14, yB + hB + 56, "Host IP 10.13.0.5:49983", 13, NAT[2], 700, mono=True)
+    s.text(EX + 14, yB + hB + 76, "按 /32 路由交给 e2bv-5", 12.5, SUB)
+    num(s, EX - 20, yB + hB + 52, 2)
+    num(s, EX - 20, yB + hB + 80, 3)
     # 三个去处
     DX0, DX1 = 1150, 1350
     dest = [(sy + 30, "防火墙代理", ":5016–5018　TCP 按域名判定", "第 16 篇", GOOD),
@@ -88,17 +122,16 @@ def fig_01_map():
         tag(s, DX1 - 6, dy + 74, tg, "end")
         arrow(s, [(EX + 55, LY), (EX + 78, LY), (EX + 78, dy + 35), (DX0 - 4, dy + 35)], INK, 1.6)
     num(s, DX0 - 22, sy + 226 + 12, 4)
-    # 物理网卡：防火墙代理和转发两条路在这里出宿主机
+    # 出站：防火墙代理和转发两条路汇合，从物理网卡出宿主机
     NX = 1462
-    NY = sy + 65
-    chip(s, NX, NY, 140, 52, HOST, "enp125s0f0", "192.168.10.23", 13, 12)
-    arrow(s, [(DX1, NY), (NX - 74, NY)], INK, 1.6)
-    arrow(s, [(DX1, sy + 163), (NX, sy + 163), (NX, NY + 30)], INK, 1.6)
-    tag(s, NX + 74, sy + 172, "第 13 篇", "end")
-    arrow(s, [(NX, NY - 26), (NX, T + 60)], INK, 1.8)
-    num(s, NX + 20, (NY - 26 + T + 60) / 2, 1)
+    s.path(f"M{DX1} {sy + 65} L{NX} {sy + 65}", INK, 1.6)
+    s.circle(NX, sy + 65, 4.5, INK)
+    arrow(s, [(DX1, sy + 163), (NX, sy + 163), (NX, NB1 + 4)], INK, 1.6)
+    arrow(s, [(NX, NB0), (NX, T + 68)], INK, 1.8)
+    num(s, NX + 20, (NB0 + T + 64) / 2, 1)
     yy = s.footer(HB + 34, "注：沙箱里看到的永远是 169.254.0.21；宿主机只认 Host IP 10.13.0.5。两者在 ns-5 的 NAT 处互换（第 10 篇）。"
-                           "TCP 出站全部经过防火墙代理，代理另开连接从物理网卡出去。")
+                           "TCP 出站全部经过防火墙代理，代理另开连接从物理网卡出去。"
+                           "SDK 的控制请求直连 api:3000，沙箱请求走 80 → client-proxy；本机 SDK 即使访问 192.168.10.23，包也只在 lo 上转一圈，不经物理网卡。")
     save(s, "01-1-全书地图.svg", yy + 20)
 
 

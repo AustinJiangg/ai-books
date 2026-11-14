@@ -1,110 +1,142 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="896" viewBox="0 0 1600 896" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="896" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">全书地图：一个沙箱的网络，和进出它的四类流量</text>
-<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">以单机部署、槽位 5 为例。每个部件下方的灰色标签是详细讲它的篇目；带圈数字是四类流量：① 出站（沙箱访问外部） ② 入站（SDK、浏览器访问沙箱） ③ 控制（orchestrator 直接调用 envd） ④ 内部服务（沙箱访问</text>
-<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">宿主机上的服务）。</text>
-<rect x="48.0" y="166.0" width="250.0" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
-<text x="173.0" y="198.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">SDK / 浏览器</text>
-<rect x="1302.0" y="166.0" width="250.0" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
-<text x="1427.0" y="198.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">互联网 · pypi.org</text>
-<rect x="48.0" y="262.0" width="1504.0" height="534.0" rx="16" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.4"/>
-<text x="68.0" y="292.0" font-size="16" fill="#3D3C38" font-weight="600" text-anchor="start">宿主机</text>
-<rect x="84.0" y="320.0" width="300.0" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
-<text x="234.0" y="340.4" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">宿主机入口</text>
-<text x="234.0" y="363.6" font-size="12.5" fill="#57606A" text-anchor="middle">dnsmasq：*.e2b.app → 127.0.0.1</text>
-<text x="234.0" y="382.4" font-size="12.5" fill="#57606A" text-anchor="middle">iptables：80 → 3002</text>
-<rect x="205.0" y="404.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="234.0" y="418.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 17 篇</text>
-<rect x="460.0" y="320.0" width="220.0" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
-<text x="570.0" y="349.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">client-proxy</text>
-<text x="570.0" y="373.0" font-size="12.5" fill="#57606A" text-anchor="middle">:3002　按沙箱 ID 转发</text>
-<rect x="541.0" y="404.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="570.0" y="418.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 18 篇</text>
-<rect x="756.0" y="320.0" width="360.0" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
-<text x="936.0" y="349.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">orchestrator</text>
-<text x="936.0" y="373.0" font-size="12.5" fill="#57606A" text-anchor="middle">代理 :5007；也负责建网、运行防火墙代理</text>
-<rect x="894.4" y="404.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="936.0" y="418.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 12、18 篇</text>
-<path d="M173.0 222.0 L173.0 320.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<circle cx="194.0" cy="273.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
-<text x="194.0" y="277.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
-<path d="M384.0 358.0 L456.0 358.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<path d="M680.0 358.0 L752.0 358.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<rect x="84.0" y="466.0" width="850.0" height="300.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.4"/>
-<text x="102.0" y="494.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">网络命名空间 ns-5</text>
-<rect x="254.0" y="479.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="295.6" y="493.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 10、11 篇</text>
-<rect x="108.0" y="518.0" width="228.0" height="224.0" rx="12" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.4"/>
-<text x="124.0" y="544.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="start">Firecracker 虚拟机</text>
-<rect x="124.0" y="554.0" width="51.1" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="149.6" y="568.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 9 篇</text>
-<rect x="125.0" y="590.0" width="150.0" height="48.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
-<text x="200.0" y="610.0" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">envd</text>
-<text x="200.0" y="628.5" font-size="12.5" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">:49983</text>
-<rect x="220.0" y="652.0" width="100.0" height="48.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
-<text x="270.0" y="672.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">eth0</text>
-<text x="270.0" y="690.0" font-size="12" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
-<rect x="352.0" y="652.0" width="96.0" height="48.0" rx="9" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
-<text x="400.0" y="672.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">tap0</text>
-<text x="400.0" y="690.0" font-size="12" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.22</text>
-<rect x="490.0" y="642.0" width="120.0" height="68.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
-<text x="550.0" y="667.6" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">nftables</text>
-<text x="550.0" y="690.9" font-size="12.5" fill="#57606A" text-anchor="middle">出站过滤</text>
-<rect x="511.8" y="718.0" width="76.4" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="550.0" y="732.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 8、15 篇</text>
-<rect x="650.0" y="642.0" width="120.0" height="68.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
-<text x="710.0" y="667.6" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">NAT</text>
-<text x="710.0" y="690.9" font-size="12.5" fill="#57606A" text-anchor="middle">SNAT / DNAT</text>
-<rect x="671.8" y="718.0" width="76.4" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="710.0" y="732.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 7、13 篇</text>
-<rect x="810.0" y="652.0" width="100.0" height="48.0" rx="9" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
-<text x="860.0" y="672.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">eth0</text>
-<text x="860.0" y="690.0" font-size="12" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">vpeer</text>
-<line x1="324.0" y1="676.0" x2="348.0" y2="676.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
-<line x1="452.0" y1="676.0" x2="486.0" y2="676.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
-<line x1="614.0" y1="676.0" x2="646.0" y2="676.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
-<line x1="774.0" y1="676.0" x2="806.0" y2="676.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
-<rect x="985.0" y="652.0" width="110.0" height="48.0" rx="9" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
-<text x="1040.0" y="672.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">e2bv-5</text>
-<text x="1040.0" y="690.0" font-size="12" fill="#3D3C38" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">10.14.0.10</text>
-<line x1="914.0" y1="676.0" x2="981.0" y2="676.0" stroke="#1F2328" stroke-width="2.4" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
-<text x="961.5" y="662.0" font-size="12.5" fill="#57606A" font-weight="600" text-anchor="middle">veth</text>
-<rect x="935.9" y="688.0" width="51.1" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="961.5" y="702.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 6 篇</text>
-<path d="M1040.0 396.0 L1040.0 648.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<text x="1054.0" y="452.0" font-size="13" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">Host IP 10.13.0.5:49983</text>
-<text x="1054.0" y="472.0" font-size="12.5" fill="#57606A" text-anchor="start">按 /32 路由交给 e2bv-5</text>
-<circle cx="1020.0" cy="448.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
-<text x="1020.0" y="452.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
-<circle cx="1020.0" cy="476.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
-<text x="1020.0" y="480.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
-<rect x="1150.0" y="496.0" width="200.0" height="70.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
-<text x="1250.0" y="523.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">防火墙代理</text>
-<text x="1250.0" y="545.6" font-size="12" fill="#57606A" text-anchor="middle">:5016–5018　TCP 按域名判定</text>
-<rect x="1286.0" y="570.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="1315.0" y="584.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 16 篇</text>
-<path d="M1095.0 676.0 L1118.0 676.0 L1118.0 531.0 L1146.0 531.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<rect x="1150.0" y="594.0" width="200.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
-<text x="1250.0" y="621.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">转发 + MASQUERADE</text>
-<text x="1250.0" y="643.6" font-size="12" fill="#57606A" text-anchor="middle">UDP、ICMP 等</text>
-<rect x="1260.7" y="668.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="1302.4" y="682.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 12、13 篇</text>
-<path d="M1095.0 676.0 L1118.0 676.0 L1118.0 629.0 L1146.0 629.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<rect x="1150.0" y="692.0" width="200.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
-<text x="1250.0" y="719.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">宿主服务 192.0.2.1</text>
-<text x="1250.0" y="741.6" font-size="12" fill="#57606A" text-anchor="middle">hyperloop · NFS · portmap</text>
-<rect x="1286.0" y="766.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="1315.0" y="780.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 19 篇</text>
-<path d="M1095.0 676.0 L1118.0 676.0 L1118.0 727.0 L1146.0 727.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<circle cx="1128.0" cy="704.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
-<text x="1128.0" y="708.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
-<rect x="1392.0" y="505.0" width="140.0" height="52.0" rx="9" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
-<text x="1462.0" y="527.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">enp125s0f0</text>
-<text x="1462.0" y="545.0" font-size="12" fill="#3D3C38" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">192.168.10.23</text>
-<path d="M1350.0 531.0 L1388.0 531.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<path d="M1350.0 629.0 L1462.0 629.0 L1462.0 561.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<rect x="1478.0" y="638.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
-<text x="1507.0" y="652.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 13 篇</text>
-<path d="M1462.0 505.0 L1462.0 226.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
-<circle cx="1482.0" cy="365.5" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
-<text x="1482.0" y="370.0" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
-<line x1="48.0" y1="830.0" x2="1552.0" y2="830.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
-<text x="48.0" y="856.0" font-size="13" fill="#8C959F" text-anchor="start">注：沙箱里看到的永远是 169.254.0.21；宿主机只认 Host IP 10.13.0.5。两者在 ns-5 的 NAT 处互换（第 10 篇）。TCP 出站全部经过防火墙代理，代理另开连接从物理网卡出去。</text></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1106" viewBox="0 0 1600 1106" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="1106" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">全书地图：一个沙箱的网络，和进出它的四类流量</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">以单机部署、槽位 5 为例。“出站 / 入站”以沙箱为准、看谁发起连接。每个部件下方的灰色标签是详细讲它的篇目；带圈数字是四类流量：① 出站（沙箱访问外部） ② 入站（其他机器或本机上的 SDK、浏览器访问沙箱） ③</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">控制（orchestrator 直接调用 envd） ④ 内部服务（沙箱访问宿主机上的服务）。</text>
+<rect x="150.0" y="166.0" width="300.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="300.0" y="189.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">其他机器上的 SDK / 浏览器</text>
+<text x="300.0" y="213.0" font-size="12.5" fill="#57606A" text-anchor="middle">自备 DNS：*.e2b.app → 192.168.10.23</text>
+<rect x="1302.0" y="166.0" width="250.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1427.0" y="202.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">互联网 · pypi.org</text>
+<rect x="48.0" y="280.0" width="1504.0" height="706.0" rx="16" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.4"/>
+<text x="68.0" y="310.0" font-size="16" fill="#3D3C38" font-weight="600" text-anchor="start">宿主机</text>
+<rect x="84.0" y="326.0" width="1432.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#B7B5AC" stroke-width="1.4"/>
+<text x="800.0" y="351.0" font-size="14" text-anchor="middle" xml:space="preserve"><tspan fill="#3D3C38" font-weight="600">物理网卡 enp125s0f0</tspan><tspan fill="#57606A">　192.168.10.23</tspan></text>
+<rect x="1296.7" y="336.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1338.4" y="350.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 13、17 篇</text>
+<line x1="300.0" y1="230.0" x2="300.0" y2="544.0" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round"/>
+<circle cx="322.0" cy="259.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="322.0" y="263.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="340.0" y="264.0" font-size="12.5" fill="#57606A" text-anchor="start">经物理网卡进入宿主机</text>
+<rect x="84.0" y="502.0" width="176.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="172.0" y="527.1" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">本机上的 SDK</text>
+<text x="172.0" y="549.7" font-size="12" fill="#57606A" text-anchor="middle">dnsmasq：</text>
+<text x="172.0" y="567.7" font-size="12" fill="#57606A" text-anchor="middle">*.e2b.app → 127.0.0.1</text>
+<rect x="143.0" y="594.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="172.0" y="608.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 17 篇</text>
+<line x1="260.0" y1="544.0" x2="300.0" y2="544.0" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round"/>
+<circle cx="172.0" cy="484.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="172.0" y="488.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<text x="188.0" y="489.0" font-size="12.5" fill="#57606A" text-anchor="start">只走 lo，不经网卡</text>
+<circle cx="300.0" cy="432.0" r="4.5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<circle cx="300.0" cy="544.0" r="4.5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<rect x="450.0" y="400.0" width="280.0" height="64.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="590.0" y="423.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">api　:3000</text>
+<text x="590.0" y="447.0" font-size="12.5" fill="#57606A" text-anchor="middle">创建 / 暂停 / 销毁沙箱，校验密钥</text>
+<rect x="561.0" y="472.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="590.0" y="486.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 17 篇</text>
+<path d="M300.0 432.0 L446.0 432.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="346.0" y="402.5" width="58.0" height="25.0" rx="12.5" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="375.0" y="419.3" font-size="12" fill="#1F2328" font-weight="600" text-anchor="middle">控制面</text>
+<rect x="450.0" y="502.0" width="280.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="590.0" y="527.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">宿主机入口 iptables：80 → 3002</text>
+<text x="590.0" y="549.6" font-size="12" fill="#57606A" text-anchor="middle">外机：PREROUTING（--dst-type LOCAL）</text>
+<text x="590.0" y="567.6" font-size="12" fill="#57606A" text-anchor="middle">本机：OUTPUT -o lo</text>
+<rect x="561.0" y="594.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="590.0" y="608.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 17 篇</text>
+<path d="M300.0 544.0 L446.0 544.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="346.0" y="514.5" width="58.0" height="25.0" rx="12.5" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="375.0" y="531.3" font-size="12" fill="#1F2328" font-weight="600" text-anchor="middle">数据面</text>
+<rect x="770.0" y="502.0" width="160.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="850.0" y="526.4" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">client-proxy</text>
+<text x="850.0" y="549.6" font-size="12.5" fill="#57606A" text-anchor="middle">:3002</text>
+<text x="850.0" y="568.4" font-size="12.5" fill="#57606A" text-anchor="middle">按沙箱 ID 转发</text>
+<rect x="821.0" y="594.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="850.0" y="608.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 18 篇</text>
+<path d="M730.0 544.0 L766.0 544.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="960.0" y="400.0" width="160.0" height="186.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1040.0" y="456.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">orchestrator</text>
+<text x="1040.0" y="479.9" font-size="12.5" fill="#57606A" text-anchor="middle">接 api 的 gRPC：</text>
+<text x="1040.0" y="498.6" font-size="12.5" fill="#57606A" text-anchor="middle">建沙箱、建网</text>
+<text x="1040.0" y="517.4" font-size="12.5" fill="#57606A" text-anchor="middle">代理 :5007</text>
+<text x="1040.0" y="536.1" font-size="12.5" fill="#57606A" text-anchor="middle">运行防火墙代理</text>
+<rect x="1130.0" y="564.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1171.6" y="578.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 12、18 篇</text>
+<path d="M730.0 432.0 L956.0 432.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="843.0" y="423.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">gRPC</text>
+<path d="M930.0 544.0 L956.0 544.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="84.0" y="656.0" width="850.0" height="300.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.4"/>
+<text x="102.0" y="684.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">网络命名空间 ns-5</text>
+<rect x="254.0" y="669.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="295.6" y="683.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 10、11 篇</text>
+<rect x="108.0" y="708.0" width="228.0" height="224.0" rx="12" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.4"/>
+<text x="124.0" y="734.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="start">Firecracker 虚拟机</text>
+<rect x="124.0" y="744.0" width="51.1" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="149.6" y="758.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 9 篇</text>
+<rect x="125.0" y="780.0" width="150.0" height="48.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="200.0" y="800.0" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">envd</text>
+<text x="200.0" y="818.5" font-size="12.5" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">:49983</text>
+<rect x="220.0" y="842.0" width="100.0" height="48.0" rx="9" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="270.0" y="862.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">eth0</text>
+<text x="270.0" y="880.0" font-size="12" fill="#4B3FA8" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.21</text>
+<rect x="352.0" y="842.0" width="96.0" height="48.0" rx="9" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="400.0" y="862.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">tap0</text>
+<text x="400.0" y="880.0" font-size="12" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">169.254.0.22</text>
+<rect x="490.0" y="832.0" width="120.0" height="68.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="550.0" y="857.6" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">nftables</text>
+<text x="550.0" y="880.9" font-size="12.5" fill="#57606A" text-anchor="middle">出站过滤</text>
+<rect x="511.8" y="908.0" width="76.4" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="550.0" y="922.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 8、15 篇</text>
+<rect x="650.0" y="832.0" width="120.0" height="68.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="710.0" y="857.6" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">NAT</text>
+<text x="710.0" y="880.9" font-size="12.5" fill="#57606A" text-anchor="middle">SNAT / DNAT</text>
+<rect x="671.8" y="908.0" width="76.4" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="710.0" y="922.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 7、13 篇</text>
+<rect x="810.0" y="842.0" width="100.0" height="48.0" rx="9" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="860.0" y="862.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">eth0</text>
+<text x="860.0" y="880.0" font-size="12" fill="#1D4F91" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">vpeer</text>
+<line x1="324.0" y1="866.0" x2="348.0" y2="866.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<line x1="452.0" y1="866.0" x2="486.0" y2="866.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<line x1="614.0" y1="866.0" x2="646.0" y2="866.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<line x1="774.0" y1="866.0" x2="806.0" y2="866.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<rect x="985.0" y="842.0" width="110.0" height="48.0" rx="9" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1040.0" y="862.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">e2bv-5</text>
+<text x="1040.0" y="880.0" font-size="12" fill="#3D3C38" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">10.14.0.10</text>
+<line x1="914.0" y1="866.0" x2="981.0" y2="866.0" stroke="#1F2328" stroke-width="2.4" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<text x="961.5" y="852.0" font-size="12.5" fill="#57606A" font-weight="600" text-anchor="middle">veth</text>
+<rect x="935.9" y="878.0" width="51.1" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="961.5" y="892.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 6 篇</text>
+<path d="M1040.0 586.0 L1040.0 838.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="1054.0" y="642.0" font-size="13" fill="#8A5300" font-weight="700" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">Host IP 10.13.0.5:49983</text>
+<text x="1054.0" y="662.0" font-size="12.5" fill="#57606A" text-anchor="start">按 /32 路由交给 e2bv-5</text>
+<circle cx="1020.0" cy="638.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="1020.0" y="642.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<circle cx="1020.0" cy="666.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="1020.0" y="670.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<rect x="1150.0" y="686.0" width="200.0" height="70.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1250.0" y="713.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">防火墙代理</text>
+<text x="1250.0" y="735.6" font-size="12" fill="#57606A" text-anchor="middle">:5016–5018　TCP 按域名判定</text>
+<rect x="1286.0" y="760.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1315.0" y="774.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 16 篇</text>
+<path d="M1095.0 866.0 L1118.0 866.0 L1118.0 721.0 L1146.0 721.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1150.0" y="784.0" width="200.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1250.0" y="811.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">转发 + MASQUERADE</text>
+<text x="1250.0" y="833.6" font-size="12" fill="#57606A" text-anchor="middle">UDP、ICMP 等</text>
+<rect x="1260.7" y="858.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1302.4" y="872.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 12、13 篇</text>
+<path d="M1095.0 866.0 L1118.0 866.0 L1118.0 819.0 L1146.0 819.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1150.0" y="882.0" width="200.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1250.0" y="909.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">宿主服务 192.0.2.1</text>
+<text x="1250.0" y="931.6" font-size="12" fill="#57606A" text-anchor="middle">hyperloop · NFS · portmap</text>
+<rect x="1286.0" y="956.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1315.0" y="970.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 19 篇</text>
+<path d="M1095.0 866.0 L1118.0 866.0 L1118.0 917.0 L1146.0 917.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<circle cx="1128.0" cy="894.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="1128.0" y="898.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<path d="M1350 721 L1462 721" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="1462.0" cy="721.0" r="4.5" fill="#1F2328" stroke="none" stroke-width="1"/>
+<path d="M1350.0 819.0 L1462.0 819.0 L1462.0 370.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1462.0 326.0 L1462.0 234.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<circle cx="1482.0" cy="278.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="1482.0" y="282.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<line x1="48.0" y1="1020.0" x2="1552.0" y2="1020.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="1046.0" font-size="13" fill="#8C959F" text-anchor="start">注：沙箱里看到的永远是 169.254.0.21；宿主机只认 Host IP 10.13.0.5。两者在 ns-5 的 NAT 处互换（第 10 篇）。TCP 出站全部经过防火墙代理，代理另开连接从物理网卡出去。SDK 的控制请求直连 api:3000，沙箱请求走 80 → client-proxy；本机</text>
+<text x="48.0" y="1066.0" font-size="13" fill="#8C959F" text-anchor="start">SDK 即使访问 192.168.10.23，包也只在 lo 上转一圈，不经物理网卡。</text></svg>
