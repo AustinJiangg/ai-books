@@ -116,16 +116,7 @@
 
 把一台机器的内存按用途分开看：
 
-```
- 总内存
- ├─ 给宿主留的普通内存：max(4 GiB, 16%)，不超过 42 GiB       （第 13 篇公式）
- │    ├─ 操作系统、Nomad、Consul、api、client-proxy、Redis、PostgreSQL、Harbor 容器……
- │    ├─ template-manager：堆 + 页缓存，上限 32 GiB           （第 18 篇）
- │    └─ /tmp 的 tmpfs：模板和快照！                           ← 和上面这些抢
- └─ 可做大页的内存
-      ├─ 静态池 20%（上限 64 GiB）
-      └─ 超分配 80%：沙箱的客户机内存
-```
+![容量账](img/19-1-内存账.svg)
 
 注意最关键的一点：**`/tmp/templates` 不在大页里，它占的是“给宿主留的普通内存”**。而这一块只有总内存的 16%，最多 42 GiB。模板和快照多了，会和宿主上的其他服务、template-manager 的页缓存抢这块内存。
 
@@ -163,13 +154,7 @@
 
 存储问题按数据流从远到近分五层，逐层排除：
 
-```
- ① 存储后端      模板文件在不在？      /tmp/templates/<buildID>/
- ② 本地缓存      拉得下来吗？           /orchestrator/build、/orchestrator/template
- ③ 磁盘栈        NBD 有没有、COW 写得进吗？ /dev/nbdN、/orchestrator/sandbox
- ④ 内存栈        UFFD 握手了吗？大页够吗？ /tmp/uffd-*.sock、/proc/meminfo
- ⑤ 快照/检查点    导出、上传、回滚是否成功？ orchestrator 日志、能力文件
-```
+![排障五层](img/19-2-排障五层.svg)
 
 ### 3.2 常用工具
 

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="722" viewBox="0 0 1600 722" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m5B9BE6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#5B9BE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="722" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">NBD 的一次读：内核把块请求交给一个程序回答</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">/dev/nbdN 背后没有硬盘，只有一对本机 socket。E2B 里回答请求的“接线员”就是 orchestrator，它可以去任何地方找数据：COW 文件、本地缓存、存储后端。</text>
+<rect x="48.0" y="156.0" width="353.5" height="56.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="224.8" y="188.5" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机里的程序 / Firecracker</text>
+<line x1="224.8" y1="216.0" x2="224.8" y2="626.0" stroke="#D8DEE4" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="431.5" y="156.0" width="353.5" height="56.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="608.2" y="188.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">内核 NBD 驱动</text>
+<line x1="608.2" y1="216.0" x2="608.2" y2="626.0" stroke="#D8DEE4" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="815.0" y="156.0" width="353.5" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="991.8" y="188.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">socketpair（本机，不走网络）</text>
+<line x1="991.8" y1="216.0" x2="991.8" y2="626.0" stroke="#D8DEE4" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="1198.5" y="156.0" width="353.5" height="56.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1375.2" y="188.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator（接线员）</text>
+<line x1="1375.2" y1="216.0" x2="1375.2" y2="626.0" stroke="#D8DEE4" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path d="M230.8 266.0 L602.2 266.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="416.5" y="256.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">读 /dev/nbd7 第 100 块</text>
+<path d="M614.2 336.0 L1369.2 336.0" fill="none" stroke="#5B9BE6" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m5B9BE6)"/>
+<text x="991.8" y="326.0" font-size="13" fill="#5B9BE6" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">请求{读, 编号=7, From=409600, Length=4096}</text>
+<rect x="1198.5" y="384.0" width="353.5" height="46.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1375.2" y="411.2" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">查 COW → 查 header → 取缓存 / 拉存储</text>
+<path d="M1369.2 486.0 L614.2 486.0" fill="none" stroke="#1F9E77" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="991.8" y="476.0" font-size="13" fill="#1F9E77" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">应答{成功, 编号=7} + 4096 字节</text>
+<path d="M602.2 556.0 L230.8 556.0" fill="none" stroke="#1F2328" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="416.5" y="546.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">把数据交给读的人</text>
+<line x1="48.0" y1="656.0" x2="1552.0" y2="656.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="682.0" font-size="13" fill="#8C959F" text-anchor="start">注：内核可以同时发出很多请求，不必等前一个回来；程序可以乱序应答，靠编号对上号。E2B 每台 NBD 设备接 4 条这样的连接。</text></svg>

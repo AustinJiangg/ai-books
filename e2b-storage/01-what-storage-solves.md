@@ -84,17 +84,7 @@ AI 在沙箱里干活，可能一步把环境搞坏。这套环境的 ARM 适配
 
 把上面这些串起来，一个沙箱从无到有、从生到死，存储上经历五个阶段，正好对应本书的五个部分：
 
-```
- ① 模板构建              ② 模板存放             ③ 沙箱运行
- Dockerfile ──────────▶ 六个文件 ──────────▶ 硬盘 = NBD + 写时复制
- Harbor 里的镜像         存在存储后端          内存 = UFFD 按需供页 + 大页
-                                                    │
-                    ┌───────────────────────────────┤
-                    ▼                               ▼
-              ④ 暂停与恢复                   ⑤ 检查点回滚
-              增量快照 → 新的六个文件          本机上的检查点树
-              恢复 = 回到 ③                   原地倒回内存和磁盘
-```
+![一个沙箱的存储一生：五个阶段](img/01-2-存储一生.svg)
 
 - **第一部分（第 1～6 篇）**：打地基。块、页、文件系统、块设备、虚拟内存、写时复制、Firecracker 的存储设备。不涉及 E2B 的代码。
 - **第二部分（第 7～10 篇）**：模板。一个模板由哪六个文件组成；做模板的原料（Docker 镜像）存在 Harbor 里；镜像怎么变成磁盘镜像和内存快照；做好的模板存到哪里。
@@ -134,34 +124,7 @@ ORCHESTRATOR_SERVICES = "orchestrator,template-manager"
 
 ### 5.3 全景图：存储相关的东西都在哪
 
-```
-                       ┌──────────────── 宿主机（鲲鹏 + openEuler）────────────────┐
-                       │                                                          │
-  做模板的原料          │  Harbor（镜像仓库，nginx 反代 harbor:443 → 2900）          │
-                       │                    │ 拉镜像                              │
-                       │                    ▼                                     │
-                       │  /usr/bin/template-manager  ← 一个进程 = orchestrator     │
-  模板的家              │      │   ▲                 + template-manager           │
-                       │      │   │ 读写                                          │
-                       │      ▼   │                                               │
-                       │  /tmp/templates/<buildID>/   持久化存储（Local，在 tmpfs） │
-                       │  /tmp/build-cache/           构建层缓存                    │
-                       │                                                          │
-  本地缓存              │  /orchestrator/template/     模板小文件缓存                │
-                       │  /orchestrator/build/        memfile、rootfs 本地副本      │
-                       │  /orchestrator/sandbox/      每个沙箱的写时复制文件         │
-                       │  /mnt/snapshot-cache/        tmpfs 65G，本版代码没写过它    │
-                       │                                                          │
-  给虚拟机用的          │  /dev/nbd0 … /dev/nbd511     沙箱的“硬盘”                 │
-                       │  /mnt/hugepages              沙箱“内存”背后的大页          │
-                       │  /fc-kernels  /fc-versions  /fc-envd   内核、FC、envd     │
-                       │                                                          │
-  装了没用上            │  MinIO（/root/data/minio，端口 9000/9001）                 │
-                       │                                                          │
-  存“数据的数据”        │  PostgreSQL：模板和 build 的记录                          │
-                       │  Redis：正在运行的沙箱在哪台机器上                          │
-                       └──────────────────────────────────────────────────────────┘
-```
+![全景图：存储相关的东西都在哪](img/01-1-全景图.svg)
 
 逐行解释一下，后面各篇会展开：
 

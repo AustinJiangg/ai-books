@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="754" viewBox="0 0 1600 754" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="754" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">磁盘写满时：补丁让 SIGBUS 只坏一个请求，不崩整个进程</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">往稀疏 COW 文件的 mmap 里写一个新块，文件系统要当场分配；磁盘满了分配失败，内核发 SIGBUS。Go 默认对 SIGBUS 直接让整个进程崩溃，整台机器的沙箱一起完蛋。</text>
+<rect x="48.0" y="156.0" width="722.0" height="54.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="409.0" y="188.1" font-size="16" fill="#9A3215" font-weight="600" text-anchor="middle">上游：整个 orchestrator 崩溃</text>
+<rect x="78.0" y="236.0" width="662.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="409.0" y="270.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">某个客户机写盘，/orchestrator 磁盘已满</text>
+<rect x="78.0" y="318.0" width="662.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="409.0" y="352.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">copy 进 COW 的 mmap → 缺页时分配块失败</text>
+<path d="M409.0 298.0 L409.0 312.0" fill="none" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="78.0" y="400.0" width="662.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="409.0" y="434.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">内核发 SIGBUS → Go 运行时：致命错误</text>
+<path d="M409.0 380.0 L409.0 394.0" fill="none" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="78.0" y="482.0" width="662.0" height="60.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="409.0" y="516.5" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">orchestrator 退出，所有沙箱一起没了</text>
+<path d="M409.0 462.0 L409.0 476.0" fill="none" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="830.0" y="156.0" width="722.0" height="54.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1191.0" y="188.1" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">ARM 补丁：只让那一个写请求失败</text>
+<rect x="860.0" y="236.0" width="662.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1191.0" y="270.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">同样的写，同样的 SIGBUS</text>
+<rect x="860.0" y="318.0" width="662.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1191.0" y="352.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">debug.SetPanicOnFault(true)：只在这个 goroutine 上变成 panic</text>
+<path d="M1191.0 298.0 L1191.0 312.0" fill="none" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="860.0" y="400.0" width="662.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1191.0" y="434.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">recover → 错误 “mmap fault (disk full?)”</text>
+<path d="M1191.0 380.0 L1191.0 394.0" fill="none" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="860.0" y="482.0" width="662.0" height="60.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1191.0" y="516.5" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">NBD 回一个失败应答：这个客户机看到 I/O 错误，其他沙箱照常</text>
+<path d="M1191.0 462.0 L1191.0 476.0" fill="none" stroke="#57606A" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="48.0" y="576.0" width="1504.0" height="76.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="800.0" y="605.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">另一处加固：拷贝前先 madvise(MADV_POPULATE_READ/WRITE)</text>
+<text x="800.0" y="629.2" font-size="12.5" fill="#57606A" text-anchor="middle">在系统调用里完成缺页、记账和内存回收，避免 goroutine 在用户态缺页里睡着、拖住 Go 的“全体暂停”，造成很长的 GC 停顿</text>
+<line x1="48.0" y1="688.0" x2="1552.0" y2="688.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="714.0" font-size="13" fill="#8C959F" text-anchor="start">注：设置只对这一次调用所在的 goroutine 生效，出来就恢复，别的代码仍按进程默认处理。</text></svg>

@@ -105,20 +105,7 @@ HeaderSuffix = ".header"
 
 每个 `.header` 文件是一个小小的二进制文件，由两部分组成：
 
-```
-┌──────────────── 元数据（64 字节）────────────────┐
-│ Version     版本号（当前是 3）                    │
-│ BlockSize   块大小                               │
-│ Size        完整的内存或磁盘有多大                 │
-│ Generation  代数：模板构建出来是 0，每快照一次 +1   │
-│ BuildId     这一代自己的 buildID                  │
-│ BaseBuildId 最初那一代（第 0 代）的 buildID        │
-├──────────────── 映射数组（每条 40 字节）───────────┤
-│ 映射 1： Offset  Length  BuildId  BuildStorageOffset │
-│ 映射 2： ……                                       │
-│ ……                                               │
-└──────────────────────────────────────────────────┘
-```
+![header 的结构](img/07-1-header结构.svg)
 
 代码里的定义（原样）：
 
@@ -227,6 +214,8 @@ metadata := 上一代.Metadata.NextGeneration(新buildID) // 代数 +1，BaseBui
 **③ 规整**：把相邻且可以连起来的映射合并，减少条数。
 
 ---
+
+![新一代 header 怎么来](img/07-2-合成新header.svg)
 
 ## 七、全零块：不占存储的“空洞”
 

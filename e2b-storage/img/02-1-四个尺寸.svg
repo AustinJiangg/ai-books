@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="572" viewBox="0 0 1600 572" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="572" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">本书的四个尺寸：4 KiB、4 KiB、2 MiB、4 MiB</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">硬盘按块读写，内存按页管理，大页一次管 512 个普通页；E2B 从存储里拉数据时，又按 4 MiB 一块来拉。下面按真实比例画出 4 MiB 里能放下多少个它们。</text>
+<text x="48.0" y="178.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">块 block</text>
+<text x="48.0" y="200.0" font-size="12.5" fill="#57606A" text-anchor="start">4 KiB · 根盘读写、COW 位图的粒度</text>
+<rect x="370.0" y="162.0" width="1182.0" height="40.0" rx="6" fill="#FAFBFC" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="370.0" y="162.0" width="3.0" height="40.0" rx="1" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.4"/>
+<text x="382.0" y="188.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="start">← 细到几乎看不见：4 MiB 里有 1024 个</text>
+<text x="48.0" y="264.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">普通页 page</text>
+<text x="48.0" y="286.0" font-size="12.5" fill="#57606A" text-anchor="start">4 KiB · 进程内存、检查点脏页的粒度</text>
+<rect x="370.0" y="248.0" width="1182.0" height="40.0" rx="6" fill="#FAFBFC" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="370.0" y="248.0" width="3.0" height="40.0" rx="1" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.4"/>
+<text x="382.0" y="274.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="start">← 细到几乎看不见：4 MiB 里有 1024 个</text>
+<text x="48.0" y="350.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">大页 huge page</text>
+<text x="48.0" y="372.0" font-size="12.5" fill="#57606A" text-anchor="start">2 MiB · 客户机内存；memfile 的块</text>
+<rect x="370.0" y="334.0" width="1182.0" height="40.0" rx="6" fill="#FAFBFC" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="370.0" y="334.0" width="591.0" height="40.0" rx="4" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.4"/>
+<text x="665.5" y="360.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">2 MiB = 512 个 4 KiB</text>
+<text x="48.0" y="436.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">分块 chunk</text>
+<text x="48.0" y="458.0" font-size="12.5" fill="#57606A" text-anchor="start">4 MiB · 本地缓存从存储后端拉取的粒度</text>
+<rect x="370.0" y="420.0" width="1182.0" height="40.0" rx="6" fill="#FAFBFC" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="370.0" y="420.0" width="1182.0" height="40.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.4"/>
+<text x="961.0" y="446.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="middle">4 MiB = 1024 个 4 KiB</text>
+<line x1="48.0" y1="506.0" x2="1552.0" y2="506.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="532.0" font-size="13" fill="#8C959F" text-anchor="start">注：有的 ARM 内核普通页是 64 KiB，那时默认大页是 512 MiB；部署脚本因此从 /proc/meminfo 读大页大小，不写死。本书的鲲鹏 + openEuler 环境是 4 KiB / 2 MiB。</text></svg>

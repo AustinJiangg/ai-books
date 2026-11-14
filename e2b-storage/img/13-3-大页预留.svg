@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="572" viewBox="0 0 1600 572" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="572" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">大页怎么预留：以一台 512 GiB 的机器为例</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">init-client.sh 每次 build.sh -s 时计算：先给宿主留普通内存 max(4 GiB, 16%)，最多 42 GiB；剩下的做大页，其中 20% 立刻划成静态池（上限 HUGEPAGES_BASE_MAX_MIB=64 GiB），80% 作为可临时要的超分</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">配额度。</text>
+<rect x="48.0" y="200.0" width="120.4" height="64.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="109.7" y="238.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">给宿主留 42 GiB</text>
+<rect x="171.4" y="200.0" width="185.0" height="64.0" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="265.4" y="238.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">静态池 64 GiB</text>
+<rect x="359.4" y="200.0" width="1101.5" height="64.0" rx="6" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="911.6" y="238.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">超分配额度 376 GiB（用到才分配，用完归还）</text>
+<rect x="1463.9" y="200.0" width="85.1" height="64.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="48.0" y="186.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<text x="1552.0" y="186.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="end">512 GiB</text>
+<text x="1507.9" y="292.0" font-size="12" fill="#8C959F" text-anchor="end">470×20%=94，被上限截到 64，差额不划</text>
+<rect x="48.0" y="340.0" width="485.3" height="130.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="290.7" y="378.2" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">给宿主留的普通内存</text>
+<text x="290.7" y="401.4" font-size="12.5" fill="#57606A" text-anchor="middle">操作系统、Nomad、api、PostgreSQL、Harbor……</text>
+<text x="290.7" y="420.2" font-size="12.5" fill="#57606A" text-anchor="middle">template-manager 的堆和页缓存（上限 32 GiB）</text>
+<text x="290.7" y="438.9" font-size="12.5" fill="#57606A" text-anchor="middle">/tmp 的 tmpfs：模板和快照！</text>
+<rect x="557.3" y="340.0" width="485.3" height="130.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="800.0" y="378.2" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">静态池 nr_hugepages</text>
+<text x="800.0" y="401.4" font-size="12.5" fill="#57606A" text-anchor="middle">开机就划出、一直占着，不管有没有沙箱</text>
+<text x="800.0" y="420.2" font-size="12.5" fill="#57606A" text-anchor="middle">停服不释放：build.sh --purge-hugepages</text>
+<text x="800.0" y="438.9" font-size="12.5" fill="#57606A" text-anchor="middle">重启归零，下次 -s 重新预留</text>
+<rect x="1066.7" y="340.0" width="485.3" height="130.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1309.3" y="378.2" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">超分配 nr_overcommit_hugepages</text>
+<text x="1309.3" y="401.4" font-size="12.5" fill="#57606A" text-anchor="middle">静态池不够时临时向系统要</text>
+<text x="1309.3" y="420.2" font-size="12.5" fill="#57606A" text-anchor="middle">要不要得到取决于那时有没有连续的 2 MiB</text>
+<text x="1309.3" y="438.9" font-size="12.5" fill="#57606A" text-anchor="middle">客户机内存走这里，不记 memory 控制器</text>
+<line x1="48.0" y1="506.0" x2="1552.0" y2="506.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="532.0" font-size="13" fill="#8C959F" text-anchor="start">注：挂载点 /mnt/hugepages（hugetlbfs），脚本做了幂等判断。上游是固定 20% 不设上限，大内存机器开机就锁死近百 GiB。</text></svg>

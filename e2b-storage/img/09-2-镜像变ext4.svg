@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="646" viewBox="0 0 1600 646" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="646" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">base 阶段：镜像怎么变成一块能开机的 ext4 根盘</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">先按上限做一个空 ext4，用 loop 挂上把镜像层解进去，再缩到刚好；第一次用 busybox 开机只为装 systemd，然后扩到要求的大小；第二次用 systemd 正式开机，打第一份快照。</text>
+<rect x="48.0" y="156.0" width="346.0" height="104.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="221.0" y="190.5" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">追加系统层</text>
+<text x="221.0" y="213.8" font-size="12.5" fill="#57606A" text-anchor="middle">envd、busybox、provision.sh、</text>
+<text x="221.0" y="232.5" font-size="12.5" fill="#57606A" text-anchor="middle">hostname、resolv.conf</text>
+<circle cx="66.0" cy="174.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="66.0" y="178.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<path d="M400.0 208.0 L428.0 208.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="434.0" y="156.0" width="346.0" height="104.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="607.0" y="190.5" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">mkfs.ext4</text>
+<text x="607.0" y="213.8" font-size="12.5" fill="#57606A" text-anchor="middle">-b 4096，按上限大小</text>
+<text x="607.0" y="232.5" font-size="12.5" fill="#57606A" text-anchor="middle">/orchestrator/build-templates/&lt;id&gt;/</text>
+<circle cx="452.0" cy="174.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="452.0" y="178.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<path d="M786.0 208.0 L814.0 208.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="820.0" y="156.0" width="346.0" height="104.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="993.0" y="190.5" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">loop 挂载、解包</text>
+<text x="993.0" y="213.8" font-size="12.5" fill="#57606A" text-anchor="middle">这时才从 Harbor</text>
+<text x="993.0" y="232.5" font-size="12.5" fill="#57606A" text-anchor="middle">一层层拉 tar.gz</text>
+<circle cx="838.0" cy="174.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="838.0" y="178.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<path d="M1172.0 208.0 L1200.0 208.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1206.0" y="156.0" width="346.0" height="104.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1379.0" y="190.5" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">e2fsck → 缩小 → e2fsck</text>
+<text x="1379.0" y="213.8" font-size="12.5" fill="#57606A" text-anchor="middle">resize2fs -M</text>
+<text x="1379.0" y="232.5" font-size="12.5" fill="#57606A" text-anchor="middle">刚好装下镜像内容</text>
+<circle cx="1224.0" cy="174.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="1224.0" y="178.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<rect x="1206.0" y="330.0" width="346.0" height="104.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1379.0" y="364.6" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">第一次开机（busybox）</text>
+<text x="1379.0" y="387.8" font-size="12.5" fill="#57606A" text-anchor="middle">只跑 provision.sh</text>
+<text x="1379.0" y="406.6" font-size="12.5" fill="#57606A" text-anchor="middle">装 systemd 等，不打快照</text>
+<circle cx="1224.0" cy="348.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="1224.0" y="352.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<path d="M1200.0 382.0 L1172.0 382.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="820.0" y="330.0" width="346.0" height="104.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="993.0" y="364.6" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">e2fsck → 扩容</text>
+<text x="993.0" y="387.8" font-size="12.5" fill="#57606A" text-anchor="middle">resize2fs 到 disk_size_mb</text>
+<text x="993.0" y="406.6" font-size="12.5" fill="#57606A" text-anchor="middle">扩出的部分是稀疏的</text>
+<circle cx="838.0" cy="348.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="838.0" y="352.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<path d="M814.0 382.0 L786.0 382.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="434.0" y="330.0" width="346.0" height="104.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="607.0" y="364.6" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">第二次开机（systemd）</text>
+<text x="607.0" y="387.8" font-size="12.5" fill="#57606A" text-anchor="middle">Direct 方式根盘</text>
+<text x="607.0" y="406.6" font-size="12.5" fill="#57606A" text-anchor="middle">等 envd，sync</text>
+<circle cx="452.0" cy="348.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="452.0" y="352.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">7</text>
+<path d="M428.0 382.0 L400.0 382.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="48.0" y="330.0" width="346.0" height="104.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="221.0" y="364.6" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">暂停、打快照</text>
+<text x="221.0" y="387.8" font-size="12.5" fill="#57606A" text-anchor="middle">第 1 层：根盘完整</text>
+<text x="221.0" y="406.6" font-size="12.5" fill="#57606A" text-anchor="middle">内存去掉全零页</text>
+<circle cx="66.0" cy="348.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="66.0" y="352.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">8</text>
+<path d="M1379.0 266.0 L1379.0 324.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="48.0" y="474.0" width="1504.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="800.0" y="500.6" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">ARM 补丁在这里改了什么</text>
+<text x="800.0" y="524.5" font-size="13" fill="#57606A" text-anchor="middle">glibc 版 arm64 busybox（RPM 构建时拷进源码、编进二进制）；provision.sh 识别 openEuler 用 dnf；configure.sh 改成 POSIX sh</text>
+<line x1="48.0" y1="580.0" x2="1552.0" y2="580.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="606.0" font-size="13" fill="#8C959F" text-anchor="start">注：两次开机都是 Direct 方式（第 12 篇），根盘直接是这个文件，没有 NBD；第一次开机的内存是 NoopMemory，打快照时按“常驻且不全零”导出（第 13、14 篇）。</text></svg>

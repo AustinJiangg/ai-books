@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="668" viewBox="0 0 1600 668" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD6603D" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D6603D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="668" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">哪些内存页要导出：orchestrator 按顺序选判据</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">要导出的是“和父 build 不一样的页”。写跟踪位图只记客户机写过的页，最精确；任何一步不可信，就退回常驻页判据：宁可多导出，绝不少导出。</text>
+<rect x="108.0" y="156.0" width="480.0" height="60.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="348.0" y="190.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">这个沙箱是从快照恢复的吗？</text>
+<rect x="708.0" y="156.0" width="844.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1130.0" y="178.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">否（模板构建的第一次开机，NoopMemory）</text>
+<text x="1130.0" y="200.6" font-size="12" fill="#57606A" text-anchor="middle">GET /memory：常驻页，剔除全零页（映射到 uuid.Nil）</text>
+<path d="M594.0 186.0 L702.0 186.0" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<text x="648.0" y="178.0" font-size="12.5" fill="#57606A" font-weight="600" text-anchor="middle">否</text>
+<path d="M348.0 222.0 L348.0 260.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="358.0" y="245.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">是</text>
+<rect x="108.0" y="266.0" width="480.0" height="60.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="348.0" y="288.3" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">这台机器开了写跟踪吗？</text>
+<text x="348.0" y="310.9" font-size="12" fill="#57606A" text-anchor="middle">有 HDBSS 默认开；FC_TRACK_DIRTY_PAGES 可强制</text>
+<path d="M348.0 332.0 L348.0 370.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="358.0" y="355.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">开了</text>
+<rect x="108.0" y="376.0" width="480.0" height="60.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="348.0" y="410.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">检查点累积的 DirtySinceBoot 可信吗？</text>
+<path d="M348.0 442.0 L348.0 480.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="358.0" y="465.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">可信</text>
+<rect x="108.0" y="486.0" width="480.0" height="76.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="348.0" y="507.3" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">写跟踪位图 ∪ DirtySinceBoot</text>
+<text x="348.0" y="529.9" font-size="12" fill="#57606A" text-anchor="middle">Firecracker 写出 FCDB 位图，4 KiB 一页</text>
+<text x="348.0" y="547.9" font-size="12" fill="#57606A" text-anchor="middle">日志 source=tracked / tracked+accumulated</text>
+<rect x="708.0" y="316.0" width="844.0" height="120.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1130.0" y="339.8" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">常驻页判据 GET /memory/dirty</text>
+<text x="1130.0" y="363.1" font-size="12.5" fill="#57606A" text-anchor="middle">pagemap：在内存里、且没有写保护封条</text>
+<text x="1130.0" y="381.8" font-size="12.5" fill="#57606A" text-anchor="middle">x86：精确（只读页有封条）</text>
+<text x="1130.0" y="400.6" font-size="12.5" fill="#57606A" text-anchor="middle">ARM 补丁：换入过的都算，读也算</text>
+<text x="1130.0" y="419.3" font-size="12.5" fill="#57606A" text-anchor="middle">日志 source=resident</text>
+<path d="M594.0 296.0 L788.0 296.0 L788.0 310.0" fill="none" stroke="#D6603D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD6603D)"/>
+<text x="652.2" y="288.0" font-size="12.5" fill="#D6603D" font-weight="600" text-anchor="middle">没开</text>
+<path d="M594.0 406.0 L702.0 406.0" fill="none" stroke="#D6603D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD6603D)"/>
+<text x="648.0" y="398.0" font-size="12.5" fill="#D6603D" font-weight="600" text-anchor="middle">不可信</text>
+<line x1="48.0" y1="602.0" x2="1552.0" y2="602.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="628.0" font-size="13" fill="#8C959F" text-anchor="start">注：写跟踪位图本身也可能取不到（Firecracker 没有这个接口），同样退回常驻页判据。磁盘那一路没有判据之争，COW 文件里有的就是写过的。</text></svg>

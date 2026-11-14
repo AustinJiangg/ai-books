@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="738" viewBox="0 0 1600 738" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="738" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">部署流程里，存储相关的东西是哪一步放上去的</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">RPM 把二进制、内核、定制 Firecracker 和部署包装到 /opt/e2b-infra；-i 装 MinIO、Harbor、nginx 并用 dep/ 覆盖上游文件；-s 才真正建目录、挂 tmpfs、预留大页、放运行环境文件、启动 Harbor 和提交 job。</text>
+<rect x="48.0" y="156.0" width="353.5" height="54.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="224.8" y="188.1" font-size="16" fill="#3D3C38" font-weight="600" text-anchor="middle">RPM 安装</text>
+<rect x="58.0" y="230.0" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="224.8" y="251.7" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">bin/orchestrator  envd</text>
+<rect x="58.0" y="275.2" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="224.8" y="296.9" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">bin/vmlinux.bin（.openeuler）</text>
+<rect x="58.0" y="320.3" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="224.8" y="342.1" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">bin/firecracker（定制，aarch64）</text>
+<rect x="58.0" y="365.5" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="224.8" y="387.2" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">nomad/*.hcl（上游版）</text>
+<rect x="58.0" y="410.6" width="333.5" height="84.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="224.8" y="439.6" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">dep/：.env、template-manager.hcl、</text>
+<text x="224.8" y="456.8" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">init-client.sh、Harbor/MinIO 包、</text>
+<text x="224.8" y="474.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">ubuntu-22.04-custom.tar.gz</text>
+<path d="M405.5 183.0 L427.5 183.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="431.5" y="156.0" width="353.5" height="54.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="608.2" y="188.1" font-size="16" fill="#9A3215" font-weight="600" text-anchor="middle">部署前（手工一次）</text>
+<rect x="441.5" y="230.0" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.2" y="251.7" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">自编译 nbd.ko 固化到系统</text>
+<rect x="441.5" y="275.2" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.2" y="296.9" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">modules-load.d：开机加载</text>
+<rect x="441.5" y="320.3" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.2" y="342.1" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">modprobe.d：nbds_max=512</text>
+<rect x="441.5" y="365.5" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.2" y="387.2" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">升级内核后要重做</text>
+<path d="M789.0 183.0 L811.0 183.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="815.0" y="156.0" width="353.5" height="54.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="991.8" y="188.1" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">build.sh -i</text>
+<rect x="825.0" y="230.0" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="991.8" y="251.7" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">MinIO → /root/data/minio</text>
+<rect x="825.0" y="275.2" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="991.8" y="296.9" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">Harbor 解压、改 harbor.yml</text>
+<rect x="825.0" y="320.3" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="991.8" y="342.1" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">nginx：harbor:443 + 自签证书</text>
+<rect x="825.0" y="365.5" width="333.5" height="62.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="991.8" y="392.1" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">dep/ 覆盖 /opt/e2b-infra 同名文件
+（</text>
+<text x="991.8" y="409.2" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">STORAGE_PROVIDER="Local" 由此生效）</text>
+<rect x="825.0" y="437.5" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="991.8" y="459.2" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">SDK 补丁、检查点 SDK</text>
+<path d="M1172.5 183.0 L1194.5 183.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1198.5" y="156.0" width="353.5" height="54.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1375.2" y="188.1" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">build.sh -s</text>
+<rect x="1208.5" y="230.0" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1375.2" y="251.7" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">启动 Harbor，建项目，推基础镜像</text>
+<rect x="1208.5" y="275.2" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1375.2" y="296.9" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">/orchestrator/{sandbox,template,build}</text>
+<rect x="1208.5" y="320.3" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1375.2" y="342.1" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">/swapfile 1G；/mnt/snapshot-cache tmpfs</text>
+<rect x="1208.5" y="365.5" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1375.2" y="387.2" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">nbd udev 规则；/fc-vm；大页预留</text>
+<rect x="1208.5" y="410.6" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1375.2" y="432.4" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">/fc-envd /fc-kernels /fc-versions</text>
+<rect x="1208.5" y="455.8" width="333.5" height="35.2" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1375.2" y="477.5" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">提交 redis、template-manager、edge、api</text>
+<rect x="48.0" y="556.0" width="1504.0" height="80.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="587.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">build.sh -d：停进程、杀残留 Firecracker；不动 /tmp/templates、/orchestrator 下的缓存、大页池、MinIO 和 Harbor 的数据</text>
+<text x="800.0" y="611.2" font-size="12.5" fill="#57606A" text-anchor="middle">大页要 build.sh --purge-hugepages；被强杀的沙箱留在 /orchestrator/sandbox 的 COW 文件不会被自动清理</text>
+<line x1="48.0" y1="672.0" x2="1552.0" y2="672.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="698.0" font-size="13" fill="#8C959F" text-anchor="start">注：改任何配置都要改源头 e2b-deploy/dep/…，再 build.sh -r template-manager 只重跑这一个 job；重跑会结束所有运行中的沙箱、作废检查点、清空 /orchestrator/build。</text></svg>

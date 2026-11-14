@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="758" viewBox="0 0 1600 758" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="758" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">检查点树：回滚到 c2 再打检查点，就长出一条分支</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">回滚不删除任何检查点，比目标新的 c3 作为另一条分支保留，照样能回滚过去；下一个检查点的父亲是回滚的目标。每个检查点只存它那段时间（epoch）写过的页，第一个默认存完整内存。</text>
+<rect x="228.0" y="196.0" width="160.0" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="308.0" y="223.9" font-size="17" fill="#9A3215" font-weight="600" text-anchor="middle">c1</text>
+<text x="308.0" y="246.5" font-size="12" fill="#57606A" text-anchor="middle">完整内存（根）</text>
+<rect x="228.0" y="326.0" width="160.0" height="70.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="308.0" y="353.9" font-size="17" fill="#4B3FA8" font-weight="600" text-anchor="middle">c2</text>
+<text x="308.0" y="376.5" font-size="12" fill="#57606A" text-anchor="middle">这一段写过的页</text>
+<rect x="58.0" y="456.0" width="160.0" height="70.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="138.0" y="483.9" font-size="17" fill="#4B3FA8" font-weight="600" text-anchor="middle">c3</text>
+<text x="138.0" y="506.5" font-size="12" fill="#57606A" text-anchor="middle">这一段写过的页</text>
+<rect x="398.0" y="456.0" width="160.0" height="70.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="478.0" y="483.9" font-size="17" fill="#4B3FA8" font-weight="600" text-anchor="middle">c4</text>
+<text x="478.0" y="506.5" font-size="12" fill="#57606A" text-anchor="middle">这一段写过的页</text>
+<path d="M308.0 272.0 L308.0 320.0" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M308.0 402.0 L138.0 450.0" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M308.0 402.0 L478.0 450.0" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<text x="570.0" y="496.0" font-size="12.5" fill="#8C959F" text-anchor="start">回滚到 c2 之后打的</text>
+<rect x="748.0" y="156.0" width="804.0" height="400.0" rx="14" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="768.0" y="186.0" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="start">/orchestrator/build/checkpoints/&lt;沙箱ID&gt;/</text>
+<rect x="768.0" y="206.0" width="764.0" height="46.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="784.0" y="235.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">&lt;检查点ID&gt;/snapfile</text>
+<text x="1078.0" y="235.0" font-size="13" fill="#57606A" text-anchor="start">机器状态（Firecracker 写）</text>
+<rect x="768.0" y="262.0" width="764.0" height="46.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="784.0" y="291.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">&lt;检查点ID&gt;/mem_diff</text>
+<text x="1078.0" y="291.0" font-size="13" fill="#57606A" text-anchor="start">稀疏：这一段写过的页，按原位置</text>
+<rect x="768.0" y="318.0" width="764.0" height="46.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="784.0" y="347.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">&lt;检查点ID&gt;/mem_bitmap</text>
+<text x="1078.0" y="347.0" font-size="13" fill="#57606A" text-anchor="start">FCDB：魔数、版本、页大小、页数、位图</text>
+<rect x="768.0" y="374.0" width="764.0" height="46.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="784.0" y="403.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">&lt;检查点ID&gt;/rootfs.header</text>
+<text x="1078.0" y="403.0" font-size="13" fill="#57606A" text-anchor="start">这一刻的磁盘视图（第 17 篇）</text>
+<rect x="768.0" y="430.0" width="764.0" height="46.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="784.0" y="459.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">&lt;检查点ID&gt;/manifest.json</text>
+<text x="1078.0" y="459.0" font-size="13" fill="#57606A" text-anchor="start">给人看的，程序不读</text>
+<rect x="768.0" y="486.0" width="764.0" height="46.0" rx="8" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="784.0" y="515.0" font-size="13.5" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">layers/</text>
+<text x="1078.0" y="515.0" font-size="13" fill="#57606A" text-anchor="start">封存的磁盘写层，按引用计数回收</text>
+<rect x="48.0" y="586.0" width="1504.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="612.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">打检查点：PUT /snapshot/create，类型 Diff，这次传 mem_file_path 和 dirty_bitmap_path</text>
+<text x="800.0" y="636.2" font-size="12.5" fill="#57606A" text-anchor="middle">Firecracker 按写跟踪写出这一段的页和位图，然后清空自己的位图开始记下一段；耗时和写了多少页成正比</text>
+<line x1="48.0" y1="692.0" x2="1552.0" y2="692.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="718.0" font-size="13" fill="#8C959F" text-anchor="start">注：删除还有孩子的检查点（比如 c2）只把它隐藏，文件留给后代。账本只在 orchestrator 进程内存里；orchestrator 重启或沙箱暂停再恢复（换了一代 Firecracker），检查点全部作废。</text></svg>

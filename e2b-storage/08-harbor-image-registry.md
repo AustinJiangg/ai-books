@@ -96,6 +96,8 @@ var DefaultPlatform = containerregistry.Platform{
 
 拉下来之后还会检查一遍平台。所以，**如果有人往 Harbor 里推了一个 x86 镜像，用它建模板会直接报平台不匹配**，而不是装出一个跑不起来的根盘。
 
+![镜像在仓库里怎么存](img/08-1-镜像在仓库里.svg)
+
 ### 3.4 在仓库的磁盘上长什么样
 
 标准的仓库服务（Docker 官方的 distribution，Harbor 内部用的也是它）把数据存在一个目录里，大致是：
@@ -198,11 +200,7 @@ docker push <本机IP>:2900/e2b-orchestration/ubuntu:22.04-custom
 
 细心的读者会发现：推镜像用的是 `<本机IP>:2900`，模板里拉镜像写的却是 `harbor:443`。这是同一个仓库的两个门。
 
-```
-  docker push ──▶ <本机IP>:2900 ──(HTTP)──────────────────────▶ Harbor
-                                                                  ▲
-  template-manager 拉镜像 ──▶ harbor:443 ──(HTTPS)──▶ nginx ──────┘
-```
+![推送和拉取的两个地址](img/08-2-两个地址.svg)
 
 **推送走 2900（HTTP）**：
 

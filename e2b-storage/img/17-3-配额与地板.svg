@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="632" viewBox="0 0 1600 632" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="632" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">检查点配额：三道闸，加一块拿不走的“地板”</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">沙箱还在运行，就至少要留下一个完整的根：约一份客户机内存 M，加磁盘层和 header 的开销 ε（实测约 61 MiB，按 256 MiB 留余量）。字节上限低于 M+ε 没有意义。</text>
+<text x="88.0" y="172.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">以 M = 2 GiB 的沙箱为例，CHECKPOINT_MAX_BYTES_PER_SANDBOX 设在哪个区间：</text>
+<line x1="88.0" y1="246.0" x2="1512.0" y2="246.0" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" marker-end="url(#m1F2328)"/>
+<line x1="88.0" y1="240.0" x2="88.0" y2="252.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round"/>
+<text x="88.0" y="272.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0 GiB</text>
+<line x1="325.3" y1="240.0" x2="325.3" y2="252.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round"/>
+<text x="325.3" y="272.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1 GiB</text>
+<line x1="562.7" y1="240.0" x2="562.7" y2="252.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round"/>
+<text x="562.7" y="272.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">2 GiB</text>
+<line x1="800.0" y1="240.0" x2="800.0" y2="252.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round"/>
+<text x="800.0" y="272.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">3 GiB</text>
+<line x1="1037.3" y1="240.0" x2="1037.3" y2="252.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1037.3" y="272.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">4 GiB</text>
+<line x1="1274.7" y1="240.0" x2="1274.7" y2="252.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1274.7" y="272.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">5 GiB</text>
+<line x1="1512.0" y1="240.0" x2="1512.0" y2="252.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round"/>
+<text x="1512.0" y="272.0" font-size="12" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">6 GiB</text>
+<rect x="88.0" y="186.0" width="534.0" height="44.0" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="355.0" y="214.0" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="middle">上限低于地板 M+ε ≈ 2.25 GiB：没意义</text>
+<rect x="622.0" y="186.0" width="474.7" height="44.0" rx="6" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3" stroke-dasharray="5 4"/>
+<text x="859.3" y="214.0" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">高于 M+ε：不会卡死</text>
+<rect x="1096.7" y="186.0" width="415.3" height="44.0" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1304.3" y="214.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">高于 2M+ε：最坏情况也能留一个回滚点</text>
+<rect x="48.0" y="316.0" width="485.3" height="100.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="290.7" y="348.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">CHECKPOINT_MIN_FREE_BYTES</text>
+<text x="290.7" y="371.5" font-size="12.5" fill="#57606A" text-anchor="middle">打之前检查剩余空间</text>
+<text x="290.7" y="390.2" font-size="12.5" fill="#57606A" text-anchor="middle">默认 max(4 GiB, 2×客户机内存)；0 关闭</text>
+<rect x="557.3" y="316.0" width="485.3" height="100.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="348.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">CHECKPOINT_MAX_PER_SANDBOX</text>
+<text x="800.0" y="371.5" font-size="12.5" fill="#57606A" text-anchor="middle">可见检查点个数</text>
+<text x="800.0" y="390.2" font-size="12.5" fill="#57606A" text-anchor="middle">默认 0：不限</text>
+<rect x="1066.7" y="316.0" width="485.3" height="100.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1309.3" y="348.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">CHECKPOINT_MAX_BYTES_PER_SANDBOX</text>
+<text x="1309.3" y="371.5" font-size="12.5" fill="#57606A" text-anchor="middle">按实际分配块计的总字节</text>
+<text x="1309.3" y="390.2" font-size="12.5" fill="#57606A" text-anchor="middle">默认 0：不限；超了回 429 checkpoint_bytes_limit</text>
+<rect x="48.0" y="446.0" width="740.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="418.0" y="470.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">超了字节上限，删哪个能腾出空间</text>
+<text x="418.0" y="493.8" font-size="12.5" fill="#57606A" text-anchor="middle">删更老的：被并进唯一的孩子，省下孩子覆盖掉的页</text>
+<text x="418.0" y="512.5" font-size="12.5" fill="#57606A" text-anchor="middle">删当前基础或分叉点：只能隐藏，只省几十 KB</text>
+<rect x="812.0" y="446.0" width="740.0" height="84.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1182.0" y="470.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">本环境</text>
+<text x="1182.0" y="493.8" font-size="12.5" fill="#57606A" text-anchor="middle">三个变量都没设：剩余空间按默认阈值检查，数量和字节不限</text>
+<text x="1182.0" y="512.5" font-size="12.5" fill="#57606A" text-anchor="middle">回滚本身从不受配额限制</text>
+<line x1="48.0" y1="566.0" x2="1552.0" y2="566.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="592.0" font-size="13" fill="#8C959F" text-anchor="start">注：能力文件 /orchestrator/build/checkpoint-capabilities.json 列出每个值，并标明来自环境变量还是默认值。</text></svg>

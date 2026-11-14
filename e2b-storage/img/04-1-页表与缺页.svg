@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="632" viewBox="0 0 1600 632" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="632" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">虚拟内存与缺页：用到了才准备</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">进程看到的是虚拟地址，经页表一页一页地翻译成物理内存。页表项的存在位是 0 时，访问会触发缺页，内核这时才分配物理页、填内容、登记页表，然后让进程接着跑。</text>
+<text x="48.0" y="166.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">进程的虚拟地址空间</text>
+<rect x="48.0" y="186.0" width="220.0" height="38.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="158.0" y="210.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">虚拟页 0</text>
+<rect x="48.0" y="232.0" width="220.0" height="38.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="158.0" y="256.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">虚拟页 1</text>
+<rect x="48.0" y="278.0" width="220.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="158.0" y="302.0" font-size="13" fill="#8C959F" text-anchor="middle">虚拟页 2（未准备）</text>
+<rect x="48.0" y="324.0" width="220.0" height="38.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="158.0" y="348.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">虚拟页 3</text>
+<rect x="48.0" y="370.0" width="220.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="158.0" y="394.0" font-size="13" fill="#8C959F" text-anchor="middle">虚拟页 4（未准备）</text>
+<rect x="48.0" y="416.0" width="220.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="158.0" y="440.0" font-size="13" fill="#8C959F" text-anchor="middle">虚拟页 5（未准备）</text>
+<rect x="48.0" y="462.0" width="220.0" height="38.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="158.0" y="486.0" font-size="13" fill="#1D4F91" font-weight="600" text-anchor="middle">虚拟页 6</text>
+<rect x="48.0" y="508.0" width="220.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="158.0" y="532.0" font-size="13" fill="#8C959F" text-anchor="middle">虚拟页 7（未准备）</text>
+<text x="420.0" y="166.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">页表</text>
+<rect x="420.0" y="186.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="210.0" font-size="13" fill="#1F2328" text-anchor="middle">存在=1 → 物理页 7</text>
+<rect x="420.0" y="232.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="256.0" font-size="13" fill="#1F2328" text-anchor="middle">存在=1 → 物理页 2</text>
+<rect x="420.0" y="278.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="302.0" font-size="13" fill="#9A3215" text-anchor="middle">存在=0</text>
+<rect x="420.0" y="324.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="348.0" font-size="13" fill="#1F2328" text-anchor="middle">存在=1 → 物理页 9</text>
+<rect x="420.0" y="370.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="394.0" font-size="13" fill="#9A3215" text-anchor="middle">存在=0</text>
+<rect x="420.0" y="416.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="440.0" font-size="13" fill="#9A3215" text-anchor="middle">存在=0</text>
+<rect x="420.0" y="462.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="486.0" font-size="13" fill="#1F2328" text-anchor="middle">存在=1 → 物理页 4</text>
+<rect x="420.0" y="508.0" width="200.0" height="38.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2"/>
+<text x="520.0" y="532.0" font-size="13" fill="#9A3215" text-anchor="middle">存在=0</text>
+<text x="820.0" y="166.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">物理内存</text>
+<rect x="820.0" y="186.0" width="120.0" height="60.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="880.0" y="221.0" font-size="13" fill="#8C959F" text-anchor="middle">物理页 0</text>
+<rect x="950.0" y="186.0" width="120.0" height="60.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1010.0" y="221.0" font-size="13" fill="#8C959F" text-anchor="middle">物理页 1</text>
+<rect x="820.0" y="258.0" width="120.0" height="60.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="880.0" y="293.0" font-size="13" fill="#3D3C38" text-anchor="middle">物理页 2</text>
+<rect x="950.0" y="258.0" width="120.0" height="60.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1010.0" y="293.0" font-size="13" fill="#8C959F" text-anchor="middle">物理页 3</text>
+<rect x="820.0" y="330.0" width="120.0" height="60.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="880.0" y="365.0" font-size="13" fill="#3D3C38" text-anchor="middle">物理页 4</text>
+<rect x="950.0" y="330.0" width="120.0" height="60.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1010.0" y="365.0" font-size="13" fill="#8C959F" text-anchor="middle">物理页 5</text>
+<rect x="820.0" y="402.0" width="120.0" height="60.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="880.0" y="437.0" font-size="13" fill="#8C959F" text-anchor="middle">物理页 6</text>
+<rect x="950.0" y="402.0" width="120.0" height="60.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1010.0" y="437.0" font-size="13" fill="#3D3C38" text-anchor="middle">物理页 7</text>
+<rect x="820.0" y="474.0" width="120.0" height="60.0" rx="6" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="880.0" y="509.0" font-size="13" fill="#8C959F" text-anchor="middle">物理页 8</text>
+<rect x="950.0" y="474.0" width="120.0" height="60.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1010.0" y="509.0" font-size="13" fill="#3D3C38" text-anchor="middle">物理页 9</text>
+<path d="M274.0 205.0 L414.0 205.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M274.0 251.0 L414.0 251.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M274.0 343.0 L414.0 343.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M274.0 481.0 L414.0 481.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="1140.0" y="186.0" width="412.0" height="340.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1154.0" y="276.6" font-size="16" fill="#9A3215" font-weight="600" text-anchor="start">访问虚拟页 2 → 缺页</text>
+<text x="1154.0" y="301.2" font-size="13.5" fill="#57606A" text-anchor="start">① CPU 发现存在位是 0，停下</text>
+<text x="1154.0" y="321.4" font-size="13.5" fill="#57606A" text-anchor="start">② 交给内核</text>
+<text x="1154.0" y="341.7" font-size="13.5" fill="#57606A" text-anchor="start">③ 找一页空闲物理内存</text>
+<text x="1154.0" y="361.9" font-size="13.5" fill="#57606A" text-anchor="start">④ 填内容：新内存填零；</text>
+<text x="1154.0" y="382.2" font-size="13.5" fill="#57606A" text-anchor="start">文件映射从文件读；</text>
+<text x="1154.0" y="402.4" font-size="13.5" fill="#57606A" text-anchor="start">登记了 UFFD 的交给用户态程序</text>
+<text x="1154.0" y="422.7" font-size="13.5" fill="#57606A" text-anchor="start">⑤ 登记页表，存在位置 1</text>
+<text x="1154.0" y="442.9" font-size="13.5" fill="#57606A" text-anchor="start">⑥ 进程接着跑</text>
+<line x1="48.0" y1="566.0" x2="1552.0" y2="566.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="592.0" font-size="13" fill="#8C959F" text-anchor="start">注：E2B 要让客户机内存也“用到才准备”，但数据散在好几代快照里，内核不知道去哪读，所以要用 userfaultfd 把第 ④ 步交给 orchestrator。</text></svg>

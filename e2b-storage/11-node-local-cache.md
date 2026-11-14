@@ -84,6 +84,8 @@ mkdir -p /orchestrator/build
 
 为什么分两张表？因为一个 build 的 header 可能引用好几个其他 build 的数据（第 7 篇）。比如 build C 的磁盘数据来自 A、B、C 三层，那么模板表里只有 C 一项，数据表里却有 A、B、C 三项 rootfs。如果另一个模板 D 也引用 A，它们共享 A 的那一项。
 
+![两张缓存表](img/11-1-两张缓存表.svg)
+
 ### 3.1 启动时清空
 
 模板表的初始化代码里有这么一段：
@@ -166,25 +168,7 @@ func Slice(off, length) []byte {
 
 把第 7 篇的 header 和本篇的缓存串起来。沙箱的客户机要读根盘第 N 块：
 
-```
- 客户机读 /dev/vda 第 N 块
-      │  （第 12 篇：virtio-blk → /dev/nbdX → NBD 服务）
-      ▼
- 沙箱自己写过第 N 块吗？ ─是─▶ 从 /orchestrator/sandbox/rootfs-…cow 读，结束
-      │否
-      ▼
- 查当前 build 的 rootfs.ext4.header（在模板表里，内存中）
-      │  得到：数据在 build B 的 rootfs.ext4 里，偏移 M
-      ▼
- 去数据表里取“B/rootfs.ext4”这一项
-      │  没有就新建：在 /orchestrator/build 下建稀疏文件、mmap、建 chunker
-      ▼
- chunker.Slice(M, 4KiB)
-      │  本地有：直接返回
-      │  本地没有：从存储后端（/tmp/templates/B/rootfs.ext4）拉整个 4 MiB 块
-      ▼
- 把这 4 KiB 交回给 NBD 服务，回给内核，回给客户机
-```
+![读一块数据的完整路径](img/11-2-读一块数据.svg)
 
 内存的路径完全一样，只是起点换成了 UFFD 缺页（第 13 篇），查的是 `memfile.header`。
 
@@ -214,15 +198,7 @@ func Slice(off, length) []byte {
 
 这套环境有一个独特的现象。按数据流走一遍：
 
-```
- /tmp/templates/<B>/memfile           ← 存储后端，在 tmpfs 上，占内存
-      │ 拉取 4 MiB
-      ▼
- /orchestrator/build/<B>-memfile-xxx  ← 本地缓存，在真硬盘上，但刚写入的内容在页缓存里
-      │ UFFDIO_COPY
-      ▼
- Firecracker 进程里的客户机内存        ← 大页，占内存
-```
+![同一份数据在内存里出现不止一次](img/11-3-内存里两份.svg)
 
 同一个模板的同一页内存数据，可能同时在三处占用宿主内存：
 

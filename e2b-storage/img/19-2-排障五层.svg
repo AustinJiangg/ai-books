@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="752" viewBox="0 0 1600 752" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="752" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">存储问题按五层排查：从远到近，逐层排除</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">数据从存储后端一路流到客户机。出问题时沿着这条路一层层看，每层都有一两个最能说明问题的地方。</text>
+<rect x="48.0" y="156.0" width="300.0" height="86.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="198.0" y="204.4" font-size="17" fill="#8A5300" font-weight="600" text-anchor="middle">① 存储后端</text>
+<rect x="368.0" y="156.0" width="480.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.0" y="203.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">模板文件在不在？后端到底是什么？</text>
+<rect x="868.0" y="156.0" width="684.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1210.0" y="193.2" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ls /tmp/templates/&lt;buildID&gt;；findmnt /tmp；</text>
+<text x="1210.0" y="212.7" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">/proc/&lt;PID&gt;/environ 里的 STORAGE_PROVIDER</text>
+<path d="M198.0 246.0 L198.0 258.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="48.0" y="260.0" width="300.0" height="86.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="308.4" font-size="17" fill="#1D4F91" font-weight="600" text-anchor="middle">② 本地缓存</text>
+<rect x="368.0" y="260.0" width="480.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.0" y="307.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">拉得下来吗？磁盘满了没？</text>
+<rect x="868.0" y="260.0" width="684.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1210.0" y="297.1" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">/orchestrator/build、/orchestrator/template；</text>
+<text x="1210.0" y="316.6" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">df -h /orchestrator；du 对比 ls -l</text>
+<path d="M198.0 350.0 L198.0 362.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="48.0" y="364.0" width="300.0" height="86.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="198.0" y="412.4" font-size="17" fill="#0E6B4F" font-weight="600" text-anchor="middle">③ 磁盘栈</text>
+<rect x="368.0" y="364.0" width="480.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.0" y="411.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">有 NBD 设备吗？COW 写得进吗？</text>
+<rect x="868.0" y="364.0" width="684.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1210.0" y="401.1" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">/sys/module/nbd/parameters/nbds_max；</text>
+<text x="1210.0" y="420.6" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">/sys/block/nbdN/{size,pid}；…/rootfs-&lt;ID&gt;-*.link</text>
+<path d="M198.0 454.0 L198.0 466.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="48.0" y="468.0" width="300.0" height="86.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="198.0" y="516.4" font-size="17" fill="#4B3FA8" font-weight="600" text-anchor="middle">④ 内存栈</text>
+<rect x="368.0" y="468.0" width="480.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.0" y="515.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">UFFD 握手了吗？大页够吗？</text>
+<rect x="868.0" y="468.0" width="684.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1210.0" y="505.1" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">ls /tmp/uffd-*.sock；</text>
+<text x="1210.0" y="524.6" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">grep HugePages_ /proc/meminfo</text>
+<path d="M198.0 558.0 L198.0 570.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="48.0" y="572.0" width="300.0" height="86.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="198.0" y="620.4" font-size="17" fill="#9A3215" font-weight="600" text-anchor="middle">⑤ 快照与检查点</text>
+<rect x="368.0" y="572.0" width="480.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="608.0" y="619.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">导出、上传、回滚成功了吗？</text>
+<rect x="868.0" y="572.0" width="684.0" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1210.0" y="609.1" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">日志 source=resident|tracked；</text>
+<text x="1210.0" y="628.6" font-size="13" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">/orchestrator/build/checkpoint-capabilities.json</text>
+<line x1="48.0" y1="686.0" x2="1552.0" y2="686.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="712.0" font-size="13" fill="#8C959F" text-anchor="start">注：常见问题和对应的篇目见第 19 篇的速查表。大多数“模板突然没了”的问题，答案都在第 ① 层：/tmp 是 tmpfs。</text></svg>

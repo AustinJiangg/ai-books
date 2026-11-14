@@ -50,16 +50,7 @@ orchestrator 收到请求后：
 
 `Sandbox.Pause` 的主体，按顺序是这些步骤：
 
-```
- ① 停健康检查
- ② 让 Firecracker 暂停虚拟机
- ③ 让 Firecracker 写 snapfile（不导出内存）
- ④ 问出这一轮哪些内存页要导出（脏页位图）
- ⑤ 把这些页从 Firecracker 进程里直接拷出来，生成 memfile diff 和新 memfile.header
- ⑥ 弹出磁盘的 COW 文件，停掉沙箱，生成 rootfs diff 和新 rootfs.ext4.header
- ⑦ 写 metadata.json
- ⑧ 返回六样东西，交给上层放进缓存、后台上传
-```
+![一次暂停的八步](img/14-1-暂停八步.svg)
 
 逐步看。
 
@@ -95,6 +86,8 @@ orchestrator 有三种回答方式，按优先级：
 第二种是上游原本的做法。在 x86 上它是精确的；在 ARM 补丁下，因为填页时不再贴封条，它变成了“**被换入过的页**都算”，比真正写过的页多。第 15 篇专门讲这件事和第一种方式的来历。
 
 不管哪种，结果都是一张位图：第 N 位为 1，表示第 N 页要导出。
+
+![脏页判据](img/14-2-脏页判据.svg)
 
 ### 3.4 ⑤ 直接从 Firecracker 进程里拷
 

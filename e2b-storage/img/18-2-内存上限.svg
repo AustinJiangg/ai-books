@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="618" viewBox="0 0 1600 618" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="618" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">template-manager 的 32 GiB 上限记的是什么</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Firecracker 进程和 orchestrator 在同一个 Nomad 任务 cgroup 里（ARM 补丁注释掉了把它挪进独立 cgroup 的几行），但客户机内存是 hugetlb 映射，只记 hugetlb 控制器，不进 memory.max 的账。</text>
+<rect x="48.0" y="156.0" width="900.0" height="360.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.4"/>
+<text x="68.0" y="188.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">nomad.slice/…/&lt;allocID&gt;.start.scope   memory.max = 32 GiB</text>
+<rect x="78.0" y="216.0" width="400.0" height="120.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="278.0" y="258.6" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">/usr/bin/template-manager</text>
+<text x="278.0" y="281.8" font-size="12.5" fill="#57606A" text-anchor="middle">堆：几十 MB 到几 GB</text>
+<text x="278.0" y="300.6" font-size="12.5" fill="#57606A" text-anchor="middle">构建、快照读写文件的页缓存</text>
+<rect x="518.0" y="216.0" width="400.0" height="120.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="718.0" y="258.6" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">每个沙箱的 Firecracker</text>
+<text x="718.0" y="281.8" font-size="12.5" fill="#57606A" text-anchor="middle">进程本身的少量内存</text>
+<text x="718.0" y="300.6" font-size="12.5" fill="#57606A" text-anchor="middle">读写 /dev/nbdN 产生的页缓存</text>
+<rect x="78.0" y="366.0" width="840.0" height="120.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="498.0" y="408.6" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">撑满它的通常是页缓存</text>
+<text x="498.0" y="431.8" font-size="12.5" fill="#57606A" text-anchor="middle">解包镜像、写 rootfs、写 memfile diff、读写 /orchestrator/build 缓存文件</text>
+<text x="498.0" y="450.6" font-size="12.5" fill="#57606A" text-anchor="middle">事故：建 200 MB 基础镜像时被 OOM 杀（Exit 137），现场堆只有几十 MB</text>
+<rect x="1008.0" y="156.0" width="544.0" height="170.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1280.0" y="223.1" font-size="16" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机内存（2 MiB 大页）</text>
+<text x="1280.0" y="247.0" font-size="13" fill="#57606A" text-anchor="middle">MAP_HUGETLB，只记 hugetlb 控制器</text>
+<text x="1280.0" y="266.5" font-size="13" fill="#57606A" text-anchor="middle">几百个沙箱也不占这 32 GiB</text>
+<rect x="1008.0" y="356.0" width="544.0" height="160.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1280.0" y="399.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">设多大</text>
+<text x="1280.0" y="423.1" font-size="12.5" fill="#57606A" text-anchor="middle">太小：OOM（Exit 137），api 一直 503</text>
+<text x="1280.0" y="441.8" font-size="12.5" fill="#57606A" text-anchor="middle">太大：超过节点可分配内存，调度不上</text>
+<text x="1280.0" y="460.6" font-size="12.5" fill="#57606A" text-anchor="middle">（Dimension "memory" exhausted），同样 api 503</text>
+<text x="1280.0" y="479.3" font-size="12.5" fill="#57606A" text-anchor="middle">历史：8192 → 32768 → 262144 → 32768 MiB</text>
+<line x1="48.0" y1="552.0" x2="1552.0" y2="552.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="578.0" font-size="13" fill="#8C959F" text-anchor="start">注：/sys/fs/cgroup/e2b/sbx-&lt;id&gt; 目录仍会被建出来，但里面没有进程。</text></svg>

@@ -175,6 +175,8 @@ JOBS=(redis template-manager edge api)
 
 > 唯一会读 `STORAGE_PROVIDER` 的进程，拿到的是写死的 `"Local"`。`.env` 里的 `MinioBucket` 只被渲染进了一个不提交的文件。
 
+![四步链路](img/10-1-四步链路.svg)
+
 ### 3.3 于是落到了 `/tmp/templates`
 
 选了 `Local`，又没有设 `LOCAL_TEMPLATE_STORAGE_BASE_PATH`，就用代码默认值：
@@ -309,6 +311,8 @@ LOCAL_BUILD_CACHE_STORAGE_BASE_PATH = "/data/e2b/build-cache"
 5. 重新部署 template-manager。
 
 MinIO 的价值在于**多台机器共享模板**和**模板的生命周期独立于节点**。单机部署里，它比方案一多了一层网络和一份存储。
+
+![键名与落点](img/10-2-键名与落点.svg)
 
 ### 6.3 不管哪条路，都要改“源头”
 

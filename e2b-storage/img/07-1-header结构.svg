@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="702" viewBox="0 0 1600 702" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="702" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">header 的结构：64 字节元数据，加若干条 40 字节的映射</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">两个结构体按小端序原样写成二进制，没有压缩。映射按 Offset 从小到大排列，首尾相接，不重不漏地覆盖从 0 到 Size 的整个范围。</text>
+<text x="48.0" y="162.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">元数据 Metadata（64 字节）</text>
+<rect x="48.0" y="176.0" width="184.0" height="70.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="140.0" y="204.0" font-size="14" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">Version</text>
+<text x="140.0" y="228.0" font-size="12" fill="#57606A" text-anchor="middle">版本，当前 3</text>
+<text x="140.0" y="264.0" font-size="11.5" fill="#8C959F" text-anchor="middle">8 字节</text>
+<rect x="236.0" y="176.0" width="184.0" height="70.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="328.0" y="204.0" font-size="14" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">BlockSize</text>
+<text x="328.0" y="228.0" font-size="12" fill="#57606A" text-anchor="middle">4 KiB 或 2 MiB</text>
+<text x="328.0" y="264.0" font-size="11.5" fill="#8C959F" text-anchor="middle">8 字节</text>
+<rect x="424.0" y="176.0" width="184.0" height="70.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="516.0" y="204.0" font-size="14" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">Size</text>
+<text x="516.0" y="228.0" font-size="12" fill="#57606A" text-anchor="middle">完整内存 / 磁盘多大</text>
+<text x="516.0" y="264.0" font-size="11.5" fill="#8C959F" text-anchor="middle">8 字节</text>
+<rect x="612.0" y="176.0" width="184.0" height="70.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="704.0" y="204.0" font-size="14" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">Generation</text>
+<text x="704.0" y="228.0" font-size="12" fill="#57606A" text-anchor="middle">代数，构建出来是 0</text>
+<text x="704.0" y="264.0" font-size="11.5" fill="#8C959F" text-anchor="middle">8 字节</text>
+<rect x="800.0" y="176.0" width="372.0" height="70.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="986.0" y="204.0" font-size="14" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">BuildId</text>
+<text x="986.0" y="228.0" font-size="12" fill="#57606A" text-anchor="middle">这一代自己</text>
+<text x="986.0" y="264.0" font-size="11.5" fill="#8C959F" text-anchor="middle">16 字节</text>
+<rect x="1176.0" y="176.0" width="372.0" height="70.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1362.0" y="204.0" font-size="14" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">BaseBuildId</text>
+<text x="1362.0" y="228.0" font-size="12" fill="#57606A" text-anchor="middle">第 0 代</text>
+<text x="1362.0" y="264.0" font-size="11.5" fill="#8C959F" text-anchor="middle">16 字节</text>
+<text x="48.0" y="312.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">映射 BuildMap（每条 40 字节，一条接一条）</text>
+<rect x="48.0" y="326.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="196.4" y="348.0" font-size="13.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">Offset</text>
+<text x="196.4" y="368.0" font-size="12" fill="#57606A" text-anchor="middle">在完整内存 / 磁盘里从哪开始</text>
+<rect x="348.8" y="326.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="497.2" y="348.0" font-size="13.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">Length</text>
+<text x="497.2" y="368.0" font-size="12" fill="#57606A" text-anchor="middle">这一段多长</text>
+<rect x="649.6" y="326.0" width="597.6" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="948.4" y="348.0" font-size="13.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">BuildId</text>
+<text x="948.4" y="368.0" font-size="12" fill="#57606A" text-anchor="middle">数据实际在哪个 build</text>
+<rect x="1251.2" y="326.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1399.6" y="348.0" font-size="13.5" fill="#8A5300" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">BuildStorageOffset</text>
+<text x="1399.6" y="368.0" font-size="12" fill="#57606A" text-anchor="middle">在那个 build 的数据文件里从哪开始</text>
+<rect x="48.0" y="388.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="196.4" y="420.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1000 块</text>
+<rect x="348.8" y="388.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="497.2" y="420.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">2 块</text>
+<rect x="649.6" y="388.0" width="597.6" height="52.0" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="948.4" y="420.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">C</text>
+<rect x="1251.2" y="388.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1399.6" y="420.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="48.0" y="450.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="196.4" y="482.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1002 块</text>
+<rect x="348.8" y="450.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="497.2" y="482.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">3998 块</text>
+<rect x="649.6" y="450.0" width="597.6" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="948.4" y="482.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">A</text>
+<rect x="1251.2" y="450.0" width="296.8" height="52.0" rx="6" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1399.6" y="482.0" font-size="13.5" fill="#1F2328" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1002 块</text>
+<rect x="48.0" y="536.0" width="1504.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="572.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">BuildId 是 00000000-0000-…（uuid.Nil）的映射：这一段全是零，不在任何文件里，读的时候直接给零</text>
+<line x1="48.0" y1="636.0" x2="1552.0" y2="636.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="662.0" font-size="13" fill="#8C959F" text-anchor="start">注：所以 header 很小。代码里给一个偏移查映射的函数叫 GetShiftedMapping：返回去哪个 build、那个文件里的哪个偏移、从这里开始还能连续读多长。</text></svg>

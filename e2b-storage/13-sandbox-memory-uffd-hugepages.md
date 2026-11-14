@@ -46,6 +46,8 @@ unix socket 可以在进程之间传递文件描述符（`SCM_RIGHTS`），这�
 
 orchestrator 这边等着 `accept`，最多等 **120 秒**。上游是 10 秒，ARM 补丁放宽到了 120 秒，因为 ARM 机器上 Firecracker 从启动到发来句柄要慢一些，并发高的时候 10 秒不够。
 
+![UFFD 的交接](img/13-1-UFFD交接.svg)
+
 ### 2.2 两张表
 
 握手之后，orchestrator 手里有了两样东西：
@@ -144,13 +146,7 @@ copyErr := u.fd.copy(addr, pagesize, b, copyMode)
 
 预取器分两路同时干活：
 
-```
- 拉取阶段（最多 32 个并发）                 填页阶段（最多 16 个并发）
- 按清单顺序，把块从存储后端                  等 UFFD 握手完成后，
- 拉到本地缓存（第 11 篇）                    按清单顺序把块 UFFDIO_COPY 进客户机内存
-          │                                            ▲
-          └──────────── 拉到一块，就可以填一块 ────────────┘
-```
+![预取的两路](img/13-2-预取.svg)
 
 - 拉取阶段在 UFFD 握手之前就可以开始，因为它只是填本地缓存；
 - 填页阶段用的是和缺页处理同一个函数 `faultPage`，访问类型记为“预取”；
@@ -221,6 +217,8 @@ mountpoint -q /mnt/hugepages || mount -t hugetlbfs none /mnt/hugepages
 | 超分配额 | 470 × 80% | 376 GiB |
 
 `HUGEPAGES_BASE_MAX_MIB` 在 `.env` 里是 `65536`，即 64 GiB。这是这套环境加的上限：上游是固定 20%，在大内存机器上开机就锁死近百 GiB 内存，哪怕一个沙箱都没跑。
+
+![大页预留](img/13-3-大页预留.svg)
 
 ### 7.3 静态池和超分配的区别
 

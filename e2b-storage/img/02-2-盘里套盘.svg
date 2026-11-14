@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="592" viewBox="0 0 1600 592" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="592" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">盘里套盘：rootfs.ext4 在宿主是一个文件，在客户机是一整块硬盘</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">宿主机的文件系统里有一个 5 GiB 的文件；它的内容本身又是一个完整的 ext4 文件系统。orchestrator 只把它当一串 4 KiB 的块来读写，不需要懂里面装了什么。</text>
+<rect x="48.0" y="156.0" width="700.0" height="330.0" rx="14" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="68.0" y="188.0" font-size="16" fill="#3D3C38" font-weight="600" text-anchor="start">宿主机的文件系统（外层）</text>
+<rect x="78.0" y="216.0" width="640.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="92.0" y="252.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">/etc/…</text>
+<rect x="78.0" y="300.0" width="640.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="92.0" y="336.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">/usr/…</text>
+<rect x="78.0" y="384.0" width="640.0" height="64.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="92.0" y="407.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">/tmp/templates/&lt;id&gt;/rootfs.ext4</text>
+<text x="92.0" y="431.2" font-size="12.5" fill="#57606A" text-anchor="start">5 GiB 的普通文件</text>
+<rect x="78.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="118.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="158.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="198.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="238.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="278.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="318.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="358.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="398.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="438.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="478.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="518.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="558.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="598.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="638.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<rect x="678.0" y="460.0" width="36.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="722.0" y="476.0" font-size="14" fill="#8C959F" text-anchor="start">…</text>
+<rect x="900.0" y="156.0" width="652.0" height="330.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="920.0" y="188.0" font-size="16" fill="#4B3FA8" font-weight="600" text-anchor="start">客户机看到的 /dev/vda（内层 ext4）</text>
+<rect x="930.0" y="216.0" width="592.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="944.0" y="252.5" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="start">超级块：块大小 4096，共 1310720 块</text>
+<rect x="930.0" y="300.0" width="592.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="944.0" y="336.5" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="start">inode 表：每个文件一张“索引卡”</text>
+<rect x="930.0" y="384.0" width="592.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="944.0" y="420.5" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="start">/bin  /etc  /home  /usr  …  成千上万个文件</text>
+<path d="M754.0 392.0 L894.0 392.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="824.0" y="382.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">交给虚拟机当硬盘</text>
+<line x1="48.0" y1="526.0" x2="1552.0" y2="526.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="552.0" font-size="13" fill="#8C959F" text-anchor="start">注：E2B 能按块做写时复制、按块做增量快照，前提就在这里：它只管外层的块，不用理解内层的文件。</text></svg>

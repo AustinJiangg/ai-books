@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="772" viewBox="0 0 1600 772" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="772" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一个运行中的沙箱：Firecracker 和它周围的存储</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">左半边是硬盘：Firecracker 读写 /dev/nbdN，NBD 把请求交给 orchestrator，由写时复制和模板根盘回答。右半边是内存：客户机内存在 Firecracker 进程里，缺页通过 UFFD 交给 orchestrator 填。</text>
+<rect x="48.0" y="156.0" width="1504.0" height="190.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">orchestrator（template-manager 进程）</text>
+<rect x="78.0" y="206.0" width="692.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="424.0" y="225.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">NBD 服务（接线员）</text>
+<text x="424.0" y="247.6" font-size="12" fill="#57606A" text-anchor="middle">按块回答读写</text>
+<rect x="830.0" y="206.0" width="692.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1176.0" y="225.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">UFFD 处理程序（仓库管理员）</text>
+<text x="1176.0" y="247.6" font-size="12" fill="#57606A" text-anchor="middle">按页填内存</text>
+<rect x="78.0" y="276.0" width="341.0" height="54.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="248.5" y="295.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">COW 文件</text>
+<text x="248.5" y="317.6" font-size="12" fill="#57606A" text-anchor="middle">沙箱写过的块</text>
+<rect x="429.0" y="276.0" width="341.0" height="54.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="599.5" y="295.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">模板根盘</text>
+<text x="599.5" y="317.6" font-size="12" fill="#57606A" text-anchor="middle">header + 本地缓存</text>
+<rect x="830.0" y="276.0" width="692.0" height="54.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1176.0" y="295.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">模板 memfile</text>
+<text x="1176.0" y="317.6" font-size="12" fill="#57606A" text-anchor="middle">按 memfile.header 取，经本地缓存</text>
+<rect x="78.0" y="396.0" width="692.0" height="56.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="424.0" y="416.3" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">/dev/nbdN</text>
+<text x="424.0" y="438.9" font-size="12" fill="#57606A" text-anchor="middle">socketpair × 4，netlink 连接</text>
+<path d="M424.0 390.0 L424.0 352.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<rect x="830.0" y="396.0" width="692.0" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1176.0" y="416.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">unix socket /tmp/uffd-&lt;ID&gt;-&lt;随机&gt;.sock</text>
+<text x="1176.0" y="438.6" font-size="12" fill="#57606A" text-anchor="middle">握手时传一次 UFFD 句柄和内存布局</text>
+<path d="M1176.0 390.0 L1176.0 352.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="48.0" y="496.0" width="1504.0" height="170.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="68.0" y="526.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">独立 mount 命名空间里的 Firecracker 进程</text>
+<rect x="78.0" y="546.0" width="692.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="424.0" y="564.8" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">/fc-vm/rootfs.ext4 → .link → /dev/nbdN</text>
+<text x="424.0" y="587.4" font-size="12" fill="#57606A" text-anchor="middle">virtio-blk：客户机的 /dev/vda</text>
+<rect x="830.0" y="546.0" width="692.0" height="54.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1176.0" y="565.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">客户机内存（2 MiB 大页）</text>
+<text x="1176.0" y="587.6" font-size="12" fill="#57606A" text-anchor="middle">缺页 → UFFD → orchestrator</text>
+<rect x="78.0" y="612.0" width="1444.0" height="40.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="800.0" y="636.5" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机：/ 挂在 /dev/vda 上；程序读写内存和文件</text>
+<path d="M424.0 540.0 L424.0 458.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<path d="M1176.0 540.0 L1176.0 458.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="706.0" x2="1552.0" y2="706.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="732.0" font-size="13" fill="#8C959F" text-anchor="start">注：第 11 篇讲上方的本地缓存，第 12 篇讲左半边，第 13 篇讲右半边。</text></svg>

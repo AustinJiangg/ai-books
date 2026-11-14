@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="802" viewBox="0 0 1600 802" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="802" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一次暂停：先停下，再分两路导出内存和磁盘，最后放进缓存、后台上传</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Firecracker 只负责“停下来、写机器状态、报告哪些页脏了、报告它们在哪个地址”；真正搬数据的是 orchestrator：内存用 process_vm_readv 直接从 Firecracker 进程里拷，磁盘把 COW 文件弹出来导出。</text>
+<rect x="48.0" y="156.0" width="300.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="198.0" y="190.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">① 停健康检查  ② 暂停 VM</text>
+<rect x="388.0" y="156.0" width="420.0" height="60.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="598.0" y="178.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">③ PUT /snapshot/create（不传 mem_file_path）</text>
+<text x="598.0" y="200.6" font-size="12" fill="#57606A" text-anchor="middle">只写 snapfile，刷磁盘缓冲</text>
+<path d="M354.0 186.0 L382.0 186.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="48.0" y="256.0" width="740.0" height="330.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="68.0" y="286.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">内存</text>
+<rect x="848.0" y="256.0" width="704.0" height="330.0" rx="14" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="868.0" y="286.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">磁盘</text>
+<path d="M598.0 222.0 L598.0 250.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M814.0 186.0 L1048.0 186.0 L1048.0 250.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="72.0" y="306.0" width="692.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="418.0" y="333.1" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">④ 问哪些页要导出</text>
+<text x="418.0" y="355.7" font-size="12" fill="#57606A" text-anchor="middle">写跟踪位图 ∪ 累积；或常驻页判据；或常驻 + 全零（第 15 篇）</text>
+<rect x="72.0" y="394.0" width="692.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="418.0" y="421.1" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">⑤ GET /memory/mappings → process_vm_readv</text>
+<text x="418.0" y="443.7" font-size="12" fill="#57606A" text-anchor="middle">把这些页拷进 /orchestrator/build/&lt;新ID&gt;-memfile-&lt;随机&gt;</text>
+<rect x="72.0" y="482.0" width="692.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="418.0" y="509.1" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">合成新 memfile.header</text>
+<text x="418.0" y="531.7" font-size="12" fill="#57606A" text-anchor="middle">位图变映射，盖在父 header 上，代数 +1</text>
+<rect x="872.0" y="306.0" width="656.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1200.0" y="333.1" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">⑥ 弹出 COW 文件，后台停掉沙箱</text>
+<text x="1200.0" y="355.7" font-size="12" fill="#57606A" text-anchor="middle">Firecracker 退出、NBD 断开、设备归还</text>
+<rect x="872.0" y="394.0" width="656.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1200.0" y="421.1" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">等 NBD 请求处理完，按位图导出</text>
+<text x="1200.0" y="443.7" font-size="12" fill="#57606A" text-anchor="middle">→ /orchestrator/build/&lt;新ID&gt;-rootfs.ext4-&lt;随机&gt;</text>
+<rect x="872.0" y="482.0" width="656.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1200.0" y="509.1" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">合成新 rootfs.ext4.header</text>
+<text x="1200.0" y="531.7" font-size="12" fill="#57606A" text-anchor="middle">COW 里有的块一定写过：永远精确</text>
+<rect x="48.0" y="626.0" width="660.0" height="74.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="378.0" y="654.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">⑦ 写 metadata.json  ⑧ 返回六样东西</text>
+<text x="378.0" y="678.2" font-size="12.5" fill="#57606A" text-anchor="middle">先放进本机模板缓存表：马上恢复不用等上传</text>
+<rect x="768.0" y="626.0" width="784.0" height="74.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1160.0" y="654.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">后台“上传”：Local 后端 = 拷贝到 /tmp/templates/&lt;新ID&gt;/</text>
+<text x="1160.0" y="678.2" font-size="12.5" fill="#57606A" text-anchor="middle">暂停接口返回时可能还没拷完；同一份 diff 在硬盘缓存和 tmpfs 里各一份</text>
+<path d="M714.0 663.0 L762.0 663.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M418.0 592.0 L418.0 620.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1200.0 592.0 L1200.0 620.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="736.0" x2="1552.0" y2="736.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="762.0" font-size="13" fill="#8C959F" text-anchor="start">注：新 buildID 由 api 分配，随暂停请求带过来。恢复就是“用这个 build 创建沙箱”：沙箱 ID 不变，Firecracker、NBD、COW、UFFD 全是新的。</text></svg>

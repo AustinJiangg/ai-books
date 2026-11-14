@@ -6,15 +6,7 @@
 
 ## 一、全流程一览
 
-```
- ① 下载仓库 AustinJiangg/e2b-infra
- ② rpmbuild：上游源码 + ARM 补丁 + 内核 + 定制 Firecracker + 部署包 → RPM
-    安装 RPM → /opt/e2b-infra
- ③ 部署前一次性准备：自编译 nbd 模块（nbds_max=512）固化到系统
- ④ build.sh -d   停止并清理
- ⑤ build.sh -i   安装依赖组件：PostgreSQL、MinIO、Harbor、nginx、SDK……
- ⑥ build.sh -s   启动部署：Harbor、Nomad/Consul、宿主初始化、提交 job
-```
+![部署流程里的存储](img/18-1-部署流程.svg)
 
 下面按这个顺序讲和存储相关的部分。
 
@@ -199,6 +191,8 @@ resources {
 - **构建模板、打快照时读写文件产生的页缓存**：解包镜像、写 rootfs、写 memfile diff、读写 `/orchestrator/build` 里的缓存文件。
 
 部署文档记录过一次事故：构建一个 200 MB 的基础镜像时，orchestrator 被内核以“内存超标”杀掉（退出码 137）。现场的进程堆只有几十 MB，看着像“没吃内存却被杀”，实际是页缓存把 cgroup 撑满了。现象还出在别处：api 一直返回 503，部署卡在 api 那一步 10 分钟超时。
+
+![32 GiB 上限记的是什么](img/18-2-内存上限.svg)
 
 ### 6.2 不能太小，也不能太大
 

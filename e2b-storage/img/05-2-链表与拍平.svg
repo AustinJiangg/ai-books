@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="582" viewBox="0 0 1600 582" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="582" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">两种组织多层数据的方式：逐层往下找，还是查一张拍平的表</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">A 是模板，B、C 是之后两次暂停的改动。读第 1000 块：链表式要从 C 往下一层层问；E2B 的 header 是拍平的，每一层都带一张完整的表，查一次就知道数据在哪。</text>
+<text x="48.0" y="166.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">链表式：层数越多越慢</text>
+<rect x="88.0" y="190.0" width="522.0" height="64.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="349.0" y="213.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">build C</text>
+<text x="349.0" y="237.2" font-size="12.5" fill="#57606A" text-anchor="middle">只有块 1000～1001</text>
+<rect x="88.0" y="282.0" width="522.0" height="64.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="349.0" y="305.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">build B</text>
+<text x="349.0" y="329.2" font-size="12.5" fill="#57606A" text-anchor="middle">只有块 5000～5099</text>
+<rect x="88.0" y="374.0" width="522.0" height="64.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="349.0" y="397.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">build A</text>
+<text x="349.0" y="421.2" font-size="12.5" fill="#57606A" text-anchor="middle">完整</text>
+<text x="630.0" y="226.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">① 问 C</text>
+<text x="630.0" y="318.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">② 问 B</text>
+<text x="630.0" y="410.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">③ 问 A</text>
+<path d="M349.0 256.0 L349.0 280.0" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M349.0 348.0 L349.0 372.0" fill="none" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<text x="830.0" y="166.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">拍平的映射表（E2B 的 header）：查一次</text>
+<text x="830.0" y="202.0" font-size="13" fill="#8C959F" font-weight="600" text-anchor="start">C 的 header</text>
+<rect x="830.0" y="212.0" width="722.0" height="40.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="846.0" y="238.0" font-size="13.5" fill="#1F2328" text-anchor="start">块 0～999</text>
+<rect x="1242.3" y="219.2" width="70.7" height="25.5" rx="12.75" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1277.6" y="236.5" font-size="12.5" fill="#8A5300" font-weight="600" text-anchor="middle">build A</text>
+<text x="1536.0" y="238.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="end">偏移 0</text>
+<rect x="830.0" y="258.0" width="722.0" height="40.0" rx="6" fill="#FFF8E1" stroke="#D9922B" stroke-width="1.6"/>
+<text x="846.0" y="284.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">块 1000～1001</text>
+<rect x="1242.3" y="265.2" width="70.7" height="25.5" rx="12.75" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="1277.6" y="282.5" font-size="12.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">build C</text>
+<text x="1536.0" y="284.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="end">偏移 0</text>
+<rect x="830.0" y="304.0" width="722.0" height="40.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="846.0" y="330.0" font-size="13.5" fill="#1F2328" text-anchor="start">块 1002～4999</text>
+<rect x="1242.3" y="311.2" width="70.7" height="25.5" rx="12.75" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1277.6" y="328.5" font-size="12.5" fill="#8A5300" font-weight="600" text-anchor="middle">build A</text>
+<text x="1536.0" y="330.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="end">偏移 1002</text>
+<rect x="830.0" y="350.0" width="722.0" height="40.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="846.0" y="376.0" font-size="13.5" fill="#1F2328" text-anchor="start">块 5000～5099</text>
+<rect x="1242.3" y="357.2" width="70.7" height="25.5" rx="12.75" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="1277.6" y="374.5" font-size="12.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">build B</text>
+<text x="1536.0" y="376.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="end">偏移 0</text>
+<rect x="830.0" y="396.0" width="722.0" height="40.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="846.0" y="422.0" font-size="13.5" fill="#1F2328" text-anchor="start">块 5100～…</text>
+<rect x="1242.3" y="403.2" width="70.7" height="25.5" rx="12.75" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1277.6" y="420.5" font-size="12.5" fill="#8A5300" font-weight="600" text-anchor="middle">build A</text>
+<text x="1536.0" y="422.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="end">偏移 5100</text>
+<text x="830.0" y="464.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="start">读第 1000 块 → 第 2 行 → C 文件第 0 块，结束</text>
+<line x1="48.0" y1="516.0" x2="1552.0" y2="516.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="542.0" font-size="13" fill="#8C959F" text-anchor="start">注：拍平的代价是，被任何 header 引用的那一层都必须留着；删掉中间的 B，C 读第 5000 块就会去一个不存在的文件里找。</text></svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="572" viewBox="0 0 1600 572" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="572" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">稀疏文件：ls -l 说 10 GB，du 说 4 KiB</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">没写过的部分叫“洞”，文件系统不给它分配磁盘块，读的时候直接返回全零。E2B 的 COW 文件、本地缓存文件、检查点 diff 都是这样的文件，查占用要用 du。</text>
+<text x="48.0" y="192.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">逻辑上</text>
+<rect x="208.0" y="166.0" width="1344.0" height="44.0" rx="6" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.2" stroke-dasharray="5 4"/>
+<rect x="880.0" y="166.0" width="22.0" height="44.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.5"/>
+<text x="544.0" y="194.0" font-size="14" fill="#8C959F" text-anchor="middle">洞（从没写过）</text>
+<text x="1227.0" y="194.0" font-size="14" fill="#8C959F" text-anchor="middle">洞</text>
+<text x="208.0" y="236.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<text x="880.0" y="236.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">5 GB</text>
+<text x="1552.0" y="236.0" font-size="13" fill="#57606A" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="end">10 GB</text>
+<text x="910.0" y="156.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="start">写了 4 KiB</text>
+<text x="48.0" y="312.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">磁盘上</text>
+<rect x="208.0" y="286.0" width="22.0" height="44.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.5"/>
+<text x="248.0" y="314.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="start">只占这一块</text>
+<rect x="48.0" y="376.0" width="700.0" height="92.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="398.0" y="413.6" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">$ ls -lh big.img   →   10G</text>
+<text x="398.0" y="437.5" font-size="13" fill="#57606A" text-anchor="middle">显示逻辑大小：从开头到结尾一共多少字节</text>
+<rect x="788.0" y="376.0" width="764.0" height="92.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1170.0" y="413.6" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">$ du -h big.img   →   4.0K</text>
+<text x="1170.0" y="437.5" font-size="13" fill="#57606A" text-anchor="middle">显示实际占用的磁盘块</text>
+<line x1="48.0" y1="506.0" x2="1552.0" y2="506.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="532.0" font-size="13" fill="#8C959F" text-anchor="start">注：在 /orchestrator/build 里看到一个“8 GB”的文件不必惊慌，先 du 一下，往往只有几十 MB。</text></svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="508" viewBox="0 0 1600 508" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="508" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">预取：照着构建时录下的清单，在客户机开口之前准备好</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">metadata.json 里的 prefetch.memory 记着恢复时通常会碰哪些块、按什么顺序。拉取和填页两路并行：拉到一块，就可以填一块；客户机抢先碰到的页由缺页处理先填，预取再填时得到 EEXIST，忽略。</text>
+<rect x="48.0" y="156.0" width="360.0" height="120.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.0" y="189.2" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">metadata.json</text>
+<text x="228.0" y="212.4" font-size="12.5" fill="#57606A" text-anchor="middle">prefetch.memory</text>
+<text x="228.0" y="231.2" font-size="12.5" fill="#57606A" text-anchor="middle">indices: [0, 1, 37, 38, 512, …]</text>
+<text x="228.0" y="249.9" font-size="12.5" fill="#57606A" text-anchor="middle">access_types: [r, w, r, r, p, …]</text>
+<rect x="488.0" y="156.0" width="460.0" height="120.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="718.0" y="189.2" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">拉取阶段（最多 32 个并发）</text>
+<text x="718.0" y="212.4" font-size="12.5" fill="#57606A" text-anchor="middle">按清单顺序把块从存储后端</text>
+<text x="718.0" y="231.2" font-size="12.5" fill="#57606A" text-anchor="middle">拉进本地缓存（第 11 篇）</text>
+<text x="718.0" y="249.9" font-size="12.5" fill="#57606A" text-anchor="middle">UFFD 握手之前就能开始</text>
+<rect x="1028.0" y="156.0" width="524.0" height="120.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1290.0" y="189.2" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">填页阶段（最多 16 个并发）</text>
+<text x="1290.0" y="212.4" font-size="12.5" fill="#57606A" text-anchor="middle">等 UFFD 就绪后，按清单顺序</text>
+<text x="1290.0" y="231.2" font-size="12.5" fill="#57606A" text-anchor="middle">UFFDIO_COPY 进客户机内存</text>
+<text x="1290.0" y="249.9" font-size="12.5" fill="#57606A" text-anchor="middle">访问类型记为“预取”</text>
+<path d="M414.0 216.0 L482.0 216.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M954.0 216.0 L1022.0 216.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="988.0" y="206.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">拉到一块</text>
+<rect x="48.0" y="326.0" width="1504.0" height="80.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="800.0" y="357.6" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">副作用：预取填进去的页和读缺页一样不带写保护封条</text>
+<text x="800.0" y="381.5" font-size="13" fill="#57606A" text-anchor="middle">在 ARM 补丁下，如果暂停走“常驻页”判据，预取了多少页，下次暂停的内存增量就至少有多少页（第 15 篇）</text>
+<line x1="48.0" y1="442.0" x2="1552.0" y2="442.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="468.0" font-size="13" fill="#8C959F" text-anchor="start">注：清单是 optimize 阶段（第 9 篇）把模板恢复几次、只保留每次都出现的块录下来的；预取失败不影响正确性。</text></svg>

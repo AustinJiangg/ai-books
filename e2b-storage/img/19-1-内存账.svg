@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="868" viewBox="0 0 1600 868" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="868" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">容量账：模板和快照吃的是宿主的普通内存，不是大页，也不是硬盘</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">/tmp/templates 在 tmpfs 上，挤在“给宿主留的普通内存”里（总内存 16%，最多 42 GiB），和操作系统、各服务、template-manager 的页缓存抢地方；大页那一大块是给客户机用的。</text>
+<rect x="48.0" y="156.0" width="150.4" height="300.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.4"/>
+<rect x="204.4" y="156.0" width="1347.6" height="300.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.4"/>
+<text x="224.4" y="188.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">可做大页的内存：静态池 20%（≤64 GiB）+ 超分配 80%</text>
+<text x="224.4" y="212.0" font-size="13" fill="#57606A" text-anchor="start">客户机内存走这里；静态池开机就划出，不管有没有沙箱</text>
+<rect x="224.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="282.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 1</text>
+<rect x="352.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="410.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 2</text>
+<rect x="480.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="538.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 3</text>
+<rect x="608.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="666.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 4</text>
+<rect x="736.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="794.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 5</text>
+<rect x="864.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="922.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 6</text>
+<rect x="992.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="1050.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 7</text>
+<rect x="1120.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="1178.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 8</text>
+<rect x="1248.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="1306.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 9</text>
+<rect x="1376.4" y="246.0" width="116.0" height="180.0" rx="8" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="1434.4" y="342.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">沙箱 10</text>
+<text x="56.0" y="182.0" font-size="12.5" fill="#3D3C38" font-weight="600" text-anchor="start">宿主普通内存</text>
+<text x="56.0" y="200.0" font-size="12.5" fill="#3D3C38" text-anchor="start">≤ 42 GiB</text>
+<line x1="48.0" y1="456.0" x2="48.0" y2="496.0" stroke="#D8DEE4" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="4 4"/>
+<line x1="198.4" y1="456.0" x2="1552.0" y2="496.0" stroke="#D8DEE4" stroke-width="1.2" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="48.0" y="496.0" width="142.4" height="120.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="119.2" y="547.6" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">操作系统</text>
+<text x="119.2" y="570.9" font-size="12.5" fill="#57606A" text-anchor="middle">Nomad、Consul</text>
+<rect x="198.4" y="496.0" width="262.7" height="120.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="329.8" y="538.2" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">其他服务</text>
+<text x="329.8" y="561.5" font-size="12.5" fill="#57606A" text-anchor="middle">api、client-proxy、Redis、</text>
+<text x="329.8" y="580.2" font-size="12.5" fill="#57606A" text-anchor="middle">PostgreSQL、Harbor 容器</text>
+<rect x="469.1" y="496.0" width="398.1" height="120.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="668.2" y="547.6" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">template-manager</text>
+<text x="668.2" y="570.9" font-size="12.5" fill="#57606A" text-anchor="middle">堆 + 页缓存（≤32 GiB）</text>
+<rect x="875.2" y="496.0" width="668.8" height="120.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1209.6" y="538.2" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">/tmp/templates（tmpfs）</text>
+<text x="1209.6" y="561.5" font-size="12.5" fill="#57606A" text-anchor="middle">模板、每层、每次暂停的快照</text>
+<text x="1209.6" y="580.2" font-size="12.5" fill="#57606A" text-anchor="middle">删除不回收，只增不减</text>
+<text x="48.0" y="646.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">放大“宿主普通内存”这一小块：四样东西抢这 ≤42 GiB</text>
+<rect x="48.0" y="676.0" width="485.3" height="90.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="290.7" y="703.6" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">估一下 /tmp/templates</text>
+<text x="290.7" y="726.8" font-size="12.5" fill="#57606A" text-anchor="middle">10 个模板 ≈ 28 GiB；再 1000 次暂停，没开写跟踪时每次约 100 MiB 起，近</text>
+<text x="290.7" y="745.6" font-size="12.5" fill="#57606A" text-anchor="middle">100 GiB</text>
+<rect x="557.3" y="676.0" width="485.3" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="703.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">其他上限</text>
+<text x="800.0" y="726.8" font-size="12.5" fill="#57606A" text-anchor="middle">同时运行 512 个沙箱（nbd）；大页超分配看碎片；/orchestrator 缓存 85% 开</text>
+<text x="800.0" y="745.6" font-size="12.5" fill="#57606A" text-anchor="middle">始淘汰</text>
+<rect x="1066.7" y="676.0" width="485.3" height="90.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1309.3" y="712.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">放开这个限制</text>
+<text x="1309.3" y="736.2" font-size="12.5" fill="#57606A" text-anchor="middle">把模板存储搬到硬盘（第 10 篇），定期清理不再被引用的 build</text>
+<line x1="48.0" y1="802.0" x2="1552.0" y2="802.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="828.0" font-size="13" fill="#8C959F" text-anchor="start">注：示意比例。/orchestrator 下的缓存、COW、检查点在硬盘上，但刚读写过的部分会进页缓存，记在 template-manager 的 32 GiB 账上。</text></svg>

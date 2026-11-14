@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="642" viewBox="0 0 1600 642" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="642" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">层缓存：哈希里包着上一层的哈希，前面一变，后面全变</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">每层的哈希 = hash(上一层的哈希, 这一步的内容, 相关参数)。构建前先查 index，命中就直接拿那个 buildID，跳过“恢复—执行—快照—上传”。</text>
+<text x="48.0" y="160.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">第一次构建</text>
+<rect x="48.0" y="176.0" width="346.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="221.0" y="210.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">base：FROM ubuntu</text>
+<rect x="68.0" y="254.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="221.0" y="273.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h1</text>
+<text x="221.0" y="295.0" font-size="11.5" fill="#57606A" text-anchor="middle">做完写 index</text>
+<path d="M221.0 242.0 L221.0 250.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M380.0 281.0 L448.0 281.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="434.0" y="176.0" width="346.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="607.0" y="210.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">step1：RUN apt-get …</text>
+<rect x="454.0" y="254.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="607.0" y="273.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h2</text>
+<text x="607.0" y="295.0" font-size="11.5" fill="#57606A" text-anchor="middle">做完写 index</text>
+<path d="M607.0 242.0 L607.0 250.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M766.0 281.0 L834.0 281.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="820.0" y="176.0" width="346.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="993.0" y="210.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">step2：RUN pip install numpy</text>
+<rect x="840.0" y="254.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="993.0" y="273.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h3</text>
+<text x="993.0" y="295.0" font-size="11.5" fill="#57606A" text-anchor="middle">做完写 index</text>
+<path d="M993.0 242.0 L993.0 250.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M1152.0 281.0 L1220.0 281.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="1206.0" y="176.0" width="346.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1379.0" y="210.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">step3：COPY app.py</text>
+<rect x="1226.0" y="254.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1379.0" y="273.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h4</text>
+<text x="1379.0" y="295.0" font-size="11.5" fill="#57606A" text-anchor="middle">做完写 index</text>
+<path d="M1379.0 242.0 L1379.0 250.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<text x="48.0" y="360.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">只改了 step3，再构建</text>
+<rect x="48.0" y="376.0" width="346.0" height="60.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="221.0" y="410.5" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">base：FROM ubuntu</text>
+<rect x="68.0" y="454.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="221.0" y="473.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h1</text>
+<text x="221.0" y="495.0" font-size="11.5" fill="#57606A" text-anchor="middle">命中 index，跳过</text>
+<path d="M221.0 442.0 L221.0 450.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M380.0 481.0 L448.0 481.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="434.0" y="376.0" width="346.0" height="60.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="607.0" y="410.5" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">step1：RUN apt-get …</text>
+<rect x="454.0" y="454.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="607.0" y="473.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h2</text>
+<text x="607.0" y="495.0" font-size="11.5" fill="#57606A" text-anchor="middle">命中 index，跳过</text>
+<path d="M607.0 442.0 L607.0 450.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M766.0 481.0 L834.0 481.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="820.0" y="376.0" width="346.0" height="60.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="993.0" y="410.5" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">step2：RUN pip install numpy</text>
+<rect x="840.0" y="454.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="993.0" y="473.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h3</text>
+<text x="993.0" y="495.0" font-size="11.5" fill="#57606A" text-anchor="middle">命中 index，跳过</text>
+<path d="M993.0 442.0 L993.0 450.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M1152.0 481.0 L1220.0 481.0" fill="none" stroke="#57606A" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="1206.0" y="376.0" width="346.0" height="60.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1379.0" y="410.5" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">step3：COPY app.py</text>
+<rect x="1226.0" y="454.0" width="306.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1379.0" y="473.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">哈希 h4′</text>
+<text x="1379.0" y="495.0" font-size="11.5" fill="#57606A" text-anchor="middle">没命中，真的去做</text>
+<path d="M1379.0 442.0 L1379.0 450.0" fill="none" stroke="#57606A" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<line x1="48.0" y1="576.0" x2="1552.0" y2="576.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="602.0" font-size="13" fill="#8C959F" text-anchor="start">注：COPY 的文件按内容算哈希，存在构建缓存的 files/&lt;哈希&gt;.tar。这套环境两个后端都是 Local，而 Local 不支持生成上传链接，所以带本地文件 COPY 的模板在上传这一步会出问题。</text></svg>

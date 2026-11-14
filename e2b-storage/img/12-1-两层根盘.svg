@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="672" viewBox="0 0 1600 672" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD9922B" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D9922B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="672" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">沙箱的硬盘：两层拼成一块</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">下层是所有同模板沙箱共享的只读模板，上层是每个沙箱自己的 COW 文件。写一律写上层并在位图里登记；读先看上层，没有再看下层。</text>
+<rect x="348.0" y="156.0" width="904.0" height="60.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="800.0" y="178.2" font-size="16" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机看到的 /dev/vda（5 GiB）</text>
+<text x="800.0" y="201.5" font-size="12.5" fill="#57606A" text-anchor="middle">→ /dev/nbdN → NBD 服务</text>
+<rect x="348.0" y="256.0" width="904.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="800.0" y="278.2" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">overlay</text>
+<text x="800.0" y="301.5" font-size="12.5" fill="#57606A" text-anchor="middle">写：上层；读：先上后下</text>
+<path d="M800.0 222.0 L800.0 250.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<text x="114.0" y="412.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="end">上层</text>
+<rect x="128.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="184.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="240.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="296.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="352.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="408.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="464.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="520.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="576.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="632.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="688.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="744.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="800.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="856.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="912.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="968.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="1024.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="1080.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="1136.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="1192.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="1248.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="1304.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="1360.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<rect x="1416.0" y="386.0" width="52.0" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="3 3"/>
+<text x="1472.0" y="450.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="end">/orchestrator/sandbox/rootfs-&lt;ID&gt;-&lt;随机&gt;.cow：稀疏，只有写过的块；旁边一张位图记“哪些块在上层”</text>
+<text x="114.0" y="532.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="end">下层</text>
+<rect x="128.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="184.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="240.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="296.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="352.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="408.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="464.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="520.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="576.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="632.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="688.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="744.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="800.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="856.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="912.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="968.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1024.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1080.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1136.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1192.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1248.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1304.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1360.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<rect x="1416.0" y="506.0" width="52.0" height="40.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="128.0" y="570.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="start">模板根盘：header 查表 → 本地缓存 → /tmp/templates；只读、共享</text>
+<path d="M434.0 322.0 L434.0 500.0" fill="none" stroke="#D9922B" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<path d="M658.0 322.0 L658.0 420.0" fill="none" stroke="#1F9E77" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="428.0" y="356.0" font-size="12.5" fill="#8A5300" font-weight="600" text-anchor="end">读第 5 块：上层没有 → 下层</text>
+<text x="668.0" y="356.0" font-size="12.5" fill="#0E6B4F" font-weight="600" text-anchor="start">读第 9 块：上层有</text>
+<line x1="48.0" y1="606.0" x2="1552.0" y2="606.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="632.0" font-size="13" fill="#8C959F" text-anchor="start">注：ext4 改一个文件，不止写内容，还要写 inode、目录、日志等元数据块；这些块被写一次后也“搬”到了上层。</text></svg>

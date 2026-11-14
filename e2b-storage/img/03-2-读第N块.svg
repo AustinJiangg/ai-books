@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="722" viewBox="0 0 1600 722" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD9922B" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D9922B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="722" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">为什么一定要 NBD：第 N 块的内容要在“读的那一刻”去查</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">沙箱根盘的一块数据，可能在沙箱自己的 COW 文件里，也可能在模板的某一代 diff 里，那一代还不一定拉到了本地。loop 设备只会照着一个文件读写，做不到这些。</text>
+<rect x="88.0" y="156.0" width="420.0" height="56.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="298.0" y="188.8" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">读第 N 块</text>
+<path d="M298.0 218.0 L298.0 248.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="88.0" y="254.0" width="420.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="298.0" y="288.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">沙箱自己写过第 N 块吗？</text>
+<rect x="648.0" y="254.0" width="520.0" height="60.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="908.0" y="275.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">从沙箱的 COW 文件读</text>
+<text x="908.0" y="299.2" font-size="12.5" fill="#57606A" text-anchor="middle">/orchestrator/sandbox/rootfs-…cow</text>
+<path d="M514.0 284.0 L642.0 284.0" fill="none" stroke="#1F9E77" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="578.0" y="276.0" font-size="12.5" fill="#1F9E77" font-weight="600" text-anchor="middle">是</text>
+<path d="M298.0 320.0 L298.0 350.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="308.0" y="339.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">否</text>
+<rect x="88.0" y="356.0" width="420.0" height="60.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="298.0" y="390.8" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">查 header：在哪一代、哪个偏移？</text>
+<path d="M298.0 422.0 L298.0 452.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="88.0" y="458.0" width="420.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="298.0" y="492.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">那一段拉到本地了吗？</text>
+<rect x="648.0" y="458.0" width="520.0" height="60.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="908.0" y="479.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">先从存储后端拉 4 MiB 到本地</text>
+<text x="908.0" y="503.2" font-size="12.5" fill="#57606A" text-anchor="middle">/tmp/templates → /orchestrator/build</text>
+<path d="M514.0 488.0 L642.0 488.0" fill="none" stroke="#D9922B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<text x="578.0" y="480.0" font-size="12.5" fill="#D9922B" font-weight="600" text-anchor="middle">否</text>
+<path d="M298.0 524.0 L298.0 554.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="308.0" y="543.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="start">是</text>
+<rect x="88.0" y="560.0" width="420.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="298.0" y="594.8" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">从本地缓存读出来</text>
+<path d="M908.0 524.0 L908.0 590.0 L514.0 590.0" fill="none" stroke="#D9922B" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD9922B)"/>
+<line x1="48.0" y1="656.0" x2="1552.0" y2="656.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="682.0" font-size="13" fill="#8C959F" text-anchor="start">注：写的时候一律写进沙箱自己的 COW 文件，不动模板。这套逻辑写在 orchestrator 里，NBD 把它接到内核的块设备上（第 12 篇）。</text></svg>

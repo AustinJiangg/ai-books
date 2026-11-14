@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="682" viewBox="0 0 1600 682" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="682" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">同一个路径，不同的盘：每个 Firecracker 都打开 /fc-vm/rootfs.ext4</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">快照里记着根盘路径，所有从它恢复的沙箱都去打开同一个路径。orchestrator 用 unshare -m 给每个 Firecracker 一个独立的 mount 命名空间，在里面把 /fc-vm 挂成私有 tmpfs，再用符号链接接到各自的 NBD 设备。</text>
+<rect x="48.0" y="156.0" width="732.0" height="420.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="68.0" y="186.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">沙箱 A 的 mount 命名空间</text>
+<rect x="78.0" y="206.0" width="672.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="414.0" y="228.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">Firecracker 打开 /fc-vm/rootfs.ext4</text>
+<text x="414.0" y="250.6" font-size="12" fill="#57606A" text-anchor="middle">快照里记的固定路径</text>
+<rect x="78.0" y="306.0" width="672.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="414.0" y="328.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">/fc-vm 是私有 tmpfs</text>
+<text x="414.0" y="350.6" font-size="12" fill="#57606A" text-anchor="middle">rootfs.ext4 → …/rootfs-A-&lt;随机&gt;.link</text>
+<rect x="78.0" y="406.0" width="672.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="414.0" y="427.8" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="middle">/orchestrator/sandbox/rootfs-A-&lt;随机&gt;.link</text>
+<text x="414.0" y="450.4" font-size="12" fill="#57606A" text-anchor="middle">orchestrator 改指向的把手；准备好前指向 /dev/null</text>
+<rect x="78.0" y="506.0" width="672.0" height="52.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="414.0" y="536.8" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">/dev/nbd3</text>
+<path d="M414.0 272.0 L414.0 300.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M414.0 372.0 L414.0 400.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M414.0 472.0 L414.0 500.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="820.0" y="156.0" width="732.0" height="420.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="840.0" y="186.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">沙箱 B 的 mount 命名空间</text>
+<rect x="850.0" y="206.0" width="672.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1186.0" y="228.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">Firecracker 打开 /fc-vm/rootfs.ext4</text>
+<text x="1186.0" y="250.6" font-size="12" fill="#57606A" text-anchor="middle">快照里记的固定路径</text>
+<rect x="850.0" y="306.0" width="672.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1186.0" y="328.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">/fc-vm 是私有 tmpfs</text>
+<text x="1186.0" y="350.6" font-size="12" fill="#57606A" text-anchor="middle">rootfs.ext4 → …/rootfs-B-&lt;随机&gt;.link</text>
+<rect x="850.0" y="406.0" width="672.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1186.0" y="427.8" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="middle">/orchestrator/sandbox/rootfs-B-&lt;随机&gt;.link</text>
+<text x="1186.0" y="450.4" font-size="12" fill="#57606A" text-anchor="middle">orchestrator 改指向的把手；准备好前指向 /dev/null</text>
+<rect x="850.0" y="506.0" width="672.0" height="52.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1186.0" y="536.8" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">/dev/nbd7</text>
+<path d="M1186.0 272.0 L1186.0 300.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1186.0 372.0 L1186.0 400.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1186.0 472.0 L1186.0 500.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="616.0" x2="1552.0" y2="616.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="642.0" font-size="13" fill="#8C959F" text-anchor="start">注：内核也一样：/fc-vm/&lt;内核版本&gt;/vmlinux.bin 链到 /fc-kernels/&lt;内核版本&gt;/vmlinux.bin。文件名里的随机串让同一个沙箱 ID 暂停又恢复时，新旧两套文件不撞名。</text></svg>
