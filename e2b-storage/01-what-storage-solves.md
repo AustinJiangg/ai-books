@@ -150,7 +150,7 @@ ORCHESTRATOR_SERVICES = "orchestrator,template-manager"
   本地缓存              │  /orchestrator/template/     模板小文件缓存                │
                        │  /orchestrator/build/        memfile、rootfs 本地副本      │
                        │  /orchestrator/sandbox/      每个沙箱的写时复制文件         │
-                       │  /mnt/snapshot-cache/        快照中间产物（tmpfs 65G）     │
+                       │  /mnt/snapshot-cache/        tmpfs 65G，本版代码没写过它    │
                        │                                                          │
   给虚拟机用的          │  /dev/nbd0 … /dev/nbd511     沙箱的“硬盘”                 │
                        │  /mnt/hugepages              沙箱“内存”背后的大页          │
@@ -167,7 +167,7 @@ ORCHESTRATOR_SERVICES = "orchestrator,template-manager"
 
 - **Harbor**：一个 Docker 镜像仓库。模板的第一行 `FROM harbor:443/e2b-orchestration/ubuntu:22.04-custom` 就是从这里拿原料（第 8 篇）。
 - **`/tmp/templates`**：做好的模板、暂停产生的快照，最终都存在这里。注意它在 `/tmp` 下，而 openEuler 的 `/tmp` 是放在内存里的 tmpfs，宿主机一重启就没了（第 10 篇）。
-- **`/orchestrator/...`** 和 **`/mnt/snapshot-cache`**：运行时的本地缓存，不是模板的家（第 11 篇）。
+- **`/orchestrator/...`**：运行时的本地缓存，不是模板的家（第 11 篇）。**`/mnt/snapshot-cache`** 是部署脚本挂的一块 tmpfs，这个版本的代码只在启动时建一下目录，从不往里写（第 11 篇）。
 - **`/dev/nbdN`**：每个运行中的沙箱占一个，作为它的根盘（第 12 篇）。
 - **`/mnt/hugepages`**：沙箱的内存用 2 MiB 大页，开机时由部署脚本预留（第 13 篇）。
 - **MinIO**：一个对象存储服务。部署脚本把它装好了，配置里也写了它，但实际上没有任何组件往里写模板（第 10 篇解释为什么）。

@@ -340,4 +340,4 @@ MinIO 的价值在于**多台机器共享模板**和**模板的生命周期独�
 | 两条改法 | Local 换到硬盘目录，或切到 MinIO；都要改源头文件 |
 | 共享块缓存 | `SHARED_CHUNK_CACHE_PATH`，本环境为空，未启用 |
 
-**下一篇预告**：[《节点本地缓存：`/orchestrator` 目录里都是什么》](11-node-local-cache.md)。模板在存储后端里，但沙箱不能直接拿存储后端里的对象当盘、当内存用。中间还隔着一层本地缓存：`/orchestrator/template`、`/orchestrator/build`、`/orchestrator/sandbox`、`/mnt/snapshot-cache`。下一篇讲这一层：数据怎么按 4 MiB 一块被拉到本地，读一块数据的完整路径是什么，以及为什么在这里看到大文件不必惊慌。
+**下一篇预告**：[《节点本地缓存：`/orchestrator` 目录里都是什么》](11-node-local-cache.md)。模板在存储后端里，但沙箱不能直接拿存储后端里的对象当盘、当内存用。中间还隔着一层本地缓存：`/orchestrator/template`、`/orchestrator/build`、`/orchestrator/sandbox`，以及一块挂着却没人用的 `/mnt/snapshot-cache`。下一篇讲这一层：数据怎么按 4 MiB 一块被拉到本地，读一块数据的完整路径是什么，以及为什么在这里看到大文件不必惊慌。

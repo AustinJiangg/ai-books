@@ -214,7 +214,7 @@ Linux 读文件时，会把读到的块放进内存里的**页缓存**（page ca
 | 挂载点 | 由谁挂载 | 大小 | 里面放什么 |
 |---|---|---|---|
 | `/tmp` | openEuler 系统自带的 `tmp.mount` | 默认按内存比例 | **模板和快照**（`/tmp/templates`）、构建层缓存（`/tmp/build-cache`） |
-| `/mnt/snapshot-cache` | 部署脚本 `init-client.sh`、`start-client.sh` | 65G | 打快照时的中间文件 |
+| `/mnt/snapshot-cache` | 部署脚本 `init-client.sh`、`start-client.sh` | 65G | 名字叫快照缓存，但这个版本的代码不往里写（第 11 篇） |
 
 第一行是个要牢记的事实：**这套环境的模板实际存在内存里**。宿主机一重启，所有模板都会消失，需要重新构建。不重启的话，系统自带的 `systemd-tmpfiles` 每天也会清理一次 `/tmp`，删掉 10 天内既没被读也没被改过的文件。第 10 篇会讲为什么会这样，以及怎么改。
 

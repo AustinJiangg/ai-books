@@ -60,7 +60,7 @@
   - 进程：template-manager 一个进程身兼 orchestrator 和模板构建两个角色。它下面是 Firecracker。
   - 持久化目录：`/tmp/templates`、`/tmp/build-cache`。
   - 本地缓存目录：`/orchestrator/{build,template,sandbox}`。
-  - tmpfs：`/mnt/snapshot-cache`（65G）。
+  - tmpfs：`/mnt/snapshot-cache`（65G，本版代码不写）。
   - hugetlbfs：`/mnt/hugepages`。
   - 设备：`/dev/nbd0`～`/dev/nbd511`。
   - 运行环境文件：`/fc-kernels`、`/fc-versions`、`/fc-envd`。
@@ -276,7 +276,7 @@
   | `/orchestrator/template/<buildID>/cache/<uuid>/` | snapfile、metadata.json | 缓存项过期或关闭时删 |
   | `/orchestrator/build/<buildID>-memfile-<rand>`、`<buildID>-rootfs.ext4-<rand>` | memfile、rootfs 的本地副本 | TTL 25 小时加容量驱逐；进程启动时整目录清空 |
   | `/orchestrator/sandbox/` | 运行中沙箱的 COW 文件 | 沙箱销毁即删 |
-  | `/mnt/snapshot-cache` | 快照中间产物，tmpfs 65G | 重启即空 |
+  | `/mnt/snapshot-cache` | 部署脚本挂的 tmpfs 65G；代码只建目录，不写 | — |
 
 - 文件名里的随机后缀是干什么的：防止旧缓存项关闭时删掉新缓存项的文件。
 - 分块拉取（chunker）：
@@ -365,7 +365,7 @@
 - 快照链和删除：
   - 删一个快照为什么要走 API。
   - 手工删 `/tmp/templates` 里的目录会打断哪些后代。
-- 中间文件在哪：`/orchestrator/build` 和 `/mnt/snapshot-cache` 各放了什么。
+- 中间文件在哪：`/orchestrator/build`、`/orchestrator/template` 各放了什么。
 
 ### 第 15 篇　ARM 上的增量为什么“偏大”：脏页判据与实测
 
@@ -498,7 +498,7 @@
   7. 删除。
 - 容量账，这套环境的特点是“很多存储其实是内存”：
   - `/tmp/templates`：tmpfs，占内存。
-  - `/mnt/snapshot-cache`：tmpfs，上限 65G。
+  - `/mnt/snapshot-cache`：tmpfs，上限 65G，但没人写，不占内存。
   - 大页池：静态池加超分配。
   - `/orchestrator/build` 的本地缓存：真盘，但会进页缓存，计入 template-manager 的 32 GiB 上限。
   - 每个沙箱的 COW 文件和检查点文件。
