@@ -51,7 +51,7 @@
 | PostgreSQL、MinIO、Harbor、Nginx、dnsmasq 不归 Nomad 管，由 `build.sh -i` 用 docker 或 systemd 直接装 | `build.sh` 的 `install()` |
 | `dep/` 是一层“覆盖”：RPM 先铺上游脚本，`build.sh -i` 再用 `dep/` 里改过的版本盖上去，实际生效的是 `dep/` 那份 | `build.sh` 的 `install_e2b` |
 | `.env` 里的值要经过 `deploy.sh` 的 `envsubst` 白名单才能进到 job；hcl 里写死的值会压过 `.env`（例如 `STORAGE_PROVIDER`） | `deploy.sh`、`dep/template-manager.hcl` |
-| 全程离线：Go 工具链、vendor 依赖、docker 镜像、Harbor/MinIO/Nomad/Consul 安装包都提前备好，部署时不需要外网 | `e2b-infra.spec`、`single-node-offline-deploy.md` §1 |
+| 基本离线：Go 工具链、vendor 依赖、docker 镜像、Harbor/MinIO/Nomad/Consul 安装包都提前备好；只有 `yum install`（dnsmasq、nginx 等）和 `pip install`（SDK）要一个可用的软件源 | `e2b-infra.spec`、`single-node-offline-deploy.md` §1、§8 |
 
 ## 第一部分　打地基：部署要懂的几样东西
 
