@@ -262,7 +262,7 @@
   - 把 `LOCAL_TEMPLATE_STORAGE_BASE_PATH` 指到持久盘。
   - 真正切到 MinIO：建桶，改源头的 hcl，迁移数据。
   - 两条路都要改 `dep/` 里的源头文件，否则下次 `-s` 又被覆盖回去。
-- api 根本不碰存储：删模板、删快照是 api 让 template-manager 去执行 `DeleteObjectsWithPrefix`。
+- api 根本不碰存储：删模板、删快照只删数据库记录，不删文件；只有构建失败或取消时，template-manager 才执行 `DeleteObjectsWithPrefix`。
 
 ## 第三部分　一个沙箱的存储栈
 
@@ -363,8 +363,8 @@
   - 沙箱 ID 不变，但 Firecracker 进程、NBD 设备、UFFD 都是新的。
   - 内存和磁盘按新 header 从各代 diff 里按需取。
 - 快照链和删除：
-  - 删一个快照为什么要走 API。
   - 手工删 `/tmp/templates` 里的目录会打断哪些后代。
+  - 走 API 删除只删数据库记录、故意不删文件，所以 `/tmp/templates` 只增不减。
 - 中间文件在哪：`/orchestrator/build`、`/orchestrator/template` 各放了什么。
 
 ### 第 15 篇　ARM 上的增量为什么“偏大”：脏页判据与实测

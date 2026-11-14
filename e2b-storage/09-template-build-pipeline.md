@@ -270,7 +270,7 @@ func (s *fsStorage) UploadSignedURL(...) (string, error) {
 | 建模板卡在 `Provisioning sandbox template` 后失败 | `/fc-kernels/<版本>/vmlinux.bin` 不存在，或 provision 脚本在客户机里装包失败 |
 | 等 envd 60 秒超时，报 `build was cancelled` | 宿主的 `ip_forward` 是 0，宿主探不到客户机里的 envd（网络问题，见网络书第 21 篇） |
 | 改了第 N 步后，前面的步骤还是重新执行了 | 前面某一步的哈希变了，比如 `FROM` 的镜像标签指向了新内容 |
-| `/tmp/templates` 越来越大 | 每一层、每一个旧版本都在这里，只有删模板才回收 |
+| `/tmp/templates` 越来越大 | 每一层、每一个旧版本都在这里；通过 API 删模板也不删文件（第 14 篇），只有构建失败时才清理 |
 | 宿主机重启后模板没了，但缓存索引还在 | 两者都在 `/tmp`，都会丢；如果只丢了一个，会出现“命中缓存却找不到层”的错误 |
 
 ---

@@ -112,10 +112,10 @@ func GetBuildCacheStorageProvider(...) {
 
 整个代码里，线上流程只有 orchestrator 进程构造这两个后端：
 
-- 模板后端：恢复沙箱时读，暂停、构建时写，删模板时删；
+- 模板后端：恢复沙箱时读，暂停、构建时写，构建失败或被取消时删；
 - 构建缓存后端：构建模板时查 index、写 index、存取 COPY 文件。
 
-**api 完全不碰存储**。删模板、删快照时，是 api 通过 gRPC 让 template-manager 去执行 `DeleteObjectsWithPrefix(buildID)`。所以 api 的配置里设不设 `STORAGE_PROVIDER` 都没有影响。
+**api 完全不碰存储**。需要删存储里的文件时（取消一个正在进行的构建），是 api 通过 gRPC 让 template-manager 去执行 `DeleteObjectsWithPrefix(buildID)`。而用户删模板、删快照时，api 只删数据库记录，不删文件（第 14 篇第七节）。所以 api 的配置里设不设 `STORAGE_PROVIDER` 都没有影响。
 
 ---
 
