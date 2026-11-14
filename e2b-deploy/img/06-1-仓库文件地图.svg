@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="816" viewBox="0 0 1600 816" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="816" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">仓库里有什么：原料、改良、配方、摆盘</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">这是一个“打包仓库”：没有 packages/api 这类源码目录，E2B 的源码整个装在一个走 git-lfs 的压缩包里；对源码的全部修改集中在一个补丁里；spec 把它们变成 RPM；e2b-deploy/ 决定装好后怎么部署。</text>
+<rect x="48.0" y="150.0" width="361.0" height="70.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.5" y="177.6" font-size="17" fill="#8A5300" font-weight="600" text-anchor="middle">原料</text>
+<text x="228.5" y="200.8" font-size="12.5" fill="#57606A" text-anchor="middle">拿来就用，不改内容</text>
+<rect x="56.0" y="236.0" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.5" y="258.2" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">e2b-infra-2026.09.tar.gz</text>
+<text x="228.5" y="280.8" font-size="12" fill="#57606A" text-anchor="middle">上游源码 + vendor/，约 140 MB，git-lfs</text>
+<rect x="56.0" y="304.8" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.5" y="327.1" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">tools-arm64.tar.gz</text>
+<text x="228.5" y="349.6" font-size="12" fill="#57606A" text-anchor="middle">离线 Go 工具链 go1.25.4</text>
+<rect x="56.0" y="373.6" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.5" y="395.9" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">firecracker.arm</text>
+<text x="228.5" y="418.5" font-size="12" fill="#57606A" text-anchor="middle">定制 Firecracker</text>
+<rect x="56.0" y="442.5" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.5" y="464.7" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">vmlinux.bin.arm (.openeuler)</text>
+<text x="228.5" y="487.3" font-size="12" fill="#57606A" text-anchor="middle">客户机内核</text>
+<rect x="56.0" y="511.3" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.5" y="533.5" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">busybox_1.35_arm64、goose</text>
+<text x="228.5" y="556.1" font-size="12" fill="#57606A" text-anchor="middle">模板 init、数据库迁移</text>
+<rect x="56.0" y="580.1" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D9922B" stroke-width="1.3"/>
+<text x="228.5" y="602.3" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">ubuntu-22.04-custom.tar.gz</text>
+<text x="228.5" y="624.9" font-size="12" fill="#57606A" text-anchor="middle">模板基础镜像，约 70 MB</text>
+<rect x="429.0" y="150.0" width="361.0" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="609.5" y="177.6" font-size="17" fill="#9A3215" font-weight="600" text-anchor="middle">改良</text>
+<text x="609.5" y="200.8" font-size="12.5" fill="#57606A" text-anchor="middle">对上游的唯一修改</text>
+<rect x="437.0" y="236.0" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="609.5" y="258.2" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="middle">0001-adapted-for-arm-architecture.patch</text>
+<text x="609.5" y="280.8" font-size="12" fill="#57606A" text-anchor="middle">约 900 KB、170 多个文件</text>
+<rect x="437.0" y="304.8" width="345.0" height="78.8" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="609.5" y="327.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="middle">功能改动</text>
+<text x="609.5" y="349.6" font-size="12" fill="#57606A" text-anchor="middle">ARM 适配、去 GCP、MinIO/Local、快照回滚、FC 启</text>
+<text x="609.5" y="367.6" font-size="12" fill="#57606A" text-anchor="middle">动优化</text>
+<rect x="437.0" y="391.6" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="609.5" y="413.9" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="middle">部署改动</text>
+<text x="609.5" y="436.5" font-size="12" fill="#57606A" text-anchor="middle">job 文件、Dockerfile、Makefile、初始化脚本、Helm</text>
+<rect x="810.0" y="150.0" width="361.0" height="70.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="990.5" y="177.6" font-size="17" fill="#1D4F91" font-weight="600" text-anchor="middle">配方</text>
+<text x="990.5" y="200.8" font-size="12.5" fill="#57606A" text-anchor="middle">rpmbuild 读它</text>
+<rect x="818.0" y="236.0" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="990.5" y="258.2" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="middle">e2b-infra.spec</text>
+<text x="990.5" y="280.8" font-size="12" fill="#57606A" text-anchor="middle">Source0～9 + Patch1</text>
+<rect x="818.0" y="304.8" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="990.5" y="327.1" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="middle">%prep / %build</text>
+<text x="990.5" y="349.6" font-size="12" fill="#57606A" text-anchor="middle">解压、打补丁、离线编译</text>
+<rect x="818.0" y="373.6" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="990.5" y="395.9" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="middle">%install / %files</text>
+<text x="990.5" y="418.5" font-size="12" fill="#57606A" text-anchor="middle">摆进 /opt/e2b-infra</text>
+<rect x="1191.0" y="150.0" width="361.0" height="70.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1371.5" y="177.6" font-size="17" fill="#0E6B4F" font-weight="600" text-anchor="middle">摆盘</text>
+<text x="1371.5" y="200.8" font-size="12.5" fill="#57606A" text-anchor="middle">装好后怎么部署</text>
+<rect x="1199.0" y="236.0" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1371.5" y="258.2" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">e2b-deploy/build.sh</text>
+<text x="1371.5" y="280.8" font-size="12" fill="#57606A" text-anchor="middle">单机部署总开关</text>
+<rect x="1199.0" y="304.8" width="345.0" height="78.8" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1371.5" y="327.1" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">e2b-deploy/dep/</text>
+<text x="1371.5" y="349.6" font-size="12" fill="#57606A" text-anchor="middle">.env、单机版脚本与 hcl、SDK 替换文件、</text>
+<text x="1371.5" y="367.6" font-size="12" fill="#57606A" text-anchor="middle">MinIO/Nginx配置</text>
+<rect x="1199.0" y="391.6" width="345.0" height="60.8" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1371.5" y="413.9" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">patch_e2b.py</text>
+<text x="1371.5" y="436.5" font-size="12" fill="#57606A" text-anchor="middle">SDK 的 https → http</text>
+<rect x="48.0" y="658.9" width="1504.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="695.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">说明书：single-node-offline-deploy.md（怎么做）· deploy-docs/（为什么）· docs/zh/（多节点、k8s）· benchmark/ rollback/ gsd/</text>
+<line x1="48.0" y1="750.9" x2="1552.0" y2="750.9" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="776.9" font-size="13" fill="#8C959F" text-anchor="start">注：clone 之后要 git lfs pull，否则源码包只是 134 字节的指针；不能拿 GitHub 的标签归档代替（没有 vendor/，补丁打不上）。</text></svg>

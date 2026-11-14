@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="695" viewBox="0 0 1600 695" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="695" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">建第一个模板，用到了前面几乎每一篇的成果</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Template.build(from_dockerfile('FROM harbor:443/e2b-orchestration/ubuntu:22.04-custom'), alias="base")。右侧是这一步依赖的部署成果。</text>
+<circle cx="62.0" cy="178.1" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="182.6" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<rect x="88.0" y="146.0" width="808.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="170.2" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">SDK 发请求到 :3000</text>
+<text x="102.0" y="192.8" font-size="12" fill="#57606A" text-anchor="start">带 access token 和 API key</text>
+<rect x="912.0" y="146.0" width="640.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="181.7" font-size="12" fill="#57606A" text-anchor="middle">SDK 三层改造（第 11 篇）</text>
+<circle cx="62.0" cy="250.2" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="254.7" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<rect x="88.0" y="218.1" width="808.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="242.3" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">api 记录构建</text>
+<text x="102.0" y="264.9" font-size="12" fill="#57606A" text-anchor="start">验证 token；写 PostgreSQL</text>
+<rect x="912.0" y="218.1" width="640.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="253.8" font-size="12" fill="#57606A" text-anchor="middle">PostgreSQL、db-migrator、seed-db（第 10、14、15 篇）</text>
+<circle cx="62.0" cy="322.3" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="326.8" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<rect x="88.0" y="290.3" width="808.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="314.5" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">交给 template-manager</text>
+<text x="102.0" y="337.1" font-size="12" fill="#57606A" text-anchor="start">同一个进程，5008</text>
+<rect x="912.0" y="290.3" width="640.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="325.9" font-size="12" fill="#57606A" text-anchor="middle">api 已发现 orchestrator（第 15 篇）</text>
+<circle cx="62.0" cy="382.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="386.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<rect x="88.0" y="362.4" width="808.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="386.6" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">拉 harbor:443/…/ubuntu:22.04-custom</text>
+<rect x="912.0" y="362.4" width="640.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="385.6" font-size="12" fill="#57606A" text-anchor="middle">hosts、dnsmasq、Nginx、证书、SSL_CERT_FILE、基础镜像（第 10、14 篇）</text>
+<circle cx="62.0" cy="429.1" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="433.6" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<rect x="88.0" y="409.6" width="808.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="433.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">做成磁盘，注入 envd 和 busybox</text>
+<rect x="912.0" y="409.6" width="640.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="432.7" font-size="12" fill="#57606A" text-anchor="middle">/fc-envd/envd；编进二进制的 busybox（第 7、13 篇）</text>
+<circle cx="62.0" cy="476.3" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="480.8" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<rect x="88.0" y="456.7" width="808.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="480.9" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">启动构建用的虚拟机</text>
+<rect x="912.0" y="456.7" width="640.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="479.9" font-size="12" fill="#57606A" text-anchor="middle">/fc-kernels、/fc-versions、NBD、大页、网络槽位（第 8、13 篇）</text>
+<circle cx="62.0" cy="535.9" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="540.4" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">7</text>
+<rect x="88.0" y="503.8" width="808.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="528.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">等虚拟机里的 envd 就绪</text>
+<text x="102.0" y="550.6" font-size="12" fill="#57606A" text-anchor="start">最多 60 秒</text>
+<rect x="912.0" y="503.8" width="640.0" height="64.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="539.5" font-size="12" fill="#57606A" text-anchor="middle">IP 转发 = 1（第 13 篇）</text>
+<circle cx="62.0" cy="595.5" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="600.0" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">8</text>
+<rect x="88.0" y="576.0" width="808.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="600.2" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">打内存快照，存成模板</text>
+<rect x="912.0" y="576.0" width="640.0" height="39.1" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1232.0" y="599.1" font-size="12" fill="#57606A" text-anchor="middle">/orchestrator/build、/tmp/templates（第 12 篇）</text>
+<line x1="48.0" y1="629.1" x2="1552.0" y2="629.1" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="655.1" font-size="13" fill="#8C959F" text-anchor="start">注：上一次构建失败后重试报 Alias 'base' already used，要先用 API 删掉失败的模板（第 20 篇）。</text></svg>

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="589" viewBox="0 0 1600 589" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="589" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">改动落在哪一层，就只动哪一层</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">列是部署的三层，格子是每种场景要动它的方式。能不 -i -s 就不 -i -s：它们会换掉 API key 和令牌、结束所有沙箱。</text>
+<rect x="48.0" y="146.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">场景</text>
+<text x="358.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">① RPM 底座</text>
+<text x="608.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">② dep/ 覆盖</text>
+<text x="908.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">③ 运行时生成物</text>
+<text x="1352.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">结束沙箱</text>
+<rect x="48.0" y="188.2" width="1504.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="211.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">一 彻底重来</text>
+<text x="358.0" y="211.1" font-size="13.5" fill="#9A3215" text-anchor="start">rpm -Uvh（可选）</text>
+<text x="608.0" y="211.1" font-size="13.5" fill="#9A3215" text-anchor="start">-i 重做</text>
+<text x="908.0" y="211.1" font-size="13.5" fill="#9A3215" text-anchor="start">-d 删、-s 重建</text>
+<text x="1352.0" y="211.1" font-size="13.5" fill="#9A3215" text-anchor="start">会</text>
+<line x1="48.0" y1="270.8" x2="1552.0" y2="270.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="253.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">二 改 Go 源码</text>
+<text x="358.0" y="253.3" font-size="13.5" fill="#1F2328" text-anchor="start">rpm -Uvh --force</text>
+<text x="608.0" y="253.3" font-size="13.5" fill="#1F2328" text-anchor="start">重放（跳过 .env）</text>
+<text x="908.0" y="253.3" font-size="13.5" fill="#1F2328" text-anchor="start">拷 /usr/bin；api/client-proxy 重建镜像；stop 再 run</text>
+<text x="1352.0" y="253.3" font-size="13.5" fill="#1F2328" text-anchor="start">会</text>
+<line x1="48.0" y1="313.0" x2="1552.0" y2="313.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="295.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">三 hcl 里写死的 env</text>
+<text x="358.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">—</text>
+<text x="608.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">改 nomad/&lt;job&gt;.hcl</text>
+<text x="908.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">build.sh -r &lt;job&gt;（值变了自动替换）</text>
+<text x="1352.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">改 template-manager 时会</text>
+<line x1="48.0" y1="355.2" x2="1552.0" y2="355.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="337.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">四 .env 里进 job 的变量</text>
+<text x="358.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">—</text>
+<text x="608.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">改根目录 .env</text>
+<text x="908.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">build.sh -f 或 -r</text>
+<text x="1352.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">视 job 而定</text>
+<rect x="48.0" y="357.2" width="1504.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="380.1" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">五 Nomad、Consul 配置</text>
+<text x="358.0" y="380.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">—</text>
+<text x="608.0" y="380.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">—</text>
+<text x="908.0" y="380.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">改 /etc/nomad.d，systemctl restart nomad</text>
+<text x="1352.0" y="380.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">不会</text>
+<rect x="48.0" y="419.5" width="1504.0" height="76.0" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="449.3" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">rpm -Uvh 之后必做：重放覆盖</text>
+<text x="800.0" y="472.5" font-size="12.5" fill="#57606A" text-anchor="middle">for f in deploy.sh start-*.sh init-client.sh run-*.sh install-*.sh uninstall-*.sh template-manager.hcl → 从 dep/ 拷回；唯独不拷 dep/.env</text>
+<line x1="48.0" y1="523.5" x2="1552.0" y2="523.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="549.5" font-size="13" fill="#8C959F" text-anchor="start">注：持久的改法永远是改仓库里的 e2b-deploy/dep/... 再打包；机器上的改动都会被某一步覆盖。</text></svg>

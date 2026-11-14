@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="684" viewBox="0 0 1600 684" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="684" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">ACL 令牌：只给一次，所以要存在集群数据旁边</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Consul 先以 allow 启动、bootstrap 后改 deny 重启；Nomad 只在全新集群时 bootstrap，否则从 /data/nomad/acl.token 找回。两者都写回 .env。</text>
+<text x="48.0" y="160.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">Consul（run-consul.sh --server）</text>
+<rect x="48.0" y="178.0" width="276.8" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="186.4" y="218.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">default_policy = allow 启动</text>
+<text x="186.4" y="240.6" font-size="12" fill="#57606A" text-anchor="middle">没有令牌也能访问</text>
+<path d="M328.8 226.0 L350.8 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="354.8" y="178.0" width="276.8" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="493.2" y="218.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">等 leader</text>
+<text x="493.2" y="240.6" font-size="12" fill="#57606A" text-anchor="middle">/v1/status/leader</text>
+<path d="M635.6 226.0 L657.6 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="661.6" y="178.0" width="276.8" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="800.0" y="218.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">consul acl bootstrap</text>
+<text x="800.0" y="240.6" font-size="12" fill="#57606A" text-anchor="middle">拿到管理令牌</text>
+<path d="M942.4 226.0 L964.4 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="968.4" y="178.0" width="276.8" height="96.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1106.8" y="209.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">存令牌</text>
+<text x="1106.8" y="231.6" font-size="12" fill="#57606A" text-anchor="middle">/opt/consul/acl.token</text>
+<text x="1106.8" y="249.6" font-size="12" fill="#57606A" text-anchor="middle">.env 的 CONSUL_ACL_TOKEN</text>
+<path d="M1249.2 226.0 L1271.2 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1275.2" y="178.0" width="276.8" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1413.6" y="218.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">改 deny、带令牌重启</text>
+<text x="1413.6" y="240.6" font-size="12" fill="#57606A" text-anchor="middle">从此无令牌一律拒绝</text>
+<text x="48.0" y="330.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">Nomad（run-nomad.sh --server）</text>
+<rect x="48.0" y="348.0" width="300.0" height="96.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="388.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">已有 server 在跑？</text>
+<text x="198.0" y="410.7" font-size="12" fill="#57606A" text-anchor="middle">问 SERVER_IPS 的 :4646 leader</text>
+<rect x="428.0" y="320.0" width="520.0" height="70.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="688.0" y="347.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">没有：nomad acl bootstrap</text>
+<text x="688.0" y="369.6" font-size="12" fill="#57606A" text-anchor="middle">建节点池 api、build；令牌存 /data/nomad/acl.token</text>
+<rect x="428.0" y="412.0" width="520.0" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="688.0" y="439.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">有：不再 bootstrap</text>
+<text x="688.0" y="461.6" font-size="12" fill="#57606A" text-anchor="middle">从 /data/nomad/acl.token 读回令牌</text>
+<path d="M352.0 380.0 L424.0 355.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M352.0 410.0 L424.0 447.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1028.0" y="348.0" width="524.0" height="96.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1290.0" y="388.1" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">写回 .env 的 NOMAD_ACL_TOKEN</text>
+<text x="1290.0" y="410.7" font-size="12" fill="#57606A" text-anchor="middle">deploy.sh 提交 job 用它</text>
+<path d="M952.0 355.0 L1024.0 385.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M952.0 447.0 L1024.0 410.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="48.0" y="520.0" width="1504.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="800.0" y="546.8" font-size="14.5" fill="#9A3215" font-weight="600" text-anchor="middle">为什么不能只存在 .env 里</text>
+<text x="800.0" y="570.0" font-size="12.5" fill="#57606A" text-anchor="middle">-i 会用 dep/.env 覆盖根目录 .env；重装 RPM 会把 dep/.env 打回占位值。令牌跟集群数据放一起：集群在令牌就在，-d 删集群时一起删。</text>
+<line x1="48.0" y1="618.0" x2="1552.0" y2="618.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="644.0" font-size="13" fill="#8C959F" text-anchor="start">注：.env 里的令牌和集群对不上，deploy.sh 提交 job 就报 403 (Permission denied)。</text></svg>

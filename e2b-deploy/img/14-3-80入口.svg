@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="650" viewBox="0 0 1600 650" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="650" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">80 端口的入口：两条 iptables 规则</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">SDK 访问 http://49983-&lt;ID&gt;.e2b.app 默认用 80 端口，client-proxy 监听 3002。外机来的包走 PREROUTING，本机自己发给自己的包走 OUTPUT。</text>
+<text x="48.0" y="156.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">别的机器上的 SDK</text>
+<rect x="48.0" y="172.0" width="346.0" height="96.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="221.0" y="211.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">外机 SDK</text>
+<text x="221.0" y="235.2" font-size="12.5" fill="#57606A" text-anchor="middle">*.e2b.app → 服务器 IP</text>
+<path d="M398.0 220.0 L430.0 220.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="434.0" y="172.0" width="346.0" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="607.0" y="211.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">物理网卡</text>
+<text x="607.0" y="235.2" font-size="12.5" fill="#57606A" text-anchor="middle">192.168.10.23:80</text>
+<path d="M784.0 220.0 L816.0 220.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="820.0" y="172.0" width="346.0" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="993.0" y="202.5" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">nat PREROUTING</text>
+<text x="993.0" y="225.8" font-size="12.5" fill="#57606A" text-anchor="middle">-m addrtype --dst-type LOCAL</text>
+<text x="993.0" y="244.5" font-size="12.5" fill="#57606A" text-anchor="middle">-j REDIRECT --to-port 3002</text>
+<path d="M1170.0 220.0 L1202.0 220.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1206.0" y="172.0" width="346.0" height="96.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1379.0" y="224.8" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">client-proxy :3002</text>
+<text x="48.0" y="316.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">本机上的 SDK</text>
+<rect x="48.0" y="332.0" width="346.0" height="96.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="221.0" y="371.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">本机 SDK</text>
+<text x="221.0" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">dnsmasq：*.e2b.app → 127.0.0.1</text>
+<path d="M398.0 380.0 L430.0 380.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="434.0" y="332.0" width="346.0" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="607.0" y="371.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">lo 回环</text>
+<text x="607.0" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">127.0.0.1:80</text>
+<path d="M784.0 380.0 L816.0 380.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="820.0" y="332.0" width="346.0" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="993.0" y="362.6" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">nat OUTPUT</text>
+<text x="993.0" y="385.8" font-size="12.5" fill="#57606A" text-anchor="middle">-o lo --dport 80</text>
+<text x="993.0" y="404.6" font-size="12.5" fill="#57606A" text-anchor="middle">-j REDIRECT --to-port 3002</text>
+<path d="M1170.0 380.0 L1202.0 380.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1206.0" y="332.0" width="346.0" height="96.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1379.0" y="384.8" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">client-proxy :3002</text>
+<rect x="48.0" y="476.0" width="1504.0" height="80.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="800.0" y="507.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">为什么要 --dst-type LOCAL</text>
+<text x="800.0" y="531.2" font-size="12.5" fill="#57606A" text-anchor="middle">老规则不带它，会把所有经过本机 PREROUTING 的 80 端口流量截走：同机 AgentENV 沙箱、docker 容器、E2B 自己的沙箱访问外网 HTTP 都会被错误地送进 client-proxy。脚本先删老规则再加新的。</text>
+<line x1="48.0" y1="584.0" x2="1552.0" y2="584.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="610.0" font-size="13" fill="#8C959F" text-anchor="start">注：-w 等待 xtables 锁；-C 检查存在再 -A 追加（幂等）；两条规则没有保存，重启后丢失。</text></svg>

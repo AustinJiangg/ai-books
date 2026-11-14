@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="479" viewBox="0 0 1600 479" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="479" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">自下而上验证：下层不通，别查上层</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">部署是从下往上搭的，验证也从下往上查。每层一两条命令，和“正常时”对不上，就在那一层找原因。</text>
+<rect x="48.0" y="146.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">层</text>
+<text x="248.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">命令</text>
+<text x="1078.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">正常时</text>
+<rect x="48.0" y="188.2" width="1504.0" height="38.2" rx="6" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="58.0" y="211.1" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="start">5 沙箱层</text>
+<text x="248.0" y="211.1" font-size="13.5" fill="#4B3FA8" text-anchor="start">建 base 模板；Sandbox.create("base") + commands.run("uname -m")</text>
+<text x="1078.0" y="211.1" font-size="13.5" fill="#4B3FA8" text-anchor="start">秒级返回 aarch64</text>
+<rect x="48.0" y="230.5" width="1504.0" height="38.2" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="58.0" y="253.3" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">4 业务层</text>
+<text x="248.0" y="253.3" font-size="13.5" fill="#1D4F91" text-anchor="start">curl :3000/health；curl :3003/health</text>
+<text x="1078.0" y="253.3" font-size="13.5" fill="#1D4F91" text-anchor="start">都是 200（api 已发现 orchestrator）</text>
+<rect x="48.0" y="272.8" width="1504.0" height="38.2" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="58.0" y="295.6" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">3 调度层</text>
+<text x="248.0" y="295.6" font-size="13.5" fill="#1D4F91" text-anchor="start">nomad node status；nomad job status；consul catalog services</text>
+<text x="1078.0" y="295.6" font-size="13.5" fill="#1D4F91" text-anchor="start">1 个节点 ready；4 个 job running；服务齐全</text>
+<rect x="48.0" y="315.0" width="1504.0" height="38.2" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="58.0" y="337.8" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="start">2 宿主服务层</text>
+<text x="248.0" y="337.8" font-size="13.5" fill="#8A5300" text-anchor="start">systemctl is-active nomad consul dnsmasq nginx minio docker；curl https://harbor/v2/ --cacert …</text>
+<text x="1078.0" y="337.8" font-size="13.5" fill="#8A5300" text-anchor="start">全部 active；harbor 返回 401</text>
+<rect x="48.0" y="357.2" width="1504.0" height="38.2" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="58.0" y="380.1" font-size="13.5" fill="#3D3C38" font-weight="600" text-anchor="start">1 机器层</text>
+<text x="248.0" y="380.1" font-size="13.5" fill="#3D3C38" text-anchor="start">nbds_max；HugePages_Total；ip_forward；getent hosts x.e2b.app harbor；iptables -t nat -S | grep 3002</text>
+<text x="1078.0" y="380.1" font-size="13.5" fill="#3D3C38" text-anchor="start">512；与 init-client 一致；1；127.0.0.1 / 本机 IP；两条</text>
+<line x1="48.0" y1="413.5" x2="1552.0" y2="413.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="439.5" font-size="13" fill="#8C959F" text-anchor="start">注：harbor 返回 401 是好事：请求到达了 Harbor，只是没带账号，说明 DNS、Nginx、证书、Harbor 整条路都是通的。</text></svg>

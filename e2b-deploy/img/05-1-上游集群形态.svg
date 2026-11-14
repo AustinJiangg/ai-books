@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="762" viewBox="0 0 1600 762" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="762" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">上游的部署形态：GCP 上的多组机器加一圈云服务</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Terraform 建出几组虚拟机（每组一个 Nomad 节点池），Packer 预做机器镜像；模板、内核、二进制放存储桶，镜像放 Artifact Registry，数据库用 Supabase，入口是负载均衡加 Cloudflare 域名。</text>
+<rect x="48.0" y="150.0" width="260.0" height="120.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="178.0" y="192.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">Cloudflare 域名
++ GCP 负载</text>
+<text x="178.0" y="211.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">均衡</text>
+<text x="178.0" y="235.1" font-size="12.5" fill="#57606A" text-anchor="middle">*.e2b.app、证书</text>
+<rect x="348.0" y="150.0" width="1204.0" height="380.0" rx="14" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="368.0" y="180.0" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="start">GCP 项目（Terraform 建、Packer 镜像）</text>
+<rect x="368.0" y="210.0" width="220.0" height="120.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="478.0" y="262.1" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="middle">control server</text>
+<text x="478.0" y="284.7" font-size="12" fill="#57606A" text-anchor="middle">Nomad / Consul server × 3</text>
+<rect x="604.0" y="210.0" width="220.0" height="120.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="714.0" y="253.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">api 节点池</text>
+<text x="714.0" y="275.7" font-size="12" fill="#57606A" text-anchor="middle">api、client-proxy、redis</text>
+<text x="714.0" y="293.7" font-size="12" fill="#57606A" text-anchor="middle">docker-reverse-proxy</text>
+<rect x="840.0" y="210.0" width="220.0" height="120.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="950.0" y="262.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">build 节点池</text>
+<text x="950.0" y="284.7" font-size="12" fill="#57606A" text-anchor="middle">template-manager</text>
+<rect x="1076.0" y="210.0" width="220.0" height="120.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1186.0" y="253.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">client 节点池</text>
+<text x="1186.0" y="275.7" font-size="12" fill="#57606A" text-anchor="middle">orchestrator × N</text>
+<text x="1186.0" y="293.7" font-size="12" fill="#57606A" text-anchor="middle">自动扩缩</text>
+<rect x="1312.0" y="210.0" width="220.0" height="120.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1422.0" y="262.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">clickhouse、loki</text>
+<text x="1422.0" y="284.7" font-size="12" fill="#57606A" text-anchor="middle">用量统计、日志</text>
+<rect x="368.0" y="370.0" width="279.0" height="130.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="507.5" y="418.1" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="middle">GCS 存储桶</text>
+<text x="507.5" y="440.7" font-size="12" fill="#57606A" text-anchor="middle">fc-templates、fc-kernels</text>
+<text x="507.5" y="458.7" font-size="12" fill="#57606A" text-anchor="middle">fc-versions、fc-build-cache…</text>
+<rect x="663.0" y="370.0" width="279.0" height="130.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="802.5" y="427.1" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="middle">Artifact Registry</text>
+<text x="802.5" y="449.7" font-size="12" fill="#57606A" text-anchor="middle">服务镜像</text>
+<rect x="958.0" y="370.0" width="279.0" height="130.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1097.5" y="427.1" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="middle">Secret Manager</text>
+<text x="1097.5" y="449.7" font-size="12" fill="#57606A" text-anchor="middle">数据库连接串等</text>
+<rect x="1253.0" y="370.0" width="279.0" height="130.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1392.5" y="427.1" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="middle">Filestore</text>
+<text x="1392.5" y="449.7" font-size="12" fill="#57606A" text-anchor="middle">共享缓存（NFS）</text>
+<path d="M312.0 210.0 L344.0 210.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="328.0" y="202.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">入口</text>
+<rect x="48.0" y="410.0" width="260.0" height="120.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="178.0" y="461.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">Supabase</text>
+<text x="178.0" y="485.2" font-size="12.5" fill="#57606A" text-anchor="middle">托管 PostgreSQL</text>
+<rect x="48.0" y="560.0" width="260.0" height="90.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="178.0" y="596.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">Grafana Cloud</text>
+<text x="178.0" y="620.2" font-size="12.5" fill="#57606A" text-anchor="middle">监控</text>
+<text x="348.0" y="576.0" font-size="14" fill="#57606A" font-weight="600" text-anchor="start">上线方式</text>
+<rect x="348.0" y="590.0" width="278.5" height="76.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="487.2" y="620.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">make build-and-upload</text>
+<text x="487.2" y="642.1" font-size="11.5" fill="#57606A" text-anchor="middle">镜像、二进制、Packer 镜像</text>
+<path d="M630.5 628.0 L652.5 628.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="656.5" y="590.0" width="278.5" height="76.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="795.8" y="620.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">make copy-public-builds</text>
+<text x="795.8" y="642.1" font-size="11.5" fill="#57606A" text-anchor="middle">内核、Firecracker 进桶</text>
+<path d="M939.0 628.0 L961.0 628.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="965.0" y="590.0" width="278.5" height="76.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1104.2" y="620.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">terraform apply</text>
+<text x="1104.2" y="642.1" font-size="11.5" fill="#57606A" text-anchor="middle">templatefile() 渲染 job 并提交</text>
+<path d="M1247.5 628.0 L1269.5 628.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1273.5" y="590.0" width="278.5" height="76.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1412.8" y="620.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">make prep-cluster</text>
+<text x="1412.8" y="642.1" font-size="11.5" fill="#57606A" text-anchor="middle">初始用户、团队、模板</text>
+<line x1="48.0" y1="696.0" x2="1552.0" y2="696.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="722.0" font-size="13" fill="#8C959F" text-anchor="start">注：job 文件是 Terraform 模板（${port_number}、%{ if ... }）；orchestrator 用 Nomad 的 artifact 从存储桶下载。每一步都离不开 GCP。</text></svg>

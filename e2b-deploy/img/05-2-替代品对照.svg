@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="859" viewBox="0 0 1600 859" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="859" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">从云上集群搬到一台离线 ARM 服务器：每样云服务换成了什么</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">只换掉和云强绑定的部分；Nomad、Consul、端口、协议、节点池概念都保留。右列是本书讲它的篇目。</text>
+<rect x="48.0" y="146.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">上游（GCP）</text>
+<text x="618.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">本环境（单机离线 ARM）</text>
+<text x="1378.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">篇</text>
+<line x1="48.0" y1="228.5" x2="1552.0" y2="228.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="211.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Terraform 建资源</text>
+<text x="618.0" y="211.1" font-size="13.5" fill="#1F2328" text-anchor="start">不需要：资源就是这台机器</text>
+<text x="1378.0" y="211.1" font-size="13.5" fill="#1F2328" text-anchor="start">—</text>
+<line x1="48.0" y1="270.8" x2="1552.0" y2="270.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="253.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Terraform 模板变量 ${port_number}</text>
+<text x="618.0" y="253.3" font-size="13.5" fill="#1F2328" text-anchor="start">.env + envsubst 替换 ${API_PORT}</text>
+<text x="1378.0" y="253.3" font-size="13.5" fill="#1F2328" text-anchor="start">14、16</text>
+<line x1="48.0" y1="313.0" x2="1552.0" y2="313.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="295.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Packer 机器镜像</text>
+<text x="618.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">RPM 包 + init-client.sh</text>
+<text x="1378.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">7、13</text>
+<line x1="48.0" y1="355.2" x2="1552.0" y2="355.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="337.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">多台机器、多个节点池</text>
+<text x="618.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">一台机器，所有 job 去 api 池</text>
+<text x="1378.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">4、12</text>
+<line x1="48.0" y1="397.5" x2="1552.0" y2="397.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="380.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">3 台 Nomad / Consul server</text>
+<text x="618.0" y="380.1" font-size="13.5" fill="#1F2328" text-anchor="start">一个 Nomad 进程兼任 server + client</text>
+<text x="1378.0" y="380.1" font-size="13.5" fill="#1F2328" text-anchor="start">12</text>
+<line x1="48.0" y1="439.8" x2="1552.0" y2="439.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="422.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">GCS 存模板</text>
+<text x="618.0" y="422.3" font-size="13.5" fill="#1F2328" text-anchor="start">本地目录 /tmp/templates（MinIO 装了未用）</text>
+<text x="1378.0" y="422.3" font-size="13.5" fill="#1F2328" text-anchor="start">10、16</text>
+<line x1="48.0" y1="482.0" x2="1552.0" y2="482.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="464.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">GCS 存内核、Firecracker；artifact 下载程序</text>
+<text x="618.0" y="464.6" font-size="13.5" fill="#1F2328" text-anchor="start">RPM 自带，拷到 /fc-*、/usr/bin</text>
+<text x="1378.0" y="464.6" font-size="13.5" fill="#1F2328" text-anchor="start">12、13</text>
+<line x1="48.0" y1="524.2" x2="1552.0" y2="524.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="506.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Artifact Registry</text>
+<text x="618.0" y="506.8" font-size="13.5" fill="#1F2328" text-anchor="start">本机 Harbor :2900</text>
+<text x="1378.0" y="506.8" font-size="13.5" fill="#1F2328" text-anchor="start">10、14</text>
+<line x1="48.0" y1="566.5" x2="1552.0" y2="566.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="549.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Supabase</text>
+<text x="618.0" y="549.1" font-size="13.5" fill="#1F2328" text-anchor="start">docker 里的 PostgreSQL</text>
+<text x="1378.0" y="549.1" font-size="13.5" fill="#1F2328" text-anchor="start">10</text>
+<line x1="48.0" y1="608.8" x2="1552.0" y2="608.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="591.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">负载均衡 + Cloudflare 域名</text>
+<text x="618.0" y="591.3" font-size="13.5" fill="#1F2328" text-anchor="start">dnsmasq（*.e2b.app）+ iptables 80→3002</text>
+<text x="1378.0" y="591.3" font-size="13.5" fill="#1F2328" text-anchor="start">11、14</text>
+<line x1="48.0" y1="651.0" x2="1552.0" y2="651.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="633.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">HTTPS 证书</text>
+<text x="618.0" y="633.6" font-size="13.5" fill="#1F2328" text-anchor="start">不用 HTTPS，SDK 打补丁走 http</text>
+<text x="1378.0" y="633.6" font-size="13.5" fill="#1F2328" text-anchor="start">11</text>
+<line x1="48.0" y1="693.2" x2="1552.0" y2="693.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="675.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Secret Manager</text>
+<text x="618.0" y="675.8" font-size="13.5" fill="#1F2328" text-anchor="start">写在 .env 里</text>
+<text x="1378.0" y="675.8" font-size="13.5" fill="#1F2328" text-anchor="start">16</text>
+<line x1="48.0" y1="735.5" x2="1552.0" y2="735.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="718.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">make prep-cluster</text>
+<text x="618.0" y="718.1" font-size="13.5" fill="#1F2328" text-anchor="start">deploy.sh 末尾的 seed-db</text>
+<text x="1378.0" y="718.1" font-size="13.5" fill="#1F2328" text-anchor="start">14</text>
+<line x1="48.0" y1="777.8" x2="1552.0" y2="777.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="760.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Grafana、Loki、ClickHouse、自动扩缩</text>
+<text x="618.0" y="760.3" font-size="13.5" fill="#1F2328" text-anchor="start">不部署</text>
+<text x="1378.0" y="760.3" font-size="13.5" fill="#1F2328" text-anchor="start">2</text>
+<line x1="48.0" y1="793.8" x2="1552.0" y2="793.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="819.8" font-size="13" fill="#8C959F" text-anchor="start">注：本仓库还支持多节点 Nomad 和 Kubernetes 两种形态，三者共用同一个 RPM；单机形态就是把多节点的几个脚本串在一台机器上执行。</text></svg>

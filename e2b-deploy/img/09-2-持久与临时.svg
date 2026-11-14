@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="778" viewBox="0 0 1600 778" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="778" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">build.sh 的改动：哪些重启后还在，哪些会丢</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">这台机器重启后不会自动恢复成可用状态。最省事的恢复是 -d、-s，再重建模板；-i 装的东西大多是持久的。</text>
+<rect x="48.0" y="150.0" width="737.0" height="52.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="416.5" y="181.1" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">重启后还在：写进了文件</text>
+<rect x="48.0" y="226.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="252.0" font-size="13.5" fill="#1F2328" text-anchor="start">PostgreSQL 容器（--restart=always）</text>
+<rect x="48.0" y="274.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="300.0" font-size="13.5" fill="#1F2328" text-anchor="start">Nomad、Consul、MinIO、Nginx、dnsmasq（systemd enable）</text>
+<rect x="48.0" y="322.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="348.0" font-size="13.5" fill="#1F2328" text-anchor="start">证书与系统信任库</text>
+<rect x="48.0" y="370.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="396.0" font-size="13.5" fill="#1F2328" text-anchor="start">/etc/dnsmasq.conf、/etc/dnsmasq.d/consul.conf、/etc/hosts</text>
+<rect x="48.0" y="418.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="444.0" font-size="13.5" fill="#1F2328" text-anchor="start">/etc/sysctl.conf：IP 转发、连接数</text>
+<rect x="48.0" y="466.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="492.0" font-size="13.5" fill="#1F2328" text-anchor="start">/swapfile + /etc/fstab</text>
+<rect x="48.0" y="514.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="540.0" font-size="13.5" fill="#1F2328" text-anchor="start">nbd 的 udev 规则</text>
+<rect x="48.0" y="562.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="588.0" font-size="13.5" fill="#1F2328" text-anchor="start">/usr/bin/template-manager</text>
+<rect x="48.0" y="610.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="636.0" font-size="13.5" fill="#1F2328" text-anchor="start">/fc-kernels、/fc-versions、/fc-envd</text>
+<rect x="48.0" y="658.0" width="737.0" height="40.0" rx="8" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1"/>
+<text x="64.0" y="684.0" font-size="13.5" fill="#1F2328" text-anchor="start">/etc/resolv.conf 第一行（NetworkManager 可能改）</text>
+<rect x="815.0" y="150.0" width="737.0" height="52.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1183.5" y="181.1" font-size="16" fill="#9A3215" font-weight="600" text-anchor="middle">重启后丢失：只在内存里</text>
+<rect x="815.0" y="226.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="252.0" font-size="13.5" fill="#1F2328" text-anchor="start">setenforce 0（除非按第 8 篇持久化）</text>
+<rect x="815.0" y="274.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="300.0" font-size="13.5" fill="#1F2328" text-anchor="start">大页池 nr_hugepages、nr_overcommit_hugepages</text>
+<rect x="815.0" y="322.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="348.0" font-size="13.5" fill="#1F2328" text-anchor="start">/mnt/hugepages、/mnt/snapshot-cache 挂载</text>
+<rect x="815.0" y="370.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="396.0" font-size="13.5" fill="#1F2328" text-anchor="start">iptables 80 → 3002 两条规则</text>
+<rect x="815.0" y="418.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="444.0" font-size="13.5" fill="#1F2328" text-anchor="start">sysctl -w 设的 swappiness 等</text>
+<rect x="815.0" y="466.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="492.0" font-size="13.5" fill="#1F2328" text-anchor="start">/tmp/templates 里的模板（/tmp 是 tmpfs）</text>
+<rect x="815.0" y="514.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="540.0" font-size="13.5" fill="#1F2328" text-anchor="start">/tmp 里的 Nomad、Consul 安装包</text>
+<rect x="815.0" y="562.0" width="737.0" height="40.0" rx="8" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="831.0" y="588.0" font-size="13.5" fill="#1F2328" text-anchor="start">沙箱的网络命名空间、虚拟网卡（这是好事）</text>
+<line x1="48.0" y1="712.0" x2="1552.0" y2="712.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="738.0" font-size="13" fill="#8C959F" text-anchor="start">注：模板丢失是最容易忽略的一项：本环境的模板实际存在 /tmp/templates，重启后要重新构建。</text></svg>

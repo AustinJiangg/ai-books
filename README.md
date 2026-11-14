@@ -25,6 +25,8 @@
   写给新手的 E2B 沙箱网络教程（2026.09 + ARM 补丁，单机鲲鹏部署）：从 IP、路由、DNS、网络命名空间、veth、tap、iptables/nftables、NAT 与 conntrack 讲到网络槽位、出站防火墙、入口代理、部署配置与排障。
 - **E2B 沙箱存储从零讲透** · [网页版](https://austinjiangg.github.io/ai-books/html/e2b-storage.html) · [Markdown](e2b-storage/README.md)<br>
   写给新手的 E2B 沙箱存储教程（2026.09 + ARM 补丁，单机鲲鹏部署）：从块、页、NBD、userfaultfd、写时复制讲到模板的六个文件、Harbor/PostgreSQL/Redis、构建流水线、存储后端、本地缓存、沙箱的硬盘与内存、暂停恢复、ARM 增量与检查点回滚、部署配置与排障。
+- **E2B 部署从零讲透** · [网页版](https://austinjiangg.github.io/ai-books/html/e2b-deploy.html) · [Markdown](e2b-deploy/README.md)<br>
+  写给新手的 E2B 部署教程（2026.09 + ARM 补丁，单机鲲鹏离线部署）：从 systemd、容器、Nomad、Consul 和原版的云上部署讲起，顺着“下载仓库、打 RPM、`build.sh -d/-i/-s`”三步，讲清每个组件、每段脚本、每个参数，以及验证、停服、改动生效与排障。
 - **DeepInfer 技术手册** · [网页版](https://austinjiangg.github.io/ai-books/html/deepinfer.html) · [Markdown](deepinfer/README.md)<br>
   [deepseek-ai/DeepInfer](https://github.com/deepseek-ai/DeepInfer) 生产级推理框架技术内幕与代码实现（YOCO、SWA有界重放、MHC、ZOS异步调度、EPLB、DSpark与3FS存算分离）。
 

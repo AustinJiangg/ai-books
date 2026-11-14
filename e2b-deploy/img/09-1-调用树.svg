@@ -1,0 +1,141 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="807" viewBox="0 0 1600 807" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="807" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">build.sh 三个主模式的调用树</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">-i 装依赖，-s 几乎包揽了机器层、宿主服务层和业务层的全部启动工作，-d 先让 orchestrator 自己清理、再按顺序停、最后扫残留。</text>
+<rect x="48.0" y="156.0" width="481.3" height="48.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="288.7" y="185.4" font-size="17" fill="#8A5300" font-weight="600" text-anchor="middle">build.sh -i</text>
+<rect x="60.0" y="229.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="86.0" y="242.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">install()</text>
+<path d="M68.0 248.0 L68.0 270.0 L82.0 270.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="262.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="112.0" y="275.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">check_host_ip</text>
+<path d="M68.0 248.0 L68.0 303.0 L82.0 303.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="295.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="112.0" y="308.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">yum_install</text>
+<text x="217.2" y="308.0" font-size="12.5" fill="#57606A" text-anchor="start">dnsmasq 等</text>
+<path d="M68.0 248.0 L68.0 336.0 L82.0 336.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="328.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="112.0" y="341.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">setenforce 0</text>
+<path d="M68.0 248.0 L68.0 369.0 L82.0 369.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="361.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="112.0" y="374.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">install_postgre</text>
+<text x="248.9" y="374.0" font-size="12.5" fill="#57606A" text-anchor="start">docker</text>
+<path d="M68.0 248.0 L68.0 402.0 L82.0 402.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="394.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="112.0" y="407.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">install_minio</text>
+<text x="233.1" y="407.0" font-size="12.5" fill="#57606A" text-anchor="start">systemd</text>
+<path d="M68.0 248.0 L68.0 435.0 L82.0 435.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="427.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="112.0" y="440.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">install_harbor</text>
+<text x="241.0" y="440.0" font-size="12.5" fill="#57606A" text-anchor="start">只解压改配置</text>
+<path d="M68.0 248.0 L68.0 468.0 L82.0 468.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="460.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="112.0" y="473.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">install_nginx</text>
+<text x="233.1" y="473.0" font-size="12.5" fill="#57606A" text-anchor="start">证书 ×3 处</text>
+<path d="M68.0 248.0 L68.0 501.0 L82.0 501.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="86.0" y="493.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="112.0" y="506.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">install_e2b</text>
+<path d="M94.0 512.0 L94.0 534.0 L108.0 534.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="112.0" y="526.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="138.0" y="539.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">pip install</text>
+<text x="243.2" y="539.0" font-size="12.5" fill="#57606A" text-anchor="start">SDK</text>
+<path d="M94.0 512.0 L94.0 567.0 L108.0 567.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="112.0" y="559.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="138.0" y="572.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">dep/ 覆盖</text>
+<path d="M94.0 512.0 L94.0 600.0 L108.0 600.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="112.0" y="592.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="138.0" y="605.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">zip → /tmp</text>
+<path d="M94.0 512.0 L94.0 633.0 L108.0 633.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="112.0" y="625.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="138.0" y="638.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">SDK 三层改造</text>
+<path d="M94.0 512.0 L94.0 666.0 L108.0 666.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="112.0" y="658.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="138.0" y="671.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">dnsmasq</text>
+<text x="211.5" y="671.0" font-size="12.5" fill="#57606A" text-anchor="start">*.e2b.app</text>
+<rect x="559.3" y="156.0" width="481.3" height="48.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="800.0" y="185.4" font-size="17" fill="#1D4F91" font-weight="600" text-anchor="middle">build.sh -s</text>
+<rect x="571.3" y="229.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="597.3" y="242.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">start()</text>
+<path d="M579.3 248.0 L579.3 270.0 L593.3 270.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="262.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="623.3" y="275.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">harbor/install.sh</text>
+<path d="M579.3 248.0 L579.3 303.0 L593.3 303.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="295.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="623.3" y="308.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">start-server.sh</text>
+<path d="M605.3 314.0 L605.3 336.0 L619.3 336.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="623.3" y="328.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="649.3" y="341.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">run-consul.sh</text>
+<text x="770.4" y="341.0" font-size="12.5" fill="#57606A" text-anchor="start">ACL</text>
+<path d="M605.3 314.0 L605.3 369.0 L619.3 369.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="623.3" y="361.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="649.3" y="374.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">run-nomad.sh</text>
+<text x="762.5" y="374.0" font-size="12.5" fill="#57606A" text-anchor="start">ACL、节点池</text>
+<path d="M579.3 248.0 L579.3 402.0 L593.3 402.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="394.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="623.3" y="407.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">append_nomad_client_config</text>
+<path d="M579.3 248.0 L579.3 435.0 L593.3 435.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="427.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="623.3" y="440.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">start-client.sh</text>
+<path d="M579.3 248.0 L579.3 468.0 L593.3 468.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="460.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="623.3" y="473.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">init-client.sh</text>
+<path d="M579.3 248.0 L579.3 501.0 L593.3 501.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="493.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="623.3" y="506.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">wait_for_port 4646</text>
+<path d="M579.3 248.0 L579.3 534.0 L593.3 534.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="526.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="623.3" y="539.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">Harbor：项目、hosts、镜像</text>
+<path d="M579.3 248.0 L579.3 567.0 L593.3 567.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="559.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="623.3" y="572.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">deploy.sh</text>
+<path d="M605.3 578.0 L605.3 600.0 L619.3 600.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="623.3" y="592.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="649.3" y="605.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">构建 / 推送镜像</text>
+<path d="M605.3 578.0 L605.3 633.0 L619.3 633.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="623.3" y="625.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="649.3" y="638.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">envsubst → job run ×4</text>
+<path d="M605.3 578.0 L605.3 666.0 L619.3 666.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="623.3" y="658.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="649.3" y="671.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">seed-db、配额</text>
+<path d="M579.3 248.0 L579.3 699.0 L593.3 699.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="597.3" y="691.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="623.3" y="704.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">iptables 80→3002</text>
+<rect x="1070.7" y="156.0" width="481.3" height="48.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1311.3" y="185.4" font-size="17" fill="#9A3215" font-weight="600" text-anchor="middle">build.sh -d</text>
+<rect x="1082.7" y="229.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="1108.7" y="242.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">stop()</text>
+<path d="M1090.7 248.0 L1090.7 270.0 L1104.7 270.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="262.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="1134.7" y="275.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">graceful_stop_template_manager</text>
+<path d="M1090.7 248.0 L1090.7 303.0 L1104.7 303.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="295.0" width="16.0" height="16.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="1134.7" y="308.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">uninstall-consul.sh</text>
+<text x="1303.3" y="308.0" font-size="12.5" fill="#57606A" text-anchor="start">删集群</text>
+<path d="M1090.7 248.0 L1090.7 336.0 L1104.7 336.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="328.0" width="16.0" height="16.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="1134.7" y="341.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">uninstall-nomad.sh</text>
+<text x="1295.4" y="341.0" font-size="12.5" fill="#57606A" text-anchor="start">删集群</text>
+<path d="M1090.7 248.0 L1090.7 369.0 L1104.7 369.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="361.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="1134.7" y="374.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">kill 业务进程</text>
+<text x="1243.1" y="374.0" font-size="12.5" fill="#57606A" text-anchor="start">按命令行</text>
+<path d="M1090.7 248.0 L1090.7 402.0 L1104.7 402.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="394.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="1134.7" y="407.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">kill firecracker</text>
+<path d="M1090.7 248.0 L1090.7 435.0 L1104.7 435.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="427.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="1134.7" y="440.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">pkill nomad、consul</text>
+<text x="1296.7" y="440.0" font-size="12.5" fill="#57606A" text-anchor="start">兜底</text>
+<path d="M1090.7 248.0 L1090.7 468.0 L1104.7 468.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="460.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1134.7" y="473.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">purge_sandbox_netns</text>
+<path d="M1090.7 248.0 L1090.7 501.0 L1104.7 501.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="493.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1134.7" y="506.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">purge_sandbox_iptables</text>
+<path d="M1090.7 248.0 L1090.7 534.0 L1104.7 534.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="526.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="1134.7" y="539.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">check_ports_free</text>
+<path d="M1090.7 248.0 L1090.7 567.0 L1104.7 567.0" fill="none" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="1108.7" y="559.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="1134.7" y="572.0" font-size="13" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">提示大页仍占用</text>
+<text x="1248.2" y="572.0" font-size="12.5" fill="#57606A" text-anchor="start">不释放</text>
+<line x1="48.0" y1="741.0" x2="1552.0" y2="741.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="767.0" font-size="13" fill="#8C959F" text-anchor="start">注：-d 里的 uninstall-*.sh 不只是停，还删掉 Nomad、Consul 的配置、数据和令牌文件；之后的 -s 是一个全新集群。</text></svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="684" viewBox="0 0 1600 684" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD6603D" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D6603D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="684" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">槽位泄漏：怎么攒起来的、有什么害处、怎么回收</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">一个槽位在宿主机上是 1 个网络命名空间、1 块 e2bv-&lt;n&gt; 网卡、9 条 iptables 规则。orchestrator 启动时把已存在的 ns-&lt;n&gt; 记成“别人的”永久跳过，编号只增不减。</text>
+<rect x="48.0" y="150.0" width="338.5" height="90.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="217.2" y="186.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator 启动</text>
+<text x="217.2" y="210.2" font-size="12.5" fill="#57606A" text-anchor="middle">建暖池：最多 300 新建 + 1000 回收</text>
+<path d="M390.5 195.0 L432.5 195.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="436.5" y="150.0" width="338.5" height="90.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="605.8" y="186.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">停服 30 秒拆不完</text>
+<text x="605.8" y="210.2" font-size="12.5" fill="#57606A" text-anchor="middle">或被 kill -9、OOM</text>
+<path d="M779.0 195.0 L821.0 195.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="825.0" y="150.0" width="338.5" height="90.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="994.2" y="186.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">残留留在宿主机</text>
+<text x="994.2" y="210.2" font-size="12.5" fill="#57606A" text-anchor="middle">netns、网卡、规则</text>
+<path d="M1167.5 195.0 L1209.5 195.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1213.5" y="150.0" width="338.5" height="90.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1382.8" y="186.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">下次启动</text>
+<text x="1382.8" y="210.2" font-size="12.5" fill="#57606A" text-anchor="middle">把残留记成别人的，编号继续往上</text>
+<path d="M1432.0 244.0 L1432.0 280.0 L168.0 280.0 L168.0 244.0" fill="none" stroke="#D6603D" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4" marker-end="url(#mD6603D)"/>
+<text x="800.0" y="300.0" font-size="12.5" fill="#9A3215" font-weight="600" text-anchor="middle">每重启一次攒一批</text>
+<rect x="48.0" y="340.0" width="737.0" height="150.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="416.5" y="388.2" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">害处</text>
+<text x="416.5" y="411.4" font-size="12.5" fill="#57606A" text-anchor="middle">Nomad client 逐块网卡做指纹：几千块时要几分钟，4646 迟迟不开</text>
+<text x="416.5" y="430.2" font-size="12.5" fill="#57606A" text-anchor="middle">iptables 几万条：每次操作都慢，同机 k3s 抢锁时一两分钟</text>
+<text x="416.5" y="448.9" font-size="12.5" fill="#57606A" text-anchor="middle">地址池 /16 理论上限三万多</text>
+<rect x="815.0" y="340.0" width="737.0" height="150.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1183.5" y="388.2" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">回收：build.sh --recycle-netns</text>
+<text x="1183.5" y="411.4" font-size="12.5" fill="#57606A" text-anchor="middle">停 template-manager（停不下来就中止，不硬清）</text>
+<text x="1183.5" y="430.2" font-size="12.5" fill="#57606A" text-anchor="middle">→ purge_sandbox_netns + purge_sandbox_iptables</text>
+<text x="1183.5" y="448.9" font-size="12.5" fill="#57606A" text-anchor="middle">→ build.sh -r template-manager 重新拉起</text>
+<rect x="48.0" y="520.0" width="1504.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="546.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">为什么只能“停 → 清 → 起”</text>
+<text x="800.0" y="570.0" font-size="12.5" fill="#57606A" text-anchor="middle">暖池里空闲的槽位和泄漏的残留在宿主机上长得一模一样，只有进程自己的内存知道哪些是它的；“别人的编号”清单也只在启动时生成。</text>
+<line x1="48.0" y1="618.0" x2="1552.0" y2="618.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="644.0" font-size="13" fill="#8C959F" text-anchor="start">注：只动 template-manager 一个 job，不碰 Nomad、Consul、Redis、api、client-proxy，比 -d + -s 快得多。</text></svg>

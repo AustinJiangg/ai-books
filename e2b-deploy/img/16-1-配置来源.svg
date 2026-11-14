@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="542" viewBox="0 0 1600 542" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="542" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">配置在哪：六个地方</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">前三个是一条链（.env → 模板 → 渲染结果 → Nomad → 进程），后三个各自独立。判断一个值生效没有，最终看进程的环境变量。</text>
+<rect x="48.0" y="150.0" width="300.0" height="110.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="198.0" y="187.5" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">.env</text>
+<text x="198.0" y="210.8" font-size="12.5" fill="#57606A" text-anchor="middle">dep/.env 与根目录 .env</text>
+<text x="198.0" y="229.5" font-size="12.5" fill="#57606A" text-anchor="middle">API_PORT、地址池、令牌</text>
+<path d="M352.0 205.0 L394.0 205.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="373.0" y="197.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="middle">envsubst</text>
+<rect x="398.0" y="150.0" width="300.0" height="110.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="548.0" y="187.5" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">nomad/*.hcl</text>
+<text x="548.0" y="210.8" font-size="12.5" fill="#57606A" text-anchor="middle">job 模板</text>
+<text x="548.0" y="229.5" font-size="12.5" fill="#57606A" text-anchor="middle">${API_PORT}、写死的 memory</text>
+<path d="M702.0 205.0 L744.0 205.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="748.0" y="150.0" width="300.0" height="110.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="898.0" y="187.5" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">rendered/*.hcl</text>
+<text x="898.0" y="210.8" font-size="12.5" fill="#57606A" text-anchor="middle">envsubst 的成品</text>
+<text x="898.0" y="229.5" font-size="12.5" fill="#57606A" text-anchor="middle">Nomad 认的是它</text>
+<rect x="1148.0" y="150.0" width="404.0" height="110.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1350.0" y="187.9" font-size="16" fill="#4B3FA8" font-weight="600" text-anchor="middle">进程</text>
+<text x="1350.0" y="211.1" font-size="12.5" fill="#57606A" text-anchor="middle">/proc/&lt;PID&gt;/environ</text>
+<text x="1350.0" y="229.9" font-size="12.5" fill="#57606A" text-anchor="middle">最终真相</text>
+<path d="M1052.0 205.0 L1144.0 205.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="1098.0" y="197.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="middle">nomad job run</text>
+<text x="48.0" y="320.0" font-size="14" fill="#57606A" font-weight="600" text-anchor="start">另外三个地方</text>
+<rect x="48.0" y="336.0" width="481.3" height="110.0" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="288.7" y="373.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">脚本里写死</text>
+<text x="288.7" y="396.8" font-size="12.5" fill="#57606A" text-anchor="middle">build.sh：Harbor 账号、端口 2900、</text>
+<text x="288.7" y="415.6" font-size="12.5" fill="#57606A" text-anchor="middle">PostgreSQL 密码、80→3002</text>
+<rect x="559.3" y="336.0" width="481.3" height="110.0" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="373.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">编译进二进制</text>
+<text x="800.0" y="396.8" font-size="12.5" fill="#57606A" text-anchor="middle">默认内核 vmlinux-6.1.158</text>
+<text x="800.0" y="415.6" font-size="12.5" fill="#57606A" text-anchor="middle">槽位池 300 / 1000、OrchestratorAPIPort 5008</text>
+<rect x="1070.7" y="336.0" width="481.3" height="110.0" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1311.3" y="373.6" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">系统配置文件</text>
+<text x="1311.3" y="396.8" font-size="12.5" fill="#57606A" text-anchor="middle">/etc/nomad.d、/etc/consul.d、/etc/dnsmasq.conf</text>
+<text x="1311.3" y="415.6" font-size="12.5" fill="#57606A" text-anchor="middle">/etc/sysctl.conf、/etc/hosts、daemon.json</text>
+<line x1="48.0" y1="476.0" x2="1552.0" y2="476.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="502.0" font-size="13" fill="#8C959F" text-anchor="start">注：.env 和 nomad/*.hcl 各有仓库里的一份和机器上的一份；机器上的又分 dep/ 原件和根目录覆盖结果（第 8 篇）。</text></svg>

@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="606" viewBox="0 0 1600 606" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="606" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">init-client.sh：把宿主机调成能跑沙箱的样子</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">每一项都对应一个“不做会怎样”。和 start-client.sh 重复的几项（目录、swap、tmpfs、udev、大页）两边都写成了幂等，重复执行没有问题。</text>
+<rect x="48.0" y="146.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">准备项</text>
+<text x="288.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">怎么做</text>
+<text x="908.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">不做会怎样</text>
+<text x="1428.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">持久</text>
+<line x1="48.0" y1="228.5" x2="1552.0" y2="228.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="211.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">连接数 sysctl</text>
+<text x="288.0" y="211.1" font-size="13.5" fill="#1F2328" text-anchor="start">somaxconn、netdev_max_backlog、tcp_max_syn_backlog、max_map_count</text>
+<text x="908.0" y="211.1" font-size="13.5" fill="#1F2328" text-anchor="start">高并发时连接被拒</text>
+<text x="1428.0" y="211.1" font-size="13.5" fill="#1F2328" text-anchor="start">是</text>
+<rect x="48.0" y="230.5" width="1504.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="253.3" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">ip_forward = 1</text>
+<text x="288.0" y="253.3" font-size="13.5" fill="#9A3215" text-anchor="start">改 /etc/sysctl.conf 那一行（openEuler 写死了 0），再 sysctl -w</text>
+<text x="908.0" y="253.3" font-size="13.5" fill="#9A3215" text-anchor="start">建模板等 envd 60 秒超时；必须在 orchestrator 启动前</text>
+<text x="1428.0" y="253.3" font-size="13.5" fill="#9A3215" text-anchor="start">是</text>
+<line x1="48.0" y1="313.0" x2="1552.0" y2="313.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="295.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">NBD nowatch</text>
+<text x="288.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">udev 规则；只对 nbd* 触发</text>
+<text x="908.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">全机触发：udevd 忙几分钟，脚本超时退出</text>
+<text x="1428.0" y="295.6" font-size="13.5" fill="#1F2328" text-anchor="start">是</text>
+<line x1="48.0" y1="355.2" x2="1552.0" y2="355.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="337.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/fc-envd/envd</text>
+<text x="288.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">从 bin/envd 拷</text>
+<text x="908.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">建模板失败；换 envd 要重建模板</text>
+<text x="1428.0" y="337.8" font-size="13.5" fill="#1F2328" text-anchor="start">是</text>
+<line x1="48.0" y1="397.5" x2="1552.0" y2="397.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="380.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/fc-kernels/&lt;版本&gt;/</text>
+<text x="288.0" y="380.1" font-size="13.5" fill="#1F2328" text-anchor="start">vmlinux-6.1.158、6.1.102（同一个文件）、6.6.0-132.0.0</text>
+<text x="908.0" y="380.1" font-size="13.5" fill="#1F2328" text-anchor="start">Provisioning sandbox template 失败</text>
+<text x="1428.0" y="380.1" font-size="13.5" fill="#1F2328" text-anchor="start">是</text>
+<line x1="48.0" y1="439.8" x2="1552.0" y2="439.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="422.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/fc-versions/v1.13.1/</text>
+<text x="288.0" y="422.3" font-size="13.5" fill="#1F2328" text-anchor="start">定制 Firecracker；先 rm 再 cp</text>
+<text x="908.0" y="422.3" font-size="13.5" fill="#1F2328" text-anchor="start">沙箱起不来；Text file busy</text>
+<text x="1428.0" y="422.3" font-size="13.5" fill="#1F2328" text-anchor="start">是</text>
+<line x1="48.0" y1="482.0" x2="1552.0" y2="482.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="464.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/mnt/hugepages</text>
+<text x="288.0" y="464.6" font-size="13.5" fill="#1F2328" text-anchor="start">mount -t hugetlbfs</text>
+<text x="908.0" y="464.6" font-size="13.5" fill="#1F2328" text-anchor="start">客户机内存没有大页</text>
+<text x="1428.0" y="464.6" font-size="13.5" fill="#1F2328" text-anchor="start">否</text>
+<line x1="48.0" y1="524.2" x2="1552.0" y2="524.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="506.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">大页池</text>
+<text x="288.0" y="506.8" font-size="13.5" fill="#1F2328" text-anchor="start">保留 4～42 GiB 普通内存；剩余 20%（≤64 GiB）静态 + 80% 超分配</text>
+<text x="908.0" y="506.8" font-size="13.5" fill="#1F2328" text-anchor="start">沙箱分配不到内存</text>
+<text x="1428.0" y="506.8" font-size="13.5" fill="#1F2328" text-anchor="start">否</text>
+<line x1="48.0" y1="540.2" x2="1552.0" y2="540.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="566.2" font-size="13" fill="#8C959F" text-anchor="start">注：脚本以 set -euo pipefail、set -x 运行，屏幕上会刷出大量带时间戳的命令，便于出错时定位到具体哪一行。</text></svg>

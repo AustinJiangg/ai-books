@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="789" viewBox="0 0 1600 789" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="789" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">build.sh -d 的停止顺序：每一步为什么排在这里</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">先给 orchestrator 机会自己清理，再按正确的顺序停其他东西，最后把它没清完的残留扫干净。</text>
+<circle cx="62.0" cy="177.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="182.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<rect x="88.0" y="146.0" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="169.7" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">nomad job stop template-manager-system</text>
+<text x="102.0" y="192.3" font-size="12" fill="#57606A" text-anchor="start">SIGTERM，最多等 40 秒，让它跑 networkPool.Close() 拆暖池</text>
+<rect x="1082.0" y="146.0" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="181.3" font-size="12" fill="#57606A" text-anchor="middle">必须在停 Nomad 之前，否则只能强杀</text>
+<circle cx="62.0" cy="249.2" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="253.7" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<rect x="88.0" y="217.5" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="241.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">uninstall-consul.sh、uninstall-nomad.sh</text>
+<text x="102.0" y="263.8" font-size="12" fill="#57606A" text-anchor="start">停服务，删配置、数据、令牌文件</text>
+<rect x="1082.0" y="217.5" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="252.8" font-size="12" fill="#57606A" text-anchor="middle">之后的 -s 是全新集群</text>
+<circle cx="62.0" cy="320.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="325.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<rect x="88.0" y="289.0" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="312.7" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">按命令行杀业务进程</text>
+<text x="102.0" y="335.3" font-size="12" fill="#57606A" text-anchor="start">pgrep -f "^/usr/bin/template-manager" 等，先 TERM 后 KILL</text>
+<rect x="1082.0" y="289.0" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="324.3" font-size="12" fill="#57606A" text-anchor="middle">必须写完整路径才匹配得到</text>
+<circle cx="62.0" cy="392.2" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="396.7" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<rect x="88.0" y="360.4" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="384.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">杀残留的 firecracker</text>
+<text x="102.0" y="406.8" font-size="12" fill="#57606A" text-anchor="start">pgrep -f '/fc-versions/.*/firecracker'</text>
+<rect x="1082.0" y="360.4" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="395.8" font-size="12" fill="#57606A" text-anchor="middle">它们占着大页、NBD、槽位</text>
+<circle cx="62.0" cy="463.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="468.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<rect x="88.0" y="431.9" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="455.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">pkill nomad、consul（兜底）</text>
+<text x="102.0" y="478.2" font-size="12" fill="#57606A" text-anchor="start">确保 agent 本身退出</text>
+<rect x="1082.0" y="431.9" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="467.3" font-size="12" fill="#57606A" text-anchor="middle">放最后：先杀会让 orchestrator 变孤儿</text>
+<circle cx="62.0" cy="535.1" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="539.6" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<rect x="88.0" y="503.4" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="527.1" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">purge_sandbox_netns / iptables</text>
+<text x="102.0" y="549.7" font-size="12" fill="#57606A" text-anchor="start">只认 ns-&lt;n&gt;、e2bv-&lt;n&gt; 和 10.13.0.0/16；跳过在用槽位；iptables-restore --noflush</text>
+<rect x="1082.0" y="503.4" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="538.7" font-size="12" fill="#57606A" text-anchor="middle">不误伤 AgentENV、docker、k3s</text>
+<circle cx="62.0" cy="606.6" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="611.1" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">7</text>
+<rect x="88.0" y="574.9" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="598.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">check_ports_free</text>
+<text x="102.0" y="621.2" font-size="12" fill="#57606A" text-anchor="start">3000～3003、5007～5010、5016～5018、6379</text>
+<rect x="1082.0" y="574.9" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="610.2" font-size="12" fill="#57606A" text-anchor="middle">没放开，下次部署以 api 503 的样子失败</text>
+<circle cx="62.0" cy="678.1" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="682.6" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">8</text>
+<rect x="88.0" y="646.4" width="978.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="670.1" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">提示大页仍占用</text>
+<text x="102.0" y="692.7" font-size="12" fill="#57606A" text-anchor="start">不释放静态池</text>
+<rect x="1082.0" y="646.4" width="470.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="1317.0" y="681.7" font-size="12" fill="#57606A" text-anchor="middle">下次 -s 时内存可能已零碎</text>
+<line x1="48.0" y1="723.8" x2="1552.0" y2="723.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="749.8" font-size="13" fill="#8C959F" text-anchor="start">注：-d 会结束所有运行中的沙箱；过程中出现 Error querying jobs: 403 是正常的（Nomad 正在被卸载）。</text></svg>

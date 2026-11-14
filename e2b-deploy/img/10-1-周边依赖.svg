@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="481" viewBox="0 0 1600 481" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="481" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">build.sh -i 装出来的周边依赖</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">四样东西都不属于 E2B，但 E2B 离不开。PostgreSQL 每次 -i 都重建；MinIO 装了没用上；Harbor 分两段装；Nginx 只为给 Harbor 套一层 HTTPS。</text>
+<rect x="48.0" y="150.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="172.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">组件</text>
+<text x="208.0" y="172.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">跑法</text>
+<text x="458.0" y="172.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">端口</text>
+<text x="578.0" y="172.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">数据</text>
+<text x="828.0" y="172.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">账号</text>
+<text x="1108.0" y="172.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">要注意的</text>
+<rect x="48.0" y="192.2" width="1504.0" height="38.2" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="58.0" y="215.1" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="start">PostgreSQL</text>
+<text x="208.0" y="215.1" font-size="13.5" fill="#8A5300" text-anchor="start">docker，--restart=always</text>
+<text x="458.0" y="215.1" font-size="13.5" fill="#8A5300" text-anchor="start">5432</text>
+<text x="578.0" y="215.1" font-size="13.5" fill="#8A5300" text-anchor="start">容器可写层（没挂卷）</text>
+<text x="828.0" y="215.1" font-size="13.5" fill="#8A5300" text-anchor="start">postgres / local，库 mydatabase</text>
+<text x="1108.0" y="215.1" font-size="13.5" fill="#8A5300" text-anchor="start">每次 -i 删容器重建，数据清空；表由 api 的 db-migrator 建</text>
+<line x1="48.0" y1="274.8" x2="1552.0" y2="274.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="257.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">MinIO</text>
+<text x="208.0" y="257.3" font-size="13.5" fill="#1F2328" text-anchor="start">systemd</text>
+<text x="458.0" y="257.3" font-size="13.5" fill="#1F2328" text-anchor="start">9000、9001</text>
+<text x="578.0" y="257.3" font-size="13.5" fill="#1F2328" text-anchor="start">/root/data/minio</text>
+<text x="828.0" y="257.3" font-size="13.5" fill="#1F2328" text-anchor="start">minioadmin / minioadmin</text>
+<text x="1108.0" y="257.3" font-size="13.5" fill="#1F2328" text-anchor="start">健康检查过了，但没人往里写：STORAGE_PROVIDER 写死 Local</text>
+<rect x="48.0" y="276.8" width="1504.0" height="58.5" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="58.0" y="299.6" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="start">Harbor</text>
+<text x="208.0" y="299.6" font-size="13.5" fill="#8A5300" text-anchor="start">docker compose（十来个容器）</text>
+<text x="458.0" y="299.6" font-size="13.5" fill="#8A5300" text-anchor="start">2900</text>
+<text x="578.0" y="299.6" font-size="13.5" fill="#8A5300" text-anchor="start">/opt/e2b-infra/harbor/</text>
+<text x="828.0" y="299.6" font-size="13.5" fill="#8A5300" text-anchor="start">admin / Harbor12345</text>
+<text x="1108.0" y="299.6" font-size="13.5" fill="#8A5300" text-anchor="start">-i 只解压、改 harbor.yml（关 HTTPS、hostname、端口）；-s 才</text>
+<text x="1108.0" y="319.8" font-size="13.5" fill="#8A5300" text-anchor="start">启动</text>
+<line x1="48.0" y1="399.8" x2="1552.0" y2="399.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="362.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Nginx</text>
+<text x="208.0" y="362.1" font-size="13.5" fill="#1F2328" text-anchor="start">systemd</text>
+<text x="458.0" y="362.1" font-size="13.5" fill="#1F2328" text-anchor="start">443</text>
+<text x="578.0" y="362.1" font-size="13.5" fill="#1F2328" text-anchor="start">/etc/nginx</text>
+<text x="828.0" y="362.1" font-size="13.5" fill="#1F2328" text-anchor="start">—</text>
+<text x="1108.0" y="362.1" font-size="13.5" fill="#1F2328" text-anchor="start">server_name harbor，反代到 2900；自签证书 CN=harbor，一年</text>
+<text x="1108.0" y="382.3" font-size="13.5" fill="#1F2328" text-anchor="start">有效</text>
+<line x1="48.0" y1="415.8" x2="1552.0" y2="415.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="441.8" font-size="13" fill="#8C959F" text-anchor="start">注：-u 卸载时 MinIO 那一行被注释了，它和数据目录会一直留在机器上；Docker 是自备的，-u 也不动。</text></svg>

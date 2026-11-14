@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="600" viewBox="0 0 1600 600" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="600" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">改完之后，逐层核对是否真的生效</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">别凭“命令执行成功了”就认为生效。环境变量类从模板查到进程；二进制类用一个独特的特征串，分别查磁盘上的文件和运行中的进程。</text>
+<text x="48.0" y="150.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">环境变量类</text>
+<rect x="48.0" y="166.0" width="732.0" height="62.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="62.0" y="189.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">① 模板</text>
+<text x="62.0" y="211.6" font-size="12" fill="#57606A" text-anchor="start">grep $V nomad/template-manager.hcl</text>
+<rect x="48.0" y="238.0" width="732.0" height="62.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="62.0" y="261.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">② 渲染结果</text>
+<text x="62.0" y="283.6" font-size="12" fill="#57606A" text-anchor="start">grep $V rendered/template-manager.hcl</text>
+<rect x="48.0" y="310.0" width="732.0" height="62.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="62.0" y="333.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">③ Nomad 收到的</text>
+<text x="62.0" y="355.6" font-size="12" fill="#57606A" text-anchor="start">nomad job inspect template-manager-system | grep $V</text>
+<rect x="48.0" y="382.0" width="732.0" height="62.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="62.0" y="405.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">④ 进程（最终裁决）</text>
+<text x="62.0" y="427.6" font-size="12" fill="#57606A" text-anchor="start">tr '\0' '\n' &lt; /proc/$pid/environ | grep $V</text>
+<rect x="48.0" y="454.0" width="732.0" height="62.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="62.0" y="477.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">启动时间</text>
+<text x="62.0" y="499.6" font-size="12" fill="#57606A" text-anchor="start">ps -o lstart -p $pid 晚于这次改动</text>
+<text x="820.0" y="150.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">二进制类</text>
+<rect x="820.0" y="166.0" width="732.0" height="98.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="834.0" y="207.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">磁盘上的文件是新的吗</text>
+<text x="834.0" y="229.6" font-size="12" fill="#57606A" text-anchor="start">strings /usr/bin/template-manager | grep -c 特征串  → ≥ 1</text>
+<rect x="820.0" y="280.0" width="732.0" height="98.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="834.0" y="321.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">运行中的进程是新的吗</text>
+<text x="834.0" y="343.6" font-size="12" fill="#57606A" text-anchor="start">strings /proc/$pid/exe | grep -c 特征串  → ≥ 1</text>
+<rect x="820.0" y="394.0" width="732.0" height="116.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="834.0" y="435.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="start">第一条 ≥1、第二条 = 0</text>
+<text x="834.0" y="457.6" font-size="12" fill="#57606A" text-anchor="start">文件换了，进程没重启：只 nomad job run 而 hcl 没变，Nomad 认为无变更。</text>
+<text x="834.0" y="475.6" font-size="12" fill="#57606A" text-anchor="start">先 nomad job stop 再 run</text>
+<line x1="48.0" y1="534.0" x2="1552.0" y2="534.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="560.0" font-size="13" fill="#8C959F" text-anchor="start">注：哪一层和预期不一样，问题就在它和上一层之间。别靠 rpm -q 的版本号判断：日常迭代时 Release 一般不改。</text></svg>
