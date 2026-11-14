@@ -1,3 +1,4 @@
 tools/node_modules
 tools/.chromium-libs/
 .src/
+__pycache__/
