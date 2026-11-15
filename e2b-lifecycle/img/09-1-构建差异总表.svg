@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="692" viewBox="0 0 1600 692" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="692" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">构建路径上为 ARM 做的修改</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">三类：写死了架构的地方、发行版不同的地方、系统环境不同的地方；另加存储后端。</text>
+<rect x="48.0" y="152.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">类别</text>
+<text x="208.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">原来</text>
+<text x="608.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">问题</text>
+<text x="1058.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">改成</text>
+<line x1="48.0" y1="234.5" x2="1548.0" y2="234.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="217.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">架构</text>
+<text x="208.0" y="217.1" font-size="13.5" fill="#1F2328" text-anchor="start">镜像平台写死 amd64</text>
+<text x="608.0" y="217.1" font-size="13.5" fill="#1F2328" text-anchor="start">拉到 x86 版或被架构检查拦下</text>
+<text x="1058.0" y="217.1" font-size="13.5" fill="#1F2328" text-anchor="start">改成 arm64</text>
+<line x1="48.0" y1="276.8" x2="1548.0" y2="276.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="259.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">架构</text>
+<text x="208.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">只内嵌一份 x86 busybox</text>
+<text x="608.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">ARM 虚拟机第一次开机就失败</text>
+<text x="1058.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">内嵌两份按架构选；用 glibc 版</text>
+<line x1="48.0" y1="319.0" x2="1548.0" y2="319.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="301.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">发行版</text>
+<text x="208.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">provision.sh 只认 apt</text>
+<text x="608.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">openEuler 用 dnf</text>
+<text x="1058.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">读 /etc/os-release 分支</text>
+<line x1="48.0" y1="361.2" x2="1548.0" y2="361.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="343.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">发行版</text>
+<text x="208.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">装 12 个包</text>
+<text x="608.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">部分包装不上</text>
+<text x="1058.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">精简到 9 个必需的</text>
+<line x1="48.0" y1="403.5" x2="1548.0" y2="403.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="386.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">发行版</text>
+<text x="208.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">adduser 与 sudo 组</text>
+<text x="608.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">没有 adduser；组叫 wheel</text>
+<text x="1058.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">先探测再分支</text>
+<line x1="48.0" y1="445.8" x2="1548.0" y2="445.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="428.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">发行版</text>
+<text x="208.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">configure.sh 用 bash 语法</text>
+<text x="608.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">早期 busybox 里没有 bash</text>
+<text x="1058.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">改成纯 sh</text>
+<line x1="48.0" y1="488.0" x2="1548.0" y2="488.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="470.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">系统环境</text>
+<text x="208.0" y="470.6" font-size="13.5" fill="#1F2328" text-anchor="start">envd 单元带 cgroup 指令</text>
+<text x="608.0" y="470.6" font-size="13.5" fill="#1F2328" text-anchor="start">guest 环境里不适用</text>
+<text x="1058.0" y="470.6" font-size="13.5" fill="#1F2328" text-anchor="start">去掉</text>
+<line x1="48.0" y1="530.2" x2="1548.0" y2="530.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="512.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">系统环境</text>
+<text x="208.0" y="512.8" font-size="13.5" fill="#1F2328" text-anchor="start">宿主不是 cgroup v2 就报错</text>
+<text x="608.0" y="512.8" font-size="13.5" fill="#1F2328" text-anchor="start">部分宿主是 v1</text>
+<text x="1058.0" y="512.8" font-size="13.5" fill="#1F2328" text-anchor="start">v1 时跳过初始化</text>
+<line x1="48.0" y1="572.5" x2="1548.0" y2="572.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="555.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">系统环境</text>
+<text x="208.0" y="555.1" font-size="13.5" fill="#1F2328" text-anchor="start">读 CPU 家族与型号</text>
+<text x="608.0" y="555.1" font-size="13.5" fill="#1F2328" text-anchor="start">ARM 上读不到，报错</text>
+<text x="1058.0" y="555.1" font-size="13.5" fill="#1F2328" text-anchor="start">给兜底值</text>
+<line x1="48.0" y1="614.8" x2="1548.0" y2="614.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="597.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">存储</text>
+<text x="208.0" y="597.3" font-size="13.5" fill="#1F2328" text-anchor="start">默认 Google 对象存储</text>
+<text x="608.0" y="597.3" font-size="13.5" fill="#1F2328" text-anchor="start">离线环境连不上</text>
+<text x="1058.0" y="597.3" font-size="13.5" fill="#1F2328" text-anchor="start">新增 MinIO 并设为默认</text>
+<line x1="48.0" y1="626.8" x2="1552.0" y2="626.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="652.8" font-size="13" fill="#8C959F" text-anchor="start">改法的共同点：先探测、再分支，同一份代码既能构建 Ubuntu 模板，也能构建 openEuler 模板。</text></svg>

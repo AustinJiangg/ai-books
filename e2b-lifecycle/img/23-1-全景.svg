@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="663" viewBox="0 0 1600 663" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="663" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">全景：三个操作 × 宿主部件</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">四件事共享 Firecracker、懒加载、写层和映射表，只是处在“一切皆快照”这个循环的不同位置。</text>
+<rect x="48.0" y="152.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">部件</text>
+<text x="358.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">构建模板</text>
+<text x="688.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">启动沙箱</text>
+<text x="978.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">暂停</text>
+<text x="1268.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">恢复</text>
+<rect x="48.0" y="194.2" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="217.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">Firecracker 进程</text>
+<text x="358.0" y="217.1" font-size="13.5" fill="#9A3215" text-anchor="start">每层起一个、停一个</text>
+<text x="688.0" y="217.1" font-size="13.5" fill="#9A3215" text-anchor="start">起一个</text>
+<text x="978.0" y="217.1" font-size="13.5" fill="#9A3215" text-anchor="start">停掉</text>
+<text x="1268.0" y="217.1" font-size="13.5" fill="#9A3215" text-anchor="start">起一个新的</text>
+<line x1="48.0" y1="276.8" x2="1548.0" y2="276.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="259.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">内存（uffd）</text>
+<text x="358.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">冷启动不用；恢复时懒加载</text>
+<text x="688.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">懒加载 + 预取</text>
+<text x="978.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">判脏、导出</text>
+<text x="1268.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">懒加载 + 预取</text>
+<line x1="48.0" y1="319.0" x2="1548.0" y2="319.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="301.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">根盘（NBD + 写层）</text>
+<text x="358.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">每层导出写层</text>
+<text x="688.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">模板层 + 空写层</text>
+<text x="978.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">摘下写层、导出</text>
+<text x="1268.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">所有代 + 空写层</text>
+<line x1="48.0" y1="361.2" x2="1548.0" y2="361.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="343.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">网络槽位</text>
+<text x="358.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">构建虚拟机也要领</text>
+<text x="688.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">从池里领</text>
+<text x="978.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">归还</text>
+<text x="1268.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">从池里领</text>
+<line x1="48.0" y1="403.5" x2="1548.0" y2="403.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="386.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">envd</text>
+<text x="358.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">第二次开机时启动；执行指令</text>
+<text x="688.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">醒来、拿身份、收配置</text>
+<text x="978.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">—</text>
+<text x="1268.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">醒来、拿身份、收配置</text>
+<rect x="48.0" y="405.5" width="1500.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="428.3" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">快照（映射表链）</text>
+<text x="358.0" y="428.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">长出一层层</text>
+<text x="688.0" y="428.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">读</text>
+<text x="978.0" y="428.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">长出一代</text>
+<text x="1268.0" y="428.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">读</text>
+<rect x="48.0" y="467.8" width="474.7" height="100.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="285.3" y="510.0" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">一切皆快照</text>
+<text x="285.3" y="533.2" font-size="12.5" fill="#57606A" text-anchor="middle">每个操作要么读快照，要么长出新的一代</text>
+<rect x="562.7" y="467.8" width="474.7" height="100.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="800.0" y="510.0" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">只为用到的付费</text>
+<text x="800.0" y="533.2" font-size="12.5" fill="#57606A" text-anchor="middle">懒加载、只导出脏页、层缓存</text>
+<rect x="1077.3" y="467.8" width="474.7" height="100.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1314.7" y="500.6" font-size="16" fill="#9A3215" font-weight="600" text-anchor="middle">固定开销藏在建和拆里</text>
+<text x="1314.7" y="523.9" font-size="12.5" fill="#57606A" text-anchor="middle">启动慢在起 Firecracker（并发下 82%），暂停慢在停它（250 ms 里约 225</text>
+<text x="1314.7" y="542.6" font-size="12.5" fill="#57606A" text-anchor="middle">ms）</text>
+<line x1="48.0" y1="597.8" x2="1552.0" y2="597.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="623.8" font-size="13" fill="#8C959F" text-anchor="start">最后一行是主线一，第一行是主线三。</text></svg>

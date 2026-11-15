@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="552" viewBox="0 0 1600 552" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="552" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">页、大页与页表</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">同样 2 MiB 的数据：4 KiB 小页要 512 个页表项，2 MiB 大页只要 1 个。TLB 只能缓存有限的表项，大页让它覆盖的范围扩大 512 倍。代价是一次读、补、存都至少 2 MiB。</text>
+<rect x="48.0" y="156.0" width="712.0" height="300.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">4 KiB 小页</text>
+<rect x="72.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="92.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="113.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="134.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="155.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="175.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="196.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="217.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="238.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="258.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="279.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="300.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="321.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="341.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="362.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="383.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="404.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="424.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="445.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="466.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="487.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="507.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="528.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="549.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="570.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="590.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="611.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="632.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="653.0" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="673.8" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="694.5" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="715.2" y="236.0" width="18.8" height="60.0" rx="2" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="72.0" y="326.0" font-size="13.5" fill="#57606A" text-anchor="start">2 MiB = 512 页（图中只画 32 格示意）</text>
+<text x="72.0" y="361.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">页表项：512 个</text>
+<text x="72.0" y="391.0" font-size="13.5" fill="#9A3215" text-anchor="start">TLB 很快装不下，查表变多</text>
+<text x="72.0" y="421.0" font-size="13.5" fill="#57606A" text-anchor="start">缺页时一次补 4 KiB</text>
+<rect x="840.0" y="156.0" width="712.0" height="300.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="860.0" y="186.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">2 MiB 大页</text>
+<rect x="864.0" y="236.0" width="664.0" height="60.0" rx="4" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="1196.0" y="272.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">一整页 2 MiB</text>
+<text x="864.0" y="361.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">页表项：1 个</text>
+<text x="864.0" y="391.0" font-size="13.5" fill="#0E6B4F" text-anchor="start">TLB 覆盖范围大 512 倍，运行更快</text>
+<text x="864.0" y="421.0" font-size="13.5" fill="#9A3215" text-anchor="start">缺页时一次补 2 MiB：读、补、存都按 2 MiB</text>
+<line x1="48.0" y1="486.0" x2="1552.0" y2="486.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="512.0" font-size="13" fill="#8C959F" text-anchor="start">E2B 沙箱的内存默认由 2 MiB 大页背衬（hugetlbfs），大页池在宿主上提前预留。</text></svg>

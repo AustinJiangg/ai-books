@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="692" viewBox="0 0 1600 692" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="692" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">优化前后的启动管线：只换掉最后一环</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">其余部分原封不动，和上游相比只有一个变量。在脚本模板里生成命令，不做字符串替换；模板构建的虚拟机不走这条路。</text>
+<text x="48.0" y="166.0" font-size="16" fill="#9A3215" font-weight="600" text-anchor="start">优化前</text>
+<rect x="48.0" y="180.0" width="268.8" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="182.4" y="227.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">unshare -m</text>
+<path d="M320.8 223.0 L352.8 223.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="356.8" y="180.0" width="268.8" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="491.2" y="227.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">make-rprivate</text>
+<path d="M629.6 223.0 L661.6 223.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="665.6" y="180.0" width="268.8" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="227.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">tmpfs + ln</text>
+<path d="M938.4 223.0 L970.4 223.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="974.4" y="180.0" width="268.8" height="86.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1108.8" y="214.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">ip netns exec</text>
+<text x="1108.8" y="238.2" font-size="12.5" fill="#57606A" text-anchor="middle">6 件事，3 件抢全局锁</text>
+<path d="M1247.2 223.0 L1279.2 223.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1283.2" y="180.0" width="268.8" height="86.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1417.6" y="227.8" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">firecracker</text>
+<text x="48.0" y="316.0" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="start">优化后</text>
+<rect x="48.0" y="330.0" width="268.8" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="182.4" y="377.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">unshare -m</text>
+<path d="M320.8 373.0 L352.8 373.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="356.8" y="330.0" width="268.8" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="491.2" y="377.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">make-rprivate</text>
+<path d="M629.6 373.0 L661.6 373.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="665.6" y="330.0" width="268.8" height="86.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="377.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">tmpfs + ln</text>
+<path d="M938.4 373.0 L970.4 373.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="974.4" y="330.0" width="268.8" height="86.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1108.8" y="364.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">fc-netns-exec</text>
+<text x="1108.8" y="388.2" font-size="12.5" fill="#57606A" text-anchor="middle">setns + execve</text>
+<path d="M1247.2 373.0 L1279.2 373.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1283.2" y="330.0" width="268.8" height="86.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1417.6" y="377.8" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">firecracker</text>
+<rect x="48.0" y="456.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="478.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">E2B_FC_NETNS_EXEC_HELPER</text>
+<text x="538.0" y="478.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">行为</text>
+<line x1="48.0" y1="538.5" x2="1548.0" y2="538.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="521.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">不设置（默认）</text>
+<text x="538.0" y="521.1" font-size="13.5" fill="#1F2328" text-anchor="start">开启：/opt/e2b-infra/bin/fc-netns-exec</text>
+<line x1="48.0" y1="580.8" x2="1548.0" y2="580.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="563.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">disabled、ip-netns-exec 或空</text>
+<text x="538.0" y="563.3" font-size="13.5" fill="#1F2328" text-anchor="start">退回 ip netns exec</text>
+<line x1="48.0" y1="623.0" x2="1548.0" y2="623.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="605.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">其他路径</text>
+<text x="538.0" y="605.6" font-size="13.5" fill="#1F2328" text-anchor="start">用那个路径下的小程序</text>
+<line x1="48.0" y1="626.0" x2="1552.0" y2="626.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="652.0" font-size="13" fill="#8C959F" text-anchor="start">LockOSThread 不能省：setns 只改当前系统线程，必须保证 setns 和 execve 在同一个线程上。</text></svg>

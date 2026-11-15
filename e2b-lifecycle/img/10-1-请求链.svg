@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="682" viewBox="0 0 1600 682" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="682" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一次 Sandbox.create 的请求链</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">api 认证、把模板名翻译成当前 build ID、选节点；orchestrator 先过准入闸门，再进入 ResumeSandbox；最后 envd 收到 /init，沙箱可用。</text>
+<rect x="48.0" y="156.0" width="264.0" height="140.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="180.0" y="218.2" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">SDK</text>
+<text x="180.0" y="241.5" font-size="12.5" fill="#57606A" text-anchor="middle">Sandbox.create("my-python")</text>
+<path d="M316.0 226.0 L354.0 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="335.0" y="218.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="middle">HTTPS</text>
+<rect x="358.0" y="156.0" width="264.0" height="140.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="490.0" y="199.5" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">api</text>
+<text x="490.0" y="222.7" font-size="12.5" fill="#57606A" text-anchor="middle">认证 · 配额</text>
+<text x="490.0" y="241.5" font-size="12.5" fill="#57606A" text-anchor="middle">模板名 → build ID</text>
+<text x="490.0" y="260.2" font-size="12.5" fill="#57606A" text-anchor="middle">选节点</text>
+<path d="M626.0 226.0 L664.0 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="645.0" y="218.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="middle">gRPC</text>
+<rect x="668.0" y="156.0" width="264.0" height="140.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="800.0" y="208.9" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">准入闸门</text>
+<text x="800.0" y="232.1" font-size="12.5" fill="#57606A" text-anchor="middle">节点沙箱总数</text>
+<text x="800.0" y="250.9" font-size="12.5" fill="#57606A" text-anchor="middle">同时启动信号量</text>
+<path d="M936.0 226.0 L974.0 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="978.0" y="156.0" width="264.0" height="140.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1110.0" y="208.9" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">ResumeSandbox</text>
+<text x="1110.0" y="232.1" font-size="12.5" fill="#57606A" text-anchor="middle">准备五样东西</text>
+<text x="1110.0" y="250.9" font-size="12.5" fill="#57606A" text-anchor="middle">加载快照</text>
+<path d="M1246.0 226.0 L1284.0 226.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1288.0" y="156.0" width="264.0" height="140.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1420.0" y="218.2" font-size="16" fill="#4B3FA8" font-weight="600" text-anchor="middle">envd</text>
+<text x="1420.0" y="241.5" font-size="12.5" fill="#57606A" text-anchor="middle">/init：身份、令牌、环境变量</text>
+<rect x="48.0" y="346.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="368.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">准入参数</text>
+<text x="498.0" y="368.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">上游</text>
+<text x="1018.0" y="368.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">我们</text>
+<line x1="48.0" y1="428.5" x2="1548.0" y2="428.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="411.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">同时启动上限</text>
+<text x="498.0" y="411.1" font-size="13.5" fill="#1F2328" text-anchor="start">3</text>
+<text x="1018.0" y="411.1" font-size="13.5" fill="#1F2328" text-anchor="start">代码默认 500，部署 30，可调</text>
+<rect x="48.0" y="430.5" width="1500.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="453.3" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">从模板创建、拿不到名额</text>
+<text x="498.0" y="453.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">立即拒绝，让 api 换节点</text>
+<text x="1018.0" y="453.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">排队等待</text>
+<line x1="48.0" y1="513.0" x2="1548.0" y2="513.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="495.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">从暂停快照恢复、拿不到名额</text>
+<text x="498.0" y="495.6" font-size="13.5" fill="#1F2328" text-anchor="start">排队，最多 15 秒</text>
+<text x="1018.0" y="495.6" font-size="13.5" fill="#1F2328" text-anchor="start">排队，最多 300 秒</text>
+<line x1="48.0" y1="555.2" x2="1548.0" y2="555.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="537.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">整个请求超时</text>
+<text x="498.0" y="537.8" font-size="13.5" fill="#1F2328" text-anchor="start">60 秒</text>
+<text x="1018.0" y="537.8" font-size="13.5" fill="#1F2328" text-anchor="start">300 秒</text>
+<line x1="48.0" y1="597.5" x2="1548.0" y2="597.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="580.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">节点沙箱总数上限</text>
+<text x="498.0" y="580.1" font-size="13.5" fill="#1F2328" text-anchor="start">200</text>
+<text x="1018.0" y="580.1" font-size="13.5" fill="#1F2328" text-anchor="start">10000</text>
+<line x1="48.0" y1="616.0" x2="1552.0" y2="616.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="642.0" font-size="13" fill="#8C959F" text-anchor="start">上游的设计适合多节点：一个节点忙就换一个。单节点部署无处可换，所以一律排队。</text></svg>

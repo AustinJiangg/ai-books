@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="612" viewBox="0 0 1600 612" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="612" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">加载快照的几次 HTTP 调用</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Firecracker 就绪后，orchestrator 通过它的 HTTP 接口依次加载 snapfile、恢复 vCPU、写 MMDS。加载时一页内存都不读。</text>
+<rect x="239.2" y="152.5" width="119.0" height="27.0" rx="13.5" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="298.7" y="171.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator</text>
+<line x1="298.7" y1="186.0" x2="298.7" y2="516.0" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="743.7" y="152.5" width="112.6" height="27.0" rx="13.5" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="800.0" y="171.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">Firecracker</text>
+<line x1="800.0" y1="186.0" x2="800.0" y2="516.0" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="1251.0" y="152.5" width="100.8" height="27.0" rx="13.5" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="1301.3" y="171.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">uffd 处理器</text>
+<line x1="1301.3" y1="186.0" x2="1301.3" y2="516.0" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path d="M298.7 226.0 L800.0 226.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="549.3" y="217.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">PUT /snapshot/load：snapfile，内存后端 = uffd，先不运行（约 20～30 ms）</text>
+<rect x="570.0" y="258.0" width="460.0" height="30.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="800.0" y="278.0" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">重建 KVM 虚拟机、vCPU、中断控制器、virtio 设备</text>
+<path d="M800.0 326.0 L1301.3 326.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="1110.7" y="317.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">连上 uffd 套接字，交出 guest 内存区域</text>
+<path d="M298.7 386.0 L800.0 386.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="549.3" y="377.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">PATCH /vm  state = Resumed（不到 1 ms）</text>
+<path d="M298.7 446.0 L800.0 446.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="549.3" y="437.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">PUT /mmds  沙箱 ID、模板 ID、令牌哈希（不到 1 ms）</text>
+<line x1="48.0" y1="546.0" x2="1552.0" y2="546.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="572.0" font-size="13" fill="#8C959F" text-anchor="start">ARM 上的机器配置：SMT 关闭；脏页跟踪按硬件决定，从快照加载时也要在 /snapshot/load 里一并打开。</text></svg>

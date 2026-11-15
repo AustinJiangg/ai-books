@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="532" viewBox="0 0 1600 532" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="532" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">判据塌缩：没有任何页带写保护，“脏”变成了“在内存里”</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">arm64 的 6.6 内核没有 uffd 写保护；ARM 移植时把填页时带写保护的三行注释掉。从此每次填页都不带写保护，判据第二项恒真。</text>
+<rect x="48.0" y="156.0" width="712.0" height="280.0" rx="14" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">x86（上游）</text>
+<text x="72.0" y="236.0" font-size="15" fill="#1F2328" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">if 读缺页 { 带写保护填入 }</text>
+<text x="72.0" y="286.0" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="start">脏 ⟺ 在内存里 且 没有写保护</text>
+<text x="72.0" y="326.0" font-size="14" fill="#57606A" text-anchor="start">只读过的页：有写保护 → 不算脏</text>
+<text x="72.0" y="356.0" font-size="14" fill="#57606A" text-anchor="start">写过的页：无写保护 → 脏</text>
+<rect x="840.0" y="156.0" width="712.0" height="280.0" rx="14" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="860.0" y="186.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">ARM 适配版（修复前）</text>
+<text x="864.0" y="236.0" font-size="15" fill="#8C959F" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="start">// if 读缺页 { 带写保护填入 }</text>
+<text x="864.0" y="286.0" font-size="16" fill="#9A3215" font-weight="600" text-anchor="start">脏 ⟺ 在内存里</text>
+<text x="864.0" y="326.0" font-size="14" fill="#57606A" text-anchor="start">只读过的页：被换入过 → 也算脏</text>
+<text x="864.0" y="356.0" font-size="14" fill="#57606A" text-anchor="start">预取填进来的页 → 也算脏</text>
+<path d="M766.0 296.0 L834.0 296.0" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="466.0" x2="1552.0" y2="466.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="492.0" font-size="13" fill="#8C959F" text-anchor="start">这个改动在当时是必要的，对运行没有影响；它只影响暂停，而当时没人注意到。</text></svg>

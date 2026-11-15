@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="622" viewBox="0 0 1600 622" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="622" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">命名空间：同一台宿主上，每台沙箱看到自己的一套</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">网络命名空间隔离网卡、IP、路由；挂载命名空间隔离“路径指向哪里”。所以一千台沙箱可以有同名的网卡、相同的内部 IP、同一个路径指向不同的文件。</text>
+<rect x="48.0" y="156.0" width="474.7" height="260.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">沙箱 1</text>
+<rect x="68.0" y="216.0" width="434.7" height="80.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="285.3" y="247.8" font-size="14.5" fill="#3D3C38" font-weight="600" text-anchor="middle">网络命名空间 ns-1</text>
+<text x="285.3" y="271.0" font-size="12.5" fill="#57606A" text-anchor="middle">tap0 · 内部 IP 相同</text>
+<rect x="68.0" y="311.0" width="434.7" height="80.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="285.3" y="342.8" font-size="14.5" fill="#3D3C38" font-weight="600" text-anchor="middle">挂载命名空间</text>
+<text x="285.3" y="366.0" font-size="12.5" fill="#57606A" text-anchor="middle">/fc-vm/rootfs.ext4 → 本沙箱的盘</text>
+<rect x="562.7" y="156.0" width="474.7" height="260.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="582.7" y="186.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">沙箱 2</text>
+<rect x="582.7" y="216.0" width="434.7" height="80.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="800.0" y="247.8" font-size="14.5" fill="#3D3C38" font-weight="600" text-anchor="middle">网络命名空间 ns-2</text>
+<text x="800.0" y="271.0" font-size="12.5" fill="#57606A" text-anchor="middle">tap0 · 内部 IP 相同</text>
+<rect x="582.7" y="311.0" width="434.7" height="80.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="800.0" y="342.8" font-size="14.5" fill="#3D3C38" font-weight="600" text-anchor="middle">挂载命名空间</text>
+<text x="800.0" y="366.0" font-size="12.5" fill="#57606A" text-anchor="middle">/fc-vm/rootfs.ext4 → 本沙箱的盘</text>
+<rect x="1077.3" y="156.0" width="474.7" height="260.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1097.3" y="186.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">沙箱 3</text>
+<rect x="1097.3" y="216.0" width="434.7" height="80.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1314.7" y="247.8" font-size="14.5" fill="#3D3C38" font-weight="600" text-anchor="middle">网络命名空间 ns-3</text>
+<text x="1314.7" y="271.0" font-size="12.5" fill="#57606A" text-anchor="middle">tap0 · 内部 IP 相同</text>
+<rect x="1097.3" y="311.0" width="434.7" height="80.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1314.7" y="342.8" font-size="14.5" fill="#3D3C38" font-weight="600" text-anchor="middle">挂载命名空间</text>
+<text x="1314.7" y="366.0" font-size="12.5" fill="#57606A" text-anchor="middle">/fc-vm/rootfs.ext4 → 本沙箱的盘</text>
+<rect x="48.0" y="456.0" width="1504.0" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="482.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">宿主内核：创建、切换命名空间要动全局数据结构</text>
+<text x="800.0" y="506.2" font-size="12.5" fill="#57606A" text-anchor="middle">平时很快；几百个同时做，会在一把全局锁上排队（第 15 篇）</text>
+<line x1="48.0" y1="556.0" x2="1552.0" y2="556.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="582.0" font-size="13" fill="#8C959F" text-anchor="start">第 11 篇讲挂载命名空间怎样解决“快照录死了路径”的问题；第 13 篇讲网络槽位。</text></svg>

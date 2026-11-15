@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="628" viewBox="0 0 1600 628" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m8C959F" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8C959F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="628" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">宿主侧服务全景（单节点部署）</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">api 接请求、记账、选节点；orchestrator 真正管沙箱；template-manager 构建模板，单节点部署里它和 orchestrator 是同一个进程；client-proxy 转发用户访问沙箱的流量。</text>
+<rect x="48.0" y="272.0" width="200.0" height="80.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="148.0" y="304.2" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">SDK</text>
+<text x="148.0" y="327.5" font-size="12.5" fill="#57606A" text-anchor="middle">用户代码</text>
+<rect x="318.0" y="192.0" width="260.0" height="90.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="448.0" y="229.2" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">api</text>
+<text x="448.0" y="252.5" font-size="12.5" fill="#57606A" text-anchor="middle">认证、记账、模板版本、选节点</text>
+<rect x="318.0" y="352.0" width="260.0" height="90.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="448.0" y="389.2" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">client-proxy</text>
+<text x="448.0" y="412.5" font-size="12.5" fill="#57606A" text-anchor="middle">按沙箱 ID 转发</text>
+<rect x="658.0" y="152.0" width="560.0" height="380.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="678.0" y="182.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">一个进程（单节点部署）</text>
+<rect x="682.0" y="212.0" width="512.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="938.0" y="238.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator</text>
+<text x="938.0" y="262.2" font-size="12.5" fill="#57606A" text-anchor="middle">启动、暂停、恢复、销毁沙箱 · 内置代理 5007</text>
+<rect x="682.0" y="297.0" width="512.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="938.0" y="323.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">template-manager</text>
+<text x="938.0" y="347.2" font-size="12.5" fill="#57606A" text-anchor="middle">构建模板：开构建虚拟机、执行指令、打快照</text>
+<rect x="682.0" y="382.0" width="512.0" height="120.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="938.0" y="433.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">共享</text>
+<text x="938.0" y="457.2" font-size="12.5" fill="#57606A" text-anchor="middle">同一套 Firecracker、网络槽位池、本地缓存、内存上限</text>
+<rect x="1278.0" y="152.0" width="274.0" height="110.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1415.0" y="198.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">沙箱们</text>
+<text x="1415.0" y="222.2" font-size="12.5" fill="#57606A" text-anchor="middle">每台一个 Firecracker 进程</text>
+<rect x="1278.0" y="287.0" width="274.0" height="110.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1415.0" y="333.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">存储</text>
+<text x="1415.0" y="357.2" font-size="12.5" fill="#57606A" text-anchor="middle">本地目录或 MinIO：模板与快照</text>
+<rect x="1278.0" y="422.0" width="274.0" height="110.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1415.0" y="468.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">数据库 · Redis</text>
+<text x="1415.0" y="492.2" font-size="12.5" fill="#57606A" text-anchor="middle">模板版本、沙箱记录、路由表</text>
+<path d="M252.0 302.0 L314.0 242.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M252.0 322.0 L314.0 392.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M582.0 237.0 L654.0 237.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="618.0" y="227.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">gRPC 5008</text>
+<path d="M582.0 397.0 L654.0 397.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="618.0" y="387.0" font-size="12.5" fill="#1F2328" font-weight="600" text-anchor="middle">HTTP 5007</text>
+<path d="M1222.0 247.0 L1274.0 207.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1222.0 332.0 L1274.0 342.0" fill="none" stroke="#8C959F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<line x1="48.0" y1="562.0" x2="1552.0" y2="562.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="588.0" font-size="13" fill="#8C959F" text-anchor="start">官方的大规模部署把这些服务分到不同机器池；我们的部署全部在一台机器上。</text></svg>

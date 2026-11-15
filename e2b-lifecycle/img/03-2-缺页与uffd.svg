@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="672" viewBox="0 0 1600 672" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="672" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">缺页与 userfaultfd：让一个普通程序来补页</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">登记过 uffd 的内存发生缺页时，内核不自己处理，而是挂起访问它的线程，通知登记的程序；程序自己找到内容，用 UFFDIO_COPY 填进去，内核再唤醒线程重做那次访问。</text>
+<rect x="174.6" y="152.5" width="122.8" height="27.0" rx="13.5" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="236.0" y="171.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">guest 里的程序</text>
+<line x1="236.0" y1="186.0" x2="236.0" y2="576.0" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="565.2" y="152.5" width="93.5" height="27.0" rx="13.5" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="612.0" y="171.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">内核 / KVM</text>
+<line x1="612.0" y1="186.0" x2="612.0" y2="576.0" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="868.1" y="152.5" width="239.8" height="27.0" rx="13.5" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="988.0" y="171.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">uffd 处理程序（orchestrator）</text>
+<line x1="988.0" y1="186.0" x2="988.0" y2="576.0" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<rect x="1325.0" y="152.5" width="78.0" height="27.0" rx="13.5" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="1364.0" y="171.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">内容来源</text>
+<line x1="1364.0" y1="186.0" x2="1364.0" y2="576.0" stroke="#D8DEE4" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="4 4"/>
+<path d="M236.0 226.0 L612.0 226.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="424.0" y="217.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">1. 访问地址 X，这一页还没有内容</text>
+<rect x="472.0" y="258.0" width="280.0" height="30.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="612.0" y="278.0" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">2. 挂起这个线程</text>
+<path d="M612.0 326.0 L988.0 326.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="317.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">3. 通知：地址 X 缺页了</text>
+<path d="M988.0 376.0 L1364.0 376.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="1176.0" y="367.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">4. 查映射表，读快照文件</text>
+<path d="M1364.0 426.0 L988.0 426.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="1176.0" y="417.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">5. 拿到这一页的内容</text>
+<path d="M988.0 476.0 L612.0 476.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="467.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">6. UFFDIO_COPY 填进去</text>
+<path d="M612.0 526.0 L236.0 526.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="424.0" y="517.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">7. 唤醒线程，重做那次访问，成功</text>
+<line x1="48.0" y1="606.0" x2="1552.0" y2="606.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="632.0" font-size="13" fill="#8C959F" text-anchor="start">可选的“写保护”：填页时保持只读，之后第一次写会再通知一次。上游靠它判断哪些页被写过；ARM 内核上没有这个功能（第 19 篇）。</text></svg>

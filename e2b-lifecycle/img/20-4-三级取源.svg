@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="712" viewBox="0 0 1600 712" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="712" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">填：一次 2 MiB 缺页，三级取源</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">映射表变成 4 KiB 后，一个 2 MiB guest 页可能由来自不同代的小块拼成。按“能不拷就不拷、要拷就不分配”分三级。</text>
+<rect x="48.0" y="156.0" width="474.7" height="60.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="285.3" y="191.1" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">一：块等于页</text>
+<rect x="48.0" y="232.0" width="474.7" height="80.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="285.3" y="263.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">条件</text>
+<text x="285.3" y="286.9" font-size="12.5" fill="#57606A" text-anchor="middle">映射表块大小就是 2 MiB（模板、从未暂停的沙箱）</text>
+<rect x="48.0" y="328.0" width="474.7" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="285.3" y="364.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">做法</text>
+<text x="285.3" y="387.9" font-size="12.5" fill="#57606A" text-anchor="middle">原路：直接取一块</text>
+<rect x="48.0" y="434.0" width="474.7" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="285.3" y="460.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">代价</text>
+<text x="285.3" y="483.9" font-size="12.5" fill="#57606A" text-anchor="middle">和修复前一样</text>
+<rect x="562.7" y="156.0" width="474.7" height="60.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="800.0" y="191.1" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">二：整块同代</text>
+<rect x="562.7" y="232.0" width="474.7" height="80.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="263.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">条件</text>
+<text x="800.0" y="286.9" font-size="12.5" fill="#57606A" text-anchor="middle">一条映射覆盖整个 2 MiB</text>
+<rect x="562.7" y="328.0" width="474.7" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="364.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">做法</text>
+<text x="800.0" y="387.9" font-size="12.5" fill="#57606A" text-anchor="middle">零拷贝：把那一代缓存文件里的切片交给 UFFDIO_COPY</text>
+<rect x="562.7" y="434.0" width="474.7" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="460.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">代价</text>
+<text x="800.0" y="483.9" font-size="12.5" fill="#57606A" text-anchor="middle">和修复前一样；处理大部分缺页</text>
+<rect x="1077.3" y="156.0" width="474.7" height="60.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1314.7" y="191.1" font-size="16" fill="#8A5300" font-weight="600" text-anchor="middle">三：跨代混合</text>
+<rect x="1077.3" y="232.0" width="474.7" height="80.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1314.7" y="263.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">条件</text>
+<text x="1314.7" y="286.9" font-size="12.5" fill="#57606A" text-anchor="middle">2 MiB 里混着不同代的 4 KiB 块</text>
+<rect x="1077.3" y="328.0" width="474.7" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1314.7" y="364.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">做法</text>
+<text x="1314.7" y="387.9" font-size="12.5" fill="#57606A" text-anchor="middle">从缓冲池取 2 MiB 缓冲，沿映射链逐段读满，填完归还</text>
+<rect x="1077.3" y="434.0" width="474.7" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1314.7" y="460.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">代价</text>
+<text x="1314.7" y="483.9" font-size="12.5" fill="#57606A" text-anchor="middle">最多 512 次查表 + 一次 2 MiB 拷贝</text>
+<text x="48.0" y="556.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">跨代拼接的例子（上一代整块指向第 1 代，本代只写了 8 KiB 处一页）</text>
+<rect x="48.0" y="572.0" width="186.0" height="44.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="142.0" y="600.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">第 1 代</text>
+<rect x="236.0" y="572.0" width="92.0" height="44.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="283.0" y="600.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="middle">本代</text>
+<rect x="330.0" y="572.0" width="1220.0" height="44.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="941.0" y="600.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">第 1 代（偏移 12 KiB 起）</text>
+<line x1="48.0" y1="646.0" x2="1552.0" y2="646.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="672.0" font-size="13" fill="#8C959F" text-anchor="start">示意按比例压缩。存：上一代映射一行都不用重写，原来那条 2 MiB 映射被切成三段，差分文件一个字节都不动。</text></svg>

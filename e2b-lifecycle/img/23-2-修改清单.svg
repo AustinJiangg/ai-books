@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="578" viewBox="0 0 1600 578" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="578" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">修改清单地图：四类修改分别落在哪个操作上</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">按目的分四类：为 ARM、为性能、为正确与稳定、为与快照回滚共存。每一格列出代表性的几项。</text>
+<rect x="48.0" y="152.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="278.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">构建模板</text>
+<text x="608.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">启动沙箱</text>
+<text x="1008.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">暂停</text>
+<text x="1308.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">恢复</text>
+<rect x="48.0" y="194.2" width="1500.0" height="58.5" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="58.0" y="217.1" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="start">为 ARM</text>
+<text x="278.0" y="217.1" font-size="13.5" fill="#8A5300" text-anchor="start">镜像平台、busybox、发行版脚本、cgroup v1、</text>
+<text x="278.0" y="237.3" font-size="13.5" fill="#8A5300" text-anchor="start">CPU 信息</text>
+<text x="608.0" y="217.1" font-size="13.5" fill="#8A5300" text-anchor="start">内核参数、SMT</text>
+<text x="1008.0" y="217.1" font-size="13.5" fill="#8A5300" text-anchor="start">uffd 写保护注释掉（读即脏）</text>
+<text x="1308.0" y="217.1" font-size="13.5" fill="#8A5300" text-anchor="start">—</text>
+<rect x="48.0" y="256.8" width="1500.0" height="58.5" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="279.6" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">为性能</text>
+<text x="278.0" y="279.6" font-size="13.5" fill="#0E6B4F" text-anchor="start">—</text>
+<text x="608.0" y="279.6" font-size="13.5" fill="#0E6B4F" text-anchor="start">fc-netns-exec、并发参数、网络池、预取、MMDS、NBD</text>
+<text x="608.0" y="299.8" font-size="13.5" fill="#0E6B4F" text-anchor="start">模块</text>
+<text x="1008.0" y="279.6" font-size="13.5" fill="#0E6B4F" text-anchor="start">精确增量（判、存、填）</text>
+<text x="1308.0" y="279.6" font-size="13.5" fill="#0E6B4F" text-anchor="start">零拷贝 + 缓冲池</text>
+<rect x="48.0" y="319.2" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="58.0" y="342.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">为正确与稳定</text>
+<text x="278.0" y="342.1" font-size="13.5" fill="#1F2328" text-anchor="start">构建内存上限</text>
+<text x="608.0" y="342.1" font-size="13.5" fill="#1F2328" text-anchor="start">socket 等待上下文、网络池停—清—启、大页释放、Nomad</text>
+<text x="1008.0" y="342.1" font-size="13.5" fill="#1F2328" text-anchor="start">暂停日志写明导了多少</text>
+<text x="1308.0" y="342.1" font-size="13.5" fill="#1F2328" text-anchor="start">—</text>
+<rect x="48.0" y="361.5" width="1500.0" height="38.2" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="58.0" y="384.3" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">为与回滚共存</text>
+<text x="278.0" y="384.3" font-size="13.5" fill="#1D4F91" text-anchor="start">—</text>
+<text x="608.0" y="384.3" font-size="13.5" fill="#1D4F91" text-anchor="start">加载时按开关开跟踪、跟踪默认跟硬件</text>
+<text x="1008.0" y="384.3" font-size="13.5" fill="#1D4F91" text-anchor="start">压平层导出、累积位图</text>
+<text x="1308.0" y="384.3" font-size="13.5" fill="#1D4F91" text-anchor="start">connect() 补路由头</text>
+<line x1="48.0" y1="512.0" x2="1552.0" y2="512.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="538.0" font-size="13" fill="#8C959F" text-anchor="start">完整清单见第 23 篇第二节，每一条指回讲它的那一篇。</text></svg>

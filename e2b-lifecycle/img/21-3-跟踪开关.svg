@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="622" viewBox="0 0 1600 622" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="622" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">脏页跟踪开关：默认跟着硬件走</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">有硬件记脏（HDBSS）时，精确增量几乎零副作用；没有时，KVM 写保护要让每个干净页第一次被写陷出一次，所有沙箱都付。“精确增量”和“不让所有沙箱付代价”二选一，默认选后者。</text>
+<rect x="540.0" y="156.0" width="520.0" height="64.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="193.1" font-size="16" fill="#1F2328" font-weight="600" text-anchor="middle">FC_TRACK_DIRTY_PAGES 设了吗？</text>
+<rect x="48.0" y="276.0" width="474.7" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="285.3" y="312.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">没设，探到 HDBSS（950）</text>
+<rect x="562.7" y="276.0" width="474.7" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="312.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">没设，没有 HDBSS（920B）</text>
+<rect x="1077.3" y="276.0" width="474.7" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1314.7" y="312.8" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">显式设为 true</text>
+<path d="M800.0 224.0 L285.3 272.0" fill="none" stroke="#1F2328" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M800.0 224.0 L800.0 272.0" fill="none" stroke="#1F2328" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M800.0 224.0 L1314.7 272.0" fill="none" stroke="#1F2328" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="48.0" y="376.0" width="474.7" height="150.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="285.3" y="423.4" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">开 · 硬件记脏</text>
+<text x="285.3" y="447.3" font-size="13" fill="#57606A" text-anchor="middle">回滚：增量</text>
+<text x="285.3" y="466.8" font-size="13" fill="#57606A" text-anchor="middle">原生暂停：精确增量</text>
+<text x="285.3" y="486.3" font-size="13" fill="#57606A" text-anchor="middle">运行期代价：几乎没有</text>
+<path d="M285.3 344.0 L285.3 372.0" fill="none" stroke="#1F2328" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="562.7" y="376.0" width="474.7" height="150.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="423.4" font-size="16" fill="#1F2328" font-weight="600" text-anchor="middle">关</text>
+<text x="800.0" y="447.3" font-size="13" fill="#57606A" text-anchor="middle">回滚：每次全量（正确）</text>
+<text x="800.0" y="466.8" font-size="13" fill="#57606A" text-anchor="middle">原生暂停：驻留判据，多导但正确</text>
+<text x="800.0" y="486.3" font-size="13" fill="#57606A" text-anchor="middle">普通沙箱：无额外代价</text>
+<path d="M800.0 344.0 L800.0 372.0" fill="none" stroke="#1F2328" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1077.3" y="376.0" width="474.7" height="150.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1314.7" y="433.1" font-size="16" fill="#8A5300" font-weight="600" text-anchor="middle">开 · KVM 写保护</text>
+<text x="1314.7" y="457.0" font-size="13" fill="#57606A" text-anchor="middle">回滚、原生暂停都是增量</text>
+<text x="1314.7" y="476.5" font-size="13" fill="#57606A" text-anchor="middle">所有沙箱：每个干净页首次写陷出一次</text>
+<path d="M1314.7 344.0 L1314.7 372.0" fill="none" stroke="#1F2328" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="556.0" x2="1552.0" y2="556.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="582.0" font-size="13" fill="#8C959F" text-anchor="start">只认标准布尔写法，yes、on 之类会被忽略并打警告；启动日志和能力文件写明开没开、为什么。</text></svg>

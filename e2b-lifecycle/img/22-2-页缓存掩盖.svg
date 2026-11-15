@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="672" viewBox="0 0 1600 672" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="672" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">页缓存掩盖磁盘错误</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">暂停恢复不清 guest 的页缓存（它就在内存快照里）。刚写的小文件从缓存读回一定是对的，根本没碰磁盘：第一版验证就这样假通过了。</text>
+<rect x="48.0" y="156.0" width="712.0" height="420.0" rx="14" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">假通过的验证</text>
+<circle cx="82.0" cy="235.2" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="82.0" y="239.7" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<rect x="108.0" y="216.0" width="632.0" height="38.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="122.0" y="239.7" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">写一个小文件</text>
+<circle cx="82.0" cy="285.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="82.0" y="290.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<rect x="108.0" y="266.5" width="632.0" height="38.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="122.0" y="290.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">暂停 → 恢复</text>
+<circle cx="82.0" cy="348.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="82.0" y="353.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<rect x="108.0" y="317.0" width="632.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="122.0" y="340.7" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">普通读回比较</text>
+<text x="122.0" y="363.3" font-size="12" fill="#57606A" text-anchor="start">从 guest 页缓存读到，内容对</text>
+<circle cx="82.0" cy="424.2" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="82.0" y="428.7" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<rect x="108.0" y="392.4" width="632.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="122.0" y="416.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">判定：通过</text>
+<text x="122.0" y="438.8" font-size="12" fill="#57606A" text-anchor="start">磁盘上其实已经丢了</text>
+<rect x="840.0" y="156.0" width="712.0" height="420.0" rx="14" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="860.0" y="186.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">看得见的验证</text>
+<circle cx="874.0" cy="247.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="874.0" y="252.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<rect x="900.0" y="216.0" width="632.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="914.0" y="239.7" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">存档之前写 16 MiB 随机数据 before.bin</text>
+<text x="914.0" y="262.3" font-size="12" fill="#57606A" text-anchor="start">大到不可能全留在缓存</text>
+<circle cx="874.0" cy="310.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="874.0" y="315.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<rect x="900.0" y="291.5" width="632.0" height="38.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="914.0" y="315.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">存档</text>
+<circle cx="874.0" cy="373.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="874.0" y="378.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<rect x="900.0" y="342.0" width="632.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="914.0" y="365.7" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">存档之后再写 16 MiB after.bin</text>
+<text x="914.0" y="388.3" font-size="12" fill="#57606A" text-anchor="start">对照组</text>
+<circle cx="874.0" cy="436.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="874.0" y="441.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<rect x="900.0" y="417.4" width="632.0" height="38.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="914.0" y="441.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">暂停 → 恢复</text>
+<circle cx="874.0" cy="499.7" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="874.0" y="504.2" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<rect x="900.0" y="467.9" width="632.0" height="63.5" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="914.0" y="491.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">O_DIRECT 读回两份，比哈希</text>
+<text x="914.0" y="514.2" font-size="12" fill="#57606A" text-anchor="start">before 抓缺陷，after 证明脚本正常</text>
+<line x1="48.0" y1="606.0" x2="1552.0" y2="606.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="632.0" font-size="13" fill="#8C959F" text-anchor="start">三道本应抓住它的防线都失效：映射表从导出内容推出，自己跟自己对得上；已有测试不做暂停；第一版验证被缓存盖住。</text></svg>

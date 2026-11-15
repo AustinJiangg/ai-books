@@ -54,6 +54,8 @@
       <span class="d">写给新手的 E2B 部署教程（2026.09 + ARM 补丁，单机鲲鹏离线部署）：从 systemd、容器、Nomad、Consul 和原版的云上部署讲起，顺着“下载仓库、打 RPM、build.sh -d/-i/-s”三步，讲清每个组件、每段脚本、每个参数，以及验证、停服、改动生效与排障</span></a></li>
     <li><a href="html/e2b-rollback.html"><span class="t">E2B 沙箱快照回滚从零讲透</span>
       <span class="d">写给新手的 E2B 沙箱级快照回滚：在活着的沙箱里存档、原地读档。从现场七项、脏页、稀疏文件、reflink 讲起，讲清请求拦截、存档与读档逐步走、脏页跟踪与 HDBSS、内存差分树与回滚集、磁盘封存、Firecracker 九阶段、失败分级与不变量、与原生快照的配合，以及 950 实测、优化、测试和后续方向</span></a></li>
+    <li><a href="html/e2b-lifecycle.html"><span class="t">E2B 模板构建、沙箱启动与暂停恢复从零讲透</span>
+      <span class="d">写给新手的 E2B 原有三个操作：构建模板、启动沙箱、暂停与恢复。从沙箱组成、缺页、写时复制、快照三件套与映射表讲起，讲清构建流水线与层缓存、启动就是恢复、懒加载与预取、启动耗时拆解与 netns-exec 优化、暂停六步与成本、ARM 上的读即脏与精确增量，以及加入快照回滚后被撞坏的三处和修法</span></a></li>
     <li><a href="html/deepinfer.html"><span class="t">DeepInfer 技术手册</span>
       <span class="d">deepseek-ai/DeepInfer 生产级推理框架技术内幕与代码实现（YOCO、SWA有界重放、MHC、ZOS异步调度、EPLB、DSpark与3FS存算分离）</span></a></li>
   </ul>

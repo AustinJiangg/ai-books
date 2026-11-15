@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="542" viewBox="0 0 1600 542" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="542" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">三个口径，别混</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">客户端墙钟 ⊃ 路由与 api + 准入排队 + ResumeSandbox 总耗时 + 善后。100 并发下客户端约 600 ms，ResumeSandbox 约 294 ms。</text>
+<rect x="48.0" y="206.0" width="102.3" height="56.0" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="100.6" y="240.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">路由 · api</text>
+<rect x="153.3" y="206.0" width="538.4" height="56.0" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="424.0" y="240.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">准入排队</text>
+<rect x="694.7" y="206.0" width="734.0" height="56.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="1063.2" y="240.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">ResumeSandbox 总耗时 ≈ 294 ms</text>
+<rect x="1431.7" y="206.0" width="117.3" height="56.0" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="1491.8" y="240.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">善后</text>
+<line x1="48.0" y1="186.0" x2="1552.0" y2="186.0" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<text x="800.0" y="176.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">客户端墙钟 ≈ 600 ms（Sandbox.create 从调用到返回）</text>
+<rect x="48.0" y="306.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="328.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">口径</text>
+<text x="478.0" y="328.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">量的是什么</text>
+<text x="1078.0" y="328.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">在哪测</text>
+<line x1="48.0" y1="388.5" x2="1548.0" y2="388.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="371.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">客户端墙钟</text>
+<text x="478.0" y="371.1" font-size="13.5" fill="#1F2328" text-anchor="start">Sandbox.create 从调用到返回</text>
+<text x="1078.0" y="371.1" font-size="13.5" fill="#1F2328" text-anchor="start">压测脚本</text>
+<line x1="48.0" y1="430.8" x2="1548.0" y2="430.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="413.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">准入排队</text>
+<text x="478.0" y="413.3" font-size="13.5" fill="#1F2328" text-anchor="start">等“同时启动”信号量</text>
+<text x="1078.0" y="413.3" font-size="13.5" fill="#1F2328" text-anchor="start">orchestrator 日志：acquire wait</text>
+<line x1="48.0" y1="473.0" x2="1548.0" y2="473.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="455.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">ResumeSandbox 总耗时</text>
+<text x="478.0" y="455.6" font-size="13.5" fill="#1F2328" text-anchor="start">进入函数到返回，含 envd /init</text>
+<text x="1078.0" y="455.6" font-size="13.5" fill="#1F2328" text-anchor="start">orchestrator 日志：total</text>
+<line x1="48.0" y1="476.0" x2="1552.0" y2="476.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="502.0" font-size="13" fill="#8C959F" text-anchor="start">示意图，各段比例只表示量级；准入排队的大小取决于并发数和信号量上限。</text></svg>

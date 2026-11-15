@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="812" viewBox="0 0 1600 812" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="812" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一次 0 MiB 暂停的时间账（920B 逐段跟踪，总 234.9 ms）</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">真正保存内存状态的只有前约 10 ms；其余约 225 ms 在销毁虚拟机环境并等它结束。950 上拟合：暂停 ≈ 246 ms 固定 + 每 MiB 导出量 0.52 ms。</text>
+<rect x="48.0" y="166.0" width="60.7" height="50.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<rect x="110.7" y="166.0" width="10.5" height="50.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<rect x="123.2" y="166.0" width="981.9" height="50.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="615.1" y="197.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">Firecracker 收到终止信号到退出（约 157 ms）</text>
+<rect x="1107.1" y="166.0" width="392.8" height="50.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1304.5" y="197.0" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">收尾、断 NBD、导出磁盘（约 63）</text>
+<rect x="1501.9" y="166.0" width="16.8" height="50.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="48.0" y="238.0" font-size="12" fill="#57606A" text-anchor="middle">0</text>
+<text x="110.7" y="238.0" font-size="12" fill="#57606A" text-anchor="middle">10</text>
+<text x="1107.1" y="238.0" font-size="12" fill="#57606A" text-anchor="middle">169</text>
+<text x="1520.7" y="238.0" font-size="12" fill="#57606A" text-anchor="middle">235</text>
+<text x="79.3" y="154.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="start">存状态约 10 ms</text>
+<text x="48.0" y="286.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">Firecracker 退出过程的内核栈采样（采样拖慢了退出，时间点仅供参考）</text>
+<rect x="48.0" y="302.0" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="324.8" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">约 9～123 ms</text>
+<text x="318.0" y="324.8" font-size="13.5" fill="#9A3215" text-anchor="start">主线程在运行，调用栈读不到：约 114 ms 未归因，最长的一段</text>
+<line x1="48.0" y1="384.5" x2="1548.0" y2="384.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="367.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">123 ms</text>
+<text x="318.0" y="367.1" font-size="13.5" fill="#1F2328" text-anchor="start">释放挂载命名空间，等 RCU 宽限期</text>
+<line x1="48.0" y1="426.8" x2="1548.0" y2="426.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="409.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">137 ms</text>
+<text x="318.0" y="409.3" font-size="13.5" fill="#1F2328" text-anchor="start">卸载挂载点</text>
+<line x1="48.0" y1="469.0" x2="1548.0" y2="469.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="451.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">140 ms</text>
+<text x="318.0" y="451.6" font-size="13.5" fill="#1F2328" text-anchor="start">关闭 KVM 虚拟机，等中断相关清理</text>
+<line x1="48.0" y1="511.2" x2="1548.0" y2="511.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="493.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">149 ms</text>
+<text x="318.0" y="493.8" font-size="13.5" fill="#1F2328" text-anchor="start">销毁 KVM 虚拟机，等 RCU 宽限期</text>
+<rect x="48.0" y="556.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="578.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">阶段</text>
+<text x="758.0" y="578.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">0 MiB 档</text>
+<text x="1018.0" y="578.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">256 MiB 档</text>
+<text x="1278.0" y="578.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">增长</text>
+<line x1="48.0" y1="638.5" x2="1548.0" y2="638.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="621.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">开始停沙箱之前（含内存差分导出）</text>
+<text x="758.0" y="621.1" font-size="13.5" fill="#1F2328" text-anchor="start">12.4 ms</text>
+<text x="1018.0" y="621.1" font-size="13.5" fill="#1F2328" text-anchor="start">88.8 ms</text>
+<text x="1278.0" y="621.1" font-size="13.5" fill="#1F2328" text-anchor="start">约 +76 ms</text>
+<line x1="48.0" y1="680.8" x2="1548.0" y2="680.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="663.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">开始停沙箱到 Firecracker 退出</text>
+<text x="758.0" y="663.3" font-size="13.5" fill="#1F2328" text-anchor="start">约 156 ms</text>
+<text x="1018.0" y="663.3" font-size="13.5" fill="#1F2328" text-anchor="start">约 191 ms</text>
+<text x="1278.0" y="663.3" font-size="13.5" fill="#1F2328" text-anchor="start">约 +35 ms</text>
+<line x1="48.0" y1="723.0" x2="1548.0" y2="723.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="705.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">退出到磁盘差分导出完成</text>
+<text x="758.0" y="705.6" font-size="13.5" fill="#1F2328" text-anchor="start">约 63 ms</text>
+<text x="1018.0" y="705.6" font-size="13.5" fill="#1F2328" text-anchor="start">约 160 ms</text>
+<text x="1278.0" y="705.6" font-size="13.5" fill="#1F2328" text-anchor="start">约 +97 ms</text>
+<line x1="48.0" y1="746.0" x2="1552.0" y2="746.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="772.0" font-size="13" fill="#8C959F" text-anchor="start">成本模型：原生暂停的主要代价来自拆机，改动量只决定上面那层增量。</text></svg>

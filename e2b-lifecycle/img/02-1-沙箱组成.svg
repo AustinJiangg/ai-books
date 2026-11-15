@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="668" viewBox="0 0 1600 668" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m8C959F" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8C959F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="668" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一台沙箱的组成：虚拟机里四样，宿主上五样</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">虚拟机里是内核、根文件系统、systemd 和 envd；宿主为它准备 Firecracker 进程和四样家当。启动就是把这五样准备好再加载快照，暂停反过来把它们拆掉。</text>
+<rect x="48.0" y="152.0" width="620.0" height="420.0" rx="14" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="68.0" y="182.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">Firecracker 进程</text>
+<rect x="72.0" y="222.0" width="572.0" height="330.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="92.0" y="252.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">虚拟机（guest）</text>
+<rect x="96.0" y="282.0" width="524.0" height="58.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="358.0" y="302.8" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">Linux 内核</text>
+<text x="358.0" y="326.0" font-size="12.5" fill="#57606A" text-anchor="middle">E2B 编译的精简内核</text>
+<rect x="96.0" y="348.0" width="524.0" height="58.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="358.0" y="368.8" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">根文件系统 rootfs</text>
+<text x="358.0" y="392.0" font-size="12.5" fill="#57606A" text-anchor="middle">ext4：发行版 + 用户软件</text>
+<rect x="96.0" y="414.0" width="524.0" height="58.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="358.0" y="434.8" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">systemd</text>
+<text x="358.0" y="458.0" font-size="12.5" fill="#57606A" text-anchor="middle">1 号进程</text>
+<rect x="96.0" y="480.0" width="524.0" height="58.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="358.0" y="500.8" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">envd（49983）</text>
+<text x="358.0" y="524.0" font-size="12.5" fill="#57606A" text-anchor="middle">唯一的管家：跑命令、读写文件</text>
+<rect x="748.0" y="152.0" width="804.0" height="420.0" rx="14" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="768.0" y="182.0" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="start">宿主为它准备的四样家当</text>
+<rect x="772.0" y="222.0" width="756.0" height="74.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1150.0" y="250.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">网络槽位</text>
+<text x="1150.0" y="274.2" font-size="12.5" fill="#57606A" text-anchor="middle">网络命名空间 + tap + veth + iptables</text>
+<rect x="1458.0" y="230.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1487.0" y="244.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 13 篇</text>
+<rect x="772.0" y="306.0" width="756.0" height="74.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1150.0" y="334.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">根盘</text>
+<text x="1150.0" y="358.2" font-size="12.5" fill="#57606A" text-anchor="middle">NBD 设备：模板只读层 + 本沙箱写层</text>
+<rect x="1458.0" y="314.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1487.0" y="328.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 13 篇</text>
+<rect x="772.0" y="390.0" width="756.0" height="74.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1150.0" y="418.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">内存处理器</text>
+<text x="1150.0" y="442.2" font-size="12.5" fill="#57606A" text-anchor="middle">userfaultfd：用到哪页补哪页</text>
+<rect x="1458.0" y="398.0" width="58.0" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1487.0" y="412.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 12 篇</text>
+<rect x="772.0" y="474.0" width="756.0" height="74.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1150.0" y="502.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">cgroup</text>
+<text x="1150.0" y="526.2" font-size="12.5" fill="#57606A" text-anchor="middle">资源统计与限制</text>
+<rect x="1432.7" y="482.0" width="83.3" height="20.5" rx="10.25" fill="#EEF0F2" stroke="none" stroke-width="0"/>
+<text x="1474.4" y="496.0" font-size="11.5" fill="#57606A" text-anchor="middle">第 12、15 篇</text>
+<path d="M744.0 297.0 L672.0 297.0" fill="none" stroke="#8C959F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" marker-end="url(#m8C959F)"/>
+<path d="M744.0 382.0 L672.0 382.0" fill="none" stroke="#8C959F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" marker-end="url(#m8C959F)"/>
+<path d="M744.0 467.0 L672.0 467.0" fill="none" stroke="#8C959F" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" marker-end="url(#m8C959F)"/>
+<line x1="48.0" y1="602.0" x2="1552.0" y2="602.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="628.0" font-size="13" fill="#8C959F" text-anchor="start">合计五样：Firecracker 进程 + 网络槽位、根盘、内存处理器、cgroup。</text></svg>

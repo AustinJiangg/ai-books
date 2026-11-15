@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="550" viewBox="0 0 1600 550" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="550" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">三列对比（950，修复前）：正确的位图其实就在旁边</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">每一步之间沙箱经历一次暂停加恢复。左列是原生暂停的判据，中列是 Firecracker 的写跟踪位图，右列是实际导出量。左列等于右列；中列才是真实写入。</text>
+<text x="48.0" y="186.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">刚建好</text>
+<rect x="378.0" y="160.0" width="348.3" height="26.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="736.3" y="179.0" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">118 MiB  原判据 = 实际导出</text>
+<rect x="378.0" y="192.0" width="13.6" height="26.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="401.6" y="211.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">4.6 MiB  写跟踪位图</text>
+<text x="48.0" y="282.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">只读 192 MiB，一字节没改</text>
+<rect x="378.0" y="256.0" width="956.3" height="26.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="1344.3" y="275.0" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">324 MiB  原判据 = 实际导出</text>
+<rect x="378.0" y="288.0" width="44.3" height="26.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="432.3" y="307.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">15 MiB  写跟踪位图</text>
+<text x="48.0" y="378.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">只改 12 MiB</text>
+<rect x="378.0" y="352.0" width="436.8" height="26.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="824.8" y="371.0" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">148 MiB  原判据 = 实际导出</text>
+<rect x="378.0" y="384.0" width="58.1" height="26.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="446.1" y="403.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">19.7 MiB  写跟踪位图</text>
+<rect x="48.0" y="443.0" width="16.0" height="16.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="72.0" y="456.0" font-size="13" fill="#57606A" text-anchor="start">原判据 GET /memory/dirty（= 实际导出）</text>
+<rect x="357.7" y="443.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="381.7" y="456.0" font-size="13" fill="#57606A" text-anchor="start">写跟踪位图（真实写入 + 几 MiB 本底）</text>
+<line x1="48.0" y1="484.0" x2="1552.0" y2="484.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="510.0" font-size="13" fill="#8C959F" text-anchor="start">920B 上形状完全一样，只是本底大几十 MiB。修复前的方向是安全的：在内存里是写过的超集，只会多导，不会少导。</text></svg>

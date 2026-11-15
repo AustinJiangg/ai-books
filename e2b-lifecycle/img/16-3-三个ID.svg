@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="442" viewBox="0 0 1600 442" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="442" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">三个 ID 在一次原生 Checkpoint 前后</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">沙箱 ID 和执行 ID 不变；生命周期 ID（一个 Firecracker 进程实例）换新。旧沙箱的清理协程用自己的生命周期 ID 删表项，新沙箱沿用同一个 ID 就会被误删。</text>
+<rect x="48.0" y="156.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">ID</text>
+<text x="298.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">含义</text>
+<text x="778.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">之前</text>
+<text x="1038.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">之后</text>
+<line x1="48.0" y1="238.5" x2="1548.0" y2="238.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="221.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">沙箱 ID</text>
+<text x="298.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">用户看到的沙箱标识</text>
+<text x="778.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">sbx-123</text>
+<text x="1038.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">sbx-123</text>
+<text x="1298.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">不变</text>
+<line x1="48.0" y1="280.8" x2="1548.0" y2="280.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="263.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">执行 ID</text>
+<text x="298.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">一次“执行”，api、路由、统计用</text>
+<text x="778.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">exec-9</text>
+<text x="1038.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">exec-9</text>
+<text x="1298.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">不变</text>
+<rect x="48.0" y="282.8" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="305.6" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">生命周期 ID</text>
+<text x="298.0" y="305.6" font-size="13.5" fill="#9A3215" text-anchor="start">一个 Firecracker 进程实例</text>
+<text x="778.0" y="305.6" font-size="13.5" fill="#9A3215" text-anchor="start">life-A</text>
+<text x="1038.0" y="305.6" font-size="13.5" fill="#9A3215" text-anchor="start">life-B</text>
+<text x="1298.0" y="305.6" font-size="13.5" fill="#9A3215" text-anchor="start">换新</text>
+<line x1="48.0" y1="376.0" x2="1552.0" y2="376.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="402.0" font-size="13" fill="#8C959F" text-anchor="start">推论：原生快照每一次“存盘后继续”都是一次销毁加一次重建，这是它成本模型的根源。</text></svg>

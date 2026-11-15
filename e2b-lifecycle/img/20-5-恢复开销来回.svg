@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="576" viewBox="0 0 1600 576" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="576" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">恢复开销的来回：恢复后首次读负载（920B，6 档平均）</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">第一版每次缺页都新分配 2 MiB 缓冲，慢了约 120 ms；加零拷贝快路径收回一半；再加缓冲池回到修复前水平。</text>
+<text x="48.0" y="191.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">修复前</text>
+<rect x="408.0" y="166.0" width="496.4" height="36.0" rx="5" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="914.4" y="191.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">243 ms</text>
+<text x="48.0" y="247.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">第一版：每次缺页新分配</text>
+<rect x="408.0" y="222.0" width="749.7" height="36.0" rx="5" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="1167.7" y="247.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">367 ms  每档多 100～200 ms</text>
+<text x="48.0" y="303.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">加零拷贝快路径（第二级）</text>
+<rect x="408.0" y="278.0" width="645.5" height="36.0" rx="5" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1063.5" y="303.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">316 ms</text>
+<text x="48.0" y="359.2" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">再加缓冲池（第三级）</text>
+<rect x="408.0" y="334.0" width="492.3" height="36.0" rx="5" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="910.3" y="359.2" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">241 ms  与修复前持平</text>
+<rect x="48.0" y="410.0" width="1504.0" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="436.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">后来又收紧一次</text>
+<text x="800.0" y="460.2" font-size="12.5" fill="#57606A" text-anchor="middle">取缓冲时先查、只在第一次构造池对象：每次 207 ns、4 次分配 → 83 ns、1 次分配</text>
+<line x1="48.0" y1="510.0" x2="1552.0" y2="510.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="536.0" font-size="13" fill="#8C959F" text-anchor="start">原则：懒加载路径上每一次缺页都是热路径，能不拷就不拷，要拷就不分配。</text></svg>

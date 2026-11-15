@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="512" viewBox="0 0 1600 512" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="512" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">加了回滚之后，一台普通沙箱启动时多做的事</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">能挪出关键路径的都挪出去了：conntrack 句柄在槽位建池时打开、拆槽位时在单独协程里关闭；proxy 只拦一个端口。真正需要权衡的是脏页跟踪的运行期代价。</text>
+<rect x="48.0" y="156.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">多做的事</text>
+<text x="518.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">发生在</text>
+<text x="998.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">代价</text>
+<rect x="48.0" y="198.2" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="221.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">加载快照时按开关打开脏页跟踪</text>
+<text x="518.0" y="221.1" font-size="13.5" fill="#9A3215" text-anchor="start">/snapshot/load 请求里多一个参数</text>
+<text x="998.0" y="221.1" font-size="13.5" fill="#9A3215" text-anchor="start">请求本身几乎无代价；运行期代价看硬件（下一张图）</text>
+<line x1="48.0" y1="280.8" x2="1548.0" y2="280.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="263.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">网络槽位多一个 conntrack 句柄</text>
+<text x="518.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">槽位预先建池时（不在启动路径上）</text>
+<text x="998.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">每槽一个套接字；关闭放到单独协程</text>
+<line x1="48.0" y1="323.0" x2="1548.0" y2="323.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="305.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">proxy 认识 49984 端口</text>
+<text x="518.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">只有发往这个端口的请求</text>
+<text x="998.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">普通流量不受影响</text>
+<rect x="48.0" y="325.0" width="1500.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="347.8" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">从不存档的沙箱</text>
+<text x="518.0" y="347.8" font-size="13.5" fill="#0E6B4F" text-anchor="start">写层只有一层；位图累积集合为空</text>
+<text x="998.0" y="347.8" font-size="13.5" fill="#0E6B4F" text-anchor="start">读写路径、暂停导出逐字节不变</text>
+<line x1="48.0" y1="446.0" x2="1552.0" y2="446.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="472.0" font-size="13" fill="#8C959F" text-anchor="start">原则：纯加法。每一项都要回答“对不用回滚的沙箱有没有影响”。</text></svg>

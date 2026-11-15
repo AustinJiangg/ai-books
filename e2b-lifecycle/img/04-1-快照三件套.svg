@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="552" viewBox="0 0 1600 552" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="552" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">快照三件套：同一时刻的 CPU、内存、磁盘</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">先暂停 vCPU，再分别存三样；三样必须是同一时刻的。Firecracker 只写 snapfile，内存和磁盘由 orchestrator 自己导出、自己管。</text>
+<rect x="48.0" y="156.0" width="474.7" height="140.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="285.3" y="218.8" font-size="20" fill="#8A5300" font-weight="600" text-anchor="middle">snapfile</text>
+<text x="285.3" y="243.3" font-size="13.5" fill="#57606A" text-anchor="middle">vCPU 寄存器、中断控制器、设备状态</text>
+<text x="58.0" y="331.0" font-size="13.5" fill="#57606A" text-anchor="start">大小：几十 KB 到几 MB</text>
+<text x="58.0" y="361.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">谁写：Firecracker 写</text>
+<rect x="562.7" y="156.0" width="474.7" height="140.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="800.0" y="218.8" font-size="20" fill="#4B3FA8" font-weight="600" text-anchor="middle">memfile</text>
+<text x="800.0" y="243.3" font-size="13.5" fill="#57606A" text-anchor="middle">内核、进程的代码和数据、文件缓存</text>
+<text x="572.7" y="331.0" font-size="13.5" fill="#57606A" text-anchor="start">大小：最多等于内存大小，只存用到的</text>
+<text x="572.7" y="361.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">谁写：orchestrator 从进程里读出</text>
+<rect x="1077.3" y="156.0" width="474.7" height="140.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1314.7" y="218.8" font-size="20" fill="#3D3C38" font-weight="600" text-anchor="middle">rootfs.ext4</text>
+<text x="1314.7" y="243.3" font-size="13.5" fill="#57606A" text-anchor="middle">根文件系统</text>
+<text x="1087.3" y="331.0" font-size="13.5" fill="#57606A" text-anchor="start">大小：磁盘大小，只存改过的</text>
+<text x="1087.3" y="361.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">谁写：orchestrator 从写层导出</text>
+<rect x="48.0" y="396.0" width="1504.0" height="60.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="430.1" font-size="13.5" fill="#57606A" text-anchor="middle">每一代还有：memfile.header、rootfs.ext4.header（映射表）和 metadata.json（版本、内核、启动命令、预取表）</text>
+<line x1="48.0" y1="486.0" x2="1552.0" y2="486.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="512.0" font-size="13" fill="#8C959F" text-anchor="start">为什么内存和磁盘不交给 Firecracker：要能按需取、要能增量拼链、要能上传搬走。</text></svg>

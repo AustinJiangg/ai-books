@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="612" viewBox="0 0 1600 612" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="612" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">端到端拆分：294 ms 之外那约 300 ms</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">常见的说法“那 300 ms 是 envd 启动慢”不对。orchestrator 同步调的 /init 在 294 ms 之内，只有几毫秒；差值是排队、路由、轮询就绪、恢复后缺页的合计。</text>
+<rect x="48.0" y="156.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">差值里的成分</text>
+<text x="418.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">在哪</text>
+<text x="938.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">量级</text>
+<rect x="48.0" y="198.2" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="221.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">准入排队</text>
+<text x="418.0" y="221.1" font-size="13.5" fill="#9A3215" text-anchor="start">ResumeSandbox 之前</text>
+<text x="938.0" y="221.1" font-size="13.5" fill="#9A3215" text-anchor="start">并发超过上限时可能最大：并发 100、上限 30，约 70 台在排队</text>
+<line x1="48.0" y1="280.8" x2="1548.0" y2="280.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="263.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">路由与网络往返</text>
+<text x="418.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">SDK → api → orchestrator → 回来</text>
+<text x="938.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">几到几十毫秒</text>
+<line x1="48.0" y1="323.0" x2="1548.0" y2="323.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="305.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">外部轮询 envd 就绪</text>
+<text x="418.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">proxy 层反复检查健康</text>
+<text x="938.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">受轮询间隔影响</text>
+<line x1="48.0" y1="365.2" x2="1548.0" y2="365.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="347.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">恢复后的缺页</text>
+<text x="418.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">100 台同时缺页争抢 I/O</text>
+<text x="938.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">被低估的一块</text>
+<rect x="48.0" y="416.0" width="1504.0" height="100.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="800.0" y="457.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">正确的做法：补点，不做减法</text>
+<text x="800.0" y="481.2" font-size="12.5" fill="#57606A" text-anchor="middle">给准入排队打点（已做，且两条排队路径都要打）· 在 envd 内部给收到 /init、对完时、首次健康检查成功打时间戳 · 跑一遍并发 1 做对照，逐阶段算放大倍数</text>
+<line x1="48.0" y1="546.0" x2="1552.0" y2="546.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="572.0" font-size="13" fill="#8C959F" text-anchor="start">埋点的坑：普通创建和从暂停恢复走两条不同的排队路径，只给一条打了点，排队时间的样本数曾是 0。</text></svg>

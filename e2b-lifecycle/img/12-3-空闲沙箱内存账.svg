@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="632" viewBox="0 0 1600 632" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="632" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一台空闲沙箱的内存账（2 vCPU、2048 MiB 规格）</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">启动 1、10、50 台空闲沙箱，测宿主变化做线性拟合：每台约 350 MiB = 大页 157 + 普通内存 194。memory_mb = 2048 只是上限，空闲时只碰了 7.7%。</text>
+<rect x="48.0" y="156.0" width="670.3" height="60.0" rx="6" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="384.7" y="192.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">157 MiB</text>
+<rect x="721.3" y="156.0" width="264.6" height="60.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="855.1" y="192.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">62.4 MiB</text>
+<rect x="988.9" y="156.0" width="446.4" height="60.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1213.6" y="192.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">104.8 MiB</text>
+<rect x="1438.4" y="156.0" width="92.6" height="60.0" rx="6" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<rect x="1534.0" y="156.0" width="15.0" height="60.0" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="48.0" y="246.0" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="start">大页：单独的 hugetlb 账，不进 orchestrator 的内存上限</text>
+<text x="731.3" y="276.0" font-size="13.5" fill="#57606A" text-anchor="start">普通内存 194 MiB：全部记在 orchestrator 所在 cgroup 的 32 GiB 上限里（Firecracker 没进自己的 cgroup）</text>
+<rect x="48.0" y="316.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="338.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">约束</text>
+<text x="818.0" y="338.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">能撑的空闲沙箱数</text>
+<rect x="48.0" y="358.2" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="381.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">orchestrator 的 cgroup 开始回收旧缓存</text>
+<text x="818.0" y="381.1" font-size="13.5" fill="#9A3215" text-anchor="start">约 89 台</text>
+<text x="1118.0" y="381.1" font-size="13.5" fill="#9A3215" text-anchor="start">先到的上限</text>
+<line x1="48.0" y1="440.8" x2="1548.0" y2="440.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="423.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">cgroup 里的旧缓存全部挤完</text>
+<text x="818.0" y="423.3" font-size="13.5" fill="#1F2328" text-anchor="start">约 167 台</text>
+<text x="1118.0" y="423.3" font-size="13.5" fill="#1F2328" text-anchor="start">之后开始回收沙箱自己的页</text>
+<line x1="48.0" y1="483.0" x2="1548.0" y2="483.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="465.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">大页池（约 391 GiB），每台用满 2 GiB</text>
+<text x="818.0" y="465.6" font-size="13.5" fill="#1F2328" text-anchor="start">195 台</text>
+<text x="1118.0" y="465.6" font-size="13.5" fill="#1F2328" text-anchor="start">有保证的下限</text>
+<line x1="48.0" y1="525.2" x2="1548.0" y2="525.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="507.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">大页池，每台只用空闲时的 157 MiB</text>
+<text x="818.0" y="507.8" font-size="13.5" fill="#1F2328" text-anchor="start">2554 台</text>
+<line x1="48.0" y1="566.0" x2="1552.0" y2="566.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="592.0" font-size="13" fill="#8C959F" text-anchor="start">想稳定支撑 X 台空闲沙箱：orchestrator 内存上限 ≥ 32 GiB（构建需要）+ X × 0.19 GiB。</text></svg>

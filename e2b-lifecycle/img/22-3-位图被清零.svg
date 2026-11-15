@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="652" viewBox="0 0 1600 652" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="652" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">位图被清零的三个时刻，以及累积位图从哪里补</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">精确增量假设“位图 = 这一代启动以来的写”。回滚的存档和读档会清零位图，读档写回内存还不进日志。修法：清零之前把即将被忘掉的位图并进“自启动以来脏页集”，暂停时合并再导出。</text>
+<line x1="48.0" y1="206.0" x2="1552.0" y2="206.0" stroke="#1F2328" stroke-width="2" stroke-linecap="round" marker-end="url(#m1F2328)"/>
+<circle cx="108.2" cy="206.0" r="8" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="108.2" y="186.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">启动</text>
+<circle cx="424.0" cy="206.0" r="8" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="424.0" y="186.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">存档（全量）</text>
+<circle cx="724.8" cy="206.0" r="8" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="724.8" y="186.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">存档（增量）</text>
+<circle cx="1025.6" cy="206.0" r="8" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="1025.6" y="186.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">读档</text>
+<circle cx="1401.6" cy="206.0" r="8" fill="#5B9BE6" stroke="none" stroke-width="1"/>
+<text x="1401.6" y="186.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">原生暂停</text>
+<rect x="48.0" y="256.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="278.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">时刻</text>
+<text x="418.0" y="278.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">问题</text>
+<text x="978.0" y="278.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">并入什么</text>
+<line x1="48.0" y1="338.5" x2="1548.0" y2="338.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="321.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">全量存档</text>
+<text x="418.0" y="321.1" font-size="13.5" fill="#1F2328" text-anchor="start">全 1 的位图描述“文件里有哪些页”，不能并</text>
+<text x="978.0" y="321.1" font-size="13.5" fill="#1F2328" text-anchor="start">拍之前先导出一次当前位图（不清零）并入；失败就并入全 1：多导不少导</text>
+<line x1="48.0" y1="380.8" x2="1548.0" y2="380.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="363.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">增量存档之后</text>
+<text x="418.0" y="363.3" font-size="13.5" fill="#1F2328" text-anchor="start">清零位图</text>
+<text x="978.0" y="363.3" font-size="13.5" fill="#1F2328" text-anchor="start">并入这次写出的位图（恰好是被清掉的页）</text>
+<line x1="48.0" y1="423.0" x2="1548.0" y2="423.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="405.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">读档之前</text>
+<text x="418.0" y="405.6" font-size="13.5" fill="#1F2328" text-anchor="start">将被回滚并清零</text>
+<text x="978.0" y="405.6" font-size="13.5" fill="#1F2328" text-anchor="start">并入当前位图</text>
+<line x1="48.0" y1="465.2" x2="1548.0" y2="465.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="447.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">读档写回时</text>
+<text x="418.0" y="447.8" font-size="13.5" fill="#1F2328" text-anchor="start">KVM 不记 Firecracker 的写</text>
+<text x="978.0" y="447.8" font-size="13.5" fill="#1F2328" text-anchor="start">并入写回集合</text>
+<rect x="48.0" y="467.2" width="1500.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="490.1" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">原生暂停</text>
+<text x="418.0" y="490.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">—</text>
+<text x="978.0" y="490.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">写跟踪位图 ∪ 累积集合；不可信就退回驻留判据</text>
+<line x1="48.0" y1="586.0" x2="1552.0" y2="586.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="612.0" font-size="13" fill="#8C959F" text-anchor="start">修复前的后果：暂停报成功，恢复后 guest 内核几十毫秒内崩溃。从不存档的沙箱集合为空，导出逐位不变。</text></svg>

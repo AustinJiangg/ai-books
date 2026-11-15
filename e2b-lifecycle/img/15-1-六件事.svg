@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="618" viewBox="0 0 1600 618" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="618" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">ip netns exec 实际做的六件事，只有一件是需要的</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">iproute2 的 netns exec 每次都做完整一套。第 2、3、4 件要持内核全局的挂载命名空间锁，100 个沙箱同时做时互相排队。</text>
+<rect x="48.0" y="152.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">#</text>
+<text x="138.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">实际动作</text>
+<text x="698.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">代价</text>
+<text x="1118.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">Firecracker 需要吗</text>
+<rect x="48.0" y="194.2" width="1500.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="217.1" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">1</text>
+<text x="138.0" y="217.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">打开命名空间文件，setns 进入网络命名空间</text>
+<text x="698.0" y="217.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">很便宜</text>
+<text x="1118.0" y="217.1" font-size="13.5" fill="#0E6B4F" text-anchor="start">需要</text>
+<rect x="48.0" y="236.5" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="259.3" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">2</text>
+<text x="138.0" y="259.3" font-size="13.5" fill="#9A3215" text-anchor="start">再创建一个挂载命名空间</text>
+<text x="698.0" y="259.3" font-size="13.5" fill="#9A3215" text-anchor="start">复制整棵挂载树，持全局锁</text>
+<text x="1118.0" y="259.3" font-size="13.5" fill="#9A3215" text-anchor="start">不需要，脚本开头已经建过</text>
+<rect x="48.0" y="278.8" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="301.6" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">3</text>
+<text x="138.0" y="301.6" font-size="13.5" fill="#9A3215" text-anchor="start">整棵挂载树递归设为 slave</text>
+<text x="698.0" y="301.6" font-size="13.5" fill="#9A3215" text-anchor="start">又遍历一次，持全局锁</text>
+<text x="1118.0" y="301.6" font-size="13.5" fill="#9A3215" text-anchor="start">不需要</text>
+<rect x="48.0" y="321.0" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="343.8" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">4</text>
+<text x="138.0" y="343.8" font-size="13.5" fill="#9A3215" text-anchor="start">卸载并重挂 /sys</text>
+<text x="698.0" y="343.8" font-size="13.5" fill="#9A3215" text-anchor="start">重建 sysfs 对象树，持全局锁</text>
+<text x="1118.0" y="343.8" font-size="13.5" fill="#9A3215" text-anchor="start">不需要，不读 /sys 的网络信息</text>
+<line x1="48.0" y1="403.5" x2="1548.0" y2="403.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="386.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">5</text>
+<text x="138.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">/etc/netns/&lt;ns&gt;/ 绑定到 /etc</text>
+<text x="698.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">按命名空间配 DNS</text>
+<text x="1118.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">不需要，guest 用自己的 /etc</text>
+<line x1="48.0" y1="445.8" x2="1548.0" y2="445.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="428.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">6</text>
+<text x="138.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">加载 ip 二进制本身</text>
+<text x="698.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">动态链接好几个库</text>
+<text x="1118.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">不需要</text>
+<line x1="48.0" y1="552.0" x2="1552.0" y2="552.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="578.0" font-size="13" fill="#8C959F" text-anchor="start">fc-netns-exec 只保留第 1 件：setns + execve，静态编译，不过动态链接。</text></svg>

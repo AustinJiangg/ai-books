@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="552" viewBox="0 0 1600 552" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="552" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">放弃的两档：子进程侧省下的，父进程侧又赔回去</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">把整条管线重写成一个 Go / C 程序，不经过 bash。子进程侧从 138 ms 降到 29 ms；但复制挂载命名空间这一步搬到了父进程，被拖到平均 143 ms。两段合计比只用 fc-netns-exec 倒赔约 31 ms。</text>
+<text x="48.0" y="190.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">子进程侧（socket 等待）</text>
+<rect x="348.0" y="166.0" width="718.4" height="36.0" rx="5" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="708.2" y="190.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">fc-netns-exec：138 ms</text>
+<rect x="348.0" y="222.0" width="149.4" height="36.0" rx="5" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="356.0" y="246.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="start">重写：29</text>
+<text x="48.0" y="330.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">两段合计</text>
+<rect x="348.0" y="306.0" width="13.7" height="36.0" rx="5" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<rect x="363.7" y="306.0" width="718.4" height="36.0" rx="5" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="723.8" y="330.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">fc-netns-exec：父进程约 3 + 子进程 138 ≈ 141 ms</text>
+<rect x="348.0" y="362.0" width="744.5" height="36.0" rx="5" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="721.2" y="386.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">重写：父进程复制挂载命名空间 143 ms</text>
+<rect x="1094.5" y="362.0" width="149.4" height="36.0" rx="5" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="1102.5" y="386.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="start">29</text>
+<text x="48.0" y="456.0" font-size="14.5" fill="#9A3215" font-weight="600" text-anchor="start">成本没有消失，只是从子进程挪到了父进程；而父进程是 orchestrator 本身，所有启动都要经过它。</text>
+<line x1="48.0" y1="486.0" x2="1552.0" y2="486.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="512.0" font-size="13" fill="#8C959F" text-anchor="start">fc-netns-exec 的父进程一段按“倒赔约 31 ms”反推：141 + 31 = 143 + 29。教训：优化的收益要看端到端。</text></svg>

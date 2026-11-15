@@ -1,0 +1,110 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="768" viewBox="0 0 1600 768" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="768" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">时间轴甘特：每台沙箱一条，阶段按真实时刻摆放</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">示意图：排队按信号量分批成阶梯；三路并行分泳道（红：拉起 Firecracker；蓝：等 uffd；橄榄：根盘），最长一路决定汇合点；之后是加载快照（紫）和 envd（绿）。</text>
+<text x="48.0" y="178.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 1</text>
+<rect x="183.4" y="162.0" width="26.1" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="209.5" y="158.0" width="346.0" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="209.5" y="172.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="209.5" y="182.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="555.5" y="162.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="601.7" y="162.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="216.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 2</text>
+<rect x="198.8" y="200.0" width="23.1" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="221.8" y="196.0" width="313.7" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="221.8" y="210.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="221.8" y="220.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="535.5" y="200.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="581.7" y="200.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="254.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 3</text>
+<rect x="194.1" y="238.0" width="24.6" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="218.7" y="234.0" width="342.9" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="218.7" y="248.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="218.7" y="258.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="561.7" y="238.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="607.8" y="238.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="292.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 4</text>
+<rect x="195.7" y="276.0" width="23.1" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="218.7" y="272.0" width="396.7" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="218.7" y="286.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="218.7" y="296.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="615.5" y="276.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="661.6" y="276.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="330.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 5</text>
+<rect x="168.0" y="314.0" width="424.4" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="592.4" y="314.0" width="27.7" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="620.1" y="310.0" width="333.7" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="620.1" y="324.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="620.1" y="334.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="953.8" y="314.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="999.9" y="314.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="368.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 6</text>
+<rect x="168.0" y="352.0" width="402.9" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="570.9" y="352.0" width="32.3" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="603.2" y="348.0" width="370.6" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="603.2" y="362.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="603.2" y="372.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="973.8" y="352.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1019.9" y="352.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="406.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 7</text>
+<rect x="168.0" y="390.0" width="402.9" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="570.9" y="390.0" width="27.7" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="598.6" y="386.0" width="338.3" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="598.6" y="400.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="598.6" y="410.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="936.9" y="390.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="983.0" y="390.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="444.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 8</text>
+<rect x="168.0" y="428.0" width="426.0" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="594.0" y="428.0" width="32.3" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="626.3" y="424.0" width="335.2" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="626.3" y="438.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="626.3" y="448.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="961.5" y="428.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1007.6" y="428.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="482.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 9</text>
+<rect x="168.0" y="466.0" width="827.3" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="995.3" y="466.0" width="24.6" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="1019.9" y="462.0" width="446.0" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="1019.9" y="476.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="1019.9" y="486.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="1465.9" y="466.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1512.0" y="466.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="520.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 10</text>
+<rect x="168.0" y="504.0" width="810.4" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="978.4" y="504.0" width="38.4" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="1016.9" y="500.0" width="415.2" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="1016.9" y="514.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="1016.9" y="524.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="1432.1" y="504.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1478.2" y="504.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="558.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 11</text>
+<rect x="168.0" y="542.0" width="827.3" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="995.3" y="542.0" width="23.1" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="1018.4" y="538.0" width="409.0" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="1018.4" y="552.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="1018.4" y="562.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="1427.4" y="542.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1473.6" y="542.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="48.0" y="596.0" font-size="13" fill="#57606A" text-anchor="start">沙箱 12</text>
+<rect x="168.0" y="580.0" width="827.3" height="22.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<rect x="995.3" y="580.0" width="32.3" height="22.0" rx="3" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1"/>
+<rect x="1027.6" y="576.0" width="358.3" height="12.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<rect x="1027.6" y="590.0" width="20.0" height="8.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<rect x="1027.6" y="600.0" width="3.1" height="6.0" rx="3" fill="#F1F3DC" stroke="#9AA33A" stroke-width="1"/>
+<rect x="1385.9" y="580.0" width="44.6" height="22.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1432.1" y="580.0" width="10.8" height="22.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<line x1="168.0" y1="620.0" x2="1552.0" y2="620.0" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round" marker-end="url(#m1F2328)"/>
+<text x="1552.0" y="642.0" font-size="13" fill="#57606A" text-anchor="end">时间</text>
+<rect x="48.0" y="661.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="72.0" y="674.0" font-size="13" fill="#57606A" text-anchor="start">准入排队</text>
+<rect x="152.0" y="661.0" width="16.0" height="16.0" rx="4" fill="#E0F4F4" stroke="#3BA7A7" stroke-width="1.2"/>
+<text x="176.0" y="674.0" font-size="13" fill="#57606A" text-anchor="start">建进程对象</text>
+<rect x="269.0" y="661.0" width="16.0" height="16.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="293.0" y="674.0" font-size="13" fill="#57606A" text-anchor="start">拉起 Firecracker</text>
+<rect x="435.2" y="661.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="459.2" y="674.0" font-size="13" fill="#57606A" text-anchor="start">等 uffd</text>
+<rect x="534.3" y="661.0" width="16.0" height="16.0" rx="4" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="558.3" y="674.0" font-size="13" fill="#57606A" text-anchor="start">加载快照</text>
+<rect x="638.3" y="661.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="662.3" y="674.0" font-size="13" fill="#57606A" text-anchor="start">envd /init</text>
+<line x1="48.0" y1="702.0" x2="1552.0" y2="702.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="728.0" font-size="13" fill="#8C959F" text-anchor="start">时刻从日志的时间戳推出：每条计时日志的时间 ≈ 阶段结束时刻，减去耗时就是开始时刻；同一台机器的时钟，不用担心跨机误差。</text></svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="552" viewBox="0 0 1600 552" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="552" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">同一路径、各指各的文件</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">快照里录死了磁盘路径 /fc-vm/rootfs.ext4。每个 Firecracker 在私有的挂载命名空间里，在这个路径上盖一层 tmpfs、放一个符号链接指向本沙箱自己的盘。别的 Firecracker 看不见。</text>
+<rect x="48.0" y="156.0" width="474.7" height="300.0" rx="14" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">Firecracker 1 的挂载命名空间</text>
+<rect x="68.0" y="216.0" width="434.7" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="285.3" y="249.9" font-size="13" fill="#57606A" text-anchor="middle">快照说：打开 /fc-vm/rootfs.ext4</text>
+<rect x="68.0" y="296.0" width="434.7" height="60.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="285.3" y="329.9" font-size="13" fill="#57606A" text-anchor="middle">tmpfs 盖住 /fc-vm</text>
+<rect x="68.0" y="376.0" width="434.7" height="60.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="285.3" y="409.9" font-size="13" fill="#57606A" text-anchor="middle">rootfs.ext4 → /dev/nbd3</text>
+<path d="M285.3 280.0 L285.3 292.0" fill="none" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M285.3 360.0 L285.3 372.0" fill="none" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="562.7" y="156.0" width="474.7" height="300.0" rx="14" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="582.7" y="186.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">Firecracker 2 的挂载命名空间</text>
+<rect x="582.7" y="216.0" width="434.7" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="249.9" font-size="13" fill="#57606A" text-anchor="middle">快照说：打开 /fc-vm/rootfs.ext4</text>
+<rect x="582.7" y="296.0" width="434.7" height="60.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="329.9" font-size="13" fill="#57606A" text-anchor="middle">tmpfs 盖住 /fc-vm</text>
+<rect x="582.7" y="376.0" width="434.7" height="60.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="800.0" y="409.9" font-size="13" fill="#57606A" text-anchor="middle">rootfs.ext4 → /dev/nbd17</text>
+<path d="M800.0 280.0 L800.0 292.0" fill="none" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M800.0 360.0 L800.0 372.0" fill="none" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1077.3" y="156.0" width="474.7" height="300.0" rx="14" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1097.3" y="186.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">Firecracker 3 的挂载命名空间</text>
+<rect x="1097.3" y="216.0" width="434.7" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1314.7" y="249.9" font-size="13" fill="#57606A" text-anchor="middle">快照说：打开 /fc-vm/rootfs.ext4</text>
+<rect x="1097.3" y="296.0" width="434.7" height="60.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1314.7" y="329.9" font-size="13" fill="#57606A" text-anchor="middle">tmpfs 盖住 /fc-vm</text>
+<rect x="1097.3" y="376.0" width="434.7" height="60.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1314.7" y="409.9" font-size="13" fill="#57606A" text-anchor="middle">rootfs.ext4 → /dev/nbd42</text>
+<path d="M1314.7 280.0 L1314.7 292.0" fill="none" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1314.7 360.0 L1314.7 372.0" fill="none" stroke="#1F2328" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="486.0" x2="1552.0" y2="486.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="512.0" font-size="13" fill="#8C959F" text-anchor="start">内核文件同理。类比：每户人家都有一个“101 号信箱”，但都是自己家门口那个。</text></svg>

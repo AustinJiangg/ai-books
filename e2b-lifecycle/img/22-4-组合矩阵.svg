@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="677" viewBox="0 0 1600 677" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="677" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">兼容矩阵：专门测“组合”</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">三个问题都出在组合上：单独测都过，先后发生在同一台沙箱上才出事。矩阵要回答的不是“新功能好不好用”，而是“有没有弄坏别人的功能”。</text>
+<rect x="48.0" y="156.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">组</text>
+<text x="158.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">场景</text>
+<text x="818.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">格数</text>
+<text x="958.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">备注</text>
+<line x1="48.0" y1="238.5" x2="1548.0" y2="238.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="221.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">A</text>
+<text x="158.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">基线：没有存档的沙箱暂停 → 恢复</text>
+<text x="818.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">1</text>
+<text x="958.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">先证明原生本来是好的</text>
+<line x1="48.0" y1="280.8" x2="1548.0" y2="280.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="263.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">B</text>
+<text x="158.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">存档之后做各种原生操作</text>
+<text x="818.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">8</text>
+<line x1="48.0" y1="323.0" x2="1548.0" y2="323.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="305.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">C</text>
+<text x="158.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">读档之后做原生操作</text>
+<text x="818.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">3</text>
+<line x1="48.0" y1="365.2" x2="1548.0" y2="365.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="347.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">D</text>
+<text x="158.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">连存三次档（多层封存）之后暂停</text>
+<text x="818.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">1</text>
+<text x="958.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">一层封存测不透</text>
+<line x1="48.0" y1="407.5" x2="1548.0" y2="407.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="390.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">E</text>
+<text x="158.0" y="390.1" font-size="13.5" fill="#1F2328" text-anchor="start">反过来：暂停恢复之后走完整存档读档</text>
+<text x="818.0" y="390.1" font-size="13.5" fill="#1F2328" text-anchor="start">1</text>
+<line x1="48.0" y1="449.8" x2="1548.0" y2="449.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="432.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">F</text>
+<text x="158.0" y="432.3" font-size="13.5" fill="#1F2328" text-anchor="start">销毁</text>
+<text x="818.0" y="432.3" font-size="13.5" fill="#1F2328" text-anchor="start">1</text>
+<rect x="48.0" y="471.8" width="474.7" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="285.3" y="519.3" font-size="17" fill="#0E6B4F" font-weight="600" text-anchor="middle">OK</text>
+<text x="285.3" y="542.6" font-size="12.5" fill="#57606A" text-anchor="middle">能做，做完沙箱和数据都对</text>
+<rect x="562.7" y="471.8" width="474.7" height="110.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="509.9" font-size="17" fill="#1F2328" font-weight="600" text-anchor="middle">REFUSED</text>
+<text x="800.0" y="533.2" font-size="12.5" fill="#57606A" text-anchor="middle">服务端明确拒绝，没留下半吊子状态：边界，不是缺陷</text>
+<text x="800.0" y="551.9" font-size="12.5" fill="#57606A" text-anchor="middle">例：暂停恢复后回不到之前的存档（写成断言）</text>
+<rect x="1077.3" y="471.8" width="474.7" height="110.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1314.7" y="519.3" font-size="17" fill="#9A3215" font-weight="600" text-anchor="middle">BROKEN</text>
+<text x="1314.7" y="542.6" font-size="12.5" fill="#57606A" text-anchor="middle">能调用但结果不对，或原生操作被弄坏：唯一的真问题</text>
+<line x1="48.0" y1="611.8" x2="1552.0" y2="611.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="637.8" font-size="13" fill="#8C959F" text-anchor="start">数据一律 O_DIRECT 读回 8 MiB 比哈希。</text></svg>

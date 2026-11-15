@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="692" viewBox="0 0 1600 692" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="692" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">注入清单：E2B 往镜像顶上追加的两层文件</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">用户镜像里没有 E2B 的东西。解包之前，追加一层文件和一层符号链接。</text>
+<rect x="48.0" y="156.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">文件</text>
+<text x="618.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">用途</text>
+<line x1="48.0" y1="238.5" x2="1548.0" y2="238.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="221.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/usr/bin/envd</text>
+<text x="618.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">沙箱里的管家</text>
+<line x1="48.0" y1="280.8" x2="1548.0" y2="280.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="263.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/usr/local/bin/provision.sh</text>
+<text x="618.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">第一次开机时运行的装机脚本</text>
+<line x1="48.0" y1="323.0" x2="1548.0" y2="323.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="305.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/usr/bin/busybox、/usr/bin/init</text>
+<text x="618.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">第一次开机的 1 号进程与工具箱</text>
+<line x1="48.0" y1="365.2" x2="1548.0" y2="365.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="347.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/etc/inittab、/etc/init.d/rcS</text>
+<text x="618.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">busybox 当 init 时的剧本</text>
+<line x1="48.0" y1="407.5" x2="1548.0" y2="407.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="390.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/etc/systemd/system/envd.service</text>
+<text x="618.0" y="390.1" font-size="13.5" fill="#1F2328" text-anchor="start">让 systemd 拉起 envd（ARM 版去掉了 cgroup 指令）</text>
+<line x1="48.0" y1="449.8" x2="1548.0" y2="449.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="432.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">/etc/hostname、hosts、resolv.conf</text>
+<text x="618.0" y="432.3" font-size="13.5" fill="#1F2328" text-anchor="start">主机名与 DNS</text>
+<rect x="48.0" y="451.8" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="474.6" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">journald、networkd 的 watchdog 覆盖</text>
+<text x="618.0" y="474.6" font-size="13.5" fill="#9A3215" text-anchor="start">关掉看门狗：快照恢复会让时钟跳变，看门狗会误判服务卡死</text>
+<line x1="48.0" y1="534.2" x2="1548.0" y2="534.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="516.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">串口免登录</text>
+<text x="618.0" y="516.8" font-size="13.5" fill="#1F2328" text-anchor="start">调试时从串口直接进系统</text>
+<line x1="48.0" y1="576.5" x2="1548.0" y2="576.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="559.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">multi-user.target.wants/ 下两条链接</text>
+<text x="618.0" y="559.1" font-size="13.5" fill="#1F2328" text-anchor="start">启用 envd 与 chrony，等同 systemctl enable</text>
+<line x1="48.0" y1="626.0" x2="1552.0" y2="626.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="652.0" font-size="13" fill="#8C959F" text-anchor="start">关看门狗这一行是“一切皆快照”的副作用：系统软件默认假设时间连续流逝，快照打破了这个假设。</text></svg>

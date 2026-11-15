@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="786" viewBox="0 0 1600 786" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="786" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一条 RUN 的路径</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">template-manager 从上一层恢复构建虚拟机，通过 orchestrator 内置代理连到 envd 的进程服务；envd 以当前用户、目录和环境变量启动 bash -l -c；输出流回构建日志。走的是数据面，和用户的 commands.run 同一</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">条路。</text>
+<rect x="48.0" y="180.0" width="331.0" height="100.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="213.5" y="221.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">template-manager</text>
+<text x="213.5" y="245.2" font-size="12.5" fill="#57606A" text-anchor="middle">恢复上一层的虚拟机</text>
+<path d="M383.0 230.0 L435.0 230.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="439.0" y="180.0" width="331.0" height="100.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="604.5" y="221.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator 代理</text>
+<text x="604.5" y="245.2" font-size="12.5" fill="#57606A" text-anchor="middle">送进沙箱网络</text>
+<path d="M774.0 230.0 L826.0 230.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="830.0" y="180.0" width="331.0" height="100.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="995.5" y="221.9" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">envd 进程服务</text>
+<text x="995.5" y="245.2" font-size="12.5" fill="#57606A" text-anchor="middle">以当前用户、目录、环境变量</text>
+<path d="M1165.0 230.0 L1217.0 230.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1221.0" y="180.0" width="331.0" height="100.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1386.5" y="221.9" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">bash -l -c</text>
+<text x="1386.5" y="245.2" font-size="12.5" fill="#57606A" text-anchor="middle">pip install pandas</text>
+<rect x="48.0" y="320.0" width="700.0" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="398.0" y="346.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">输出</text>
+<text x="398.0" y="370.2" font-size="12.5" fill="#57606A" text-anchor="middle">stdout / stderr 流式传回 → 加步骤编号 → 构建日志 → SDK 轮询看到</text>
+<rect x="788.0" y="320.0" width="764.0" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1170.0" y="346.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">结束</text>
+<text x="1170.0" y="370.2" font-size="12.5" fill="#57606A" text-anchor="middle">退出码非零：构建失败；为零：刷盘 → 暂停成新一层</text>
+<rect x="48.0" y="430.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="452.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">指令</text>
+<text x="358.0" y="452.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">当前状态（用户、目录、环境变量）</text>
+<text x="958.0" y="452.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">备注</text>
+<line x1="48.0" y1="512.5" x2="1548.0" y2="512.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="495.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">RUN</text>
+<text x="358.0" y="495.1" font-size="13.5" fill="#1F2328" text-anchor="start">不改</text>
+<text x="958.0" y="495.1" font-size="13.5" fill="#1F2328" text-anchor="start">每条是独立的 shell，export 和 cd 不会带到下一条</text>
+<line x1="48.0" y1="554.8" x2="1548.0" y2="554.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="537.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">ENV / ARG</text>
+<text x="358.0" y="537.3" font-size="13.5" fill="#1F2328" text-anchor="start">改环境变量</text>
+<text x="958.0" y="537.3" font-size="13.5" fill="#1F2328" text-anchor="start">值送进虚拟机求值一次，$PATH 能展开</text>
+<line x1="48.0" y1="597.0" x2="1548.0" y2="597.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="579.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">WORKDIR</text>
+<text x="358.0" y="579.6" font-size="13.5" fill="#1F2328" text-anchor="start">改工作目录</text>
+<line x1="48.0" y1="639.2" x2="1548.0" y2="639.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="621.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">USER</text>
+<text x="358.0" y="621.8" font-size="13.5" fill="#1F2328" text-anchor="start">改用户</text>
+<text x="958.0" y="621.8" font-size="13.5" fill="#1F2328" text-anchor="start">openEuler 上用 useradd、wheel 组（第 9 篇）</text>
+<line x1="48.0" y1="681.5" x2="1548.0" y2="681.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="664.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">COPY / ADD</text>
+<text x="358.0" y="664.1" font-size="13.5" fill="#1F2328" text-anchor="start">不改</text>
+<text x="958.0" y="664.1" font-size="13.5" fill="#1F2328" text-anchor="start">文件先上传到存储，再通过 envd 的文件服务写进去</text>
+<line x1="48.0" y1="720.0" x2="1552.0" y2="720.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="746.0" font-size="13" fill="#8C959F" text-anchor="start">最终的当前状态写进模板元数据，启动沙箱时交给 envd 当默认用户和目录。</text></svg>

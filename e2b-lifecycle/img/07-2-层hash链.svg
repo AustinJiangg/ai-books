@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="552" viewBox="0 0 1600 552" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="552" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">层 hash 链：任何一环变了，之后全部重做</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">本层 hash = SHA-256(上一层 hash ; 指令类型 ; 参数 ; 上传文件的 hash)。hash 只看文本，不看结果：软件源更新了，文本没变，仍然命中。</text>
+<text x="48.0" y="156.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">第一次构建</text>
+<rect x="48.0" y="172.0" width="222.3" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="159.2" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">base</text>
+<text x="159.2" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">构建</text>
+<path d="M273.3 210.0 L301.3 210.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="304.3" y="172.0" width="222.3" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="415.5" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">默认用户</text>
+<text x="415.5" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">构建</text>
+<path d="M529.7 210.0 L557.7 210.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="560.7" y="172.0" width="222.3" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="671.8" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">指令 1</text>
+<text x="671.8" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">构建</text>
+<path d="M786.0 210.0 L814.0 210.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="817.0" y="172.0" width="222.3" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="928.2" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">指令 2</text>
+<text x="928.2" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">构建</text>
+<path d="M1042.3 210.0 L1070.3 210.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1073.3" y="172.0" width="222.3" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1184.5" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">指令 3</text>
+<text x="1184.5" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">构建</text>
+<path d="M1298.7 210.0 L1326.7 210.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1329.7" y="172.0" width="222.3" height="76.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1440.8" y="201.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">finalize</text>
+<text x="1440.8" y="225.2" font-size="12.5" fill="#57606A" text-anchor="middle">构建</text>
+<text x="48.0" y="326.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">改了指令 2 之后</text>
+<rect x="48.0" y="342.0" width="222.3" height="76.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="159.2" y="371.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">base</text>
+<text x="159.2" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">命中，跳过</text>
+<path d="M273.3 380.0 L301.3 380.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="304.3" y="342.0" width="222.3" height="76.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="415.5" y="371.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">默认用户</text>
+<text x="415.5" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">命中，跳过</text>
+<path d="M529.7 380.0 L557.7 380.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="560.7" y="342.0" width="222.3" height="76.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="671.8" y="371.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">指令 1</text>
+<text x="671.8" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">命中，跳过</text>
+<path d="M786.0 380.0 L814.0 380.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="817.0" y="342.0" width="222.3" height="76.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="928.2" y="371.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">指令 2</text>
+<text x="928.2" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">hash 变了，重做</text>
+<path d="M1042.3 380.0 L1070.3 380.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1073.3" y="342.0" width="222.3" height="76.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1184.5" y="371.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">指令 3</text>
+<text x="1184.5" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">hash 变了，重做</text>
+<path d="M1298.7 380.0 L1326.7 380.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1329.7" y="342.0" width="222.3" height="76.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1440.8" y="371.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">finalize</text>
+<text x="1440.8" y="395.2" font-size="12.5" fill="#57606A" text-anchor="middle">从不查缓存</text>
+<line x1="48.0" y1="486.0" x2="1552.0" y2="486.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="512.0" font-size="13" fill="#8C959F" text-anchor="start">想强制重做可以跳过缓存构建。E2B 的“层”是整台虚拟机的快照，包含内存，这一点和 Docker 的层不同。</text></svg>

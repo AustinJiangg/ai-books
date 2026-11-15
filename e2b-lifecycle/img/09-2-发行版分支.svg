@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="662" viewBox="0 0 1600 662" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="662" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">发行版分支：先探测，再走各自的路</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">provision.sh 读 /etc/os-release；默认用户、USER 指令和 configure.sh 看有没有 /etc/debian_version、有没有 wheel 组。</text>
+<rect x="570.0" y="156.0" width="460.0" height="70.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="183.2" font-size="16" fill="#1F2328" font-weight="600" text-anchor="middle">探测</text>
+<text x="800.0" y="206.5" font-size="12.5" fill="#57606A" text-anchor="middle">/etc/os-release · /etc/debian_version · getent group wheel</text>
+<rect x="48.0" y="276.0" width="712.0" height="290.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="68.0" y="306.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">Ubuntu / Debian</text>
+<rect x="840.0" y="276.0" width="712.0" height="290.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="860.0" y="306.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">openEuler / RHEL 系</text>
+<circle cx="76.0" cy="336.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="88.0" y="341.0" font-size="14.5" fill="#1F2328" text-anchor="start">查包：dpkg-query</text>
+<circle cx="76.0" cy="388.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="88.0" y="393.0" font-size="14.5" fill="#1F2328" text-anchor="start">装包：apt-get install</text>
+<circle cx="76.0" cy="440.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="88.0" y="445.0" font-size="14.5" fill="#1F2328" text-anchor="start">建用户：adduser --disabled-password</text>
+<circle cx="76.0" cy="492.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="88.0" y="497.0" font-size="14.5" fill="#1F2328" text-anchor="start">sudo 组：sudo</text>
+<circle cx="868.0" cy="336.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="880.0" y="341.0" font-size="14.5" fill="#1F2328" text-anchor="start">查包：rpm -q</text>
+<circle cx="868.0" cy="388.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="880.0" y="393.0" font-size="14.5" fill="#1F2328" text-anchor="start">装包：dnf install</text>
+<circle cx="868.0" cy="440.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="880.0" y="445.0" font-size="14.5" fill="#1F2328" text-anchor="start">建用户：useradd -m -s /bin/bash（家目录已在时用 -M 再复制默认文件）</text>
+<circle cx="868.0" cy="492.1" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="880.0" y="497.0" font-size="14.5" fill="#1F2328" text-anchor="start">sudo 组：wheel</text>
+<path d="M680.0 230.0 L404.0 272.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M920.0 230.0 L1196.0 272.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="596.0" x2="1552.0" y2="596.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="622.0" font-size="13" fill="#8C959F" text-anchor="start">不认识的发行版直接报错，不猜。</text></svg>

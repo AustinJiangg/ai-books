@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="832" viewBox="0 0 1600 832" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m8C959F" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8C959F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="832" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">根盘：模板只读层 + 沙箱写层，经 NBD 呈现为一块盘</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">guest 看到一块普通的 /dev/vda。读写请求经内核 NBD 模块转给 orchestrator：读先查写层，没有就按模板映射表读；写只进写层。</text>
+<rect x="48.0" y="156.0" width="300.0" height="80.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="198.0" y="187.9" font-size="16" fill="#4B3FA8" font-weight="600" text-anchor="middle">guest</text>
+<text x="198.0" y="211.8" font-size="13" fill="#57606A" text-anchor="middle">/dev/vda</text>
+<rect x="408.0" y="156.0" width="300.0" height="80.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="558.0" y="187.9" font-size="16" fill="#8A5300" font-weight="600" text-anchor="middle">Firecracker</text>
+<text x="558.0" y="211.8" font-size="13" fill="#57606A" text-anchor="middle">virtio 块设备</text>
+<rect x="768.0" y="156.0" width="300.0" height="80.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="918.0" y="187.9" font-size="16" fill="#8A5300" font-weight="600" text-anchor="middle">内核 NBD 模块</text>
+<text x="918.0" y="211.8" font-size="13" fill="#57606A" text-anchor="middle">/dev/nbdN</text>
+<rect x="1128.0" y="156.0" width="424.0" height="80.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1340.0" y="187.9" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator</text>
+<text x="1340.0" y="211.8" font-size="13" fill="#57606A" text-anchor="middle">NBD 服务端：分派读写</text>
+<path d="M352.0 196.0 L404.0 196.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M712.0 196.0 L764.0 196.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1072.0 196.0 L1124.0 196.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1128.0" y="286.0" width="424.0" height="80.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1340.0" y="317.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">写层（本沙箱）</text>
+<text x="1340.0" y="341.2" font-size="12.5" fill="#57606A" text-anchor="middle">按需增长的文件，mmap</text>
+<rect x="1128.0" y="396.0" width="424.0" height="80.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1340.0" y="427.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">模板（只读，共享）</text>
+<text x="1340.0" y="451.2" font-size="12.5" fill="#57606A" text-anchor="middle">按映射表读任意一代</text>
+<path d="M1340.0 240.0 L1340.0 282.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1340.0 370.0 L1340.0 392.0" fill="none" stroke="#8C959F" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="4 4" marker-end="url(#m8C959F)"/>
+<text x="1108.0" y="386.0" font-size="13" fill="#57606A" text-anchor="end">写层里没有才往下</text>
+<rect x="48.0" y="516.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="538.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">NBD 模块（自己编译的优化版）</text>
+<line x1="48.0" y1="598.5" x2="1548.0" y2="598.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="581.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">阶段一</text>
+<text x="478.0" y="581.1" font-size="13.5" fill="#1F2328" text-anchor="start">每次部署时先卸载自带模块再加载我们的：重复加载报错，有设备在用时卸载失败</text>
+<line x1="48.0" y1="640.8" x2="1548.0" y2="640.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="623.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">阶段二</text>
+<text x="478.0" y="623.3" font-size="13.5" fill="#1F2328" text-anchor="start">启动脚本不再管，每次重启后手动加载：容易忘</text>
+<rect x="48.0" y="642.8" width="1500.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="665.6" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">阶段三（现在）</text>
+<text x="478.0" y="665.6" font-size="13.5" fill="#0E6B4F" text-anchor="start">一次性固化：覆盖系统模块目录里的原版（备份），开机自动加载，默认 512 个设备</text>
+<rect x="48.0" y="685.0" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="707.8" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">留下的坑</text>
+<text x="478.0" y="707.8" font-size="13.5" fill="#9A3215" text-anchor="start">升级内核后新目录里又是原版，开机照样 512 个设备，只有对比哈希才发现；模块必须和运行内核版本完全一致</text>
+<line x1="48.0" y1="766.0" x2="1552.0" y2="766.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="792.0" font-size="13" fill="#8C959F" text-anchor="start">“准备根盘”在 ResumeSandbox 第一段就在后台开始，到并行段要用时通常已就绪（平均 0.2 ms）。</text></svg>

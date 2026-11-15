@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="622" viewBox="0 0 1600 622" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="622" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">两条路线：关大页 vs 4 KiB 存、2 MiB 拼</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">两条路线导出量相同，差别全在恢复和运行时。选路线 B：拼接能力已经存在，按映射表读的通用函数本来就能跨越任意多代。</text>
+<rect x="48.0" y="156.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="298.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">路线 A：关大页</text>
+<text x="898.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">路线 B：保留大页（采用）</text>
+<line x1="48.0" y1="238.5" x2="1548.0" y2="238.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="221.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">做法</text>
+<text x="298.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">模板关大页，三层全 4 KiB；只换判</text>
+<text x="898.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">换判；映射块 4 KiB；缺页仍 2 MiB，从 4 KiB 映射拼</text>
+<line x1="48.0" y1="280.8" x2="1548.0" y2="280.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="263.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">改动量</text>
+<text x="298.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">约 40 行 + 模板参数</text>
+<text x="898.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">约 200 行，5 个包</text>
+<line x1="48.0" y1="323.0" x2="1548.0" y2="323.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="305.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">导出量</text>
+<text x="298.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">真实写入</text>
+<text x="898.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">真实写入</text>
+<rect x="48.0" y="325.0" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="347.8" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">缺页次数</text>
+<text x="298.0" y="347.8" font-size="13.5" fill="#9A3215" text-anchor="start">乘以 512（400 MiB 工作集约 10 万次）</text>
+<text x="898.0" y="347.8" font-size="13.5" fill="#9A3215" text-anchor="start">不变（约 200 次）</text>
+<rect x="48.0" y="367.2" width="1500.0" height="38.2" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="390.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">guest 运行时</text>
+<text x="298.0" y="390.1" font-size="13.5" fill="#9A3215" text-anchor="start">失去大页的 TLB 收益</text>
+<text x="898.0" y="390.1" font-size="13.5" fill="#9A3215" text-anchor="start">不变</text>
+<line x1="48.0" y1="449.8" x2="1548.0" y2="449.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="432.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">影响面</text>
+<text x="298.0" y="432.3" font-size="13.5" fill="#1F2328" text-anchor="start">所有用这个模板的沙箱</text>
+<text x="898.0" y="432.3" font-size="13.5" fill="#1F2328" text-anchor="start">只有原生快照的导出与恢复</text>
+<line x1="48.0" y1="556.0" x2="1552.0" y2="556.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="582.0" font-size="13" fill="#8C959F" text-anchor="start">路线 A 可以当天验证数字，适合当对照开关；路线 B 落进代码。</text></svg>

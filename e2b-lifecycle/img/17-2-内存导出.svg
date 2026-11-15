@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="602" viewBox="0 0 1600 602" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m8C959F" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8C959F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="602" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">内存导出：从 Firecracker 进程地址空间直接读出脏页</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">orchestrator 把脏页对应的地址区间组织成一批读取请求，用 process_vm_readv 分批读，依次写进一个紧凑文件；再生成新一代的映射表。</text>
+<text x="48.0" y="156.0" font-size="14.5" fill="#57606A" text-anchor="start">Firecracker 进程里的 guest 内存</text>
+<rect x="48.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="93.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">0</text>
+<rect x="142.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="187.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">1</text>
+<rect x="236.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="281.0" y="197.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">2</text>
+<rect x="330.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="375.0" y="197.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">3</text>
+<rect x="424.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="469.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">4</text>
+<rect x="518.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="563.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">5</text>
+<rect x="612.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="657.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">6</text>
+<rect x="706.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="751.0" y="197.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">7</text>
+<rect x="800.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="845.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">8</text>
+<rect x="894.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="939.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">9</text>
+<rect x="988.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1033.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">10</text>
+<rect x="1082.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="1127.0" y="197.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">11</text>
+<rect x="1176.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1221.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">12</text>
+<rect x="1270.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1315.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">13</text>
+<rect x="1364.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1409.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">14</text>
+<rect x="1458.0" y="168.0" width="90.0" height="46.0" rx="4" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.2"/>
+<text x="1503.0" y="197.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">15</text>
+<text x="48.0" y="306.0" font-size="14.5" fill="#57606A" text-anchor="start">本代的紧凑差分文件（只有脏块，首尾相接）</text>
+<rect x="48.0" y="318.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="93.0" y="347.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">2</text>
+<path d="M281.0 218.0 L93.0 314.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="142.0" y="318.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="187.0" y="347.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">3</text>
+<path d="M375.0 218.0 L187.0 314.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="236.0" y="318.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="281.0" y="347.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">7</text>
+<path d="M751.0 218.0 L281.0 314.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="330.0" y="318.0" width="90.0" height="46.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="375.0" y="347.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">11</text>
+<path d="M1127.0 218.0 L375.0 314.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<text x="444.0" y="347.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">process_vm_readv 批量读取（按系统允许的单次上限分批）</text>
+<rect x="48.0" y="406.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="428.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">新一代的映射表</text>
+<line x1="48.0" y1="488.5" x2="1548.0" y2="488.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="471.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">本代写过的块（2、3、7、11）</text>
+<text x="758.0" y="471.1" font-size="13.5" fill="#1F2328" text-anchor="start">指向本代差分文件</text>
+<line x1="48.0" y1="530.8" x2="1548.0" y2="530.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="513.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">没写过的块</text>
+<text x="758.0" y="513.3" font-size="13.5" fill="#1F2328" text-anchor="start">沿用上一代映射表里的指向（可能更早）</text>
+<line x1="48.0" y1="536.0" x2="1552.0" y2="536.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="562.0" font-size="13" fill="#8C959F" text-anchor="start">这是一次真实的数据搬运：改了多少就拷多少。</text></svg>

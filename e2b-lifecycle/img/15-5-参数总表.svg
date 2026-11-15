@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="778" viewBox="0 0 1600 778" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="778" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">启动相关参数的修改总表</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">上游默认值为多节点大集群设计；我们是单节点、要求上百路并发。用“上限扫描”定同时启动上限：放开后若只是把时间从排队挪到等 Firecracker，说明真正的天花板在 Firecracker 启动。</text>
+<rect x="48.0" y="152.0" width="1500.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">参数</text>
+<text x="658.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">上游</text>
+<text x="1058.0" y="174.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">我们</text>
+<line x1="48.0" y1="234.5" x2="1548.0" y2="234.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="217.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">同时启动上限</text>
+<text x="658.0" y="217.1" font-size="13.5" fill="#1F2328" text-anchor="start">3</text>
+<text x="1058.0" y="217.1" font-size="13.5" fill="#1F2328" text-anchor="start">默认 500，部署 30，可调</text>
+<line x1="48.0" y1="276.8" x2="1548.0" y2="276.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="259.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">拿不到启动名额（从模板创建）</text>
+<text x="658.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">立即拒绝</text>
+<text x="1058.0" y="259.3" font-size="13.5" fill="#1F2328" text-anchor="start">排队</text>
+<line x1="48.0" y1="319.0" x2="1548.0" y2="319.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="301.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">排队超时 / 请求超时</text>
+<text x="658.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">15 秒 / 60 秒</text>
+<text x="1058.0" y="301.6" font-size="13.5" fill="#1F2328" text-anchor="start">300 秒 / 300 秒</text>
+<line x1="48.0" y1="361.2" x2="1548.0" y2="361.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="343.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">节点沙箱总数上限</text>
+<text x="658.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">200</text>
+<text x="1058.0" y="343.8" font-size="13.5" fill="#1F2328" text-anchor="start">10000</text>
+<line x1="48.0" y1="403.5" x2="1548.0" y2="403.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="386.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">新建 / 复用网络槽位池</text>
+<text x="658.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">32 / 100</text>
+<text x="1058.0" y="386.1" font-size="13.5" fill="#1F2328" text-anchor="start">300 / 1000</text>
+<line x1="48.0" y1="445.8" x2="1548.0" y2="445.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="428.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">预取：取数据 / 填内存并发</text>
+<text x="658.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">16 / 8</text>
+<text x="1058.0" y="428.3" font-size="13.5" fill="#1F2328" text-anchor="start">32 / 16</text>
+<line x1="48.0" y1="488.0" x2="1548.0" y2="488.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="470.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">envd /init 单次超时</text>
+<text x="658.0" y="470.6" font-size="13.5" fill="#1F2328" text-anchor="start">50 毫秒</text>
+<text x="1058.0" y="470.6" font-size="13.5" fill="#1F2328" text-anchor="start">120 秒</text>
+<line x1="48.0" y1="530.2" x2="1548.0" y2="530.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="512.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">等 uffd 消息超时</text>
+<text x="658.0" y="512.8" font-size="13.5" fill="#1F2328" text-anchor="start">10 秒</text>
+<text x="1058.0" y="512.8" font-size="13.5" fill="#1F2328" text-anchor="start">120 秒</text>
+<line x1="48.0" y1="572.5" x2="1548.0" y2="572.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="555.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">等套接字超时</text>
+<text x="658.0" y="555.1" font-size="13.5" fill="#1F2328" text-anchor="start">写死</text>
+<text x="1058.0" y="555.1" font-size="13.5" fill="#1F2328" text-anchor="start">环境变量可调，默认 300 秒</text>
+<rect x="48.0" y="574.5" width="1500.0" height="38.2" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="597.3" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">等套接字的上下文</text>
+<text x="658.0" y="597.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">与调用方无关</text>
+<text x="1058.0" y="597.3" font-size="13.5" fill="#0E6B4F" text-anchor="start">以调用方为基础（失败立即报因）</text>
+<line x1="48.0" y1="712.0" x2="1552.0" y2="712.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="738.0" font-size="13" fill="#8C959F" text-anchor="start">宿主侧另有三项：大页池单独释放（并封顶 64 GB）、Nomad 升级到 1.11.2（不连续 NUMA 编号）、绑核绑整个任务 cgroup 且先算大页。</text></svg>
