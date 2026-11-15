@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="716" viewBox="0 0 1600 716" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m8B7FE0" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8B7FE0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m8C959F" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8C959F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="716" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">累积位图：在脏页记录被清零之前，把它收进“开机以来写过的页”</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">Firecracker 的写跟踪位图只记“上一次快照或回滚以来”。存过档、读过档的沙箱再做原生 pause，只看它就会漏导之前写过的页，而 pause 照样报成功。所以 orchestrator 为每台虚机维护一个累积集合，任何一次没能</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">并进去，就整体标为不可信、退回驻留判据。</text>
+<line x1="88.0" y1="240.0" x2="1252.0" y2="240.0" stroke="#57606A" stroke-width="2" stroke-linecap="round" marker-end="url(#m57606A)"/>
+<line x1="188.0" y1="220.0" x2="188.0" y2="260.0" stroke="#D9922B" stroke-width="3" stroke-linecap="round"/>
+<text x="188.0" y="210.0" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">全量存档：清零</text>
+<rect x="78.0" y="310.0" width="220.0" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="188.0" y="341.9" font-size="13" fill="#57606A" text-anchor="middle">先导出活跃位图</text>
+<path d="M188.0 264.0 L188.0 306.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<path d="M188.0 370.0 L188.0 414.0" fill="none" stroke="#8B7FE0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<line x1="468.0" y1="220.0" x2="468.0" y2="260.0" stroke="#D9922B" stroke-width="3" stroke-linecap="round"/>
+<text x="468.0" y="210.0" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">增量存档：清零</text>
+<rect x="358.0" y="310.0" width="220.0" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="468.0" y="341.9" font-size="13" fill="#57606A" text-anchor="middle">这一代的位图</text>
+<path d="M468.0 264.0 L468.0 306.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<path d="M468.0 370.0 L468.0 414.0" fill="none" stroke="#8B7FE0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<line x1="748.0" y1="220.0" x2="748.0" y2="260.0" stroke="#D9922B" stroke-width="3" stroke-linecap="round"/>
+<text x="748.0" y="210.0" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">读档：清零</text>
+<rect x="638.0" y="310.0" width="220.0" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="748.0" y="341.9" font-size="13" fill="#57606A" text-anchor="middle">活跃脏页 + 回滚集</text>
+<path d="M748.0 264.0 L748.0 306.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<path d="M748.0 370.0 L748.0 414.0" fill="none" stroke="#8B7FE0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<line x1="1028.0" y1="220.0" x2="1028.0" y2="260.0" stroke="#D9922B" stroke-width="3" stroke-linecap="round"/>
+<text x="1028.0" y="210.0" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="middle">增量存档：清零</text>
+<rect x="918.0" y="310.0" width="220.0" height="56.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1028.0" y="341.9" font-size="13" fill="#57606A" text-anchor="middle">这一代的位图</text>
+<path d="M1028.0 264.0 L1028.0 306.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<path d="M1028.0 370.0 L1028.0 414.0" fill="none" stroke="#8B7FE0" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<rect x="68.0" y="420.0" width="1100.0" height="70.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="618.0" y="460.1" font-size="16" fill="#4B3FA8" font-weight="600" text-anchor="middle">“开机以来写过的页”集合（每台虚机一个）</text>
+<rect x="1292.0" y="320.0" width="260.0" height="170.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1422.0" y="387.1" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">原生 pause</text>
+<text x="1422.0" y="411.0" font-size="13" fill="#57606A" text-anchor="middle">集合 ∪ 当前写跟踪位图</text>
+<text x="1422.0" y="430.5" font-size="13" fill="#57606A" text-anchor="middle">→ 按并集导出</text>
+<path d="M1172.0 455.0 L1288.0 455.0" fill="none" stroke="#8B7FE0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8B7FE0)"/>
+<rect x="48.0" y="530.0" width="732.0" height="90.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="414.0" y="566.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">任何一次没并进去</text>
+<text x="414.0" y="590.2" font-size="12.5" fill="#57606A" text-anchor="middle">整体标“不完整”，pause 退回“在内存里就算脏”：导多了只费时间，不会错</text>
+<rect x="820.0" y="530.0" width="732.0" height="90.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1186.0" y="566.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">从不存档的沙箱</text>
+<text x="1186.0" y="590.2" font-size="12.5" fill="#57606A" text-anchor="middle">集合一直是空的，判据照常用 Firecracker 自己的位图</text>
+<line x1="48.0" y1="650.0" x2="1552.0" y2="650.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="676.0" font-size="13" fill="#8C959F" text-anchor="start">注：磁盘那一半：原生 pause 导出时交出所有封存层和当前写层，按“最上层有就取最上层”压平导出，和沙箱自己读到的一致。</text></svg>

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="746" viewBox="0 0 1600 746" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="746" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">后续方向地图：按收益和难度摆放</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">大多数候选方向难度在“中”，差别在收益和前提。左下是验证缺口，成本低、应尽快补；右上是改变能力边界的大项，比如可导出的存档、账本跨重启，要先想清楚调用约定和失败语义。</text>
+<line x1="128.0" y1="596.0" x2="1512.0" y2="596.0" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m57606A)"/>
+<line x1="128.0" y1="596.0" x2="128.0" y2="176.0" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m57606A)"/>
+<text x="1512.0" y="624.0" font-size="13" fill="#57606A" font-weight="600" text-anchor="end">难度 →</text>
+<text x="118.0" y="166.0" font-size="13" fill="#57606A" font-weight="600" text-anchor="start">收益 ↑</text>
+<circle cx="294.1" cy="491.0" r="7" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="308.1" y="496.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">跨树读档端到端测试</text>
+<circle cx="294.1" cy="545.6" r="7" fill="#1F9E77" stroke="none" stroke-width="1"/>
+<text x="308.1" y="550.6" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">HDBSS 启用顺序断言</text>
+<circle cx="750.8" cy="365.0" r="7" fill="#5B9BE6" stroke="none" stroke-width="1"/>
+<text x="764.8" y="370.0" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">后台异步合并</text>
+<circle cx="820.0" cy="293.6" r="7" fill="#5B9BE6" stroke="none" stroke-width="1"/>
+<text x="834.0" y="298.6" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">连接跟踪按标记过滤</text>
+<circle cx="889.2" cy="449.0" r="7" fill="#5B9BE6" stroke="none" stroke-width="1"/>
+<text x="903.2" y="454.0" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">层块清单区间编码</text>
+<circle cx="889.2" cy="398.6" r="7" fill="#5B9BE6" stroke="none" stroke-width="1"/>
+<text x="903.2" y="403.6" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">按沙箱按需开跟踪</text>
+<circle cx="889.2" cy="503.6" r="7" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="903.2" y="508.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">全零块回收</text>
+<circle cx="930.7" cy="554.0" r="7" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="944.7" y="559.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">视图层列表引用父代</text>
+<circle cx="1262.9" cy="251.6" r="7" fill="#D9922B" stroke="none" stroke-width="1"/>
+<text x="1276.9" y="256.6" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="start">可导出的存档</text>
+<circle cx="1345.9" cy="335.6" r="7" fill="#D9922B" stroke="none" stroke-width="1"/>
+<text x="1359.9" y="340.6" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="start">账本跨重启加载</text>
+<rect x="128.0" y="641.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="152.0" y="654.0" font-size="13" fill="#57606A" text-anchor="start">验证缺口</text>
+<rect x="232.0" y="641.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="256.0" y="654.0" font-size="13" fill="#57606A" text-anchor="start">性能与空间</text>
+<rect x="349.0" y="641.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="373.0" y="654.0" font-size="13" fill="#57606A" text-anchor="start">空间小优化</text>
+<rect x="466.0" y="641.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="490.0" y="654.0" font-size="13" fill="#57606A" text-anchor="start">能力边界</text>
+<line x1="48.0" y1="680.0" x2="1552.0" y2="680.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="706.0" font-size="13" fill="#8C959F" text-anchor="start">注：示意位置，不是量化评分；实施任何一项之前，先对照纪元不变量和八条顺序约束，并按“先量、再改、写回结论”的方法验证收益。</text></svg>

@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="542" viewBox="0 0 1600 542" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="542" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">FCDB：orchestrator 与 Firecracker 之间唯一的二进制格式</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">24 字节的头，后面是按 64 位字排列的位图。页号是“内存快照文件里的偏移 ÷ 页大小”，几段客户机内存首尾相接平铺，所以 orchestrator 看到的是平坦连续的页号空间，不需要知道客户机的内存布局。</text>
+<rect x="49.0" y="166.0" width="92.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="95.0" y="200.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">FCDB</text>
+<text x="95.0" y="250.0" font-size="12.5" fill="#57606A" text-anchor="middle">标识</text>
+<text x="50.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">0</text>
+<rect x="143.0" y="166.0" width="92.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="189.0" y="200.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">1</text>
+<text x="189.0" y="250.0" font-size="12.5" fill="#57606A" text-anchor="middle">版本</text>
+<text x="144.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">4</text>
+<rect x="237.0" y="166.0" width="186.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="330.0" y="200.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">4096</text>
+<text x="330.0" y="250.0" font-size="12.5" fill="#57606A" text-anchor="middle">页大小</text>
+<text x="238.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">8</text>
+<rect x="425.0" y="166.0" width="186.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="518.0" y="200.5" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">524288</text>
+<text x="518.0" y="250.0" font-size="12.5" fill="#57606A" text-anchor="middle">页数</text>
+<text x="426.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">16</text>
+<rect x="613.0" y="166.0" width="186.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="706.0" y="200.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">字 0</text>
+<text x="706.0" y="250.0" font-size="12.5" fill="#57606A" text-anchor="middle">第 0～63 页</text>
+<text x="614.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">24</text>
+<rect x="801.0" y="166.0" width="186.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="894.0" y="200.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">字 1</text>
+<text x="894.0" y="250.0" font-size="12.5" fill="#57606A" text-anchor="middle">第 64～127 页</text>
+<text x="802.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">32</text>
+<rect x="989.0" y="166.0" width="374.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1176.0" y="200.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">……</text>
+<text x="990.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">40</text>
+<rect x="1365.0" y="166.0" width="186.0" height="60.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1458.0" y="200.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">字 8191</text>
+<text x="1458.0" y="250.0" font-size="12.5" fill="#57606A" text-anchor="middle">最后 64 页</text>
+<text x="1366.0" y="158.0" font-size="11" fill="#8C959F" text-anchor="start">56</text>
+<text x="48.0" y="296.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">2 GiB 内存：524288 页 → 8192 个字 → 文件长 24 + 65536 字节</text>
+<rect x="48.0" y="336.0" width="488.0" height="110.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="292.0" y="373.6" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">几何校验</text>
+<text x="292.0" y="396.8" font-size="12.5" fill="#57606A" text-anchor="middle">页大小、页数、文件长度必须和当前虚机完全一致；不一致说明属于另一台虚机，</text>
+<text x="292.0" y="415.6" font-size="12.5" fill="#57606A" text-anchor="middle">直接报错，不猜</text>
+<rect x="556.0" y="336.0" width="488.0" height="110.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="800.0" y="373.6" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">尾字掩码</text>
+<text x="800.0" y="396.8" font-size="12.5" fill="#57606A" text-anchor="middle">页数通常不是 64 的倍数，最后一个字里多出来的位必须是 0；两侧造的“全 1 位</text>
+<text x="800.0" y="415.6" font-size="12.5" fill="#57606A" text-anchor="middle">图”才会是同一个</text>
+<rect x="1064.0" y="336.0" width="488.0" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1308.0" y="382.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">两侧对称</text>
+<text x="1308.0" y="406.2" font-size="12.5" fill="#57606A" text-anchor="middle">Rust 和 Go 各有一份读写实现，刻意写成镜像</text>
+<line x1="48.0" y1="476.0" x2="1552.0" y2="476.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="502.0" font-size="13" fill="#8C959F" text-anchor="start">注：全量快照也写一张全 1 的位图；orchestrator 对全量条目更进一步，不读它、直接当全 1 用（第 9、13 篇）。</text></svg>

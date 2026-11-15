@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="682" viewBox="0 0 1600 682" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD6603D" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D6603D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="682" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">读档后分叉：存档之间是一棵树，不是一条链</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">依次存 ck1、ck2、ck3；读档回 ck1（ck2、ck3 保留）；从 ck1 继续存 ck4、ck5，它们的父亲是 ck1。创建时间的先后不等于依赖关系；“当前基准”记录沙箱现在从哪个存档继续变化。</text>
+<path d="M312.0 372.0 L348.0 372.0 L348.0 202.0 L414.0 202.0" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M642.0 202.0 L744.0 202.0" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M312.0 372.0 L348.0 372.0 L348.0 542.0 L414.0 542.0" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<path d="M642.0 542.0 L744.0 542.0" fill="none" stroke="#57606A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m57606A)"/>
+<rect x="88.0" y="336.0" width="220.0" height="72.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="198.0" y="364.2" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">ck1</text>
+<text x="198.0" y="387.5" font-size="12.5" fill="#57606A" text-anchor="middle">全 1（全量根）</text>
+<rect x="418.0" y="166.0" width="220.0" height="72.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="528.0" y="194.2" font-size="16" fill="#1F2328" font-weight="600" text-anchor="middle">ck2</text>
+<text x="528.0" y="217.5" font-size="12.5" fill="#57606A" text-anchor="middle">{1, 5, 9}</text>
+<rect x="748.0" y="166.0" width="220.0" height="72.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="858.0" y="194.2" font-size="16" fill="#1F2328" font-weight="600" text-anchor="middle">ck3</text>
+<text x="858.0" y="217.5" font-size="12.5" fill="#57606A" text-anchor="middle">{5, 7}</text>
+<rect x="418.0" y="506.0" width="220.0" height="72.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="528.0" y="534.2" font-size="16" fill="#1F2328" font-weight="600" text-anchor="middle">ck4</text>
+<text x="528.0" y="557.5" font-size="12.5" fill="#57606A" text-anchor="middle">{2, 5}</text>
+<rect x="748.0" y="506.0" width="220.0" height="72.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="858.0" y="534.2" font-size="16" fill="#8A5300" font-weight="600" text-anchor="middle">ck5</text>
+<text x="858.0" y="557.5" font-size="12.5" fill="#57606A" text-anchor="middle">{9, 11}</text>
+<path d="M858.0 162.0 L858.0 132.0 L198.0 132.0 L198.0 332.0" fill="none" stroke="#D6603D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="5 4" marker-end="url(#mD6603D)"/>
+<text x="528.0" y="124.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">1. 曾经读档回 ck1，ck2、ck3 保留</text>
+<rect x="991.0" y="529.0" width="74.0" height="26.0" rx="13.0" fill="#D9922B" stroke="#D9922B" stroke-width="1"/>
+<text x="1028.0" y="546.7" font-size="13" fill="#FFFFFF" font-weight="600" text-anchor="middle">当前基准</text>
+<rect x="1048.0" y="156.0" width="504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="1058.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">操作</text>
+<text x="1248.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">当前基准</text>
+<text x="1378.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">新条目的父亲</text>
+<line x1="1048.0" y1="238.5" x2="1552.0" y2="238.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="1058.0" y="221.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">存 ck1（全量）</text>
+<text x="1248.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">ck1</text>
+<text x="1378.0" y="221.1" font-size="13.5" fill="#1F2328" text-anchor="start">无（树根）</text>
+<line x1="1048.0" y1="280.8" x2="1552.0" y2="280.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="1058.0" y="263.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">存 ck2</text>
+<text x="1248.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">ck2</text>
+<text x="1378.0" y="263.3" font-size="13.5" fill="#1F2328" text-anchor="start">ck1</text>
+<line x1="1048.0" y1="323.0" x2="1552.0" y2="323.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="1058.0" y="305.6" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">存 ck3</text>
+<text x="1248.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">ck3</text>
+<text x="1378.0" y="305.6" font-size="13.5" fill="#1F2328" text-anchor="start">ck2</text>
+<line x1="1048.0" y1="365.2" x2="1552.0" y2="365.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="1058.0" y="347.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">读档回 ck1</text>
+<text x="1248.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">ck1</text>
+<text x="1378.0" y="347.8" font-size="13.5" fill="#1F2328" text-anchor="start">不建条目</text>
+<line x1="1048.0" y1="407.5" x2="1552.0" y2="407.5" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="1058.0" y="390.1" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">存 ck4</text>
+<text x="1248.0" y="390.1" font-size="13.5" fill="#1F2328" text-anchor="start">ck4</text>
+<text x="1378.0" y="390.1" font-size="13.5" fill="#1F2328" text-anchor="start">ck1</text>
+<line x1="1048.0" y1="449.8" x2="1552.0" y2="449.8" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="1058.0" y="432.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">存 ck5</text>
+<text x="1248.0" y="432.3" font-size="13.5" fill="#1F2328" text-anchor="start">ck5</text>
+<text x="1378.0" y="432.3" font-size="13.5" fill="#1F2328" text-anchor="start">ck4</text>
+<line x1="48.0" y1="616.0" x2="1552.0" y2="616.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="642.0" font-size="13" fill="#8C959F" text-anchor="start">注：条目的父亲写好就不变；沙箱的当前基准在存档成功时变成新存档，在读档成功时变成目标。读档不删除更新的存档，所以能前滚、能跨分支跳。</text></svg>

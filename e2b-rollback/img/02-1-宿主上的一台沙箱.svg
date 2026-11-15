@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="716" viewBox="0 0 1600 716" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="716" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">宿主上的一台沙箱长什么样</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">orchestrator 为每台沙箱持有四样东西：Firecracker 进程的接口、内存缺页处理程序、磁盘的 Overlay 与 NBD 设备、网络槽位。读档要在不重建其中任何一样的前提下，把客户机变回过去。</text>
+<rect x="48.0" y="150.0" width="900.0" height="470.0" rx="14" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="68.0" y="180.0" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="start">orchestrator 进程（宿主）</text>
+<rect x="72.0" y="210.0" width="250.0" height="70.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="197.0" y="236.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">代理（端口路由）</text>
+<text x="197.0" y="260.2" font-size="12.5" fill="#57606A" text-anchor="middle">:5007</text>
+<rect x="348.0" y="210.0" width="280.0" height="70.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="488.0" y="236.9" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">Checkpoint Service</text>
+<text x="488.0" y="260.2" font-size="12.5" fill="#57606A" text-anchor="middle">本方案加的部件</text>
+<rect x="654.0" y="210.0" width="270.0" height="70.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="789.0" y="249.8" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">沙箱表</text>
+<rect x="72.0" y="310.0" width="852.0" height="290.0" rx="14" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="92.0" y="340.0" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="start">Sandbox 对象（每台沙箱一个）</text>
+<rect x="92.0" y="380.0" width="192.5" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="188.2" y="416.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">process</text>
+<text x="188.2" y="439.9" font-size="12.5" fill="#57606A" text-anchor="middle">→ Firecracker 接口</text>
+<rect x="298.5" y="380.0" width="192.5" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="394.8" y="416.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">内存缺页处理（uffd）</text>
+<text x="394.8" y="439.9" font-size="12.5" fill="#57606A" text-anchor="middle">按需从模板拉页</text>
+<rect x="505.0" y="380.0" width="192.5" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="601.2" y="416.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">Overlay + NBD</text>
+<text x="601.2" y="439.9" font-size="12.5" fill="#57606A" text-anchor="middle">只读层 + 写层</text>
+<rect x="711.5" y="380.0" width="192.5" height="90.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="807.8" y="416.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">网络槽位</text>
+<text x="807.8" y="439.9" font-size="12.5" fill="#57606A" text-anchor="middle">netns · tap · IP</text>
+<text x="92.0" y="510.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">读档时一个都不重建：进程、KVM 对象、tap、NBD 设备、内存映射，以及已在内存里的工作集。</text>
+<rect x="1018.0" y="150.0" width="534.0" height="200.0" rx="14" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1038.0" y="180.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">Firecracker 进程</text>
+<rect x="1038.0" y="210.0" width="494.0" height="120.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1285.0" y="252.5" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">客户机（microVM）</text>
+<text x="1285.0" y="275.8" font-size="12.5" fill="#57606A" text-anchor="middle">内存 · vCPU · GIC · virtio 设备</text>
+<text x="1285.0" y="294.5" font-size="12.5" fill="#57606A" text-anchor="middle">envd 在里面执行命令</text>
+<rect x="1018.0" y="380.0" width="534.0" height="70.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1285.0" y="406.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">KVM（/dev/kvm）</text>
+<text x="1285.0" y="430.2" font-size="12.5" fill="#57606A" text-anchor="middle">客户机代码直接在 CPU 上跑</text>
+<rect x="1018.0" y="470.0" width="260.0" height="70.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1148.0" y="496.6" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">/dev/nbdX</text>
+<text x="1148.0" y="519.9" font-size="12.5" fill="#57606A" text-anchor="middle">磁盘后端</text>
+<rect x="1292.0" y="470.0" width="260.0" height="70.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1422.0" y="496.6" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">tap + netns</text>
+<text x="1422.0" y="519.9" font-size="12.5" fill="#57606A" text-anchor="middle">网络</text>
+<rect x="1018.0" y="560.0" width="534.0" height="60.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1285.0" y="582.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">模板 memfile / rootfs</text>
+<text x="1285.0" y="604.6" font-size="12" fill="#57606A" text-anchor="middle">在对象存储，按需拉取</text>
+<path d="M952.0 425.0 L1014.0 250.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1285.0 354.0 L1285.0 376.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="650.0" x2="1552.0" y2="650.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="676.0" font-size="13" fill="#8C959F" text-anchor="start">注：用户沙箱都是从模板快照“恢复”出来的，不是从头开机；内存缺页时才从模板取，磁盘是只读底座加每台沙箱自己的写层（第 2 篇）。</text></svg>

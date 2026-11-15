@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="706" viewBox="0 0 1600 706" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="706" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">负载构造的三种失真，以及“预热 + 原地覆写”</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">判定表第一列“改动 N MiB”成立的前提是：标签上的 N 等于服务端实际处理的量。分配成本混进档位、写放大、负载放错层，都会让这个前提失效。解法是先一次撑到最大档，之后每档用 conv=notrunc 只覆写前 N MiB，</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">数据用随机源。</text>
+<rect x="48.0" y="180.0" width="488.0" height="140.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="292.0" y="232.5" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">失真一：分配成本混进档位</text>
+<text x="292.0" y="255.8" font-size="12.5" fill="#57606A" text-anchor="middle">第一次写新内存要清零、建页表，第一次写新文件要分配块；每档重新分配，档位</text>
+<text x="292.0" y="274.5" font-size="12.5" fill="#57606A" text-anchor="middle">越大混进越多，斜率被抬高</text>
+<rect x="556.0" y="180.0" width="488.0" height="140.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="800.0" y="232.5" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">失真二：写放大</text>
+<text x="800.0" y="255.8" font-size="12.5" fill="#57606A" text-anchor="middle">用 shell 拼接造内存负载：缓冲区复制、扩容中间态、释放后再缺页；实测差分是</text>
+<text x="800.0" y="274.5" font-size="12.5" fill="#57606A" text-anchor="middle">名义量的好几倍</text>
+<rect x="1064.0" y="180.0" width="488.0" height="140.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1308.0" y="241.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">失真三：负载放错层</text>
+<text x="1308.0" y="265.2" font-size="12.5" fill="#57606A" text-anchor="middle">快照只带回覆盖范围内的东西；放在范围外，测出来既是零成本，也是假通过</text>
+<text x="48.0" y="360.0" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="start">解法</text>
+<rect x="48.0" y="380.0" width="488.0" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="292.0" y="417.6" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">1. 预热</text>
+<text x="292.0" y="440.8" font-size="12.5" fill="#57606A" text-anchor="middle">内存文件、磁盘文件一次撑到最大档位；这一次承担全部分配成本，不计入任何</text>
+<text x="292.0" y="459.6" font-size="12.5" fill="#57606A" text-anchor="middle">档位</text>
+<rect x="556.0" y="380.0" width="488.0" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="800.0" y="417.6" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">2. 原地覆写</text>
+<text x="800.0" y="440.8" font-size="12.5" fill="#57606A" text-anchor="middle">每档 dd ... conv=notrunc 只覆写前 N MiB；没有 notrunc 会先截成空，失真</text>
+<text x="800.0" y="459.6" font-size="12.5" fill="#57606A" text-anchor="middle">一回来</text>
+<rect x="1064.0" y="380.0" width="488.0" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1308.0" y="426.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">3. 随机数据</text>
+<text x="1308.0" y="450.2" font-size="12.5" fill="#57606A" text-anchor="middle">全零页会被稀疏、去重、压缩特殊对待；随机数据量到的才是最坏也最诚实的情况</text>
+<rect x="48.0" y="530.0" width="732.0" height="80.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="414.0" y="561.9" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">/dev/shm（内存文件系统）</text>
+<text x="414.0" y="585.2" font-size="12.5" fill="#57606A" text-anchor="middle">只弄脏内存页，不落磁盘</text>
+<rect x="820.0" y="530.0" width="732.0" height="80.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1186.0" y="561.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">根文件系统上的普通文件（走缓存写 + sync）</text>
+<text x="1186.0" y="585.2" font-size="12.5" fill="#57606A" text-anchor="middle">进磁盘层，同时在内存里留一份文件缓存</text>
+<line x1="48.0" y1="640.0" x2="1552.0" y2="640.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="666.0" font-size="13" fill="#8C959F" text-anchor="start">注：读表的固定预期：实测内存差分 ≈ 名义内存 + 名义文件；实测磁盘层 ≈ 名义文件。偏离这个关系，先查负载，再看时间。</text></svg>

@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="830" viewBox="0 0 1600 830" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="830" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">原生内存增量的三层：判、存、填，修复前后</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">三层的粒度被锁在一起：客户机页 2 MiB → 缺页只能按 2 MiB 填 → 要求 header 块也是 2 MiB → 判据再细也要归并到 2 MiB。只换判据，空转时仍有约 130 MiB 的“本底散写”地板；三层一起改，导出量才降到真实写</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">入量。</text>
+<rect x="48.0" y="170.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="192.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">层</text>
+<text x="438.0" y="192.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">修复前</text>
+<text x="898.0" y="192.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">修复后</text>
+<line x1="48.0" y1="253.2" x2="1552.0" y2="253.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="235.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">判：这一代导出哪些页</text>
+<text x="438.0" y="235.6" font-size="14" fill="#1F2328" text-anchor="start">“在内存里就算脏”（ARM 上写保护被注释掉）</text>
+<text x="898.0" y="235.6" font-size="14" fill="#1F2328" text-anchor="start">Firecracker 的写跟踪位图（4 KiB）</text>
+<line x1="48.0" y1="296.2" x2="1552.0" y2="296.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="278.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">存：header 记每块在哪一代</text>
+<text x="438.0" y="278.6" font-size="14" fill="#1F2328" text-anchor="start">块大小 2 MiB，逐代继承</text>
+<text x="898.0" y="278.6" font-size="14" fill="#1F2328" text-anchor="start">降到 4 KiB；父代 2 MiB 的映射原样保留（= 512 个连续 4 KiB 映射）</text>
+<line x1="48.0" y1="339.2" x2="1552.0" y2="339.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="321.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">填：恢复时缺页</text>
+<text x="438.0" y="321.6" font-size="14" fill="#1F2328" text-anchor="start">一次 2 MiB，要求等于 header 块</text>
+<text x="898.0" y="321.6" font-size="14" fill="#1F2328" text-anchor="start">仍一次 2 MiB：整块同代直接交出；跨代按 4 KiB 拼满，拼不满就报错</text>
+<text x="48.0" y="370.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">只换判据够不够（920B 测算）</text>
+<text x="194.0" y="430.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">空转</text>
+<rect x="208.0" y="400.0" width="495.7" height="18.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="711.7" y="414.0" font-size="12" fill="#9A3215" font-weight="600" text-anchor="start">162 MiB</text>
+<rect x="208.0" y="421.0" width="410.0" height="18.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="626.0" y="435.0" font-size="12" fill="#8A5300" font-weight="600" text-anchor="start">134 MiB</text>
+<rect x="208.0" y="442.0" width="12.5" height="18.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="228.5" y="456.0" font-size="12" fill="#0E6B4F" font-weight="600" text-anchor="start">4.1 MiB</text>
+<text x="194.0" y="511.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">只读 192 MiB</text>
+<rect x="208.0" y="481.0" width="1120.0" height="18.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1336.0" y="495.0" font-size="12" fill="#9A3215" font-weight="600" text-anchor="start">366 MiB</text>
+<rect x="208.0" y="502.0" width="452.9" height="18.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="668.9" y="516.0" font-size="12" fill="#8A5300" font-weight="600" text-anchor="start">148 MiB</text>
+<rect x="208.0" y="523.0" width="44.7" height="18.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="260.7" y="537.0" font-size="12" fill="#0E6B4F" font-weight="600" text-anchor="start">14.6 MiB</text>
+<text x="194.0" y="592.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">只改 12 MiB</text>
+<rect x="208.0" y="562.0" width="563.0" height="18.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="779.0" y="576.0" font-size="12" fill="#9A3215" font-weight="600" text-anchor="start">184 MiB</text>
+<rect x="208.0" y="583.0" width="477.4" height="18.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="693.4" y="597.0" font-size="12" fill="#8A5300" font-weight="600" text-anchor="start">156 MiB</text>
+<rect x="208.0" y="604.0" width="62.7" height="18.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="278.7" y="618.0" font-size="12" fill="#0E6B4F" font-weight="600" text-anchor="start">20.5 MiB</text>
+<text x="194.0" y="673.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">写 192 MiB</text>
+<rect x="208.0" y="643.0" width="1168.9" height="18.0" rx="3" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1384.9" y="657.0" font-size="12" fill="#9A3215" font-weight="600" text-anchor="start">382 MiB</text>
+<rect x="208.0" y="664.0" width="1095.5" height="18.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1311.5" y="678.0" font-size="12" fill="#8A5300" font-weight="600" text-anchor="start">358 MiB</text>
+<rect x="208.0" y="685.0" width="672.6" height="18.0" rx="3" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="888.6" y="699.0" font-size="12" fill="#0E6B4F" font-weight="600" text-anchor="start">219.8 MiB</text>
+<rect x="208.0" y="727.0" width="16.0" height="16.0" rx="4" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.2"/>
+<text x="232.0" y="740.0" font-size="13" fill="#57606A" text-anchor="start">修复前导出</text>
+<rect x="325.0" y="727.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="349.0" y="740.0" font-size="13" fill="#57606A" text-anchor="start">只换判据（按 2 MiB 归并）</text>
+<rect x="539.6" y="727.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="563.6" y="740.0" font-size="13" fill="#57606A" text-anchor="start">4 KiB 真实写入量</text>
+<line x1="48.0" y1="764.0" x2="1552.0" y2="764.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="790.0" font-size="13" fill="#8C959F" text-anchor="start">注：x86 上原生增量本来就精确，这是把 ARM 补回到 x86 的水平；关大页也能精确，但缺页次数 × 512、所有沙箱失去大页，不选。</text></svg>

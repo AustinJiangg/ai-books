@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="572" viewBox="0 0 1600 572" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="572" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">两种快照的分工与叠加：先快速试错，再固化离场</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">本方案管活沙箱里的高频回退：几十毫秒、同一个进程、只随改动增长。原生快照管离场：自足、可上传、能跨机器、进程死了也能恢复。两者叠加：用 checkpoint 选定满意的状态，再用原生 pause 把它固化下来。</text>
+<rect x="48.0" y="156.0" width="722.0" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="409.0" y="193.1" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="middle">checkpoint / restore：活体原地</text>
+<text x="409.0" y="217.0" font-size="13" fill="#57606A" text-anchor="middle">高频小回退 · 几十毫秒 · 什么都不重建</text>
+<text x="409.0" y="236.5" font-size="13" fill="#57606A" text-anchor="middle">离不开活沙箱，不跨重启、不跨机器</text>
+<rect x="830.0" y="156.0" width="722.0" height="110.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1191.0" y="193.1" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">原生 pause / resume：自足重建</text>
+<text x="1191.0" y="217.0" font-size="13" fill="#57606A" text-anchor="middle">离场、长期保存、跨机器、崩溃后恢复</text>
+<text x="1191.0" y="236.5" font-size="13" fill="#57606A" text-anchor="middle">每次都停沙箱、建新进程</text>
+<text x="48.0" y="316.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">一个 Agent 工作流，以及底下发生了什么</text>
+<rect x="48.0" y="336.0" width="168.8" height="96.0" rx="10" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="132.4" y="388.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">起沙箱、准备环境</text>
+<path d="M220.8 384.0 L234.8 384.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="238.8" y="336.0" width="168.8" height="96.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="323.1" y="375.8" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">checkpoint S</text>
+<text x="323.1" y="398.4" font-size="12" fill="#57606A" text-anchor="middle">全量根 ≈ 0.5 s</text>
+<path d="M411.5 384.0 L425.5 384.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="429.5" y="336.0" width="168.8" height="96.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="513.9" y="388.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">试 A → 失败</text>
+<path d="M602.2 384.0 L616.2 384.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="620.2" y="336.0" width="168.8" height="96.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="704.6" y="375.8" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">restore S</text>
+<text x="704.6" y="398.4" font-size="12" fill="#57606A" text-anchor="middle">几十 ms</text>
+<path d="M793.0 384.0 L807.0 384.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="811.0" y="336.0" width="168.8" height="96.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="895.4" y="388.3" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="middle">试 B → 部分成功</text>
+<path d="M983.8 384.0 L997.8 384.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1001.8" y="336.0" width="168.8" height="96.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1086.1" y="375.8" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">checkpoint B1</text>
+<text x="1086.1" y="398.4" font-size="12" fill="#57606A" text-anchor="middle">增量</text>
+<path d="M1174.5 384.0 L1188.5 384.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1192.5" y="336.0" width="168.8" height="96.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1276.9" y="366.8" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="middle">原生 pause</text>
+<text x="1276.9" y="389.4" font-size="12" fill="#57606A" text-anchor="middle">导出“开机以来写过</text>
+<text x="1276.9" y="407.4" font-size="12" fill="#57606A" text-anchor="middle">的页”</text>
+<path d="M1365.2 384.0 L1379.2 384.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1383.2" y="336.0" width="168.8" height="96.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1467.6" y="375.8" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="middle">以后 resume</text>
+<text x="1467.6" y="398.4" font-size="12" fill="#57606A" text-anchor="middle">新一代，从零存档</text>
+<text x="48.0" y="476.0" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">原生 pause 之后本方案的存档全部失效；反方向不成立。</text>
+<line x1="48.0" y1="506.0" x2="1552.0" y2="506.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="532.0" font-size="13" fill="#8C959F" text-anchor="start">注：原生快照的 header 块大小从 2 MiB 变成了 4 KiB，兼容是单向的：新 orchestrator 读得了旧快照，旧 orchestrator 读新快照会拒绝启动。</text></svg>

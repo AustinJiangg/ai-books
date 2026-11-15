@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="576" viewBox="0 0 1600 576" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="576" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一次磁盘读写的路径：从客户机到层文件</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">/dev/vda 和 /dev/nbdX 属于两个操作系统：前者是客户机里的虚拟磁盘，后者是宿主上的数据后端。封存和换视图都发生在 Overlay 内部，设备本身不换，这就是“不重建宿主资源”在磁盘一侧的样子。</text>
+<rect x="48.0" y="150.0" width="380.0" height="330.0" rx="14" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="68.0" y="180.0" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="start">客户机内部</text>
+<rect x="72.0" y="220.0" width="332.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="238.0" y="246.9" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">ext4 文件系统</text>
+<text x="238.0" y="270.2" font-size="12.5" fill="#57606A" text-anchor="middle">文件读写 → 块读写</text>
+<rect x="72.0" y="320.0" width="332.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="238.0" y="346.9" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">virtio 块驱动：/dev/vda</text>
+<text x="238.0" y="370.2" font-size="12.5" fill="#57606A" text-anchor="middle">经 virtio 队列提交请求</text>
+<path d="M238.0 294.0 L238.0 316.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="488.0" y="320.0" width="260.0" height="70.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="618.0" y="346.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">Firecracker</text>
+<text x="618.0" y="370.2" font-size="12.5" fill="#57606A" text-anchor="middle">模拟 virtio 磁盘</text>
+<path d="M408.0 355.0 L484.0 355.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="808.0" y="320.0" width="220.0" height="70.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="918.0" y="346.9" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">/dev/nbdX</text>
+<text x="918.0" y="370.2" font-size="12.5" fill="#57606A" text-anchor="middle">宿主内核 NBD 设备</text>
+<path d="M752.0 355.0 L804.0 355.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1088.0" y="150.0" width="464.0" height="330.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1108.0" y="180.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">orchestrator：NBD 分发 → Overlay</text>
+<rect x="1108.0" y="220.0" width="424.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1320.0" y="243.8" font-size="14.5" fill="#4B3FA8" font-weight="600" text-anchor="middle">活写层</text>
+<text x="1320.0" y="267.0" font-size="12.5" fill="#57606A" text-anchor="middle">稀疏文件 + “本层有哪些块”位图；写只落这里</text>
+<rect x="1108.0" y="300.0" width="424.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1320.0" y="323.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">封存层栈（存过档才有）</text>
+<text x="1320.0" y="347.0" font-size="12.5" fill="#57606A" text-anchor="middle">按块的归属索引：直接定位</text>
+<rect x="1108.0" y="380.0" width="424.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1320.0" y="403.8" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="middle">模板 rootfs</text>
+<text x="1320.0" y="427.0" font-size="12.5" fill="#57606A" text-anchor="middle">按需拉取并缓存</text>
+<path d="M1032.0 355.0 L1084.0 355.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="510.0" x2="1552.0" y2="510.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="536.0" font-size="13" fill="#8C959F" text-anchor="start">注：归属位图回答“这一块是不是本层的”，不是内容：客户机可能真的写了一块全 0，只看内容分不清（第 10 篇第一节）。</text></svg>

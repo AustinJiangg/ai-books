@@ -1,0 +1,123 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="546" viewBox="0 0 1600 546" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="546" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">同一份 2 GiB 内存的三种表示：页、位图、稀疏文件</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">内存按 4 KiB 一页管理，2 GiB 是 524288 页；位图一页一个比特，只有 64 KiB；稀疏文件把每个脏页写在它自己的偏移上，逻辑上 2 GiB，实际只占写过的那几页。</text>
+<text x="48.0" y="190.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">内存的页</text>
+<rect x="249.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="289.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="330.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="371.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#D9D2FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="412.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#D9D2FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="452.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#D9D2FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="493.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="534.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="575.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="615.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="656.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="697.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#D9D2FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="738.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="778.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="819.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="860.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="901.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="941.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#D9D2FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="982.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#D9D2FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1023.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1064.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1104.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1145.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1186.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1227.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1267.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1308.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#D9D2FF" stroke="#8B7FE0" stroke-width="1"/>
+<rect x="1349.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1390.0" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1430.8" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1471.5" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<rect x="1512.2" y="166.0" width="38.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="248.0" y="226.0" font-size="12" fill="#8C959F" text-anchor="start">第 0 页</text>
+<text x="370.2" y="226.0" font-size="12" fill="#4B3FA8" font-weight="600" text-anchor="start">脏页（被写过）</text>
+<text x="48.0" y="296.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">位图</text>
+<rect x="249.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="268.4" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="289.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="309.1" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="330.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="349.9" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="371.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="390.6" y="298.0" font-size="13" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1</text>
+<rect x="412.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="431.4" y="298.0" font-size="13" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1</text>
+<rect x="452.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="472.1" y="298.0" font-size="13" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1</text>
+<rect x="493.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="512.9" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="534.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="553.6" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="575.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="594.4" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="615.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="635.1" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="656.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="675.9" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="697.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="716.6" y="298.0" font-size="13" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1</text>
+<rect x="738.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="757.4" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="778.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="798.1" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="819.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="838.9" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="860.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="879.6" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="901.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="920.4" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="941.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="961.1" y="298.0" font-size="13" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1</text>
+<rect x="982.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1001.9" y="298.0" font-size="13" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1</text>
+<rect x="1023.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1042.6" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1064.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1083.4" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1104.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1124.1" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1145.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1164.9" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1186.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1205.6" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1227.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1246.4" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1267.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1287.1" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1308.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1327.9" y="298.0" font-size="13" fill="#1D4F91" font-weight="600" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">1</text>
+<rect x="1349.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1368.6" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1390.0" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1409.4" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1430.8" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1450.1" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1471.5" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1490.9" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<rect x="1512.2" y="276.0" width="38.8" height="32.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1"/>
+<text x="1531.6" y="298.0" font-size="13" fill="#8C959F" font-family="'JetBrains Mono','SF Mono',Menlo,Consolas,'Noto Sans Mono CJK SC','DejaVu Sans Mono',monospace" text-anchor="middle">0</text>
+<text x="248.0" y="328.0" font-size="12.5" fill="#57606A" text-anchor="start">一页 1 比特：2 GiB → 524288 比特 = 64 KiB = 8192 个 64 位字</text>
+<text x="48.0" y="410.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">稀疏文件</text>
+<rect x="249.0" y="386.0" width="120.2" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="4 3"/>
+<rect x="371.2" y="386.0" width="38.8" height="40.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<rect x="412.0" y="386.0" width="38.8" height="40.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<rect x="452.8" y="386.0" width="38.8" height="40.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<rect x="493.5" y="386.0" width="201.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="594.4" y="411.0" font-size="12" fill="#8C959F" text-anchor="middle">空洞（不占盘，读出来是 0）</text>
+<rect x="697.2" y="386.0" width="38.8" height="40.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<rect x="738.0" y="386.0" width="201.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="838.9" y="411.0" font-size="12" fill="#8C959F" text-anchor="middle">空洞（不占盘，读出来是 0）</text>
+<rect x="941.8" y="386.0" width="38.8" height="40.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<rect x="982.5" y="386.0" width="38.8" height="40.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<rect x="1023.2" y="386.0" width="283.2" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1164.9" y="411.0" font-size="12" fill="#8C959F" text-anchor="middle">空洞（不占盘，读出来是 0）</text>
+<rect x="1308.5" y="386.0" width="38.8" height="40.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<rect x="1349.2" y="386.0" width="201.8" height="40.0" rx="3" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1" stroke-dasharray="4 3"/>
+<text x="1450.1" y="411.0" font-size="12" fill="#8C959F" text-anchor="middle">空洞（不占盘，读出来是 0）</text>
+<text x="248.0" y="448.0" font-size="12.5" fill="#57606A" text-anchor="start">偏移 = 页号 × 4096；ls 看到 2 GiB，du 看到的只有脏页那么大（st_blocks）</text>
+<line x1="48.0" y1="480.0" x2="1552.0" y2="480.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="506.0" font-size="13" fill="#8C959F" text-anchor="start">注：空洞读出来是 0，分不清“内容是 0”和“没存在这里”，所以每个差分文件旁边都要放一张位图（第 9 篇）。</text></svg>

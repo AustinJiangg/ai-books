@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="572" viewBox="0 0 1600 572" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m5B9BE6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#5B9BE6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="572" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">三种存法：2 GiB 内存、20 个存档、每次改 40 MiB</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">每代全量不可行；每代自足最简单，但“复制上一代”在 ext4 上是真拷 2 GiB；每代只存差分不依赖任何文件系统特性，代价是找一页内容时要沿祖先往上找。存档盘是 ext4，所以选第三种。</text>
+<rect x="48.0" y="146.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">存法</text>
+<text x="458.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">每次存档写多少</text>
+<text x="798.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">读档写回多少</text>
+<text x="1038.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">20 代共占</text>
+<text x="1338.0" y="168.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">依赖</text>
+<rect x="48.0" y="188.2" width="1504.0" height="39.8" rx="6" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="58.0" y="212.0" font-size="14.5" fill="#9A3215" font-weight="600" text-anchor="start">每代全量</text>
+<text x="458.0" y="212.0" font-size="14.5" fill="#9A3215" text-anchor="start">2 GiB</text>
+<text x="798.0" y="212.0" font-size="14.5" fill="#9A3215" text-anchor="start">2 GiB</text>
+<text x="1038.0" y="212.0" font-size="14.5" fill="#9A3215" text-anchor="start">40 GiB</text>
+<text x="1338.0" y="212.0" font-size="14.5" fill="#9A3215" text-anchor="start">无</text>
+<rect x="48.0" y="232.0" width="1504.0" height="39.8" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="58.0" y="255.8" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="start">每代自足（复制上一代 + 覆盖脏页）</text>
+<text x="458.0" y="255.8" font-size="14.5" fill="#8A5300" text-anchor="start">元数据 + 40 MiB；ext4 上 2 GiB</text>
+<text x="798.0" y="255.8" font-size="14.5" fill="#8A5300" text-anchor="start">只写需要的页</text>
+<text x="1038.0" y="255.8" font-size="14.5" fill="#8A5300" text-anchor="start">约 2 GiB + 20 × 40 MiB</text>
+<text x="1338.0" y="255.8" font-size="14.5" fill="#8A5300" text-anchor="start">reflink</text>
+<rect x="48.0" y="275.8" width="1504.0" height="39.8" rx="6" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="58.0" y="299.5" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="start">每代只存差分（本方案）</text>
+<text x="458.0" y="299.5" font-size="14.5" fill="#0E6B4F" text-anchor="start">40 MiB</text>
+<text x="798.0" y="299.5" font-size="14.5" fill="#0E6B4F" text-anchor="start">只写需要的页</text>
+<text x="1038.0" y="299.5" font-size="14.5" fill="#0E6B4F" text-anchor="start">约 2 GiB + 20 × 40 MiB</text>
+<text x="1338.0" y="299.5" font-size="14.5" fill="#0E6B4F" text-anchor="start">无</text>
+<text x="48.0" y="376.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">差分存法下，第 n 代某一页的内容去哪找</text>
+<rect x="48.0" y="400.0" width="260.0" height="70.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="178.0" y="426.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">ck1 全量</text>
+<text x="178.0" y="450.2" font-size="12.5" fill="#57606A" text-anchor="middle">位图全 1</text>
+<rect x="368.0" y="400.0" width="260.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="498.0" y="426.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">ck2</text>
+<text x="498.0" y="450.2" font-size="12.5" fill="#57606A" text-anchor="middle">只有本代脏页</text>
+<path d="M364.0 435.0 L312.0 435.0" fill="none" stroke="#5B9BE6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m5B9BE6)"/>
+<rect x="688.0" y="400.0" width="260.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="818.0" y="426.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">ck3</text>
+<text x="818.0" y="450.2" font-size="12.5" fill="#57606A" text-anchor="middle">只有本代脏页</text>
+<path d="M684.0 435.0 L632.0 435.0" fill="none" stroke="#5B9BE6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m5B9BE6)"/>
+<rect x="1008.0" y="400.0" width="260.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1138.0" y="426.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">ck4（目标）</text>
+<text x="1138.0" y="450.2" font-size="12.5" fill="#57606A" text-anchor="middle">只有本代脏页</text>
+<path d="M1004.0 435.0 L952.0 435.0" fill="none" stroke="#5B9BE6" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m5B9BE6)"/>
+<text x="1288.0" y="440.0" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">沿祖先往上，第一个位图里有它的那一代</text>
+<line x1="48.0" y1="506.0" x2="1552.0" y2="506.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="532.0" font-size="13" fill="#8C959F" text-anchor="start">注：读档的代价与历史多长无关：找内容是按 64 页一个字做位运算，真正读文件只发生在命中的那一代（第 9 篇第七节）。</text></svg>

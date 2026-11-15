@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="722" viewBox="0 0 1600 722" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="722" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">按症状排障：先看 mem_mode 和能力行，再看 reason，再看分阶段计时</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">大多数问题能在三步之内定位：是没在跟踪脏页、是某一类明确的失败，还是某一段在变慢。</text>
+<rect x="48.0" y="156.0" width="488.0" height="470.0" rx="14" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">1. 慢，或每次都像全量</text>
+<rect x="66.0" y="216.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="292.0" y="242.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">mem_mode 除第一次外是 full</text>
+<text x="292.0" y="265.9" font-size="12.5" fill="#57606A" text-anchor="middle">没开跟踪 / 开关值写错 / 链断后的新树根</text>
+<rect x="66.0" y="296.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="292.0" y="322.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">增量但比预期慢</text>
+<text x="292.0" y="345.9" font-size="12.5" fill="#57606A" text-anchor="middle">HDBSS 启用失败，退回软件写保护</text>
+<rect x="556.0" y="156.0" width="488.0" height="470.0" rx="14" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="576.0" y="186.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">2. 明确报错</text>
+<rect x="574.0" y="216.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="242.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">507 / 429</text>
+<text x="800.0" y="265.9" font-size="12.5" fill="#57606A" text-anchor="middle">存档盘快满 / 个数或字节上限</text>
+<rect x="574.0" y="296.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="322.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">torn</text>
+<text x="800.0" y="345.9" font-size="12.5" fill="#57606A" text-anchor="middle">提交点后失败或超时：重建</text>
+<rect x="574.0" y="376.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="402.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">chain_broken</text>
+<text x="800.0" y="425.9" font-size="12.5" fill="#57606A" text-anchor="middle">先存一个新档</text>
+<rect x="574.0" y="456.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="482.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">rootfs_poisoned</text>
+<text x="800.0" y="505.9" font-size="12.5" fill="#57606A" text-anchor="middle">读档到任意已有存档</text>
+<rect x="574.0" y="536.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="562.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">不支持原地回滚</text>
+<text x="800.0" y="585.9" font-size="12.5" fill="#57606A" text-anchor="middle">Firecracker 没配对</text>
+<rect x="1064.0" y="156.0" width="488.0" height="470.0" rx="14" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1084.0" y="186.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">3. 随时间或负载变慢</text>
+<rect x="1082.0" y="216.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1308.0" y="242.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">连接挂死、流截断</text>
+<text x="1308.0" y="265.9" font-size="12.5" fill="#57606A" text-anchor="middle">跨越读档的连接本就作废</text>
+<rect x="1082.0" y="296.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1308.0" y="322.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">读档随运行时间变慢</text>
+<text x="1308.0" y="345.9" font-size="12.5" fill="#57606A" text-anchor="middle">块数增长 / 回滚量真实变大</text>
+<rect x="1082.0" y="376.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1308.0" y="402.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">随宿主其他流量变慢</text>
+<text x="1308.0" y="425.9" font-size="12.5" fill="#57606A" text-anchor="middle">连接跟踪清理要扫整张宿主表</text>
+<rect x="1082.0" y="456.0" width="452.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1308.0" y="482.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">收包卡死</text>
+<text x="1308.0" y="505.9" font-size="12.5" fill="#57606A" text-anchor="middle">看逐设备诊断日志的队列位置</text>
+<line x1="48.0" y1="656.0" x2="1552.0" y2="656.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="682.0" font-size="13" fill="#8C959F" text-anchor="start">注：每一条都能在正文找到原理：脏页跟踪第 8 篇，失败分级第 13 篇，网络与时间第 12 篇，优化与长尾第 18 篇。</text></svg>

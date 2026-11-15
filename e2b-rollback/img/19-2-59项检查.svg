@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="702" viewBox="0 0 1600 702" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="702" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">59 项检查：一条三代直链，覆盖现场的每一部分</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">三代 A → B → C，每代换掉全部观测点；读档前先断言 9 项现场三代各不相同、心跳的 PID 和启动时刻三代相同，证明“全部一致”这句话真的有区分度。最硬的一项：kill -9 掉的心跳进程，读档后带着原 PID 活回来。</text>
+<rect x="48.0" y="156.0" width="237.3" height="110.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="166.7" y="203.3" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">内存标记</text>
+<text x="166.7" y="225.9" font-size="12" fill="#57606A" text-anchor="middle">/dev/shm 小文件：证明内存被搬回来</text>
+<rect x="301.3" y="156.0" width="237.3" height="110.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="420.0" y="194.3" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">内存大块</text>
+<text x="420.0" y="216.9" font-size="12" fill="#57606A" text-anchor="middle">/dev/shm 128 MB 随机数据的 MD5：</text>
+<text x="420.0" y="234.9" font-size="12" fill="#57606A" text-anchor="middle">抓局部漏页</text>
+<rect x="554.7" y="156.0" width="237.3" height="110.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="673.3" y="203.3" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">磁盘标记和大文件</text>
+<text x="673.3" y="225.9" font-size="12" fill="#57606A" text-anchor="middle">根文件系统，不写 /home/user</text>
+<rect x="808.0" y="156.0" width="237.3" height="110.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="926.7" y="203.3" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">被删的文件</text>
+<text x="926.7" y="225.9" font-size="12" fill="#57606A" text-anchor="middle">A 建、B 删：回到 A 必须复活</text>
+<rect x="1061.3" y="156.0" width="237.3" height="110.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1180.0" y="203.3" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">权限位</text>
+<text x="1180.0" y="225.9" font-size="12" fill="#57606A" text-anchor="middle">600 / 640 / 755</text>
+<rect x="1314.7" y="156.0" width="237.3" height="110.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1433.3" y="203.3" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="middle">进程</text>
+<text x="1433.3" y="225.9" font-size="12" fill="#57606A" text-anchor="middle">kill -9 后复活，PID 和启动时刻不变</text>
+<rect x="48.0" y="306.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="328.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">部分</text>
+<text x="418.0" y="328.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">检查</text>
+<text x="1442.0" y="328.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">项数</text>
+<line x1="48.0" y1="389.2" x2="1552.0" y2="389.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="371.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">1. 建三代现场</text>
+<text x="418.0" y="371.6" font-size="14" fill="#1F2328" text-anchor="start">3 次“还能干活”（每次 5 项）+ mem_mode 2 项 + 区分度 2 项</text>
+<text x="1442.0" y="371.6" font-size="14" fill="#1F2328" text-anchor="start">19</text>
+<line x1="48.0" y1="432.2" x2="1552.0" y2="432.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="414.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">2. 逐级回退 C → B → A</text>
+<text x="418.0" y="414.6" font-size="14" fill="#1F2328" text-anchor="start">1 次“还能干活” + 2 次“现场一致”（每次 2 项）</text>
+<text x="1442.0" y="414.6" font-size="14" fill="#1F2328" text-anchor="start">9</text>
+<line x1="48.0" y1="475.2" x2="1552.0" y2="475.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="457.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">3. 跨两代前滚 A → C</text>
+<text x="418.0" y="457.6" font-size="14" fill="#1F2328" text-anchor="start">1 次“还能干活” + 1 次“现场一致”</text>
+<text x="1442.0" y="457.6" font-size="14" fill="#1F2328" text-anchor="start">7</text>
+<line x1="48.0" y1="518.2" x2="1552.0" y2="518.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="500.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">4. A、C 交替 3 轮</text>
+<text x="418.0" y="500.6" font-size="14" fill="#1F2328" text-anchor="start">1 次“还能干活” + 6 次“现场一致”</text>
+<text x="1442.0" y="500.6" font-size="14" fill="#1F2328" text-anchor="start">17</text>
+<line x1="48.0" y1="561.2" x2="1552.0" y2="561.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="543.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">5. kill -9 心跳后回滚到 A</text>
+<text x="418.0" y="543.5" font-size="14" fill="#1F2328" text-anchor="start">1 次“还能干活” + 1 次“现场一致”</text>
+<text x="1442.0" y="543.5" font-size="14" fill="#1F2328" text-anchor="start">7</text>
+<text x="1442.0" y="606.0" font-size="17" fill="#0E6B4F" font-weight="600" text-anchor="start">合计 59</text>
+<line x1="48.0" y1="636.0" x2="1552.0" y2="636.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="662.0" font-size="13" fill="#8C959F" text-anchor="start">注：“还能干活”5 项：能执行命令、根文件系统能写能读回、能起新进程、新进程算对、后台进程仍在推进（只看计数器，不看时间）。</text></svg>

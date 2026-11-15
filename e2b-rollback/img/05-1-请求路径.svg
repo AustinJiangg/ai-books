@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="726" viewBox="0 0 1600 726" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="mD6603D" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#D6603D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="726" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">请求发往沙箱，却由宿主应答</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">SDK 把存档请求发到沙箱的 49984 端口，和普通请求走同一条路。orchestrator 的代理解出（沙箱 ID, 端口）后多看一眼：命中 49984 且是 checkpoint 路径，就不转发，交给 Checkpoint Service；读档进行中，别</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">的请求直接回答 409；其余照常进沙箱。</text>
+<rect x="48.0" y="290.0" width="200.0" height="90.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="148.0" y="318.6" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">SDK</text>
+<text x="148.0" y="341.2" font-size="12" fill="#57606A" text-anchor="middle">沙箱地址 :49984</text>
+<text x="148.0" y="359.2" font-size="12" fill="#57606A" text-anchor="middle">/checkpoint.Checkpoint/…</text>
+<rect x="328.0" y="270.0" width="300.0" height="130.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="478.0" y="317.9" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator 代理</text>
+<text x="478.0" y="341.1" font-size="12.5" fill="#57606A" text-anchor="middle">解出（沙箱 ID, 端口）</text>
+<text x="478.0" y="359.9" font-size="12.5" fill="#57606A" text-anchor="middle">复用已有的寻址机制</text>
+<path d="M252.0 335.0 L324.0 335.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="848.0" y="180.0" width="704.0" height="96.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1200.0" y="210.5" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">Checkpoint Service</text>
+<text x="1200.0" y="233.8" font-size="12.5" fill="#57606A" text-anchor="middle">命中 49984 + checkpoint 路径 / health</text>
+<text x="1200.0" y="252.5" font-size="12.5" fill="#57606A" text-anchor="middle">先查沙箱，再自己验一次令牌</text>
+<path d="M632.0 335.0 L668.0 335.0 L668.0 228.0 L844.0 228.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="756.0" y="218.0" font-size="12.5" fill="#57606A" text-anchor="middle">存档请求</text>
+<rect x="848.0" y="300.0" width="704.0" height="96.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1200.0" y="330.6" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">直接回答 409</text>
+<text x="1200.0" y="353.8" font-size="12.5" fill="#57606A" text-anchor="middle">这台沙箱正在读档：不放进去</text>
+<text x="1200.0" y="372.6" font-size="12.5" fill="#57606A" text-anchor="middle">SDK 抛 CheckpointInterruptedException</text>
+<path d="M632.0 335.0 L668.0 335.0 L668.0 348.0 L844.0 348.0" fill="none" stroke="#D6603D" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#mD6603D)"/>
+<text x="756.0" y="338.0" font-size="12.5" fill="#57606A" text-anchor="middle">读档期间的其他请求</text>
+<rect x="848.0" y="420.0" width="704.0" height="96.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1200.0" y="459.9" font-size="15" fill="#4B3FA8" font-weight="600" text-anchor="middle">照常转发进沙箱 → envd</text>
+<text x="1200.0" y="483.2" font-size="12.5" fill="#57606A" text-anchor="middle">其他一切请求，行为不变</text>
+<path d="M632.0 335.0 L668.0 335.0 L668.0 468.0 L844.0 468.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="756.0" y="458.0" font-size="12.5" fill="#57606A" text-anchor="middle">普通请求</text>
+<rect x="48.0" y="560.0" width="1504.0" height="70.0" rx="10" fill="#FFFFFF" stroke="#57606A" stroke-width="1.3"/>
+<text x="800.0" y="586.9" font-size="15" fill="#1F2328" font-weight="600" text-anchor="middle">沙箱里没有任何程序监听 49984</text>
+<text x="800.0" y="610.2" font-size="12.5" fill="#57606A" text-anchor="middle">SDK 的 is_available() 打的也是这里的 /health，探的是宿主侧服务活不活着；客户机完全不知道自己被存过档（VMGenID 那一次通知除外）</text>
+<line x1="48.0" y1="660.0" x2="1552.0" y2="660.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="686.0" font-size="13" fill="#8C959F" text-anchor="start">注：代理原本的令牌检查在拦截点之后，被截走的请求绕过了它，所以 Service 必须自己补上：新加旁路时，原来路上的检查要跟着补。</text></svg>

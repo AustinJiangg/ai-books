@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="652" viewBox="0 0 1600 652" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="652" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">一次存档的时间线：窗口外准备、冻结窗口、窗口外提交</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">冻结窗口里只有“写快照”一步与改动量相关；封存写层不搬数据。凡是能在窗口外做的都挪出去：准备在前，层文件改名进存档目录在恢复运行之后。</text>
+<rect x="48.0" y="196.0" width="250.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="173.0" y="218.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">进门</text>
+<text x="173.0" y="240.7" font-size="12" fill="#57606A" text-anchor="middle">鉴权 · 脱钩请求生命周期</text>
+<text x="173.0" y="258.7" font-size="12" fill="#57606A" text-anchor="middle">拒绝已撕裂 · 取沙箱锁</text>
+<rect x="48.0" y="286.0" width="250.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="173.0" y="317.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">再确认</text>
+<text x="173.0" y="339.7" font-size="12" fill="#57606A" text-anchor="middle">沙箱还在、还是同一代 · 水位检查</text>
+<rect x="48.0" y="376.0" width="250.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="173.0" y="398.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">决定全量 / 增量</text>
+<text x="173.0" y="420.7" font-size="12" fill="#57606A" text-anchor="middle">无基准 → 全量根</text>
+<text x="173.0" y="438.7" font-size="12" fill="#57606A" text-anchor="middle">在跟踪且链没断 → 增量</text>
+<rect x="48.0" y="466.0" width="250.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="173.0" y="497.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">Prepare</text>
+<text x="173.0" y="519.7" font-size="12" fill="#57606A" text-anchor="middle">配额检查 · 建目录 · 条目对外不可见</text>
+<text x="48.0" y="178.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">窗口外：失败都干净</text>
+<rect x="348.0" y="156.0" width="640.0" height="400.0" rx="12" fill="#EAF3FF" stroke="#9CC3F0" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="364.0" y="182.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="start">冻结窗口：虚机暂停</text>
+<rect x="368.0" y="206.0" width="600.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="384.0" y="239.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">1. 暂停</text>
+<text x="952.0" y="239.0" font-size="13" fill="#57606A" text-anchor="end">常数</text>
+<rect x="368.0" y="274.0" width="600.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="384.0" y="307.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">2. 仅全量：导出活跃位图</text>
+<text x="952.0" y="307.0" font-size="13" fill="#57606A" text-anchor="end">很小</text>
+<rect x="368.0" y="342.0" width="600.0" height="54.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="384.0" y="375.0" font-size="14.5" fill="#9A3215" font-weight="600" text-anchor="start">3. 写快照 + 位图（一次调用）</text>
+<text x="952.0" y="375.0" font-size="13" fill="#9A3215" font-weight="600" text-anchor="end">本代脏页数 · 纪元前进</text>
+<rect x="368.0" y="410.0" width="600.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="384.0" y="443.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">4. 封存写层</text>
+<text x="952.0" y="443.0" font-size="13" fill="#57606A" text-anchor="end">接近常数，不搬数据</text>
+<rect x="368.0" y="478.0" width="600.0" height="54.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="384.0" y="511.0" font-size="14.5" fill="#1F2328" font-weight="600" text-anchor="start">5. 恢复（无论成败）</text>
+<text x="952.0" y="511.0" font-size="13" fill="#57606A" text-anchor="end">常数</text>
+<rect x="1038.0" y="196.0" width="514.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1295.0" y="227.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">层文件改名进存档目录</text>
+<text x="1295.0" y="249.7" font-size="12" fill="#57606A" text-anchor="middle">跨文件系统时是拷贝，所以放在恢复之后</text>
+<rect x="1038.0" y="286.0" width="514.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1295.0" y="317.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">登记磁盘账本</text>
+<text x="1295.0" y="339.7" font-size="12" fill="#57606A" text-anchor="middle">失败 → 标记“已污染”</text>
+<rect x="1038.0" y="376.0" width="514.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1295.0" y="407.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">提交</text>
+<text x="1295.0" y="429.7" font-size="12" fill="#57606A" text-anchor="middle">改名 · committed · 发布 · 当前基准 ← 新存档</text>
+<rect x="1038.0" y="466.0" width="514.0" height="78.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1295.0" y="497.1" font-size="14.5" fill="#1D4F91" font-weight="600" text-anchor="middle">返回</text>
+<text x="1295.0" y="519.7" font-size="12" fill="#57606A" text-anchor="middle">checkpoint_id + mem_mode</text>
+<text x="1038.0" y="178.0" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="start">窗口外：失败走三层降级</text>
+<path d="M302.0 356.0 L344.0 356.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M992.0 356.0 L1034.0 356.0" fill="none" stroke="#1F2328" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="586.0" x2="1552.0" y2="586.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="612.0" font-size="13" fill="#8C959F" text-anchor="start">注：950 上改 128 MiB 时写快照约 62 ms、封存约 7 ms；首次全量写快照约 440 ms（第 17 篇）。</text></svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="572" viewBox="0 0 1600 572" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="572" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">三个钟：调用方等了多久、业务停了多久、停的时间花在哪</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">客户端墙钟包含网络往返和排队，最大，也是使用者唯一能复测的；冻结窗口是业务真正感到的停顿；分阶段计时回答时间花在哪。墙钟慢而冻结窗口正常，问题在网络或排队；冻结窗口慢，再看哪一段。</text>
+<rect x="88.0" y="176.0" width="1424.0" height="60.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.4"/>
+<text x="104.0" y="212.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">客户端墙钟：SDK 发出调用 → 拿到返回</text>
+<rect x="308.0" y="266.0" width="944.0" height="60.0" rx="10" fill="#EAF3FF" stroke="#9CC3F0" stroke-width="1.4" stroke-dasharray="6 4"/>
+<text x="324.0" y="302.0" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="start">冻结窗口 frozen：暂停 → 恢复</text>
+<rect x="310.0" y="356.0" width="90.4" height="50.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="355.2" y="387.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">暂停</text>
+<rect x="404.4" y="356.0" width="137.6" height="50.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="473.2" y="387.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">导出位图</text>
+<rect x="546.0" y="356.0" width="232.0" height="50.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="662.0" y="387.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">物化</text>
+<rect x="782.0" y="356.0" width="232.0" height="50.0" rx="6" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="898.0" y="387.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">fc_rollback</text>
+<rect x="1018.0" y="356.0" width="109.3" height="50.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1072.6" y="387.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">换盘</text>
+<rect x="1131.3" y="356.0" width="118.7" height="50.0" rx="6" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1190.6" y="387.0" font-size="13" fill="#1F2328" font-weight="600" text-anchor="middle">恢复</text>
+<text x="308.0" y="436.0" font-size="13" fill="#57606A" text-anchor="start">分阶段计时（举例：读档）。fc_* 由 Firecracker 自报，其余由 orchestrator 记</text>
+<text x="88.0" y="476.0" font-size="13" fill="#57606A" text-anchor="start">窗口外的段：网络往返、排队、装配视图、等 envd</text>
+<line x1="48.0" y1="506.0" x2="1552.0" y2="506.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="532.0" font-size="13" fill="#8C959F" text-anchor="start">注：包含关系：客户端墙钟 ⊇ 服务端总耗时 ⊇ 冻结窗口；分阶段计时有窗口内也有窗口外的段，只看分布，不做加总（第 16 篇）。</text></svg>

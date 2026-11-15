@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="646" viewBox="0 0 1600 646" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="646" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">“只留最近 N 个”：合并开启时条目数收敛，关掉就无限增长</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">每次删最旧的，它总是下一个存档的父亲，只能隐藏；它只有一个孩子，随即被合并进去。所以可见存档稳定在 N 个，条目总数不超过 2N + 1。关掉合并，或宿主没开脏页跟踪（每个存档都是全量根，不会合并），隐藏条目就</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">越积越多。</text>
+<line x1="128.0" y1="540.0" x2="1028.0" y2="540.0" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m57606A)"/>
+<line x1="128.0" y1="540.0" x2="128.0" y2="200.0" stroke="#57606A" stroke-width="1.5" stroke-linecap="round" marker-end="url(#m57606A)"/>
+<text x="1028.0" y="568.0" font-size="13" fill="#57606A" text-anchor="end">时间 / 存档次数</text>
+<text x="116.0" y="192.0" font-size="13" fill="#57606A" text-anchor="start">条目数</text>
+<path d="M128.0 540.0 L173.0 523.8 L218.0 507.6 L263.0 491.4 L308.0 475.2 L353.0 459.0 L398.0 442.9 L443.0 426.7 L488.0 410.5 L533.0 394.3 L578.0 378.1 L623.0 361.9 L668.0 345.7 L713.0 329.5 L758.0 313.3 L803.0 297.1 L848.0 281.0 L893.0 264.8 L938.0 248.6 L983.0 232.4 L1028.0 216.2" fill="none" stroke="#D6603D" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M128.0 540.0 L173.0 515.7 L218.0 499.5 L263.0 483.3 L308.0 467.1 L353.0 451.0 L398.0 434.8 L443.0 418.6 L488.0 402.4 L533.0 386.2 L578.0 370.0 L623.0 370.0 L668.0 370.0 L713.0 370.0 L758.0 370.0 L803.0 370.0 L848.0 370.0 L893.0 370.0 L938.0 370.0 L983.0 370.0 L1028.0 370.0" fill="none" stroke="#1F9E77" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<line x1="128.0" y1="370.0" x2="1028.0" y2="370.0" stroke="#1F9E77" stroke-width="1" stroke-linecap="round" stroke-dasharray="5 4"/>
+<text x="1020.0" y="360.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="end">上界 2N + 1</text>
+<text x="793.0" y="283.1" font-size="13.5" fill="#9A3215" font-weight="600" text-anchor="end">关掉合并：线性增长</text>
+<text x="758.0" y="396.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">合并开启：稳定</text>
+<rect x="1108.0" y="180.0" width="444.0" height="360.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1128.0" y="210.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">在字节上限下删哪个</text>
+<rect x="1128.0" y="250.0" width="404.0" height="80.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1330.0" y="281.8" font-size="14.5" fill="#9A3215" font-weight="600" text-anchor="middle">删当前基准</text>
+<text x="1330.0" y="305.0" font-size="12.5" fill="#57606A" text-anchor="middle">几乎腾不出：只能隐藏</text>
+<rect x="1128.0" y="342.0" width="404.0" height="80.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1330.0" y="373.8" font-size="14.5" fill="#8A5300" font-weight="600" text-anchor="middle">删最旧的</text>
+<text x="1330.0" y="397.0" font-size="12.5" fill="#57606A" text-anchor="middle">并进下一个，释放两者重叠的页</text>
+<rect x="1128.0" y="434.0" width="404.0" height="80.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1330.0" y="465.8" font-size="14.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">读档到较早的存档，再删之后那一支</text>
+<text x="1330.0" y="489.0" font-size="12.5" fill="#57606A" text-anchor="middle">释放最彻底</text>
+<line x1="48.0" y1="580.0" x2="1552.0" y2="580.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="606.0" font-size="13" fill="#8C959F" text-anchor="start">注：示意图，非实测曲线。实测对照见第 18 篇：只留最近 10 个，关合并 10 分钟就把链深推到上千、写掉半个多 TiB，开合并则一切平稳。</text></svg>

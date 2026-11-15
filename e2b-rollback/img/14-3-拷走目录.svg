@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="652" viewBox="0 0 1600 652" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="652" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">思想实验：把存档目录完整拷走，为什么还是恢复不了</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">四层依赖缺一不可：恢复机制要求活着的虚机；磁盘存档只是相对模板的增量；账本不从磁盘加载；网络、块设备、内存映射都绑在原来的进程上。有意思的是内存那一半其实已经自足：树根是全量的。</text>
+<rect x="48.0" y="156.0" width="900.0" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="62.0" y="182.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">1. 恢复机制要求活体</text>
+<text x="62.0" y="206.2" font-size="12.5" fill="#57606A" text-anchor="start">读档是往活着的 Firecracker 进程里写；原来的进程已经没了</text>
+<rect x="48.0" y="238.0" width="900.0" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="62.0" y="264.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">2. 磁盘存档不自足</text>
+<text x="62.0" y="288.2" font-size="12.5" fill="#57606A" text-anchor="start">封存层只是相对模板的改动，不含模板数据，要配同一份模板和块清单</text>
+<rect x="48.0" y="320.0" width="900.0" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="62.0" y="346.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">3. 账本不从磁盘加载</text>
+<text x="62.0" y="370.2" font-size="12.5" fill="#57606A" text-anchor="start">orchestrator 启动时清空目录、不读 manifest；拷回去也看不见</text>
+<rect x="48.0" y="402.0" width="900.0" height="70.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="62.0" y="428.9" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">4. 缺运行环境</text>
+<text x="62.0" y="452.2" font-size="12.5" fill="#57606A" text-anchor="start">网络槽位、NBD 设备、页缓存状态、设备组成都要一致</text>
+<rect x="48.0" y="484.0" width="900.0" height="70.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="62.0" y="510.9" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">内存那一半已经自足</text>
+<text x="62.0" y="534.2" font-size="12.5" fill="#57606A" text-anchor="start">树根是全量，只读本地文件就能解析出任意一代的完整内存</text>
+<rect x="1008.0" y="156.0" width="544.0" height="400.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1028.0" y="186.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">要让存档“带得走”，需要</text>
+<circle cx="1034.0" cy="225.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1046.0" y="230.0" font-size="13.5" fill="#1F2328" text-anchor="start">把磁盘层栈压平，连模板底座一起装进去</text>
+<circle cx="1034.0" cy="281.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1046.0" y="286.0" font-size="13.5" fill="#1F2328" text-anchor="start">提供单独的导出接口</text>
+<circle cx="1034.0" cy="337.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1046.0" y="342.0" font-size="13.5" fill="#1F2328" text-anchor="start">账本按事务顺序刷盘、启动时读回</text>
+<circle cx="1034.0" cy="393.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1046.0" y="398.0" font-size="13.5" fill="#1F2328" text-anchor="start">回收陈旧条目、处理格式升级</text>
+<circle cx="1034.0" cy="449.4" r="3.6" fill="#57606A" stroke="none" stroke-width="1"/>
+<text x="1046.0" y="454.0" font-size="13.5" fill="#1F2328" text-anchor="start">即便如此，也恢复不了已消失的虚机：需要长期保存时用原生快照</text>
+<line x1="48.0" y1="586.0" x2="1552.0" y2="586.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="612.0" font-size="13" fill="#8C959F" text-anchor="start">注：这是取舍，不是缺陷：用“绑定沙箱生命周期”换来零拷贝封存、原地回滚、只随回退跨度增长的成本（第 4 篇）。</text></svg>

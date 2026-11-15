@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="672" viewBox="0 0 1600 672" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="672" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">判定口径：六件事钉死在对自己不利的一侧</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">三个钟里只用最大、最保守、使用者唯一能复测的客户端墙钟判定；只判增量存档和原地读档；看中位数，p99 并列；按改动量分档；全量单列；出现一个 full 整轮作废。冻结窗口只作解释，用它判定等于放水。</text>
+<rect x="48.0" y="156.0" width="1180.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="58.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">维度</text>
+<text x="298.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">本书取法</text>
+<text x="758.0" y="178.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">为什么</text>
+<line x1="48.0" y1="239.2" x2="1228.0" y2="239.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="221.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">量什么钟</text>
+<text x="298.0" y="221.6" font-size="14" fill="#1F2328" text-anchor="start">客户端墙钟</text>
+<text x="758.0" y="221.6" font-size="14" fill="#1F2328" text-anchor="start">最大、最保守、可复测</text>
+<line x1="48.0" y1="282.2" x2="1228.0" y2="282.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="264.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">哪类存档</text>
+<text x="298.0" y="264.6" font-size="14" fill="#1F2328" text-anchor="start">增量（mem_mode=incremental）</text>
+<text x="758.0" y="264.6" font-size="14" fill="#1F2328" text-anchor="start">高频回退里的每一次</text>
+<line x1="48.0" y1="325.2" x2="1228.0" y2="325.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="307.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">哪类读档</text>
+<text x="298.0" y="307.6" font-size="14" fill="#1F2328" text-anchor="start">原地（沙箱 ID 和进程不变）</text>
+<text x="758.0" y="307.6" font-size="14" fill="#1F2328" text-anchor="start">另起一台是原生的路径</text>
+<line x1="48.0" y1="368.2" x2="1228.0" y2="368.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="350.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">统计量</text>
+<text x="298.0" y="350.6" font-size="14" fill="#1F2328" text-anchor="start">p50 判定，p99 并列</text>
+<text x="758.0" y="350.6" font-size="14" fill="#1F2328" text-anchor="start">单次会抖；样本少时 p99 = 最大值</text>
+<line x1="48.0" y1="411.2" x2="1228.0" y2="411.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="393.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">分档变量</text>
+<text x="298.0" y="393.6" font-size="14" fill="#1F2328" text-anchor="start">名义改动量，内存:文件 = 3:1</text>
+<text x="758.0" y="393.6" font-size="14" fill="#1F2328" text-anchor="start">成本只看改了多少，不看内存多大</text>
+<line x1="48.0" y1="454.2" x2="1228.0" y2="454.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="436.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">全量</text>
+<text x="298.0" y="436.6" font-size="14" fill="#1F2328" text-anchor="start">单列，不参与判定</text>
+<text x="758.0" y="436.6" font-size="14" fill="#1F2328" text-anchor="start">一次性成本，作增量的分母</text>
+<line x1="48.0" y1="497.2" x2="1228.0" y2="497.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="479.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">判定前提</text>
+<text x="298.0" y="479.6" font-size="14" fill="#1F2328" text-anchor="start">出现 full 整轮作废</text>
+<text x="758.0" y="479.6" font-size="14" fill="#1F2328" text-anchor="start">防止悄悄退化成全量</text>
+<rect x="1288.0" y="156.0" width="264.0" height="420.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="1308.0" y="186.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">三个钟的包含关系</text>
+<rect x="1308.0" y="216.0" width="224.0" height="290.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1322.0" y="242.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="start">客户端墙钟</text>
+<rect x="1332.0" y="266.0" width="176.0" height="190.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1346.0" y="292.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="start">服务端总耗时</text>
+<rect x="1356.0" y="316.0" width="128.0" height="90.0" rx="10" fill="#EAF3FF" stroke="#9CC3F0" stroke-width="1.3"/>
+<text x="1370.0" y="342.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="start">冻结窗口</text>
+<text x="1308.0" y="532.0" font-size="13" fill="#57606A" text-anchor="start">墙钟达标 ⇒ 冻结窗口必然达标</text>
+<text x="1308.0" y="554.0" font-size="13" fill="#57606A" text-anchor="start">反之不成立</text>
+<line x1="48.0" y1="606.0" x2="1552.0" y2="606.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="632.0" font-size="13" fill="#8C959F" text-anchor="start">注：判定线没有限定改动量，所以结论必然是“改动量在多少以内达标”，而不是一句笼统的“达标”。</text></svg>

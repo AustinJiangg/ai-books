@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="642" viewBox="0 0 1600 642" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="642" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">纪元：每次写快照或读档都把脏页记录清零</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">KVM 取位图是“破坏性读”：取走的同时清空。所以每个存档的位图恰好是“父亲那一刻到这一刻”之间写过的页，这就是纪元。读取前后都要先把信息放稳妥，否则后面一失败，这些页脏过的事实就永远丢了。</text>
+<line x1="108.0" y1="236.0" x2="1512.0" y2="236.0" stroke="#57606A" stroke-width="2" stroke-linecap="round" marker-end="url(#m57606A)"/>
+<line x1="168.0" y1="216.0" x2="168.0" y2="256.0" stroke="#1F9E77" stroke-width="3" stroke-linecap="round"/>
+<text x="168.0" y="204.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">ck1 全量根</text>
+<text x="168.0" y="276.0" font-size="12" fill="#57606A" text-anchor="middle">清零</text>
+<line x1="528.0" y1="216.0" x2="528.0" y2="256.0" stroke="#5B9BE6" stroke-width="3" stroke-linecap="round"/>
+<text x="528.0" y="204.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">ck2</text>
+<text x="528.0" y="276.0" font-size="12" fill="#57606A" text-anchor="middle">清零</text>
+<line x1="888.0" y1="216.0" x2="888.0" y2="256.0" stroke="#D6603D" stroke-width="3" stroke-linecap="round"/>
+<text x="888.0" y="204.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">读档回 ck1</text>
+<text x="888.0" y="276.0" font-size="12" fill="#57606A" text-anchor="middle">清零</text>
+<line x1="1228.0" y1="216.0" x2="1228.0" y2="256.0" stroke="#5B9BE6" stroke-width="3" stroke-linecap="round"/>
+<text x="1228.0" y="204.0" font-size="14" fill="#1D4F91" font-weight="600" text-anchor="middle">ck3</text>
+<text x="1228.0" y="276.0" font-size="12" fill="#57606A" text-anchor="middle">清零</text>
+<rect x="176.0" y="296.0" width="344.0" height="40.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="348.0" y="322.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">E(ck2)：随 ck2 落地</text>
+<rect x="536.0" y="296.0" width="344.0" height="40.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="708.0" y="322.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">活跃脏页 L：读档时并进回滚集</text>
+<rect x="896.0" y="296.0" width="324.0" height="40.0" rx="8" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="1058.0" y="322.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">E(ck3)：父亲是 ck1</text>
+<text x="48.0" y="386.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">取位图的三个场合，都遵守“先放稳妥，再做可能失败的事”</text>
+<line x1="48.0" y1="447.0" x2="1552.0" y2="447.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="429.3" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">写差分快照</text>
+<text x="358.0" y="429.3" font-size="14" fill="#1F2328" text-anchor="start">写文件失败 → 把取出的位图放回备份位图；写成功才清零</text>
+<line x1="48.0" y1="490.0" x2="1552.0" y2="490.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="472.3" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">原地回滚</text>
+<text x="358.0" y="472.3" font-size="14" fill="#1F2328" text-anchor="start">取出来立刻放进备份位图，再往下走</text>
+<line x1="48.0" y1="533.0" x2="1552.0" y2="533.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="515.3" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">导出脏页位图接口</text>
+<text x="358.0" y="515.3" font-size="14" fill="#1F2328" text-anchor="start">取出来先放进备份位图，再写文件；不清零</text>
+<line x1="48.0" y1="576.0" x2="1552.0" y2="576.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="602.0" font-size="13" fill="#8C959F" text-anchor="start">注：Firecracker 自己写客户机内存（网卡收包、设备队列）不经过 KVM，要自己标进备份位图；写快照取的是两份位图的并集。</text></svg>

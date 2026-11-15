@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="722" viewBox="0 0 1600 722" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="722" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">三条被否决的路线，以及最终的分工</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">在客户机里装代理恢复不了内核态和磁盘；单独的快照服务进程碰不到 orchestrator 私有的活对象；全部塞进 Firecracker 又够不着磁盘、还要开大安全口子。最终：语义在 orchestrator，机械动作在 Firecracker。</text>
+<rect x="48.0" y="156.0" width="485.3" height="250.0" rx="14" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">✗ 在客户机里跑代理（CRIU 式）</text>
+<circle cx="74.0" cy="231.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="236.0" font-size="13.5" fill="#1F2328" text-anchor="start">恢复不了内核态：文件缓存、协议栈</text>
+<circle cx="74.0" cy="271.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="276.0" font-size="13.5" fill="#1F2328" text-anchor="start">代理自己怎么存档？</text>
+<circle cx="74.0" cy="311.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="316.0" font-size="13.5" fill="#1F2328" text-anchor="start">要分发、升级、权限</text>
+<circle cx="74.0" cy="351.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="86.0" y="356.0" font-size="13.5" fill="#1F2328" text-anchor="start">解决不了磁盘</text>
+<rect x="557.3" y="156.0" width="485.3" height="250.0" rx="14" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="577.3" y="186.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">✗ 宿主上单独的快照服务</text>
+<circle cx="583.3" cy="231.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="595.3" y="236.0" font-size="13.5" fill="#1F2328" text-anchor="start">每一步都要碰 orchestrator 私有对象</text>
+<circle cx="583.3" cy="271.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="595.3" y="276.0" font-size="13.5" fill="#1F2328" text-anchor="start">Overlay 指针、NBD、网络槽位</text>
+<circle cx="583.3" cy="311.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="595.3" y="316.0" font-size="13.5" fill="#1F2328" text-anchor="start">要么复制生命周期管理</text>
+<circle cx="583.3" cy="351.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="595.3" y="356.0" font-size="13.5" fill="#1F2328" text-anchor="start">要么设计跨进程所有权协议</text>
+<rect x="1066.7" y="156.0" width="485.3" height="250.0" rx="14" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1086.7" y="186.0" font-size="15" fill="#9A3215" font-weight="600" text-anchor="start">✗ 全部放进 Firecracker</text>
+<circle cx="1092.7" cy="231.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="1104.7" y="236.0" font-size="13.5" fill="#1F2328" text-anchor="start">磁盘根本不在 Firecracker 里</text>
+<circle cx="1092.7" cy="271.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="1104.7" y="276.0" font-size="13.5" fill="#1F2328" text-anchor="start">分叉膨胀成存储子系统</text>
+<circle cx="1092.7" cy="311.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="1104.7" y="316.0" font-size="13.5" fill="#1F2328" text-anchor="start">跟上游同步变难</text>
+<circle cx="1092.7" cy="351.4" r="3.6" fill="#D6603D" stroke="none" stroke-width="1"/>
+<text x="1104.7" y="356.0" font-size="13.5" fill="#1F2328" text-anchor="start">seccomp 要开很多口子</text>
+<text x="48.0" y="456.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">最终分工</text>
+<rect x="48.0" y="476.0" width="712.0" height="150.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="404.0" y="533.1" font-size="16" fill="#1D4F91" font-weight="600" text-anchor="middle">orchestrator：语义</text>
+<text x="404.0" y="557.0" font-size="13" fill="#57606A" text-anchor="middle">存档树、回滚集、按页找内容</text>
+<text x="404.0" y="576.5" font-size="13" fill="#57606A" text-anchor="middle">磁盘层、引用计数、合并、失败分级</text>
+<rect x="840.0" y="476.0" width="712.0" height="150.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1196.0" y="533.1" font-size="16" fill="#8A5300" font-weight="600" text-anchor="middle">Firecracker：机械动作</text>
+<text x="1196.0" y="557.0" font-size="13" fill="#57606A" text-anchor="middle">“把这张位图指定的页，从这个文件写进客户机内存”</text>
+<text x="1196.0" y="576.5" font-size="13" fill="#57606A" text-anchor="middle">恢复 CPU、中断控制器、设备；不知道树是什么</text>
+<path d="M764.0 551.0 L836.0 551.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-start="url(#m1F2328)" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="656.0" x2="1552.0" y2="656.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="682.0" font-size="13" fill="#8C959F" text-anchor="start">注：Firecracker 只加了三处：快照请求多一个 dirty_bitmap_path 字段，新增 save-dirty-bitmap 和 rollback 两个接口（第 11 篇）。</text></svg>

@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="712" viewBox="0 0 1600 712" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="712" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">读档换视图：换上目标的层组合和一个新空写层</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">读档回 c1：Overlay 的只读来源换成 c1 的层清单（模板 + W1），活写层换成新的空 W3；W2 是被丢弃时间线上的写，连文件删除。目标视图在暂停前就装好，暂停后在独占锁下两个指针一起换。</text>
+<text x="48.0" y="156.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">读档前（当前在 c2 之后）</text>
+<text x="204.0" y="211.0" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="end">活写层 W2</text>
+<rect x="220.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="264.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="308.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="353.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="397.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.1"/>
+<text x="417.5" y="211.0" font-size="13" fill="#4B3FA8" font-weight="600" text-anchor="middle">C</text>
+<rect x="441.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="486.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="530.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="574.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="619.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="663.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="707.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<text x="204.0" y="271.0" font-size="13.5" fill="#3D3C38" font-weight="600" text-anchor="end">封存层 W1</text>
+<rect x="220.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="264.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="308.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="353.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="397.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<text x="417.5" y="271.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">B</text>
+<rect x="441.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="486.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="530.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="574.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<text x="594.8" y="271.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">x</text>
+<rect x="619.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="663.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="707.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<text x="204.0" y="331.0" font-size="13.5" fill="#3D3C38" font-weight="600" text-anchor="end">模板</text>
+<rect x="220.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="264.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="308.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="353.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="397.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<text x="417.5" y="331.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">A</text>
+<rect x="441.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="486.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="530.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="574.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="619.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="663.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="707.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<text x="850.0" y="156.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">读档回 c1 之后</text>
+<text x="1006.0" y="211.0" font-size="13.5" fill="#4B3FA8" font-weight="600" text-anchor="end">新活写层 W3</text>
+<rect x="1022.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1066.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1110.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1155.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1199.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1243.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1288.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1332.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1376.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1421.0" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1465.3" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1509.7" y="186.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<text x="1006.0" y="271.0" font-size="13.5" fill="#3D3C38" font-weight="600" text-anchor="end">封存层 W1</text>
+<rect x="1022.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1066.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1110.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1155.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1199.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<text x="1219.5" y="271.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">B</text>
+<rect x="1243.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1288.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1332.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1376.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<text x="1396.8" y="271.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">x</text>
+<rect x="1421.0" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1465.3" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<rect x="1509.7" y="246.0" width="40.3" height="40.0" rx="4" fill="#FFFFFF" stroke="#D8DEE4" stroke-width="1.1" stroke-dasharray="3 3"/>
+<text x="1006.0" y="331.0" font-size="13.5" fill="#3D3C38" font-weight="600" text-anchor="end">模板</text>
+<rect x="1022.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1066.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1110.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1155.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1199.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<text x="1219.5" y="331.0" font-size="13" fill="#3D3C38" font-weight="600" text-anchor="middle">A</text>
+<rect x="1243.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1288.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1332.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1376.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1421.0" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1465.3" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<rect x="1509.7" y="306.0" width="40.3" height="40.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.1"/>
+<path d="M760.0 266.0 L840.0 266.0" fill="none" stroke="#1F2328" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="1219.5" y="374.0" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="middle">读块 100 → B</text>
+<rect x="48.0" y="416.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="358.0" y="438.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">读档前</text>
+<text x="858.0" y="438.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">读档回 c1 后</text>
+<line x1="48.0" y1="499.2" x2="1552.0" y2="499.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="481.6" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">只读来源</text>
+<text x="358.0" y="481.6" font-size="14" fill="#1F2328" text-anchor="start">模板 + W1</text>
+<text x="858.0" y="481.6" font-size="14" fill="#1F2328" text-anchor="start">模板 + W1（c1 的清单）</text>
+<line x1="48.0" y1="542.2" x2="1552.0" y2="542.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="524.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">活写层</text>
+<text x="358.0" y="524.5" font-size="14" fill="#1F2328" text-anchor="start">W2，块 100 是 C</text>
+<text x="858.0" y="524.5" font-size="14" fill="#1F2328" text-anchor="start">新空 W3</text>
+<line x1="48.0" y1="585.2" x2="1552.0" y2="585.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="567.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">读块 100</text>
+<text x="358.0" y="567.5" font-size="14" fill="#1F2328" text-anchor="start">C</text>
+<text x="858.0" y="567.5" font-size="14" fill="#1F2328" text-anchor="start">B</text>
+<line x1="48.0" y1="628.2" x2="1552.0" y2="628.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="610.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">W2 的去向</text>
+<text x="358.0" y="610.5" font-size="14" fill="#1F2328" text-anchor="start">——</text>
+<text x="858.0" y="610.5" font-size="14" fill="#1F2328" text-anchor="start">被丢弃的时间线，连文件删除</text>
+<line x1="48.0" y1="646.0" x2="1552.0" y2="646.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="672.0" font-size="13" fill="#8C959F" text-anchor="start">注：不是把 B 复制回写层；而且只换磁盘不行，内存里的文件缓存也必须一起回去，所以磁盘、内存、设备在同一个冻结窗口里换。</text></svg>

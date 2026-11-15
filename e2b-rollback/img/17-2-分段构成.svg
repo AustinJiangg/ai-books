@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="642" viewBox="0 0 1600 642" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="642" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">时间花在哪：128 / 256 / 512 MiB 三档的分阶段中位数</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">存档的增长主要在“写快照”，封存也略增但小得多；读档的增长在“物化”和 Firecracker“写回内存”，两者都随回滚量增长。取位图约 1.6 ms、窗口外装配视图约 0.2 ms、等 envd 约 1.5 ms，基本不随档位变。</text>
+<text x="48.0" y="166.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">存档（ms，各段中位数）</text>
+<text x="144.0" y="226.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">128 MiB</text>
+<rect x="158.0" y="196.0" width="143.3" height="22.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="309.3" y="212.0" font-size="12" fill="#1D4F91" font-weight="600" text-anchor="start">写快照 62.3</text>
+<rect x="158.0" y="222.0" width="16.3" height="22.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="182.3" y="238.0" font-size="12" fill="#3D3C38" font-weight="600" text-anchor="start">封存 7.1</text>
+<text x="144.0" y="336.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">256 MiB</text>
+<rect x="158.0" y="306.0" width="252.8" height="22.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="418.8" y="322.0" font-size="12" fill="#1D4F91" font-weight="600" text-anchor="start">写快照 109.9</text>
+<rect x="158.0" y="332.0" width="28.5" height="22.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="194.5" y="348.0" font-size="12" fill="#3D3C38" font-weight="600" text-anchor="start">封存 12.4</text>
+<text x="144.0" y="446.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">512 MiB</text>
+<rect x="158.0" y="416.0" width="482.5" height="22.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="648.5" y="432.0" font-size="12" fill="#1D4F91" font-weight="600" text-anchor="start">写快照 209.8</text>
+<rect x="158.0" y="442.0" width="50.4" height="22.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="216.4" y="458.0" font-size="12" fill="#3D3C38" font-weight="600" text-anchor="start">封存 21.9</text>
+<rect x="158.0" y="535.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="182.0" y="548.0" font-size="13" fill="#57606A" text-anchor="start">写快照</text>
+<rect x="249.0" y="535.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="273.0" y="548.0" font-size="13" fill="#57606A" text-anchor="start">封存</text>
+<text x="840.0" y="166.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">读档（ms，各段中位数）</text>
+<text x="936.0" y="226.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">128 MiB</text>
+<rect x="950.0" y="196.0" width="78.4" height="22.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="1036.4" y="212.0" font-size="12" fill="#1D4F91" font-weight="600" text-anchor="start">物化 34.1</text>
+<rect x="950.0" y="222.0" width="44.6" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1002.6" y="238.0" font-size="12" fill="#8A5300" font-weight="600" text-anchor="start">写回内存 19.4</text>
+<rect x="950.0" y="248.0" width="3.8" height="22.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="961.8" y="264.0" font-size="12" fill="#3D3C38" font-weight="600" text-anchor="start">取位图 1.65</text>
+<text x="936.0" y="336.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">256 MiB</text>
+<rect x="950.0" y="306.0" width="121.7" height="22.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="1079.7" y="322.0" font-size="12" fill="#1D4F91" font-weight="600" text-anchor="start">物化 52.9</text>
+<rect x="950.0" y="332.0" width="78.0" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1036.0" y="348.0" font-size="12" fill="#8A5300" font-weight="600" text-anchor="start">写回内存 33.9</text>
+<rect x="950.0" y="358.0" width="3.8" height="22.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="961.8" y="374.0" font-size="12" fill="#3D3C38" font-weight="600" text-anchor="start">取位图 1.65</text>
+<text x="936.0" y="446.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">512 MiB</text>
+<rect x="950.0" y="416.0" width="239.7" height="22.0" rx="3" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1"/>
+<text x="1197.7" y="432.0" font-size="12" fill="#1D4F91" font-weight="600" text-anchor="start">物化 104.2</text>
+<rect x="950.0" y="442.0" width="157.5" height="22.0" rx="3" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1115.5" y="458.0" font-size="12" fill="#8A5300" font-weight="600" text-anchor="start">写回内存 68.5</text>
+<rect x="950.0" y="468.0" width="3.8" height="22.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="961.8" y="484.0" font-size="12" fill="#3D3C38" font-weight="600" text-anchor="start">取位图 1.65</text>
+<rect x="950.0" y="535.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="974.0" y="548.0" font-size="13" fill="#57606A" text-anchor="start">物化</text>
+<rect x="1028.0" y="535.0" width="16.0" height="16.0" rx="4" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.2"/>
+<text x="1052.0" y="548.0" font-size="13" fill="#57606A" text-anchor="start">写回内存</text>
+<rect x="1132.0" y="535.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="1156.0" y="548.0" font-size="13" fill="#57606A" text-anchor="start">取位图</text>
+<line x1="48.0" y1="576.0" x2="1552.0" y2="576.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="602.0" font-size="13" fill="#8C959F" text-anchor="start">注：各段中位数不一定出自同一次操作，后台工作也可能和关键路径重叠，所以不能直接相加。</text></svg>

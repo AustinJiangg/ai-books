@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="656" viewBox="0 0 1600 656" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F9E77" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F9E77" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker><marker id="m57606A" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#57606A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="656" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">两条时间线：客户机回到 T0，外面的世界还在 T1</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">读档把客户机内部的状态带回存档时刻 T0，可网卡对象里的缓存、宿主的连接跟踪表、代理的连接池、外部的对端都还记得 T1。重建路线没有前三项问题，原地路线必须逐个处理；它们的共同特点是表现为挂死而不是报错。</text>
+<line x1="208.0" y1="186.0" x2="1552.0" y2="186.0" stroke="#57606A" stroke-width="2" stroke-linecap="round" marker-end="url(#m57606A)"/>
+<text x="48.0" y="192.0" font-size="14" fill="#57606A" font-weight="600" text-anchor="start">时间</text>
+<line x1="448.0" y1="170.0" x2="448.0" y2="202.0" stroke="#1F2328" stroke-width="2.4" stroke-linecap="round"/>
+<text x="448.0" y="162.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">T0：存档</text>
+<line x1="1148.0" y1="170.0" x2="1148.0" y2="202.0" stroke="#1F2328" stroke-width="2.4" stroke-linecap="round"/>
+<text x="1148.0" y="162.0" font-size="14" fill="#1F2328" font-weight="600" text-anchor="middle">T1：读档</text>
+<path d="M1138.0 226.0 L458.0 226.0" fill="none" stroke="#1F9E77" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F9E77)"/>
+<text x="798.0" y="218.0" font-size="13" fill="#1F9E77" font-weight="600" text-anchor="middle">客户机内部：内存、CPU、设备回到 T0</text>
+<rect x="48.0" y="276.0" width="420.0" height="64.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="258.0" y="312.8" font-size="15" fill="#8A5300" font-weight="600" text-anchor="middle">网卡对象里缓存的描述符</text>
+<rect x="498.0" y="276.0" width="440.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="718.0" y="312.1" font-size="13.5" fill="#57606A" text-anchor="middle">还记得：按 T1 的接收队列解析</text>
+<rect x="968.0" y="276.0" width="584.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1260.0" y="312.1" font-size="13.5" fill="#57606A" text-anchor="middle">处理：清空，按回滚后的队列重新解析</text>
+<rect x="48.0" y="352.0" width="420.0" height="64.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="258.0" y="388.8" font-size="15" fill="#3D3C38" font-weight="600" text-anchor="middle">宿主连接跟踪表</text>
+<rect x="498.0" y="352.0" width="440.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="718.0" y="388.1" font-size="13.5" fill="#57606A" text-anchor="middle">还记得：记着 T1 的 TCP 序号</text>
+<rect x="968.0" y="352.0" width="584.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1260.0" y="388.1" font-size="13.5" fill="#57606A" text-anchor="middle">处理：清掉本沙箱的表项，和回滚并行</text>
+<rect x="48.0" y="428.0" width="420.0" height="64.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="258.0" y="464.8" font-size="15" fill="#1D4F91" font-weight="600" text-anchor="middle">代理的连接池</text>
+<rect x="498.0" y="428.0" width="440.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="718.0" y="464.1" font-size="13.5" fill="#57606A" text-anchor="middle">还记得：T1 时建立的连接</text>
+<rect x="968.0" y="428.0" width="584.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1260.0" y="464.1" font-size="13.5" fill="#57606A" text-anchor="middle">处理：读档一开始就丢弃</text>
+<rect x="48.0" y="504.0" width="420.0" height="64.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="258.0" y="540.8" font-size="15" fill="#9A3215" font-weight="600" text-anchor="middle">外部对端、数据库</text>
+<rect x="498.0" y="504.0" width="440.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="718.0" y="540.0" font-size="13.5" fill="#57606A" text-anchor="middle">还记得：和沙箱打过的所有交道</text>
+<rect x="968.0" y="504.0" width="584.0" height="64.0" rx="10" fill="#FFFFFF" stroke="#D6603D" stroke-width="1.3"/>
+<text x="1260.0" y="540.0" font-size="13.5" fill="#57606A" text-anchor="middle">处理：回不去：业务幂等、去重、补偿</text>
+<line x1="48.0" y1="590.0" x2="1552.0" y2="590.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="616.0" font-size="13" fill="#8C959F" text-anchor="start">注：通用规律：从客户机内存推导出的缓存、宿主上“记得这台客户机”的状态，都要在流量放回来之前处理掉（第 12 篇末尾的检查表）。</text></svg>

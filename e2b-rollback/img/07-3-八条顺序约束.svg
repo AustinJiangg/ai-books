@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="734" viewBox="0 0 1600 734" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="734" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">八条顺序约束：只有一条被违反后能立刻报错</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">前五条在 orchestrator 的编排里，后三条在 Firecracker 内部。被违反后能立刻报错的只有第 2 条（靠 Firecracker 的覆盖校验兜底）；第 1 条可能以文件系统报错露头；其余全是静默的。</text>
+<circle cx="62.0" cy="171.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="175.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">1</text>
+<rect x="88.0" y="146.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="175.2" font-size="14" fill="#57606A" text-anchor="start">存档时内存与磁盘在同一个暂停窗口里</text>
+<rect x="748.0" y="146.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="175.1" font-size="13.5" fill="#57606A" text-anchor="start">客户机看到两个时刻的世界</text>
+<rect x="1468.0" y="158.0" width="48.0" height="26.0" rx="13.0" fill="#FDF0D9" stroke="#D9922B" stroke-width="1"/>
+<text x="1492.0" y="175.7" font-size="13" fill="#8A5300" font-weight="600" text-anchor="middle">部分</text>
+<circle cx="62.0" cy="231.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="235.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">2</text>
+<rect x="88.0" y="206.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="235.2" font-size="14" fill="#57606A" text-anchor="start">读档时暂停之后才导出脏页、才物化</text>
+<rect x="748.0" y="206.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="235.1" font-size="13.5" fill="#57606A" text-anchor="start">内容文件漏页</text>
+<rect x="1468.0" y="218.0" width="48.0" height="26.0" rx="13.0" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1"/>
+<text x="1492.0" y="235.7" font-size="13" fill="#0E6B4F" font-weight="600" text-anchor="middle">报错</text>
+<circle cx="62.0" cy="291.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="295.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">3</text>
+<rect x="88.0" y="266.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="295.2" font-size="14" fill="#57606A" text-anchor="start">清连接跟踪表在恢复运行之前完成</text>
+<rect x="748.0" y="266.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="295.1" font-size="13.5" fill="#57606A" text-anchor="start">跨越读档的连接挂死</text>
+<rect x="1468.0" y="278.0" width="48.0" height="26.0" rx="13.0" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1492.0" y="295.7" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">静默</text>
+<circle cx="62.0" cy="351.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="355.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">4</text>
+<rect x="88.0" y="326.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="355.2" font-size="14" fill="#57606A" text-anchor="start">账本基准与 Firecracker 脏页记录同时重置</text>
+<rect x="748.0" y="326.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="355.1" font-size="13.5" fill="#57606A" text-anchor="start">下一代位图区间错位 → 漏页</text>
+<rect x="1468.0" y="338.0" width="48.0" height="26.0" rx="13.0" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1492.0" y="355.7" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">静默</text>
+<circle cx="62.0" cy="411.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="415.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">5</text>
+<rect x="88.0" y="386.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="415.2" font-size="14" fill="#57606A" text-anchor="start">回滚完成后先更新账本、再等 envd</text>
+<rect x="748.0" y="386.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="415.1" font-size="13.5" fill="#57606A" text-anchor="start">下次存档差分算错父亲</text>
+<rect x="1468.0" y="398.0" width="48.0" height="26.0" rx="13.0" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1492.0" y="415.7" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">静默</text>
+<line x1="48.0" y1="448.0" x2="1552.0" y2="448.0" stroke="#D9922B" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="6 4"/>
+<text x="88.0" y="470.0" font-size="12.5" fill="#8A5300" font-weight="600" text-anchor="start">以下在 Firecracker 内部</text>
+<circle cx="62.0" cy="507.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="511.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">6</text>
+<rect x="88.0" y="482.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="511.2" font-size="14" fill="#57606A" text-anchor="start">Firecracker 里先写内存、再恢复设备</text>
+<rect x="748.0" y="482.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="511.1" font-size="13.5" fill="#57606A" text-anchor="start">网卡读到旧时间线的队列，收包卡死</text>
+<rect x="1468.0" y="494.0" width="48.0" height="26.0" rx="13.0" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1492.0" y="511.7" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">静默</text>
+<circle cx="62.0" cy="567.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="571.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">7</text>
+<rect x="88.0" y="542.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="571.2" font-size="14" fill="#57606A" text-anchor="start">VMGenID 在内存写回之后</text>
+<rect x="748.0" y="542.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="571.0" font-size="13.5" fill="#57606A" text-anchor="start">客户机不知道时间被回拨</text>
+<rect x="1468.0" y="554.0" width="48.0" height="26.0" rx="13.0" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1492.0" y="571.7" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">静默</text>
+<circle cx="62.0" cy="627.0" r="11" fill="#1F2328" stroke="none" stroke-width="1"/>
+<text x="62.0" y="631.5" font-size="12.5" fill="#FFFFFF" font-weight="600" text-anchor="middle">8</text>
+<rect x="88.0" y="602.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="102.0" y="631.2" font-size="14" fill="#57606A" text-anchor="start">设备队列页在清零后重新标脏</text>
+<rect x="748.0" y="602.0" width="640.0" height="50.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="762.0" y="631.0" font-size="13.5" fill="#57606A" text-anchor="start">下一代差分漏掉这些页</text>
+<rect x="1468.0" y="614.0" width="48.0" height="26.0" rx="13.0" fill="#FCEDE8" stroke="#D6603D" stroke-width="1"/>
+<text x="1492.0" y="631.7" font-size="13" fill="#9A3215" font-weight="600" text-anchor="middle">静默</text>
+<text x="88.0" y="138.0" font-size="13" fill="#57606A" font-weight="600" text-anchor="start">约束</text>
+<text x="748.0" y="138.0" font-size="13" fill="#57606A" font-weight="600" text-anchor="start">被违反后</text>
+<line x1="48.0" y1="668.0" x2="1552.0" y2="668.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="694.0" font-size="13" fill="#8C959F" text-anchor="start">注：改代码时，这张表比任何测试都更早发出警告；对应的不变量清单见第 13 篇。</text></svg>

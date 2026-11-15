@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="722" viewBox="0 0 1600 722" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="722" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">950 混合负载各档：存档、读档的客户端耗时中位数</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">2 GiB 沙箱、HDBSS、ext4；内存 : 文件 = 3 : 1。128 MiB 以内两项都在参考线内；256 MiB 读档 105.6 ms，开始超线；512 MiB 极限档两项都超。折线只连接已测档位，看趋势用，不是连续区间的保证。</text>
+<line x1="108.0" y1="566.0" x2="1492.0" y2="566.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="100.0" y="570.0" font-size="11.5" fill="#8C959F" text-anchor="end">0</text>
+<line x1="108.0" y1="486.0" x2="1492.0" y2="486.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="100.0" y="490.0" font-size="11.5" fill="#8C959F" text-anchor="end">50</text>
+<line x1="108.0" y1="406.0" x2="1492.0" y2="406.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="100.0" y="410.0" font-size="11.5" fill="#8C959F" text-anchor="end">100</text>
+<line x1="108.0" y1="326.0" x2="1492.0" y2="326.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="100.0" y="330.0" font-size="11.5" fill="#8C959F" text-anchor="end">150</text>
+<line x1="108.0" y1="246.0" x2="1492.0" y2="246.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="100.0" y="250.0" font-size="11.5" fill="#8C959F" text-anchor="end">200</text>
+<line x1="108.0" y1="166.0" x2="1492.0" y2="166.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="100.0" y="170.0" font-size="11.5" fill="#8C959F" text-anchor="end">250</text>
+<text x="1492.0" y="606.0" font-size="12.5" fill="#57606A" text-anchor="end">名义改动量（MiB），横轴按档位等距</text>
+<text x="138.0" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">0</text>
+<text x="303.5" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">4</text>
+<text x="469.0" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">8</text>
+<text x="634.5" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">16</text>
+<text x="800.0" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">32</text>
+<text x="965.5" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">64</text>
+<text x="1131.0" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">128</text>
+<text x="1296.5" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">256</text>
+<text x="1462.0" y="588.0" font-size="12.5" fill="#57606A" text-anchor="middle">512</text>
+<line x1="108.0" y1="246.0" x2="1492.0" y2="246.0" stroke="#5B9BE6" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="6 5"/>
+<text x="116.0" y="238.0" font-size="12.5" fill="#1D4F91" font-weight="600" text-anchor="start">存档参考线 200 ms</text>
+<line x1="108.0" y1="406.0" x2="1492.0" y2="406.0" stroke="#1F9E77" stroke-width="1.4" stroke-linecap="round" stroke-dasharray="6 5"/>
+<text x="116.0" y="398.0" font-size="12.5" fill="#0E6B4F" font-weight="600" text-anchor="start">读档参考线 100 ms</text>
+<path d="M138.0 538.5 L303.5 535.1 L469.0 532.7 L634.5 527.9 L800.0 517.2 L965.5 499.8 L1131.0 449.2 L1296.5 365.2 L1462.0 189.7" fill="none" stroke="#5B9BE6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="138.0" cy="538.5" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="303.5" cy="535.1" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="469.0" cy="532.7" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="634.5" cy="527.9" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="800.0" cy="517.2" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="965.5" cy="499.8" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="1131.0" cy="449.2" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="1296.5" cy="365.2" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<circle cx="1462.0" cy="189.7" r="4" fill="#FFFFFF" stroke="#5B9BE6" stroke-width="2"/>
+<path d="M138.0 530.2 L303.5 525.2 L469.0 521.0 L634.5 517.4 L800.0 507.8 L965.5 492.4 L1131.0 457.5 L1296.5 397.0 L1462.0 252.1" fill="none" stroke="#1F9E77" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="138.0" cy="530.2" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="303.5" cy="525.2" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="469.0" cy="521.0" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="634.5" cy="517.4" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="800.0" cy="507.8" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="965.5" cy="492.4" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="1131.0" cy="457.5" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="1296.5" cy="397.0" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<circle cx="1462.0" cy="252.1" r="4" fill="#FFFFFF" stroke="#1F9E77" stroke-width="2"/>
+<text x="138.0" y="560.5" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">17.2</text>
+<text x="138.0" y="518.2" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">22.4</text>
+<text x="303.5" y="557.1" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">19.3</text>
+<text x="303.5" y="513.2" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">25.5</text>
+<text x="469.0" y="554.7" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">20.8</text>
+<text x="469.0" y="509.0" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">28.1</text>
+<text x="634.5" y="549.9" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">23.8</text>
+<text x="634.5" y="505.4" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">30.4</text>
+<text x="800.0" y="539.2" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">30.5</text>
+<text x="800.0" y="495.8" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">36.4</text>
+<text x="965.5" y="521.8" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">41.4</text>
+<text x="965.5" y="480.4" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">46</text>
+<text x="1131.0" y="437.2" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">73</text>
+<text x="1131.0" y="479.5" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">67.8</text>
+<text x="1296.5" y="353.2" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">125.5</text>
+<text x="1296.5" y="419.0" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">105.6</text>
+<text x="1462.0" y="177.7" font-size="11.5" fill="#1D4F91" font-weight="600" text-anchor="middle">235.2</text>
+<text x="1462.0" y="274.1" font-size="11.5" fill="#0E6B4F" font-weight="600" text-anchor="middle">196.2</text>
+<rect x="108.0" y="621.0" width="16.0" height="16.0" rx="4" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.2"/>
+<text x="132.0" y="634.0" font-size="13" fill="#57606A" text-anchor="start">增量存档 p50（ms）</text>
+<rect x="280.2" y="621.0" width="16.0" height="16.0" rx="4" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.2"/>
+<text x="304.2" y="634.0" font-size="13" fill="#57606A" text-anchor="start">读档 p50（ms）</text>
+<line x1="48.0" y1="656.0" x2="1552.0" y2="656.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="682.0" font-size="13" fill="#8C959F" text-anchor="start">注：每档 10～30 个样本，p99 就是最大值，不能推断长期尾延迟；首次全量 0.47～0.50 s 单列，不在图中。</text></svg>

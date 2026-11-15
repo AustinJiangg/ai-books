@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="826" viewBox="0 0 1600 826" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="826" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">全景：一次存档与一次读档经过的所有部件</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">上半是存档，下半是读档；中间的浅蓝虚线框是冻结窗口。左右两侧是窗口外的工作。三件事：回得对（同一窗口、不变量、拿不准就报错）、回得快（只存改动、只改名、原地写回）、讲得清（mem_mode、分级、计时）。</text>
+<text x="48.0" y="150.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">存档</text>
+<rect x="48.0" y="166.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="191.9" font-size="13" fill="#57606A" text-anchor="middle">代理截下 49984</text>
+<rect x="48.0" y="218.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="243.9" font-size="13" fill="#57606A" text-anchor="middle">鉴权 · 取锁 · 再确认</text>
+<rect x="48.0" y="270.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="295.9" font-size="13" fill="#57606A" text-anchor="middle">全量 / 增量决策</text>
+<rect x="48.0" y="322.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="347.9" font-size="13" fill="#57606A" text-anchor="middle">Prepare</text>
+<rect x="388.0" y="160.0" width="700.0" height="234.0" rx="12" fill="#EAF3FF" stroke="#9CC3F0" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="402.0" y="184.0" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">冻结窗口</text>
+<rect x="404.0" y="196.0" width="668.0" height="38.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="738.0" y="218.9" font-size="13" fill="#57606A" text-anchor="middle">暂停</text>
+<rect x="404.0" y="242.0" width="668.0" height="38.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="738.0" y="264.9" font-size="13" fill="#57606A" text-anchor="middle">写快照 + 位图（纪元前进）</text>
+<rect x="404.0" y="288.0" width="668.0" height="38.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="738.0" y="310.9" font-size="13" fill="#57606A" text-anchor="middle">封存写层：只换指针</text>
+<rect x="404.0" y="334.0" width="668.0" height="38.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="738.0" y="356.9" font-size="13" fill="#57606A" text-anchor="middle">恢复</text>
+<rect x="1128.0" y="166.0" width="424.0" height="44.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1340.0" y="191.9" font-size="13" fill="#57606A" text-anchor="middle">层文件改名进存档目录</text>
+<rect x="1128.0" y="218.0" width="424.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1340.0" y="243.9" font-size="13" fill="#57606A" text-anchor="middle">登记磁盘账本</text>
+<rect x="1128.0" y="270.0" width="424.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1340.0" y="295.9" font-size="13" fill="#57606A" text-anchor="middle">提交 · 基准 ← 新存档</text>
+<rect x="1128.0" y="322.0" width="424.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1340.0" y="347.9" font-size="13" fill="#57606A" text-anchor="middle">返回 mem_mode</text>
+<path d="M352.0 206.0 L384.0 206.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1092.0 206.0 L1124.0 206.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<text x="48.0" y="434.0" font-size="16" fill="#1F2328" font-weight="600" text-anchor="start">读档</text>
+<rect x="48.0" y="450.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="475.9" font-size="13" fill="#57606A" text-anchor="middle">代理截下 · 鉴权 · 取锁</text>
+<rect x="48.0" y="502.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="527.9" font-size="13" fill="#57606A" text-anchor="middle">取目标</text>
+<rect x="48.0" y="554.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="579.9" font-size="13" fill="#57606A" text-anchor="middle">装配目标视图</text>
+<rect x="48.0" y="606.0" width="300.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="198.0" y="631.9" font-size="13" fill="#57606A" text-anchor="middle">丢连接池 · 拒绝其他请求</text>
+<rect x="388.0" y="444.0" width="700.0" height="280.0" rx="12" fill="#EAF3FF" stroke="#9CC3F0" stroke-width="1.3" stroke-dasharray="6 4"/>
+<text x="402.0" y="468.0" font-size="13.5" fill="#1D4F91" font-weight="600" text-anchor="start">冻结窗口</text>
+<rect x="404.0" y="480.0" width="668.0" height="38.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="738.0" y="502.9" font-size="13" fill="#57606A" text-anchor="middle">暂停 ∥ 后台清连接跟踪</text>
+<rect x="404.0" y="526.0" width="668.0" height="38.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="738.0" y="548.9" font-size="13" fill="#57606A" text-anchor="middle">导出活跃脏页</text>
+<rect x="404.0" y="572.0" width="668.0" height="38.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="738.0" y="594.9" font-size="13" fill="#57606A" text-anchor="middle">物化：回滚集 + 祖先链找内容</text>
+<rect x="404.0" y="618.0" width="668.0" height="38.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="738.0" y="640.9" font-size="13" fill="#57606A" text-anchor="middle">原地回滚九阶段（提交点）</text>
+<rect x="404.0" y="664.0" width="668.0" height="38.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="738.0" y="686.9" font-size="13" fill="#57606A" text-anchor="middle">换磁盘视图 · 等清理 · 恢复</text>
+<rect x="1128.0" y="450.0" width="424.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1340.0" y="475.9" font-size="13" fill="#57606A" text-anchor="middle">基准 ← 目标</text>
+<rect x="1128.0" y="502.0" width="424.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1340.0" y="527.9" font-size="13" fill="#57606A" text-anchor="middle">磁盘账本 ← 目标描述</text>
+<rect x="1128.0" y="554.0" width="424.0" height="44.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1340.0" y="579.9" font-size="13" fill="#57606A" text-anchor="middle">等 envd · 校正墙钟</text>
+<rect x="1128.0" y="606.0" width="424.0" height="44.0" rx="10" fill="#EDF4FD" stroke="#5B9BE6" stroke-width="1.3"/>
+<text x="1340.0" y="631.9" font-size="13" fill="#57606A" text-anchor="middle">失败按四档分级</text>
+<path d="M352.0 490.0 L384.0 490.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<path d="M1092.0 490.0 L1124.0 490.0" fill="none" stroke="#1F2328" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<line x1="48.0" y1="760.0" x2="1552.0" y2="760.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="786.0" font-size="13" fill="#8C959F" text-anchor="start">注：颜色：蓝是控制面（orchestrator 里的编排与账本），橙是 Firecracker，灰是宿主与存储，紫是客户机。</text></svg>

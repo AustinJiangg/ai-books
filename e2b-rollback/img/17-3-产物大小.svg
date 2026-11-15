@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="839" viewBox="0 0 1600 839" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs></defs><rect width="1600" height="839" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">名义改动量与实际产物大小</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">0 档也有约 21 MiB 的内存差分本底；文件写入先进客户机的文件缓存，所以也出现在内存差分里：纯文件 16 MiB 的内存差分约 40 MiB。扣掉本底，内存差分约是名义总改动的 1.03～1.04 倍；磁盘层约等于名义文件写</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">入量。</text>
+<text x="204.0" y="220.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">混合 0</text>
+<rect x="218.0" y="190.0" width="2.0" height="18.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="226.0" y="204.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">0 MiB</text>
+<rect x="218.0" y="211.0" width="44.6" height="18.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="270.6" y="225.0" font-size="11.5" fill="#4B3FA8" font-weight="600" text-anchor="start">21.28 MiB</text>
+<rect x="218.0" y="232.0" width="2.0" height="18.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="227.0" y="246.0" font-size="11.5" fill="#3D3C38" font-weight="600" text-anchor="start">0.49 MiB</text>
+<text x="204.0" y="297.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">混合 128</text>
+<rect x="218.0" y="267.0" width="268.3" height="18.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="494.3" y="281.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">128 MiB</text>
+<rect x="218.0" y="288.0" width="324.4" height="18.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="550.4" y="302.0" font-size="11.5" fill="#4B3FA8" font-weight="600" text-anchor="start">154.72 MiB</text>
+<rect x="218.0" y="309.0" width="68.4" height="18.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="294.4" y="323.0" font-size="11.5" fill="#3D3C38" font-weight="600" text-anchor="start">32.65 MiB</text>
+<text x="204.0" y="374.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">混合 256</text>
+<rect x="218.0" y="344.0" width="536.7" height="18.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="762.7" y="358.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">256 MiB</text>
+<rect x="218.0" y="365.0" width="598.1" height="18.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="824.1" y="379.0" font-size="11.5" fill="#4B3FA8" font-weight="600" text-anchor="start">285.28 MiB</text>
+<rect x="218.0" y="386.0" width="135.8" height="18.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="361.8" y="400.0" font-size="11.5" fill="#3D3C38" font-weight="600" text-anchor="start">64.76 MiB</text>
+<text x="204.0" y="451.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">混合 512</text>
+<rect x="218.0" y="421.0" width="1073.4" height="18.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="1299.4" y="435.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">512 MiB</text>
+<rect x="218.0" y="442.0" width="1153.7" height="18.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="1379.7" y="456.0" font-size="11.5" fill="#4B3FA8" font-weight="600" text-anchor="start">550.3 MiB</text>
+<rect x="218.0" y="463.0" width="269.9" height="18.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="495.9" y="477.0" font-size="11.5" fill="#3D3C38" font-weight="600" text-anchor="start">128.75 MiB</text>
+<text x="204.0" y="528.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">纯内存 16</text>
+<rect x="218.0" y="498.0" width="33.5" height="18.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="259.5" y="512.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">16 MiB</text>
+<rect x="218.0" y="519.0" width="84.0" height="18.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="310.0" y="533.0" font-size="11.5" fill="#4B3FA8" font-weight="600" text-anchor="start">40.05 MiB</text>
+<rect x="218.0" y="540.0" width="2.0" height="18.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="227.2" y="554.0" font-size="11.5" fill="#3D3C38" font-weight="600" text-anchor="start">0.59 MiB</text>
+<text x="204.0" y="605.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">纯文件 16</text>
+<rect x="218.0" y="575.0" width="33.5" height="18.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="259.5" y="589.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">16 MiB</text>
+<rect x="218.0" y="596.0" width="83.6" height="18.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="309.6" y="610.0" font-size="11.5" fill="#4B3FA8" font-weight="600" text-anchor="start">39.88 MiB</text>
+<rect x="218.0" y="617.0" width="34.9" height="18.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="260.9" y="631.0" font-size="11.5" fill="#3D3C38" font-weight="600" text-anchor="start">16.65 MiB</text>
+<text x="204.0" y="682.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="end">只读 192</text>
+<rect x="218.0" y="652.0" width="2.0" height="18.0" rx="3" fill="#F4F5F7" stroke="#57606A" stroke-width="1"/>
+<text x="226.0" y="666.0" font-size="11.5" fill="#1F2328" font-weight="600" text-anchor="start">0 MiB</text>
+<rect x="218.0" y="673.0" width="51.8" height="18.0" rx="3" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1"/>
+<text x="277.8" y="687.0" font-size="11.5" fill="#4B3FA8" font-weight="600" text-anchor="start">24.7 MiB</text>
+<rect x="218.0" y="694.0" width="2.0" height="18.0" rx="3" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1"/>
+<text x="227.0" y="708.0" font-size="11.5" fill="#3D3C38" font-weight="600" text-anchor="start">0.5 MiB</text>
+<rect x="218.0" y="734.0" width="16.0" height="16.0" rx="4" fill="#F4F5F7" stroke="#57606A" stroke-width="1.2"/>
+<text x="242.0" y="747.0" font-size="13" fill="#57606A" text-anchor="start">名义总改动</text>
+<rect x="335.0" y="734.0" width="16.0" height="16.0" rx="4" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.2"/>
+<text x="359.0" y="747.0" font-size="13" fill="#57606A" text-anchor="start">内存差分实占（st_blocks）</text>
+<rect x="559.5" y="734.0" width="16.0" height="16.0" rx="4" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.2"/>
+<text x="583.5" y="747.0" font-size="13" fill="#57606A" text-anchor="start">磁盘层实占</text>
+<line x1="48.0" y1="773.0" x2="1552.0" y2="773.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="799.0" font-size="13" fill="#8C959F" text-anchor="start">注：只读触碰 192 MiB 的产物和 0 档几乎一样，说明读不算脏；它比 0 档多出的约 3 MiB 混有后台写和命令执行，不能据此说 HDBSS 把读页判脏。</text></svg>

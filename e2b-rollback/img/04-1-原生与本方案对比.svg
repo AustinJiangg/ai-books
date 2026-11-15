@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="826" viewBox="0 0 1600 826" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m1F2328" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#1F2328" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="826" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">原生 pause / resume 与本方案：离场重建，还是原地回写</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">原生 pause 导出磁盘差分时必须关掉沙箱，resume 要新起进程、缺页把工作集拉回来；本方案存档只暂停一下就继续跑，读档在同一个进程里只写回需要的页。950 上 0 MiB 档：pause 251.9 ms、resume 109.3 ms；存档</text>
+<text x="48.0" y="116.0" font-size="15" fill="#57606A" text-anchor="start">17.2 ms、读档 22.4 ms。</text>
+<text x="48.0" y="180.0" font-size="16" fill="#9A3215" font-weight="600" text-anchor="start">原生 pause / resume</text>
+<rect x="48.0" y="196.0" width="192.6" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="144.3" y="248.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">暂停</text>
+<path d="M244.6 244.0 L262.6 244.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="266.6" y="196.0" width="192.6" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="362.9" y="236.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">写 snapfile</text>
+<text x="362.9" y="258.6" font-size="12" fill="#57606A" text-anchor="middle">几 ms</text>
+<path d="M463.1 244.0 L481.1 244.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="485.1" y="196.0" width="192.6" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="581.4" y="248.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">导出内存差分</text>
+<path d="M681.7 244.0 L699.7 244.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="703.7" y="196.0" width="192.6" height="96.0" rx="10" fill="#FCEDE8" stroke="#D6603D" stroke-width="1.3"/>
+<text x="800.0" y="227.0" font-size="14" fill="#9A3215" font-weight="600" text-anchor="middle">关掉沙箱</text>
+<text x="800.0" y="249.6" font-size="12" fill="#57606A" text-anchor="middle">进程退出、KVM 销毁、NBD</text>
+<text x="800.0" y="267.6" font-size="12" fill="#57606A" text-anchor="middle">断开</text>
+<path d="M900.3 244.0 L918.3 244.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="922.3" y="196.0" width="192.6" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1018.6" y="236.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">导出磁盘差分</text>
+<text x="1018.6" y="258.6" font-size="12" fill="#57606A" text-anchor="middle">上传</text>
+<path d="M1118.9 244.0 L1136.9 244.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1140.9" y="196.0" width="192.6" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1237.1" y="236.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">resume：新进程</text>
+<text x="1237.1" y="258.6" font-size="12" fill="#57606A" text-anchor="middle">建 VM、设备、网络</text>
+<path d="M1337.4 244.0 L1355.4 244.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1359.4" y="196.0" width="192.6" height="96.0" rx="10" fill="#F3F0FF" stroke="#8B7FE0" stroke-width="1.3"/>
+<text x="1455.7" y="236.0" font-size="14" fill="#4B3FA8" font-weight="600" text-anchor="middle">缺页拉回工作集</text>
+<text x="1455.7" y="258.6" font-size="12" fill="#57606A" text-anchor="middle">成本推迟到之后</text>
+<text x="48.0" y="360.0" font-size="16" fill="#0E6B4F" font-weight="600" text-anchor="start">本方案 checkpoint / restore</text>
+<rect x="48.0" y="376.0" width="192.6" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="144.3" y="428.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">暂停</text>
+<path d="M244.6 424.0 L262.6 424.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="266.6" y="376.0" width="192.6" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="362.9" y="416.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">写快照 + 位图</text>
+<text x="362.9" y="438.6" font-size="12" fill="#57606A" text-anchor="middle">只写脏页</text>
+<path d="M463.1 424.0 L481.1 424.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="485.1" y="376.0" width="192.6" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="581.4" y="416.0" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">封存写层</text>
+<text x="581.4" y="438.6" font-size="12" fill="#57606A" text-anchor="middle">改名，不搬数据</text>
+<path d="M681.7 424.0 L699.7 424.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="703.7" y="376.0" width="192.6" height="96.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="800.0" y="416.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">恢复运行</text>
+<text x="800.0" y="438.6" font-size="12" fill="#57606A" text-anchor="middle">同一个进程</text>
+<path d="M900.3 424.0 L918.3 424.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="922.3" y="376.0" width="192.6" height="96.0" rx="10" fill="#F6F6F3" stroke="#B7B5AC" stroke-width="1.3"/>
+<text x="1018.6" y="428.5" font-size="14" fill="#3D3C38" font-weight="600" text-anchor="middle">读档：暂停</text>
+<path d="M1118.9 424.0 L1136.9 424.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1140.9" y="376.0" width="192.6" height="96.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="1237.1" y="416.0" font-size="14" fill="#8A5300" font-weight="600" text-anchor="middle">原地写回回滚集</text>
+<text x="1237.1" y="438.6" font-size="12" fill="#57606A" text-anchor="middle">CPU、设备状态</text>
+<path d="M1337.4 424.0 L1355.4 424.0" fill="none" stroke="#1F2328" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m1F2328)"/>
+<rect x="1359.4" y="376.0" width="192.6" height="96.0" rx="10" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1455.7" y="416.0" font-size="14" fill="#0E6B4F" font-weight="600" text-anchor="middle">恢复运行</text>
+<text x="1455.7" y="438.6" font-size="12" fill="#57606A" text-anchor="middle">立刻满速</text>
+<rect x="48.0" y="530.0" width="1504.0" height="38.2" rx="6" fill="#F4F5F7" stroke="#57606A" stroke-width="1.1"/>
+<text x="358.0" y="552.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">原生</text>
+<text x="918.0" y="552.8" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">本方案</text>
+<line x1="48.0" y1="613.2" x2="1552.0" y2="613.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="595.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">成本和什么有关</text>
+<text x="358.0" y="595.5" font-size="14" fill="#1F2328" text-anchor="start">虚机大小（销毁、重建、换回工作集）</text>
+<text x="918.0" y="595.5" font-size="14" fill="#1F2328" text-anchor="start">改了多少、回退多远</text>
+<line x1="48.0" y1="656.2" x2="1552.0" y2="656.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="638.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">沙箱中断吗</text>
+<text x="358.0" y="638.5" font-size="14" fill="#1F2328" text-anchor="start">要关掉、要新进程</text>
+<text x="918.0" y="638.5" font-size="14" fill="#1F2328" text-anchor="start">只暂停几十毫秒</text>
+<line x1="48.0" y1="699.2" x2="1552.0" y2="699.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="681.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">进程死了还能恢复吗</text>
+<text x="358.0" y="681.5" font-size="14" fill="#1F2328" text-anchor="start">能</text>
+<text x="918.0" y="681.5" font-size="14" fill="#1F2328" text-anchor="start">不能</text>
+<line x1="48.0" y1="742.2" x2="1552.0" y2="742.2" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="58.0" y="724.5" font-size="14" fill="#1F2328" font-weight="600" text-anchor="start">能跨机器吗</text>
+<text x="358.0" y="724.5" font-size="14" fill="#1F2328" text-anchor="start">能</text>
+<text x="918.0" y="724.5" font-size="14" fill="#1F2328" text-anchor="start">不能</text>
+<line x1="48.0" y1="760.0" x2="1552.0" y2="760.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="786.0" font-size="13" fill="#8C959F" text-anchor="start">注：两者不是替代关系：原生管离场、长期保存、跨机器，本方案管活沙箱里的高频回退（第 15 篇）。</text></svg>

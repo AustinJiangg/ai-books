@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="632" viewBox="0 0 1600 632" font-family="'PingFang SC','Hiragino Sans GB','Microsoft YaHei','Noto Sans CJK SC','Noto Sans SC','Source Han Sans SC',sans-serif"><defs><marker id="m8C959F" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M1 1.2L8.6 5L1 8.8" fill="none" stroke="#8C959F" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></marker></defs><rect width="1600" height="632" fill="#FFFFFF"/><text x="48.0" y="58.0" font-size="28" fill="#1F2328" font-weight="600" text-anchor="start">三种脏页跟踪：谁抓到这次写、记在哪、要不要陷出</text>
+<text x="48.0" y="92.0" font-size="15" fill="#57606A" text-anchor="start">客户机写内存不经过宿主代码，只有管第二层页表的 KVM 和 CPU 自己看得见。软件写保护每页首次写陷出一次；uffd 写保护走用户态故障；HDBSS 由 CPU 顺手写进缓冲区，退出时再汇总。三者给上层的是同一张位图。</text>
+<rect x="48.0" y="156.0" width="485.3" height="380.0" rx="14" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
+<text x="68.0" y="186.0" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">KVM 写保护</text>
+<rect x="66.0" y="216.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="290.7" y="241.9" font-size="13" fill="#57606A" text-anchor="middle">页设成只读</text>
+<path d="M290.7 262.0 L290.7 274.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="66.0" y="276.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="290.7" y="301.9" font-size="13" fill="#57606A" text-anchor="middle">首次写 → 权限故障 → 陷出</text>
+<path d="M290.7 322.0 L290.7 334.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="66.0" y="336.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="290.7" y="361.9" font-size="13" fill="#57606A" text-anchor="middle">KVM 在位图里置位、改回可写</text>
+<path d="M290.7 382.0 L290.7 394.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="66.0" y="396.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="290.7" y="421.9" font-size="13" fill="#57606A" text-anchor="middle">Firecracker 取走位图</text>
+<text x="68.0" y="476.0" font-size="13.5" fill="#8A5300" font-weight="600" text-anchor="start">首次写代价：每页首次写：一次陷出</text>
+<text x="68.0" y="502.0" font-size="12.5" fill="#57606A" text-anchor="start">条件：任何 KVM</text>
+<rect x="557.3" y="156.0" width="485.3" height="380.0" rx="14" fill="#F4F5F7" stroke="#57606A" stroke-width="1.3"/>
+<text x="577.3" y="186.0" font-size="15" fill="#1F2328" font-weight="600" text-anchor="start">userfaultfd 写保护</text>
+<rect x="575.3" y="216.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="241.9" font-size="13" fill="#57606A" text-anchor="middle">读缺页填进来：保留写保护</text>
+<path d="M800.0 262.0 L800.0 274.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="575.3" y="276.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="301.9" font-size="13" fill="#57606A" text-anchor="middle">写缺页填进来：不保留</text>
+<path d="M800.0 322.0 L800.0 334.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="575.3" y="336.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="361.9" font-size="13" fill="#57606A" text-anchor="middle">之后再写 → 用户态故障</text>
+<path d="M800.0 382.0 L800.0 394.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="575.3" y="396.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="800.0" y="421.9" font-size="13" fill="#57606A" text-anchor="middle">在内存且没写保护 = 写过</text>
+<text x="577.3" y="476.0" font-size="13.5" fill="#1F2328" font-weight="600" text-anchor="start">首次写代价：一次用户态往返</text>
+<text x="577.3" y="502.0" font-size="12.5" fill="#57606A" text-anchor="start">条件：原生快照在 x86 上用；ARM 适配版这条路被注释掉</text>
+<rect x="1066.7" y="156.0" width="485.3" height="380.0" rx="14" fill="#E3F5EE" stroke="#1F9E77" stroke-width="1.3"/>
+<text x="1086.7" y="186.0" font-size="15" fill="#0E6B4F" font-weight="600" text-anchor="start">HDBSS（ARMv9.5，鲲鹏 950）</text>
+<rect x="1084.7" y="216.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1309.3" y="241.9" font-size="13" fill="#57606A" text-anchor="middle">CPU 把脏页地址写进每个 vCPU 的缓冲区</text>
+<path d="M1309.3 262.0 L1309.3 274.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="1084.7" y="276.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1309.3" y="301.9" font-size="13" fill="#57606A" text-anchor="middle">不写保护，不为记脏页陷出</text>
+<path d="M1309.3 322.0 L1309.3 334.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="1084.7" y="336.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1309.3" y="361.9" font-size="13" fill="#57606A" text-anchor="middle">任何原因退出时，KVM 汇总进位图</text>
+<path d="M1309.3 382.0 L1309.3 394.0" fill="none" stroke="#8C959F" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" marker-end="url(#m8C959F)"/>
+<rect x="1084.7" y="396.0" width="449.3" height="44.0" rx="10" fill="#FFFFFF" stroke="#AEB6BE" stroke-width="1.3"/>
+<text x="1309.3" y="421.9" font-size="13" fill="#57606A" text-anchor="middle">暂停本身会让每个 vCPU 退出</text>
+<text x="1086.7" y="476.0" font-size="13.5" fill="#0E6B4F" font-weight="600" text-anchor="start">首次写代价：≈ 0</text>
+<text x="1086.7" y="502.0" font-size="12.5" fill="#57606A" text-anchor="start">条件：需要内核支持、VHE 模式</text>
+<line x1="48.0" y1="566.0" x2="1552.0" y2="566.0" stroke="#D8DEE4" stroke-width="1" stroke-linecap="round"/>
+<text x="48.0" y="592.0" font-size="13" fill="#8C959F" text-anchor="start">注：本方案用第一和第三种：有 HDBSS 用硬件，没有就退回 KVM 写保护。两者对上层是同一个接口，所以降级对上层不可见，必须主动报出来。</text></svg>
