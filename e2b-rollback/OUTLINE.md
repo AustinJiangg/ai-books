@@ -18,22 +18,15 @@
 
 **写法**：从现实问题出发，先讲“为什么需要”，再讲“是什么”，最后讲“这套实现怎么做、坑在哪”。多用生活类比（存档 / 读档、账本、图书馆分层书架）和图，公式只出现一处（回滚集），并配例子。每篇末尾有“本篇小结”表格。
 
-**代码**：只放简短的示例片段，帮助理解，不追求完整可运行。片段包括：
+**代码**：以讲清原理为主，不逐函数讲解源码，不给读代码的路线。正文只在必要时放几行示例，帮助理解：
 
 - SDK 调用：`sandbox.checkpoint.create / restore / list / delete`；
-- orchestrator 里的关键几行 Go：代理拦截、全量 / 增量决策、`failCreate` 的三层降级、`resumeOnError`；
-- Firecracker 的三处接口扩展（请求体字段）；
-- `timings.json` 的分段计时键、`checkpoint capabilities` 启动日志行、错误 `reason`；
-- 测试脚本的判据行，例如 `✓ 59 项校验全部通过。`。
+- Firecracker 新增的接口长什么样；
+- 计时、能力上报、错误 `reason` 这类能直接看到的输出。
 
 **依据**：以 [AustinJiangg/e2b-infra](https://github.com/AustinJiangg/e2b-infra) 仓库里的现状为准，只讲这套快照回滚是怎么实现的，不讲官方 E2B 的新功能。
 
-- **代码**：仓库根目录的 `0001-adapted-for-arm-architecture.patch`，快照回滚的代码都在里面：
-  - `packages/orchestrator/internal/checkpoint/`：`service.go`（编排）、`store.go`（账本）、`rootfs.go`（磁盘账本）、`compact*.go`（合并）、`layer_refs.go`（层引用计数）、`quota.go`（配额）；
-  - `internal/sandbox/checkpoint.go`（冻结窗口里的动作）、`fc/rollback.go`（调 Firecracker）、`fc/dirtytracking.go`（脏页跟踪）、`rootfs/nbd.go`（封层、换视图）、`block/overlay.go` 等（层栈）、`network/conntrack*.go`（连接跟踪清理）、`uffd/sinceboot.go`（累积位图）；
-  - `internal/proxy/proxy.go`：把 checkpoint 请求从沙箱流量里截下来；
-  - `firecracker.arm`：带三处扩展的 Firecracker；
-  - SDK：`e2b-deploy/dep/e2b-sdk-checkpoint/`。
+- **代码**：仓库根目录的 `0001-adapted-for-arm-architecture.patch`（orchestrator 侧的实现）、`firecracker.arm`（带扩展的 Firecracker）和 SDK 覆盖层 `e2b-deploy/dep/e2b-sdk-checkpoint/`。用来核对事实，正文不展开讲代码。
 - **设计说明与测试数据**：仓库 `rollback/` 下的设计文档、测试脚本（`rollback/scripts/`）和鲲鹏 950 上的测试结果。正文按新手的顺序重新组织，不照搬。
 - **只讲技术**：作者、团队、项目交付、内部仓库和分支名这些与实现无关的信息，书里一概不写。
 
@@ -43,7 +36,7 @@
 
 **名词**：正文统一用这几个说法，第 1 篇给出对照表。
 
-| 本书说法 | 代码里的叫法 | 一句话 |
+| 本书说法 | 英文 / 接口名 | 一句话 |
 |---|---|---|
 | 存档 / 保存点 | checkpoint（`CreateCheckpoint`） | 把沙箱此刻的现场记下来 |
 | 读档 / 回滚 | restore（`RestoreCheckpoint`） | 把**同一台活着的**沙箱原地变回那一刻 |
@@ -57,24 +50,22 @@
 
 | 要做到 | 一句话答案 | 主要在哪几篇 |
 |---|---|---|
-| **回得对**：内存、CPU、设备、磁盘回到同一个时刻 | 宿主侧在同一个冻结窗口里一起存、一起换；拿不准就报错，绝不静默写错 | 第 2、7、8、12～14 篇 |
-| **回得快**：代价只跟“改了多少”有关，跟“虚机多大”无关 | 只存改过的页（差分树）、磁盘封存只改名（分层）、在活着的进程里原地写回，什么宿主资源都不重建 | 第 3、9～12 篇 |
-| **讲得清**：多快、对不对、坏了怎么办，都拿得出证据 | 三个钟分开量、按改动量分档；三层测试；每次调用回报 `memMode`，失败按 `reason` 分级 | 第 14、17～19 篇 |
+| **回得对**：内存、CPU、设备、磁盘回到同一个时刻 | 宿主侧在同一个冻结窗口里一起存、一起换；拿不准就报错，绝不静默写错 | 第 2、6、7、11～13 篇 |
+| **回得快**：代价只跟“改了多少”有关，跟“虚机多大”无关 | 只存改过的页（差分树）、磁盘封存只改名（分层）、在活着的进程里原地写回，什么宿主资源都不重建 | 第 3、8～11 篇 |
+| **讲得清**：多快、对不对、坏了怎么办，都拿得出证据 | 三个钟分开量、按改动量分档；三层测试；每次调用回报 `memMode`，失败按 `reason` 分级 | 第 13、16、17、19 篇 |
 
 **贯穿全书的几个事实**，正文会反复回到这里：
 
-| 事实 | 出处 |
-|---|---|
-| 沙箱里不装任何代理。SDK 把请求发往沙箱的 49984 端口，宿主上的 orchestrator 代理在转发前把它截下来自己处理，沙箱里其实没人监听这个端口 | `internal/proxy/proxy.go`、`checkpoint.Handles` |
-| 对外只有四个 RPC（Create / Restore / List / Delete）加一个 `/health` | `spec/checkpointd/checkpoint/checkpoint.proto` |
-| Firecracker 只加了三处：快照请求多一个 `dirty_bitmap_path` 字段，新增 `PUT /snapshot/save-dirty-bitmap` 和 `PUT /snapshot/rollback` 两个端点。它不知道“树”是什么 | `fc/rollback.go`、`firecracker.arm` |
-| 读档在**同一个 Firecracker 进程**里原地完成：沙箱 ID、IP、端口映射、tap、NBD 设备、内存映射都不重建 | `RollbackInPlace` |
-| 账本只活在 orchestrator 进程内存里，启动时会把产物目录清空，从不读盘恢复。所以 checkpoint 只在沙箱“当前这一代”有效，orchestrator 重启、原生 pause / resume、迁移之后全部失效，把目录拷走也恢复不了 | `store.go` 的 `NewStore` |
-| 产物盘是 ext4，不支持 reflink。所以内存不能“每代克隆一份再改”，只能“每代只存差分、按页沿祖先找内容” | `store.go` 的 `MaterializeRevert` |
-| 每个沙箱的第一个 checkpoint 默认是全量（2 GiB 内存约 0.5 秒），之后才是增量（几十毫秒） | `service.go` 的 `rooting`；950 实测 |
-| 脏页跟踪有三种后端：鲲鹏 950 上用硬件 HDBSS，其他机器用 KVM 写保护，没开就退回全量。功能都对，只是代价不同，而且会在启动日志和每次调用的 `memMode` 里说出来 | `capabilities.go`、`CreateCheckpointResponse.mem_mode` |
-| 设计目标是增量 checkpoint ≤ 200 ms、restore ≤ 100 ms，按客户端墙钟 p50 判定。在 950 的混合负载上，128 MiB 以内两项都达标，256 MiB 的 restore 开始超线 | 950 实测 |
-| 回滚管不到沙箱外面：外部数据库、已发出的请求、跨越回滚的 TCP 连接都不会跟着回去；单调时钟会倒退 | `conntrack` 清理、VMGenID、envd 校时 |
+- 沙箱里不装任何代理。SDK 把请求发往沙箱的 49984 端口，宿主上的 orchestrator 代理在转发前把它截下来自己处理，沙箱里其实没人监听这个端口
+- 对外只有四个 RPC（Create / Restore / List / Delete）加一个 `/health`
+- Firecracker 只加了三处：快照请求多一个 `dirty_bitmap_path` 字段，新增 `PUT /snapshot/save-dirty-bitmap` 和 `PUT /snapshot/rollback` 两个端点。它不知道“树”是什么
+- 读档在**同一个 Firecracker 进程**里原地完成：沙箱 ID、IP、端口映射、tap、NBD 设备、内存映射都不重建
+- 账本只活在 orchestrator 进程内存里，启动时会把产物目录清空，从不读盘恢复。所以 checkpoint 只在沙箱“当前这一代”有效，orchestrator 重启、原生 pause / resume、迁移之后全部失效，把目录拷走也恢复不了
+- 产物盘是 ext4，不支持 reflink。所以内存不能“每代克隆一份再改”，只能“每代只存差分、按页沿祖先找内容”
+- 每个沙箱的第一个 checkpoint 默认是全量（2 GiB 内存约 0.5 秒），之后才是增量（几十毫秒）
+- 脏页跟踪有三种后端：鲲鹏 950 上用硬件 HDBSS，其他机器用 KVM 写保护，没开就退回全量。功能都对，只是代价不同，而且会在启动日志和每次调用的 `memMode` 里说出来
+- 设计目标是增量 checkpoint ≤ 200 ms、restore ≤ 100 ms，按客户端墙钟 p50 判定。在 950 的混合负载上，128 MiB 以内两项都达标，256 MiB 的 restore 开始超线
+- 回滚管不到沙箱外面：外部数据库、已发出的请求、跨越回滚的 TCP 连接都不会跟着回去；单调时钟会倒退
 
 ## 第一部分　为什么要做：问题、基础与取舍
 
@@ -141,16 +132,16 @@
 
 - **页**：内存按 4 KiB 一页来管理。2 GiB 的 guest 内存是 524288 页。guest 物理地址（GPA）和页号是什么关系。
 - **脏页**：被写过的页。为什么只想存脏页：大多数时候，两次存档之间只改了一小部分内存。
-  - 怎么知道哪页被写过：先给一个直觉，“把页设成只读，第一次写就会被抓到”。细节留到第 9 篇。
+  - 怎么知道哪页被写过：先给一个直觉，“把页设成只读，第一次写就会被抓到”。细节留到第 8 篇。
 - **位图**：用 1 个比特记一页脏不脏。2 GiB 内存的位图只有 64 KiB（8192 个 u64 字）。
   - 位图的并集、按字跳过全 0。
   - 这就是后面“与虚机规格线性相关的只有两次位图扫描，常数极小”的由来。
 - **稀疏文件**：文件的逻辑大小等于整份内存，但只有写过的页占磁盘，没写过的区间读出来是 0。
   - `SEEK_DATA` / `SEEK_HOLE`；
-  - 磁盘实占（`st_blocks`）与逻辑长度的区别。这个区别在第 18 篇读产物大小时要用。
+  - 磁盘实占（`st_blocks`）与逻辑长度的区别。这个区别在第 17 篇读产物大小时要用。
 - **写时复制与分层**：磁盘的“只读底 + 写层”。读的时候从上往下找，写的时候只写最上层。
 - **reflink**：XFS、Btrfs 能让两个文件共享同一批磁盘块，写时才分裂；ext4 不行。
-  - 为什么这一条决定了第 10 篇的整个设计：没有 reflink，“每代克隆一份完整内存再覆盖脏页”就退化成每次都真拷 2 GiB，而且完全静默。
+  - 为什么这一条决定了第 9 篇的整个设计：没有 reflink，“每代克隆一份完整内存再覆盖脏页”就退化成每次都真拷 2 GiB，而且完全静默。
 - 配图：
   - `03-1` 页、位图与稀疏文件：同一份 2 GiB 内存的三种表示；
   - `03-2` 写层叠在只读底上：读往下找、写只落顶层；
@@ -158,13 +149,13 @@
 
 ### 第 4 篇　为什么不直接用原生快照：目标、原则与取舍
 
-- **E2B 原生快照怎么做**，只讲骨架，细节留到第 16 篇：
+- **E2B 原生快照怎么做**，只讲骨架，细节留到第 15 篇：
   - `Sandbox.Pause`：停虚机，导出内存差分和磁盘差分，Firecracker 进程退出，沙箱离场；
   - `ResumeSandbox`：新起进程，靠缺页把工作集慢慢换回来。
 - **三条理由，原生不适合“高频小回退”**：
   1. **会中断沙箱**。导出磁盘增量的 `ExportDiff` 的参数之一就是“关掉沙箱”的回调；恢复也要新建进程。
   2. **成本模型不对**。代价看“虚机多大”，不看“回退了多少”。950 实测：改 0 MiB 时 pause 也要约 250 ms，resume 各档都在 110 ms 上下。
-  3. **ARM 适配上增量已经退化**。uffd 的写保护在移植时被注释掉，判据变成“换入过就算脏”。这条后来在原生路径上修掉了（第 16 篇），但前两条与判据精不精确无关。
+  3. **ARM 适配上增量已经退化**。uffd 的写保护在移植时被注释掉，判据变成“换入过就算脏”。这条后来在原生路径上修掉了（第 15 篇），但前两条与判据精不精确无关。
 - **硬约束**：
   - aarch64（鲲鹏 920B / 950）；
   - 产物盘 ext4；
@@ -205,7 +196,6 @@
   - SDK 把请求发到沙箱地址的 49984 端口；
   - orchestrator 的代理先解出（沙箱 ID, 端口），命中 49984 且路径是 checkpoint 的就不转发，交给 Checkpoint Service；
   - restore 进行中，发往这个沙箱的其他请求直接回答，不放进去。
-  - 一段 Go 片段。
 - **为什么要再校验一次 token**：拦截点在代理自己的鉴权之下，绕过者必须自己补上。这是一个经典的安全教训。
 - **分层与“语义只在一处”**：
 
@@ -225,7 +215,6 @@
   - 每个文件谁写、谁读、什么时候消失；
   - 原子提交：先写 `.tmp` 再 rename，不 fsync。`prepared` / `committed` 两个状态保证半写完的快照永远不会成为恢复目标。
 - **`mem_mode` 字段为什么存在**：唯一理由是让“静默退化成全量”变得可见。
-- **对应代码**：`internal/proxy/proxy.go`（拦截）；`checkpoint/service.go` 的 `Handles`、`ServeCheckpoint`、`authorize`；`checkpoint/store.go` 的 `Store`；`spec/checkpointd/checkpoint/checkpoint.proto`。
 - 配图：
   - `05-1` 一次请求的路径：SDK → 49984 → 代理拦截 → Service，以及普通请求照常进沙箱；
   - `05-2` 分层与边界：谁知道“树”，谁只做机械动作；
@@ -240,7 +229,7 @@
   - 取沙箱操作锁；
   - 锁内再确认沙箱还在、还是同一代；
   - 产物盘水位检查。
-- **决定全量还是增量**：三行 Go。
+- **决定全量还是增量**：三个条件。
   - 没有父亲且开了全量根，就是全量；
   - 开了脏页跟踪、链没断、不是根，就是增量。
 - **Prepare**：个数上限、字节上限、代际准入；建目录，写 `prepared` 的 manifest。此时条目对外不可见。
@@ -249,11 +238,11 @@
   2. （仅全量）导出活跃脏页图
   3. 一次调用写出 vmstate、稀疏内存差分和位图侧车
   4. 封存写层：刷屏障、挂新空写层、换指针
-  5. resume（无条件，用 `defer` 登记）
+  5. resume（无论前面成败，一定执行）
   6. 层文件移入 store，放在窗口外
 
   每步的代价与什么成正比：只有“写快照”这一步与本代脏页数相关，其余是常数。
-- **两个 `defer` 的顺序为什么重要**：跨文件系统时 `seal_move` 是一次拷贝，必须落在 resume 之后。
+- **为什么层文件挪到窗口外**：跨文件系统时挪动是一次拷贝，放在 resume 之后，冻结时长就不随改动量增长。
 - **顺序约束一**：内存与磁盘在同一个窗口里（呼应第 2 篇）。
 - **提交（窗口外）**：`AppendLayer` 写层 sidecar 和 header，`Commit` 把文件 rename 到位、发布进账本，基准 ← 本条目。
 - **这里的失败不再干净**：写快照一旦成功，“纪元就前进了”，Firecracker 已清空脏页记录，差分文件成了那段脏页的唯一副本。所以之后的失败走三层降级：
@@ -262,7 +251,6 @@
   3. 标记断链（此后拒绝恢复）。
 
   第 13 篇细讲。
-- **对应代码**：`service.go` 的 `create`、`failCreate`；`sandbox/checkpoint.go` 的 `CheckpointToFiles`；`store.go` 的 `Prepare`、`Commit`；`checkpoint/rootfs.go` 的 `AppendLayer`；`rootfs/nbd.go` 的 `SealLayer`。
 - 配图：
   - `06-1` checkpoint 时间线：窗口外、冻结窗口、窗口外三段，每步标注代价是常数还是随改动量；
   - `06-2` 纪元前进前后：失败处理从“删干净”变成“三层降级”。
@@ -297,7 +285,6 @@
 
   先看哪个钟异常，就知道往哪层找。
 - **八条顺序约束汇总**：破坏后能立刻报错的只有一条，其余都是静默的。由此引出第 13 篇的不变量清单。
-- **对应代码**：`service.go` 的 `restore`、`beginRestore`、`finishRestore`；`sandbox/checkpoint.go` 的 `AssembleView`、`RollbackInPlace`；`store.go` 的 `MaterializeRevert`；`rootfs/nbd.go` 的 `ResetView`；`sandbox/phasetimings.go`。
 - 配图：
   - `07-1` restore 时间线：准备、冻结窗口（conntrack 并行）、收尾；
   - `07-2` 三个钟的嵌套关系；
@@ -327,7 +314,6 @@
   - 软件写保护每个首次写都要陷出一次；
   - HDBSS 几乎透明。
   - 什么时候不该开：从不 checkpoint 的沙箱。由此引出“按沙箱按需武装”这个候选方向（第 20 篇）。
-- **对应代码**：`sandbox/fc/dirtytracking.go`（跟踪开关与后端）；`checkpoint/capabilities.go`、`capabilities_file.go`（能力上报）；Firecracker 与内核两侧只讲机制。
 - 配图：
   - `08-1` 三种脏页跟踪的路径对比：谁抓写、在哪记、要不要陷出；
   - `08-2` 纪元与破坏性读：每次快照或回滚都清零，位图恰好覆盖一段区间；
@@ -366,7 +352,6 @@
   - 为什么即使目标很小，当前偏离多了恢复也慢。
 - **全量根为什么是默认**：模板 memfile 不在本地，树根存一份全量，让回滚路径不跨网络。这是唯一保留的固定开销，有开关。
 - **删除、隐藏与合并**（概念部分，空间部分见第 14 篇）：被后代依赖的节点转为隐藏；合并（compact）把隐藏节点并进孩子，不改变任何 restore 的结果；条目数有上界 ≤ 2V + 1。
-- **对应代码**：`store.go` 的 `Entry`、`bases`、`MaterializeRevert`；`checkpoint/bitmap.go`（FCDB 位图读写与求并）；`checkpoint/compact.go`（合并）。
 - 配图：
   - `09-1` 三种存法的空间与时间对比；
   - `09-2` 回滚后分叉：ck1～ck5 的树，以及“当前基准”的移动；
@@ -393,9 +378,8 @@
   - 磁盘偏移与层文件偏移相同（恒等映射）。
 - **删除与回收**：删记录不等于删层；层引用计数，最后一个引用它的视图放手才删。
 - **层合并**：两层合一层，保留读取结果，减少文件数。当前什么时候允许合并。
-- **长跑后的成本**：块归属索引、批量建目标索引；视图块数增长让 restore 变慢的问题（第 19 篇的案例）。
+- **长跑后的成本**：块归属索引、批量建目标索引；视图块数增长让 restore 变慢的问题（第 18 篇的案例）。
 - **与原生 pause 的区别**：原生导出差分后不再使用原 Overlay，本方案一直在原 Overlay 底下换指针。
-- **对应代码**：`sandbox/block/overlay.go`、`layerstack.go`、`blockset.go`（层栈与块归属）；`rootfs/nbd.go` 的 `SealLayer`、`ResetView`；`checkpoint/rootfs.go`（磁盘账本）；`layer_refs.go`、`compact_layers.go`。
 - 配图：
   - `10-1` 一次块读写的路径：guest 到层文件；
   - `10-2` 存档前后的层栈：旧写层改名成只读层，新空写层接上；
@@ -433,7 +417,6 @@
 - **`validate_topology`**：快照与运行对象的设备拓扑必须一致；balloon、vsock、vhost-user block 明确拒绝。
 - **seccomp**：回滚路径需要额外放行的系统调用。
 - **计时与回报**：`fc_validate`、`fc_memory`、`fc_vcpus`、`fc_gic`、`fc_devices`。
-- **对应代码**：orchestrator 侧调用在 `sandbox/fc/rollback.go`、`fc/client.go`；Firecracker 一侧仓库里只有 `firecracker.arm` 二进制，按设计文档讲机制。
 - 配图：
   - `11-1` 三处扩展在一次 checkpoint / restore 中各在哪一步被调用；
   - `11-2` 九个阶段与提交点：左边失败可恢复，右边失败即撕裂；
@@ -467,7 +450,6 @@
   - 已发出响应头的流只能表现为截断；
   - 4 沙箱 × 50 轮的测试证明：恢复返回后立即发命令没问题。
 - **检查表**：还有哪些地方可能藏着同类问题，以及为什么要有逐设备的诊断日志。
-- **对应代码**：`sandbox/network/conntrack*.go`（清理、合批、扫描）、`sandbox/conntrack_flush.go`；`sandbox/envd.go`（恢复后等 envd、校时）；代理连接池在 `internal/proxy/proxy.go`。
 - 配图：
   - `12-1` 两条时间线：guest 回到 T0，宿主 conntrack、对端、代理连接池还在 T1；
   - `12-2` conntrack 清理与回滚并行的时序；
@@ -496,7 +478,6 @@
   - SDK 的异常类层次；
   - 四个 RPC 不自动重发，服务端也不取消。
 - **不变量清单**：把前面各篇散落的约束收成一张表，并标明哪个单元测试或属性测试在守着它。
-- **对应代码**：`service.go` 的 `failCreate`、`refuseIfTorn`、`markTorn`；`store.go` 的 `CommitHidden`、`InvalidateBase`、`PoisonRootfs`；`sandbox/checkpoint.go` 的 `resumeOnError`；`checkpoint/faults.go`（故障注入）。
 - 配图：
   - `13-1` restore 失败决策图：按失败发生在哪，走到四档之一；
   - `13-2` checkpoint 的三层降级；
@@ -531,7 +512,6 @@
   - 一个沙箱的 checkpoint 大约占多少盘；
   - 节点产物盘怎么估；
   - 多租户节点的建议。
-- **对应代码**：`store.go` 的 `mu`、`opLocks`、`LockSandboxWithin`、`OnInsert`、`OnRemove`、`NewStore`；`checkpoint/quota.go`；`compact.go`。
 - 配图：
   - `14-1` 两级锁：全局账本锁与按沙箱的操作锁；
   - `14-2` 代际边界：哪些事件会让旧 checkpoint 全部失效；
@@ -561,14 +541,13 @@
   改判据之前先立的规矩：宁可多导，不可少导。
 - **与 checkpoint 叠加：累积位图**。
   - 问题：Firecracker 的位图只记“上一次快照或回滚以来”，checkpoint 会清掉它。
-  - 做法：每次清零前把位图收进一个每虚机的“开机以来写过的页”集合（`uffd/sinceboot.go`）；对不上就标“不可信”，退回驻留判据。
+  - 做法：每次清零前把位图收进一个每虚机的“开机以来写过的页”集合；对不上就标“不可信”，退回驻留判据。
   - 从不 checkpoint 的沙箱不受影响。
 - **怎么叠加使用**：
   - 方向规则：先用 checkpoint 快速试错，选定满意的状态后，用原生快照固化或离场；
   - 原生 resume 之后旧 checkpoint 全部作废。
 - **实测并列**：950 上原生 pause 由约 245 ms 固定开销主导，resume 约 110 ms 且之后还要付懒加载；checkpoint / restore 在同档位快 1.1～14.6 倍。说明这只是量级比较，两组条件不同。
 - **兼容是单向的**：新 orchestrator 读得了旧快照，旧 orchestrator 读新快照会拒绝启动。
-- **对应代码**：`uffd/sinceboot.go`（累积位图）、`uffd/uffd.go`、`uffd/memory_backend.go`、`uffd/prefetch/prefetcher.go`；`sandbox/fc/memory.go`。
 - 配图：
   - `15-1` 两种快照的分工与叠加：Agent 工作流底下发生了什么；
   - `15-2` 原生增量的三层（判、存、填），修复前后对比；
@@ -720,7 +699,6 @@
 ### 第 20 篇　全景、现状与后续方向
 
 - **一张全景图**：把第 5～15 篇的部件放回一次 checkpoint 和一次 restore 里，作为全书总结。
-- **代码地图：从哪个文件读起**。按“一次请求”的顺序给一条阅读路线：`proxy.go` → `service.go` → `sandbox/checkpoint.go` → `store.go` / `checkpoint/rootfs.go` → `rootfs/nbd.go`、`block/` → `fc/rollback.go`。每个文件一句话说它管什么、对应本书哪一篇。
 - **回滚管不到的东西**，收成一张表：外部副作用、跨越回滚的连接、单调时钟、用户态随机数、换代后的旧 checkpoint。各自由实现里的哪一步决定。
 - **排障速查**，按症状列，每条指回对应篇章：
   - 增量退化成全量
@@ -750,9 +728,9 @@
   - 视图层列表引用父代
   - 持续跟上游合并
 - **三项待验证（V1～V3）**：封层刷屏障的 `BLKFLSBUF` 是否多余、`flush` 里两次 fsync、一次 checkpoint 刷两遍 NBD。用它们示范“先量、再改、改完把结论写回”的工作方法。
-- **改代码之前的自查清单**：动任何一侧，先重查第 9 篇的纪元不变量和第 7 篇的八条顺序约束。
+- **往后改动时必须守住的东西**：第 9 篇的纪元不变量和第 7 篇的八条顺序约束。
 - 配图：
-  - `20-1` 全景：一次 checkpoint 与一次 restore 经过的所有部件，标上对应的源文件；
+  - `20-1` 全景：一次 checkpoint 与一次 restore 经过的所有部件；
   - `20-2` 按症状排障的决策树；
   - `20-3` 后续方向地图：按“收益 × 难度”摆放。
 
@@ -776,7 +754,7 @@
 ## 写作检查
 
 - 每个数字标出处：哪一轮测试、哪一章；不同轮次的数字不合并成一个结论。
-- 引用代码位置时，以 `0001` 补丁里的文件路径为准，不写行号（补丁会随同步变化）。
+- 不逐函数讲源码；需要时只点出“这一步在 orchestrator 里还是在 Firecracker 里”。
 - 设计文档里“待验证”“未归因”的内容，正文同样写成待验证，不替它下结论。
 - 不出现作者、团队、客户、内部仓库与分支名、版本发布等与实现无关的信息。
 - 出现 950 / 920B 时说明这是鲲鹏的两代平台，HDBSS 只在 950 上有。
