@@ -27,12 +27,13 @@
 **依据**：以 [AustinJiangg/e2b-infra](https://github.com/AustinJiangg/e2b-infra) 仓库里的现状为准，只讲这套快照回滚是怎么实现的，不讲官方 E2B 的新功能。
 
 - **代码**：仓库根目录的 `0001-adapted-for-arm-architecture.patch`（orchestrator 侧的实现）、`firecracker.arm`（带扩展的 Firecracker）和 SDK 覆盖层 `e2b-deploy/dep/e2b-sdk-checkpoint/`。用来核对事实，正文不展开讲代码。
+- **Firecracker 源码**：e2b-infra 里只有 `firecracker.arm` 二进制。Firecracker 一侧的事实以编出它的源码为准，正文给少量关键片段，只标源码目录内的路径和函数名，不加链接、不写仓库与分支名。改动清单见附录 A。
 - **设计说明与测试数据**：仓库 `rollback/` 下的设计文档、测试脚本（`rollback/scripts/`）和鲲鹏 950 上的测试结果。正文按新手的顺序重新组织，不照搬。
 - **只讲技术**：作者、团队、项目交付、内部仓库和分支名这些与实现无关的信息，书里一概不写。
 
 本书自成一体。部署、网络、存储只讲到本书用得到的程度，详见同仓库的《E2B 部署从零讲透》《E2B 沙箱网络从零讲透》《E2B 沙箱存储从零讲透》。
 
-**规模**：20 篇，每篇约 2700～5000 个汉字，合计约 7.4 万汉字，62 张图。
+**规模**：20 篇加 1 个附录（Firecracker 改动地图），每篇约 2700～5000 个汉字，合计约 7.9 万汉字，62 张图。
 
 **名词**：正文统一用这几个说法，第 1 篇给出对照表。
 
@@ -210,7 +211,7 @@
   | KVM / CPU | 记脏页 | —— |
 
 - **账本里有哪些表**：`bySandbox`、`bases`（当前基准与断链标志）、`rootfs`、`layerRefs`、`children`、`opLocks`……只在进程内存里。
-- **Firecracker 只分叉了三处**，没有改动任何既有语义；版本必须成对，否则返回 404，被翻译成“这个 firecracker 不支持原地回滚”。
+- **Firecracker 只分叉了三处**，既有行为只有两处有意的变化（暂停前收尾挂起的设备访问；带内存文件的快照不 fsync）；版本必须成对，否则未改过的 Firecracker 返回 400 `Invalid request method and/or path`（中间有代理时可能是 404），被翻译成“这个 firecracker 不支持原地回滚”。
 - **产物目录**：`/orchestrator/build/checkpoints/<沙箱>/ckpt_<时间>/`，里面有 `snapfile`、`mem_diff`、`mem_bitmap`、`rootfs.header`、`manifest.json`，以及 `layers/`。
   - 每个文件谁写、谁读、什么时候消失；
   - 原子提交：先写 `.tmp` 再 rename，不 fsync。`prepared` / `committed` 两个状态保证半写完的快照永远不会成为恢复目标。
@@ -754,7 +755,7 @@
 ## 写作检查
 
 - 每个数字标出处：哪一轮测试、哪一章；不同轮次的数字不合并成一个结论。
-- 不逐函数讲源码；需要时只点出“这一步在 orchestrator 里还是在 Firecracker 里”。
+- 不逐函数讲源码；需要时只点出“这一步在 orchestrator 里还是在 Firecracker 里”。Firecracker 一侧例外：可以放节选片段（注释译成中文、省略处标 `// ……`），每段注明文件和函数名。
 - 设计文档里“待验证”“未归因”的内容，正文同样写成待验证，不替它下结论。
 - 不出现作者、团队、客户、内部仓库与分支名、版本发布等与实现无关的信息。
 - 出现 950 / 920B 时说明这是鲲鹏的两代平台，HDBSS 只在 950 上有。

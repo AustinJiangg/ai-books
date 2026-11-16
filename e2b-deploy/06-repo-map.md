@@ -97,7 +97,7 @@ size 143753275
 
 | 文件 | 是什么 | 最终去向 |
 |---|---|---|
-| `firecracker.arm` | 定制版 Firecracker（约 2.6 MB，静态链接）。比官方版多了快照回滚需要的接口 | `/opt/e2b-infra/bin/firecracker` → `/fc-versions/v1.13.1/firecracker` |
+| `firecracker.arm` | 定制版 Firecracker（约 2.6 MB，静态链接）。基于 E2B 的 Firecracker 分支，多了快照回滚需要的接口和 HDBSS 硬件记脏；源码不在本仓库，改动清单见《E2B 沙箱快照回滚从零讲透》附录 A | `/opt/e2b-infra/bin/firecracker` → `/fc-versions/v1.13.1/firecracker` |
 | `vmlinux.bin.arm` | ARM 客户机内核，主用 | `bin/vmlinux.bin` → `/fc-kernels/vmlinux-6.1.158/` 等 |
 | `vmlinux.bin.arm.openeuler` | openEuler 内核做的客户机内核，备用 | `bin/vmlinux.bin.openeuler` → `/fc-kernels/vmlinux-6.6.0-132.0.0/` |
 | `vmlinux.bin.x86` | x86 客户机内核 | 只在 x86 打包时用 |

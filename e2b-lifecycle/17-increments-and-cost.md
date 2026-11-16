@@ -23,7 +23,11 @@
 
 ![脏页判据](img/17-1-脏页判据.svg)
 
-Firecracker 提供了一个接口 `GET /memory/dirty`，就是按这条判据给出位图的：先找出在内存里的页，再对这些页查写保护位。
+Firecracker 提供了一个接口 `GET /memory/dirty`，就是按这条判据给出位图的：先找出在内存里的页，再对这些页查写保护位。这个接口不是上游 Firecracker 的，是 E2B 自己的 Firecracker 分支加的。源码（路径以 Firecracker 源码目录为根）在 `src/vmm/src/lib.rs` 的 `get_dirty_memory`：先用 `mincore` 找出常驻的页，再对每一页读一次 `/proc/self/pagemap`，由 `src/vmm/src/utils/pagemap.rs` 的 `is_page_dirty` 判断，核心只有一行：
+
+```rust
+Ok(entry.is_present() && !entry.is_write_protected())   // 第 63 位为 1，且第 57 位为 0
+```
 
 代价是：一页如果先被读、后被写，要多经历一次写保护缺页。收益是判据**精确**：只读不写的页不算脏，不会被导出。
 

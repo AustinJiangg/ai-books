@@ -83,14 +83,14 @@ guest 页 = 2 MiB（大页）
 
 暂停取脏页时，不再调 `GET /memory/dirty`，而是：
 
-1. 让 Firecracker 把当前的写跟踪位图写进一个临时文件（这是我们给 Firecracker 加的接口）；
+1. 让 Firecracker 把当前的写跟踪位图写进一个临时文件。这是我们给 Firecracker 加的接口 `PUT /snapshot/save-dirty-bitmap`，实现在 Firecracker 源码的 `src/vmm/src/rollback.rs` 的 `save_dirty_bitmap`：从 KVM 取出位图后先并进 Firecracker 自己的备份位图，再把备份位图写成 FCDB 格式的文件，所以取完不清零；
 2. 读取并解析这个文件，得到一个按 4 KiB 页的位集合；
 3. 以 4 KiB 为块大小返回。
 
 这一步要成立有三个前提，都满足：
 
 - 这个接口要求虚拟机已暂停：暂停流程里取脏页时虚拟机确实已暂停；
-- 暂停流程先写了 snapfile，这次写**不会清空**位图（Firecracker 只在连内存一起导出时才清，原生暂停不让它导内存）；
+- 暂停流程先写了 snapfile，这次写**不会清空**位图（Firecracker 只在连内存一起导出时才清：`create_snapshot` 只有带 `mem_file_path` 时才进 `snapshot_memory_to_file`，取 KVM 位图和清零都在那里面；原生暂停不让它导内存）；
 - 位图的起点就是这一代的起点：每一代都是新进程，从快照加载时位图为空，之前的写已经在上一代的差分里。（这一条在沙箱做过快照回滚之后**不再成立**，第 22 篇专门讲。）
 
 位图覆盖了哪些写？它是两份位图的并集：KVM 记录的 guest 的每一次写（920B 上靠写保护陷出，950 上靠硬件 HDBSS），以及 Firecracker 自己写 guest 内存的地方（网卡收包缓冲、virtio 队列）。**orchestrator 经 uffd 填进去的页不在位图里**，也不该在：它们是“换入”，内容等于映射链里已有的内容。这恰恰是“换入即脏”的反面。

@@ -137,6 +137,37 @@ Firecracker 里其实有两份脏页记录：一份在内核（KVM 的），一�
 
 **Firecracker** 在创建虚拟机时真正启用：先尝试打开 HDBSS，成功就用它；失败了，如果配置要求“必须用 HDBSS”就直接启动失败，否则退回软件写保护。
 
+这段决策在 Firecracker 源码 `src/vmm/src/vstate/vm.rs` 的 `setup_dirty_tracking` 里（节选，注释已译成中文）：
+
+```rust
+pub fn setup_dirty_tracking(&mut self) -> Result<(), VmError> {
+    // 第一层：orchestrator 有没有要求记脏页？内存注册时带了脏页位图才算要求了。
+    let armed = self.guest_memory().iter().any(|region| region.bitmap().is_some());
+    if !armed {
+        self.common.dirty_tracking = DirtyTrackingBackend::Off;
+        return Ok(());
+    }
+
+    // 第二层：用什么方式记。（aarch64）
+    let order = std::env::var("FC_HDBSS_ORDER")          // 缓冲区大小，默认 1
+        .ok().and_then(|v| v.parse::<u64>().ok()).unwrap_or(1);
+    let required = std::env::var("FC_HDBSS_REQUIRED")    // "true" 或 "1" 表示必须用 HDBSS
+        .map(|v| v == "true" || v == "1").unwrap_or(false);
+
+    match self.enable_hdbss(order) {
+        Ok(()) => self.common.dirty_tracking = DirtyTrackingBackend::Hdbss,
+        Err(err) if required => return Err(VmError::HdbssRequired(err)), // 宁可启动失败
+        Err(err) => {
+            info!("HDBSS unavailable, falling back to KVM write-protect dirty tracking: ...");
+            self.common.dirty_tracking = DirtyTrackingBackend::KvmWriteProtect;
+        }
+    }
+    Ok(())
+}
+```
+
+“打开 HDBSS”本身只是对虚拟机发一次 `KVM_ENABLE_CAP`（`src/vmm/src/arch/aarch64/vm.rs` 的 `enable_hdbss`）。这个能力是 openEuler 内核加的，Firecracker 用的 kvm-bindings 里还没有它的定义，所以在代码里就地写死：能力号 `KVM_CAP_ARM_HW_DIRTY_STATE_TRACK = 502`，参数 `args[0]` 就是上面的缓冲区大小 `order`。
+
 ### 3. 六个前提，最危险的是顺序
 
 HDBSS 要开成功，需要：内核编译了它、CPU 实现了它、KVM 运行在特定模式（VHE）、内存注册时要求记录脏页、没有同时使用另一种叫 dirty ring 的机制，以及最后一条：
@@ -150,13 +181,13 @@ HDBSS 要开成功，需要：内核编译了它、CPU 实现了它、KVM 运行
 ✓ 创建虚拟机 → 创建所有 vCPU → 注册内存 → 启用 HDBSS → 启动 vCPU
 ```
 
-现在的代码靠“调用写在正确的位置”来保证顺序，并没有断言守着。以后有人挪动这一行，就是一个静默的破坏。第 20 篇把它列为一个待补的验证缺口。
+现在的代码靠“调用写在正确的位置”来保证顺序，并没有断言守着。具体位置在 `src/vmm/src/builder.rs`：两条建虚拟机的路径都先调 `create_vmm_and_vcpus`（里面创建全部 vCPU），再 `register_memory_regions`，紧接着 `setup_dirty_tracking`，最后才启动 vCPU。以后有人挪动这一行，就是一个静默的破坏。第 20 篇把它列为一个待补的验证缺口。
 
-还有一点：HDBSS 不会随快照继承，从快照恢复会创建新的虚拟机和新的 vCPU。而 E2B 的用户沙箱全都是从模板快照恢复出来的。所以“从快照加载”这条路径上也必须启用一次。只管冷启动，等于完全没开。
+还有一点：HDBSS 不会随快照继承，从快照恢复会创建新的虚拟机和新的 vCPU。而 E2B 的用户沙箱全都是从模板快照恢复出来的。所以“从快照加载”这条路径上也必须启用一次。只管冷启动，等于完全没开。上面说的两条路径，就是冷启动的 `build_microvm_for_boot` 和加载快照的 `build_microvm_from_snapshot`，`setup_dirty_tracking` 在两边各调一次。
 
 ### 4. 缓冲区大小
 
-每个 vCPU 一块缓冲区，大小可以配，默认 8 KiB。一条记录 8 字节，8 KiB 大约 1000 条，能覆盖约 4 MiB 的脏页。写得很密集时缓冲区会满，触发额外的处理，可能吃掉一部分收益。调大缓冲区可以缓解，但每个 vCPU 都要分配一块**物理连续**的内存，在长期运行、内存碎片化的宿主上并不免费。
+每个 vCPU 一块缓冲区，大小由环境变量 `FC_HDBSS_ORDER` 配，单位是“2 的几次方个页”，默认 1，即两页、8 KiB，和内核的默认值一致。一条记录 8 字节，8 KiB 大约 1000 条，能覆盖约 4 MiB 的脏页。写得很密集时缓冲区会满，触发额外的处理，可能吃掉一部分收益。调大缓冲区可以缓解，但每个 vCPU 都要分配一块**物理连续**的内存，在长期运行、内存碎片化的宿主上并不免费。
 
 950 上只实测了默认大小。不同大小之间谁更好，还没有数据。
 
@@ -165,7 +196,7 @@ HDBSS 要开成功，需要：内核编译了它、CPU 实现了它、KVM 运行
 因为降级是静默的，必须主动报告“这台机器实际在用哪种方式”：
 
 - **orchestrator** 启动日志里打一行 `checkpoint capabilities`，写明是否记脏页，以及**理由**：检测到硬件能力、被环境变量强制开 / 关，或者没检测到；
-- **Firecracker** 在实例信息里报告实际用的后端：`hdbss`、`kvm-wp` 或 `off`；
+- **Firecracker** 在实例信息（`GET /`）里多了一个字段 `dirty_tracking`，报告实际用的后端：`hdbss`、`kvm-wp` 或 `off`；启动日志里也有一行 `HDBSS enabled (buffer order 1)` 或 `HDBSS unavailable, falling back to KVM write-protect dirty tracking`；
 - **每次存档**回报 `mem_mode`：除了每台沙箱的第一次，出现 `full` 就说明没在跟踪；
 - 生产部署可以设 `FC_HDBSS_REQUIRED=true`：**宁可启动失败，也不要悄悄走软件路径**。
 
@@ -184,6 +215,19 @@ HDBSS 要开成功，需要：内核编译了它、CPU 实现了它、KVM 运行
 | 本方案 | 不走 uffd，直接取 KVM / HDBSS 的脏页日志 | 精确 |
 
 ARM 适配版里，填页时“保留写保护”的那几行被注释掉了，于是每次填页都会清掉写保护，不管是因为读还是写。判据“在内存里且没有写保护”就塌缩成了“在内存里”。
+
+这条判据由 Firecracker 的 `GET /memory/dirty` 接口执行。它是 E2B 自己的 Firecracker 分支就有的，不是本方案加的。代码在 `src/vmm/src/lib.rs` 的 `get_dirty_memory` 和 `src/vmm/src/utils/pagemap.rs`：先用 `mincore` 找出驻留在内存里的页，再逐页读 `/proc/self/pagemap` 的那一项：
+
+```rust
+// src/vmm/src/utils/pagemap.rs（节选）
+pub fn is_write_protected(&self) -> bool { (self.raw & (1u64 << 57)) != 0 } // 第 57 位：uffd 写保护
+pub fn is_present(&self) -> bool         { (self.raw & (1u64 << 63)) != 0 } // 第 63 位：在内存里
+
+// is_page_dirty：在内存里，且没有写保护，就算脏
+Ok(entry.is_present() && !entry.is_write_protected())
+```
+
+在 ARM 适配版里没有任何一页带写保护，第二个条件永远成立，于是只剩“在内存里”。
 
 再叠加原生快照每次都新起进程：新进程内存是空的，客户机一跑起来就要把用到的页重新拉进来，**拉进来就被判脏**。结果是，即使两次原生快照之间什么都没做，导出的增量也约等于整个常驻工作集。
 

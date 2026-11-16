@@ -46,9 +46,27 @@
 
 ### 修法
 
-写回设备状态之后，清空这份缓存，把队列游标退回去，再按**已经回滚的**可用环重新解析一遍。需要的几个计数，上游快照格式里本来就有，原来是给重建路线用的。
+写回设备状态之后，清空这份缓存，把队列游标退回去，再按**已经回滚的**可用环重新解析一遍。需要的几个计数（快照时已解析了几个描述符、已用掉几个、用掉多少字节），上游快照格式里本来就有，原来是给重建路线用的。代码在 Firecracker 源码 `src/vmm/src/devices/virtio/net/device.rs` 的 `rollback_rx_buffers`（节选，注释已译成中文）：
 
-还有一个细节：清空是“原地清”，而不是“换一个新的缓存对象”。因为新建缓存对象会用到一个系统调用，而 Firecracker 的线程在初始化之后装了系统调用白名单，这个调用不在名单上，一调用进程就会被杀掉。**运行期能做的事比初始化期少**，这是原地路线的又一个限制。凡是在回滚路径上新增系统调用，都要检查白名单。
+```rust
+pub(crate) fn rollback_rx_buffers(&mut self, parsed_descriptor_chains_nr: u16,
+                                  used_descriptors: u16, used_bytes: u32) {
+    // 原地清空，不新建：新建 RxBuffers 要 mmap 一个新的 IovDeque，
+    // 而 vmm 线程的 seccomp 白名单里没有 memfd_create，那个调用只在装白名单之前做过。
+    self.rx_buffer.iovec.clear();
+    self.rx_buffer.parsed_descriptors.clear();
+    self.rx_buffer.used_descriptors = 0;
+    self.rx_buffer.used_bytes = 0;
+    self.rx_buffer.min_buffer_size = 0;
+
+    self.queues[RX_INDEX].next_avail -= parsed_descriptor_chains_nr; // 游标退回快照解析前
+    self.parse_rx_descriptors();                                     // 按已回滚的可用环重新解析
+    self.rx_buffer.used_descriptors = used_descriptors;
+    self.rx_buffer.used_bytes = used_bytes;
+}
+```
+
+注释里那句就是下面这个细节：清空是“原地清”，而不是“换一个新的缓存对象”。因为新建缓存对象会用到一个系统调用（`memfd_create`），而 Firecracker 的线程在初始化之后装了系统调用白名单，这个调用不在名单上，一调用进程就会被杀掉。**运行期能做的事比初始化期少**，这是原地路线的又一个限制。凡是在回滚路径上新增系统调用，都要检查白名单。
 
 ## 三、VMGenID 的次序
 
@@ -152,7 +170,13 @@ orchestrator 的代理对每台沙箱维护一个连接池。读档之后，池�
 
 网卡缓存和连接跟踪这两类问题的共同点是：表现为挂死，而沙箱一旦被销毁，什么都不剩。
 
-所以回滚写回设备状态之后，Firecracker 会给每个设备记一行日志：队列在设备眼里走到了哪里、在客户机内存里又走到了哪里。两者对不上就是问题所在。一个几百次才复现一次的挂死，如果现场只有“沙箱没反应”，基本无从下手；有了这一行，至少能分清是设备没往下走，还是客户机没往下走。
+所以回滚写回设备状态之后，Firecracker 会给每个设备记一行日志：队列在设备眼里走到了哪里、在客户机内存里又走到了哪里。两者对不上就是问题所在。代码是 `src/vmm/src/rollback.rs` 的 `log_queue_diagnostics`，一行大致是：
+
+```
+rollback: device eth0 (type 1) q0 avail=… next_avail=… next_used=… pending=… | … | rx_buffer parsed=… used_desc=… used_bytes=…
+```
+
+其中 `avail` 是从客户机内存里读出的可用环位置，`next_avail`、`next_used` 是设备自己记的游标；网卡另外记接收缓存里有几个已解析的描述符。回滚后的这一行用 `info` 级别输出。暂停时也会记同样的一行，但暂停天天发生、和回滚多半无关，所以那一行降到 `debug` 级别，平时不出现。一个几百次才复现一次的挂死，如果现场只有“沙箱没反应”，基本无从下手；有了这一行，至少能分清是设备没往下走，还是客户机没往下走。
 
 ## 九、检查表：还有哪些地方可能藏着同类问题
 
@@ -168,7 +192,7 @@ orchestrator 的代理对每台沙箱维护一个连接池。读档之后，池�
 | 新代码有没有引入新的系统调用？ | 检查各线程的系统调用白名单 |
 | 有没有在途的异步 I/O？ | 回滚前排空 |
 | 有没有“内核里挂着、不在快照里”的状态？ | 暂停和回滚前都要收尾（如 ARM 上延迟完成的设备访问） |
-| 往活着的对象写“写 1 才生效”的成对寄存器？ | 先清后设 |
+| 往活着的对象写“写 1 才生效”的成对寄存器？ | 绝对写回：清除半写反码、置位半写原值（第 11 篇阶段 6） |
 | 设备状态和宿主侧后端有没有必须一致的配置？ | 回滚设备后按新的值重设后端（如 tap 的配置） |
 | 新设备支持热插拔或动态配置吗？ | 设备组成校验要能表达，否则拒绝 |
 

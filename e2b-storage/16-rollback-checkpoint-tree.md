@@ -126,7 +126,7 @@ PUT /snapshot/create
   "dirty_bitmap_path": ".../<检查点ID>/mem_bitmap" }
 ```
 
-Firecracker 用写跟踪（第 4、15 篇）知道“自上一个快照或回滚以来，客户机写过哪些页”，把这些页按原位置写进 `mem_diff`（其余位置都是洞），并把它们列在 `mem_bitmap` 里，然后**清空**自己的写跟踪位图，开始记下一段。
+Firecracker 用写跟踪（第 4、15 篇）知道“自上一个快照或回滚以来，客户机写过哪些页”，把这些页按原位置写进 `mem_diff`（其余位置都是洞），并把它们列在 `mem_bitmap` 里，然后**清空**自己的写跟踪位图，开始记下一段。这一步在 Firecracker 源码的 `src/vmm/src/vstate/vm.rs` 的 `snapshot_memory_to_file` 里：写差分内存的函数 `dump_dirty` 一边写一边记下写了哪些页，写完把这张位图交出来，正好就是 `mem_bitmap`；写失败时不清空，取出来的记录放回 Firecracker 自己的备份位图，不会丢。
 
 “这一段时间”叫一个 **epoch**（时期）。一个检查点就是一个 epoch 写过的页。所以：
 
@@ -145,7 +145,7 @@ Firecracker 用写跟踪（第 4、15 篇）知道“自上一个快照或回滚
  位图              每 64 页一个 8 字节字，第 w 个字的第 i 位表示第 w×64+i 页
 ```
 
-这个格式由 orchestrator 和定制版 Firecracker 共用。
+所有整数都是小端序。这个格式由 orchestrator 和定制版 Firecracker 共用，Firecracker 一侧的读写函数是 `src/vmm/src/vstate/memory.rs` 的 `serialize_dirty_bitmap` / `deserialize_dirty_bitmap`。
 
 ### 5.4 根检查点：一份完整的内存
 
@@ -237,7 +237,8 @@ orchestrator 把找到的内容拼成两个临时文件，放在目标检查点�
  2. 导出当前的写跟踪位图（暂停后它不会再变），确定最终的还原集，生成 revert 文件
  3. 让定制版 Firecracker 原地回滚：
       把 revert_mem 里的页写回客户机内存
-      把 vCPU 寄存器、设备状态恢复成 T 的 snapfile 里的样子
+      把 vCPU 寄存器、中断控制器、设备状态恢复成 T 的 snapfile 里的样子
+      （九个阶段，见《E2B 沙箱快照回滚从零讲透》第 11 篇）
  4. 把磁盘视图换成 T 的那一摞层（下一篇）
  5. 恢复虚拟机运行
  6. 等客户机里的 envd 响应（最多 45 秒）

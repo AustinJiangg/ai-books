@@ -178,7 +178,7 @@ cp ./bin/firecracker "/fc-versions/v1.13.1/firecracker"
 chmod +x /fc-versions/v1.13.1/firecracker
 ```
 
-和内核一样，orchestrator 按 `/fc-versions/<版本>/firecracker` 找 Firecracker。目录名 `v1.13.1` 对应代码运行时查找的版本号；实际放进去的是 RPM 自带的定制版（基于官方 v1.12.1，加了快照回滚需要的接口）。
+和内核一样，orchestrator 按 `/fc-versions/<版本>/firecracker` 找 Firecracker。目录名 `v1.13.1` 对应代码运行时查找的版本号；实际放进去的是 RPM 自带的定制版：基于 E2B 自己的 Firecracker 分支（版本号 1.12.1），加了快照回滚需要的接口和 HDBSS 硬件记脏。`firecracker --version` 报的是 1.12.1，目录名和版本号都证明不了里面是哪个构建，要核对就看文件的 sha256。
 
 **先删后拷**是一个值得学习的细节。重新部署时，上一轮残留的沙箱进程可能还在运行这个 Firecracker 二进制。直接 `cp` 覆盖会报：
 

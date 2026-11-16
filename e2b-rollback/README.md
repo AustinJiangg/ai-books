@@ -2,7 +2,7 @@
 
 一本写给计算机新手的书，讲一套实际在用的“沙箱级”快照回滚：在 E2B 与 Firecracker 上，给一台**正在运行**的沙箱存档，过一会儿再把**同一台**沙箱原地变回那一刻。
 
-- **代码**：[AustinJiangg/e2b-infra](https://github.com/AustinJiangg/e2b-infra) 仓库里的 `0001-adapted-for-arm-architecture.patch`（orchestrator 一侧）、`firecracker.arm`（带三处扩展的 Firecracker）和 SDK 覆盖层。
+- **代码**：[AustinJiangg/e2b-infra](https://github.com/AustinJiangg/e2b-infra) 仓库里的 `0001-adapted-for-arm-architecture.patch`（orchestrator 一侧）、`firecracker.arm`（带三处扩展的 Firecracker）和 SDK 覆盖层。Firecracker 一侧另外对照了编出 `firecracker.arm` 的源码，这份源码没有随 e2b-infra 发布，书中只给源码目录内的路径和函数名（第 11 篇、附录 A）。
 - **机器**：鲲鹏 ARM 服务器，HDBSS 硬件脏页跟踪在鲲鹏 950 上；存档盘是 ext4。
 - **范围**：原理、设计、实现、性能、优化、测试，以及往后怎么改。
 
@@ -17,9 +17,9 @@
 3. **多快**：怎么量、量出了什么、从单沙箱到并发长跑做过哪些优化。
 4. **对不对、往后怎么走**：测试怎么证明回得对；全景、排障、已知问题和后续方向。
 
-约 7.4 万汉字，20 篇，62 张图。
+约 7.9 万汉字，20 篇加 1 个附录，62 张图。
 
-本书只读不练，没有需要动手的实验；文中的代码和命令都是帮助理解的示例片段，不逐函数讲源码。部署、网络、存储的细节只讲到本书用得到的程度，详见《E2B 部署从零讲透》《E2B 沙箱网络从零讲透》《E2B 沙箱存储从零讲透》。
+本书只读不练，没有需要动手的实验；文中的命令都是帮助理解的示例片段，不逐函数讲源码。Firecracker 这一侧例外：第 8、11、12 篇摘了少量关键源码片段，因为这部分只有二进制公开，读者无从自己查对。部署、网络、存储的细节只讲到本书用得到的程度，详见《E2B 部署从零讲透》《E2B 沙箱网络从零讲透》《E2B 沙箱存储从零讲透》。
 
 ## 目录
 
@@ -57,6 +57,10 @@
 
 - [第 19 篇　测试怎么做：怎样证明“回得对”](19-testing.md)
 - [第 20 篇　全景、现状与后续方向](20-big-picture-and-next.md)
+
+### 附录
+
+- [附录 A　Firecracker 改动地图](A-firecracker-changes.md)
 
 编写用文件：[`OUTLINE.md`](OUTLINE.md)（各篇要点）。
 

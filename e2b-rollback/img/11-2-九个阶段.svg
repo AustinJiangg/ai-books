@@ -20,7 +20,7 @@
 <text x="722.0" y="275.2" font-size="12.5" fill="#57606A" text-anchor="start">收尾挂起的设备访问 → 复位 → 全写 → 读回核对</text>
 <rect x="708.0" y="300.0" width="844.0" height="64.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
 <text x="722.0" y="323.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">6 中断控制器</text>
-<text x="722.0" y="347.2" font-size="12.5" fill="#57606A" text-anchor="start">先清再设，结果逐位等于快照</text>
+<text x="722.0" y="347.2" font-size="12.5" fill="#57606A" text-anchor="start">普通恢复后再按位绝对写回，逐位等于快照</text>
 <rect x="708.0" y="372.0" width="844.0" height="64.0" rx="10" fill="#FDF0D9" stroke="#D9922B" stroke-width="1.3"/>
 <text x="722.0" y="395.9" font-size="15" fill="#8A5300" font-weight="600" text-anchor="start">7 设备</text>
 <text x="722.0" y="419.2" font-size="12.5" fill="#57606A" text-anchor="start">队列、特性、中断；串口复位；重建网卡缓存</text>

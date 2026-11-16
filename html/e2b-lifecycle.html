@@ -154,7 +154,241 @@ dt{font-weight:650;margin-top:.8em}
 dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 .hl{margin:20px 0 24px}
 .hl pre{margin:0}
-
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.hl .hll { background-color: #ffffcc }
+.hl .c { color: #3D7B7B; font-style: italic } /* Comment */
+.hl .err { border: 1px solid #FF0000 } /* Error */
+.hl .k { color: #008000; font-weight: bold } /* Keyword */
+.hl .o { color: #666666 } /* Operator */
+.hl .ch { color: #3D7B7B; font-style: italic } /* Comment.Hashbang */
+.hl .cm { color: #3D7B7B; font-style: italic } /* Comment.Multiline */
+.hl .cp { color: #9C6500 } /* Comment.Preproc */
+.hl .cpf { color: #3D7B7B; font-style: italic } /* Comment.PreprocFile */
+.hl .c1 { color: #3D7B7B; font-style: italic } /* Comment.Single */
+.hl .cs { color: #3D7B7B; font-style: italic } /* Comment.Special */
+.hl .gd { color: #A00000 } /* Generic.Deleted */
+.hl .ge { font-style: italic } /* Generic.Emph */
+.hl .ges { font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+.hl .gr { color: #E40000 } /* Generic.Error */
+.hl .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.hl .gi { color: #008400 } /* Generic.Inserted */
+.hl .go { color: #717171 } /* Generic.Output */
+.hl .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.hl .gs { font-weight: bold } /* Generic.Strong */
+.hl .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.hl .gt { color: #0044DD } /* Generic.Traceback */
+.hl .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.hl .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.hl .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.hl .kp { color: #008000 } /* Keyword.Pseudo */
+.hl .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.hl .kt { color: #B00040 } /* Keyword.Type */
+.hl .m { color: #666666 } /* Literal.Number */
+.hl .s { color: #BA2121 } /* Literal.String */
+.hl .na { color: #687822 } /* Name.Attribute */
+.hl .nb { color: #008000 } /* Name.Builtin */
+.hl .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.hl .no { color: #880000 } /* Name.Constant */
+.hl .nd { color: #AA22FF } /* Name.Decorator */
+.hl .ni { color: #717171; font-weight: bold } /* Name.Entity */
+.hl .ne { color: #CB3F38; font-weight: bold } /* Name.Exception */
+.hl .nf { color: #0000FF } /* Name.Function */
+.hl .nl { color: #767600 } /* Name.Label */
+.hl .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.hl .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.hl .nv { color: #19177C } /* Name.Variable */
+.hl .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.hl .w { color: #bbbbbb } /* Text.Whitespace */
+.hl .mb { color: #666666 } /* Literal.Number.Bin */
+.hl .mf { color: #666666 } /* Literal.Number.Float */
+.hl .mh { color: #666666 } /* Literal.Number.Hex */
+.hl .mi { color: #666666 } /* Literal.Number.Integer */
+.hl .mo { color: #666666 } /* Literal.Number.Oct */
+.hl .sa { color: #BA2121 } /* Literal.String.Affix */
+.hl .sb { color: #BA2121 } /* Literal.String.Backtick */
+.hl .sc { color: #BA2121 } /* Literal.String.Char */
+.hl .dl { color: #BA2121 } /* Literal.String.Delimiter */
+.hl .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.hl .s2 { color: #BA2121 } /* Literal.String.Double */
+.hl .se { color: #AA5D1F; font-weight: bold } /* Literal.String.Escape */
+.hl .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.hl .si { color: #A45A77; font-weight: bold } /* Literal.String.Interpol */
+.hl .sx { color: #008000 } /* Literal.String.Other */
+.hl .sr { color: #A45A77 } /* Literal.String.Regex */
+.hl .s1 { color: #BA2121 } /* Literal.String.Single */
+.hl .ss { color: #19177C } /* Literal.String.Symbol */
+.hl .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.hl .fm { color: #0000FF } /* Name.Function.Magic */
+.hl .vc { color: #19177C } /* Name.Variable.Class */
+.hl .vg { color: #19177C } /* Name.Variable.Global */
+.hl .vi { color: #19177C } /* Name.Variable.Instance */
+.hl .vm { color: #19177C } /* Name.Variable.Magic */
+.hl .il { color: #666666 } /* Literal.Number.Integer.Long */
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]) .hl .hll { background-color: #6e7681 }
+:root:not([data-theme=light]) .hl { background: #0d1117; color: #e6edf3 }
+:root:not([data-theme=light]) .hl .c { color: #8b949e; font-style: italic } /* Comment */
+:root:not([data-theme=light]) .hl .err { color: #f85149 } /* Error */
+:root:not([data-theme=light]) .hl .esc { color: #e6edf3 } /* Escape */
+:root:not([data-theme=light]) .hl .g { color: #e6edf3 } /* Generic */
+:root:not([data-theme=light]) .hl .k { color: #ff7b72 } /* Keyword */
+:root:not([data-theme=light]) .hl .l { color: #a5d6ff } /* Literal */
+:root:not([data-theme=light]) .hl .n { color: #e6edf3 } /* Name */
+:root:not([data-theme=light]) .hl .o { color: #ff7b72; font-weight: bold } /* Operator */
+:root:not([data-theme=light]) .hl .x { color: #e6edf3 } /* Other */
+:root:not([data-theme=light]) .hl .p { color: #e6edf3 } /* Punctuation */
+:root:not([data-theme=light]) .hl .ch { color: #8b949e; font-style: italic } /* Comment.Hashbang */
+:root:not([data-theme=light]) .hl .cm { color: #8b949e; font-style: italic } /* Comment.Multiline */
+:root:not([data-theme=light]) .hl .cp { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Preproc */
+:root:not([data-theme=light]) .hl .cpf { color: #8b949e; font-style: italic } /* Comment.PreprocFile */
+:root:not([data-theme=light]) .hl .c1 { color: #8b949e; font-style: italic } /* Comment.Single */
+:root:not([data-theme=light]) .hl .cs { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Special */
+:root:not([data-theme=light]) .hl .gd { color: #ffa198; background-color: #490202 } /* Generic.Deleted */
+:root:not([data-theme=light]) .hl .ge { color: #e6edf3; font-style: italic } /* Generic.Emph */
+:root:not([data-theme=light]) .hl .ges { color: #e6edf3; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+:root:not([data-theme=light]) .hl .gr { color: #ffa198 } /* Generic.Error */
+:root:not([data-theme=light]) .hl .gh { color: #79c0ff; font-weight: bold } /* Generic.Heading */
+:root:not([data-theme=light]) .hl .gi { color: #56d364; background-color: #0f5323 } /* Generic.Inserted */
+:root:not([data-theme=light]) .hl .go { color: #8b949e } /* Generic.Output */
+:root:not([data-theme=light]) .hl .gp { color: #8b949e } /* Generic.Prompt */
+:root:not([data-theme=light]) .hl .gs { color: #e6edf3; font-weight: bold } /* Generic.Strong */
+:root:not([data-theme=light]) .hl .gu { color: #79c0ff } /* Generic.Subheading */
+:root:not([data-theme=light]) .hl .gt { color: #ff7b72 } /* Generic.Traceback */
+:root:not([data-theme=light]) .hl .g-Underline { color: #e6edf3; text-decoration: underline } /* Generic.Underline */
+:root:not([data-theme=light]) .hl .kc { color: #79c0ff } /* Keyword.Constant */
+:root:not([data-theme=light]) .hl .kd { color: #ff7b72 } /* Keyword.Declaration */
+:root:not([data-theme=light]) .hl .kn { color: #ff7b72 } /* Keyword.Namespace */
+:root:not([data-theme=light]) .hl .kp { color: #79c0ff } /* Keyword.Pseudo */
+:root:not([data-theme=light]) .hl .kr { color: #ff7b72 } /* Keyword.Reserved */
+:root:not([data-theme=light]) .hl .kt { color: #ff7b72 } /* Keyword.Type */
+:root:not([data-theme=light]) .hl .ld { color: #79c0ff } /* Literal.Date */
+:root:not([data-theme=light]) .hl .m { color: #a5d6ff } /* Literal.Number */
+:root:not([data-theme=light]) .hl .s { color: #a5d6ff } /* Literal.String */
+:root:not([data-theme=light]) .hl .na { color: #e6edf3 } /* Name.Attribute */
+:root:not([data-theme=light]) .hl .nb { color: #e6edf3 } /* Name.Builtin */
+:root:not([data-theme=light]) .hl .nc { color: #f0883e; font-weight: bold } /* Name.Class */
+:root:not([data-theme=light]) .hl .no { color: #79c0ff; font-weight: bold } /* Name.Constant */
+:root:not([data-theme=light]) .hl .nd { color: #d2a8ff; font-weight: bold } /* Name.Decorator */
+:root:not([data-theme=light]) .hl .ni { color: #ffa657 } /* Name.Entity */
+:root:not([data-theme=light]) .hl .ne { color: #f0883e; font-weight: bold } /* Name.Exception */
+:root:not([data-theme=light]) .hl .nf { color: #d2a8ff; font-weight: bold } /* Name.Function */
+:root:not([data-theme=light]) .hl .nl { color: #79c0ff; font-weight: bold } /* Name.Label */
+:root:not([data-theme=light]) .hl .nn { color: #ff7b72 } /* Name.Namespace */
+:root:not([data-theme=light]) .hl .nx { color: #e6edf3 } /* Name.Other */
+:root:not([data-theme=light]) .hl .py { color: #79c0ff } /* Name.Property */
+:root:not([data-theme=light]) .hl .nt { color: #7ee787 } /* Name.Tag */
+:root:not([data-theme=light]) .hl .nv { color: #79c0ff } /* Name.Variable */
+:root:not([data-theme=light]) .hl .ow { color: #ff7b72; font-weight: bold } /* Operator.Word */
+:root:not([data-theme=light]) .hl .pm { color: #e6edf3 } /* Punctuation.Marker */
+:root:not([data-theme=light]) .hl .w { color: #6e7681 } /* Text.Whitespace */
+:root:not([data-theme=light]) .hl .mb { color: #a5d6ff } /* Literal.Number.Bin */
+:root:not([data-theme=light]) .hl .mf { color: #a5d6ff } /* Literal.Number.Float */
+:root:not([data-theme=light]) .hl .mh { color: #a5d6ff } /* Literal.Number.Hex */
+:root:not([data-theme=light]) .hl .mi { color: #a5d6ff } /* Literal.Number.Integer */
+:root:not([data-theme=light]) .hl .mo { color: #a5d6ff } /* Literal.Number.Oct */
+:root:not([data-theme=light]) .hl .sa { color: #79c0ff } /* Literal.String.Affix */
+:root:not([data-theme=light]) .hl .sb { color: #a5d6ff } /* Literal.String.Backtick */
+:root:not([data-theme=light]) .hl .sc { color: #a5d6ff } /* Literal.String.Char */
+:root:not([data-theme=light]) .hl .dl { color: #79c0ff } /* Literal.String.Delimiter */
+:root:not([data-theme=light]) .hl .sd { color: #a5d6ff } /* Literal.String.Doc */
+:root:not([data-theme=light]) .hl .s2 { color: #a5d6ff } /* Literal.String.Double */
+:root:not([data-theme=light]) .hl .se { color: #79c0ff } /* Literal.String.Escape */
+:root:not([data-theme=light]) .hl .sh { color: #79c0ff } /* Literal.String.Heredoc */
+:root:not([data-theme=light]) .hl .si { color: #a5d6ff } /* Literal.String.Interpol */
+:root:not([data-theme=light]) .hl .sx { color: #a5d6ff } /* Literal.String.Other */
+:root:not([data-theme=light]) .hl .sr { color: #79c0ff } /* Literal.String.Regex */
+:root:not([data-theme=light]) .hl .s1 { color: #a5d6ff } /* Literal.String.Single */
+:root:not([data-theme=light]) .hl .ss { color: #a5d6ff } /* Literal.String.Symbol */
+:root:not([data-theme=light]) .hl .bp { color: #e6edf3 } /* Name.Builtin.Pseudo */
+:root:not([data-theme=light]) .hl .fm { color: #d2a8ff; font-weight: bold } /* Name.Function.Magic */
+:root:not([data-theme=light]) .hl .vc { color: #79c0ff } /* Name.Variable.Class */
+:root:not([data-theme=light]) .hl .vg { color: #79c0ff } /* Name.Variable.Global */
+:root:not([data-theme=light]) .hl .vi { color: #79c0ff } /* Name.Variable.Instance */
+:root:not([data-theme=light]) .hl .vm { color: #79c0ff } /* Name.Variable.Magic */
+:root:not([data-theme=light]) .hl .il { color: #a5d6ff } /* Literal.Number.Integer.Long */}
+:root[data-theme=dark] .hl .hll { background-color: #6e7681 }
+:root[data-theme=dark] .hl { background: #0d1117; color: #e6edf3 }
+:root[data-theme=dark] .hl .c { color: #8b949e; font-style: italic } /* Comment */
+:root[data-theme=dark] .hl .err { color: #f85149 } /* Error */
+:root[data-theme=dark] .hl .esc { color: #e6edf3 } /* Escape */
+:root[data-theme=dark] .hl .g { color: #e6edf3 } /* Generic */
+:root[data-theme=dark] .hl .k { color: #ff7b72 } /* Keyword */
+:root[data-theme=dark] .hl .l { color: #a5d6ff } /* Literal */
+:root[data-theme=dark] .hl .n { color: #e6edf3 } /* Name */
+:root[data-theme=dark] .hl .o { color: #ff7b72; font-weight: bold } /* Operator */
+:root[data-theme=dark] .hl .x { color: #e6edf3 } /* Other */
+:root[data-theme=dark] .hl .p { color: #e6edf3 } /* Punctuation */
+:root[data-theme=dark] .hl .ch { color: #8b949e; font-style: italic } /* Comment.Hashbang */
+:root[data-theme=dark] .hl .cm { color: #8b949e; font-style: italic } /* Comment.Multiline */
+:root[data-theme=dark] .hl .cp { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Preproc */
+:root[data-theme=dark] .hl .cpf { color: #8b949e; font-style: italic } /* Comment.PreprocFile */
+:root[data-theme=dark] .hl .c1 { color: #8b949e; font-style: italic } /* Comment.Single */
+:root[data-theme=dark] .hl .cs { color: #8b949e; font-weight: bold; font-style: italic } /* Comment.Special */
+:root[data-theme=dark] .hl .gd { color: #ffa198; background-color: #490202 } /* Generic.Deleted */
+:root[data-theme=dark] .hl .ge { color: #e6edf3; font-style: italic } /* Generic.Emph */
+:root[data-theme=dark] .hl .ges { color: #e6edf3; font-weight: bold; font-style: italic } /* Generic.EmphStrong */
+:root[data-theme=dark] .hl .gr { color: #ffa198 } /* Generic.Error */
+:root[data-theme=dark] .hl .gh { color: #79c0ff; font-weight: bold } /* Generic.Heading */
+:root[data-theme=dark] .hl .gi { color: #56d364; background-color: #0f5323 } /* Generic.Inserted */
+:root[data-theme=dark] .hl .go { color: #8b949e } /* Generic.Output */
+:root[data-theme=dark] .hl .gp { color: #8b949e } /* Generic.Prompt */
+:root[data-theme=dark] .hl .gs { color: #e6edf3; font-weight: bold } /* Generic.Strong */
+:root[data-theme=dark] .hl .gu { color: #79c0ff } /* Generic.Subheading */
+:root[data-theme=dark] .hl .gt { color: #ff7b72 } /* Generic.Traceback */
+:root[data-theme=dark] .hl .g-Underline { color: #e6edf3; text-decoration: underline } /* Generic.Underline */
+:root[data-theme=dark] .hl .kc { color: #79c0ff } /* Keyword.Constant */
+:root[data-theme=dark] .hl .kd { color: #ff7b72 } /* Keyword.Declaration */
+:root[data-theme=dark] .hl .kn { color: #ff7b72 } /* Keyword.Namespace */
+:root[data-theme=dark] .hl .kp { color: #79c0ff } /* Keyword.Pseudo */
+:root[data-theme=dark] .hl .kr { color: #ff7b72 } /* Keyword.Reserved */
+:root[data-theme=dark] .hl .kt { color: #ff7b72 } /* Keyword.Type */
+:root[data-theme=dark] .hl .ld { color: #79c0ff } /* Literal.Date */
+:root[data-theme=dark] .hl .m { color: #a5d6ff } /* Literal.Number */
+:root[data-theme=dark] .hl .s { color: #a5d6ff } /* Literal.String */
+:root[data-theme=dark] .hl .na { color: #e6edf3 } /* Name.Attribute */
+:root[data-theme=dark] .hl .nb { color: #e6edf3 } /* Name.Builtin */
+:root[data-theme=dark] .hl .nc { color: #f0883e; font-weight: bold } /* Name.Class */
+:root[data-theme=dark] .hl .no { color: #79c0ff; font-weight: bold } /* Name.Constant */
+:root[data-theme=dark] .hl .nd { color: #d2a8ff; font-weight: bold } /* Name.Decorator */
+:root[data-theme=dark] .hl .ni { color: #ffa657 } /* Name.Entity */
+:root[data-theme=dark] .hl .ne { color: #f0883e; font-weight: bold } /* Name.Exception */
+:root[data-theme=dark] .hl .nf { color: #d2a8ff; font-weight: bold } /* Name.Function */
+:root[data-theme=dark] .hl .nl { color: #79c0ff; font-weight: bold } /* Name.Label */
+:root[data-theme=dark] .hl .nn { color: #ff7b72 } /* Name.Namespace */
+:root[data-theme=dark] .hl .nx { color: #e6edf3 } /* Name.Other */
+:root[data-theme=dark] .hl .py { color: #79c0ff } /* Name.Property */
+:root[data-theme=dark] .hl .nt { color: #7ee787 } /* Name.Tag */
+:root[data-theme=dark] .hl .nv { color: #79c0ff } /* Name.Variable */
+:root[data-theme=dark] .hl .ow { color: #ff7b72; font-weight: bold } /* Operator.Word */
+:root[data-theme=dark] .hl .pm { color: #e6edf3 } /* Punctuation.Marker */
+:root[data-theme=dark] .hl .w { color: #6e7681 } /* Text.Whitespace */
+:root[data-theme=dark] .hl .mb { color: #a5d6ff } /* Literal.Number.Bin */
+:root[data-theme=dark] .hl .mf { color: #a5d6ff } /* Literal.Number.Float */
+:root[data-theme=dark] .hl .mh { color: #a5d6ff } /* Literal.Number.Hex */
+:root[data-theme=dark] .hl .mi { color: #a5d6ff } /* Literal.Number.Integer */
+:root[data-theme=dark] .hl .mo { color: #a5d6ff } /* Literal.Number.Oct */
+:root[data-theme=dark] .hl .sa { color: #79c0ff } /* Literal.String.Affix */
+:root[data-theme=dark] .hl .sb { color: #a5d6ff } /* Literal.String.Backtick */
+:root[data-theme=dark] .hl .sc { color: #a5d6ff } /* Literal.String.Char */
+:root[data-theme=dark] .hl .dl { color: #79c0ff } /* Literal.String.Delimiter */
+:root[data-theme=dark] .hl .sd { color: #a5d6ff } /* Literal.String.Doc */
+:root[data-theme=dark] .hl .s2 { color: #a5d6ff } /* Literal.String.Double */
+:root[data-theme=dark] .hl .se { color: #79c0ff } /* Literal.String.Escape */
+:root[data-theme=dark] .hl .sh { color: #79c0ff } /* Literal.String.Heredoc */
+:root[data-theme=dark] .hl .si { color: #a5d6ff } /* Literal.String.Interpol */
+:root[data-theme=dark] .hl .sx { color: #a5d6ff } /* Literal.String.Other */
+:root[data-theme=dark] .hl .sr { color: #79c0ff } /* Literal.String.Regex */
+:root[data-theme=dark] .hl .s1 { color: #a5d6ff } /* Literal.String.Single */
+:root[data-theme=dark] .hl .ss { color: #a5d6ff } /* Literal.String.Symbol */
+:root[data-theme=dark] .hl .bp { color: #e6edf3 } /* Name.Builtin.Pseudo */
+:root[data-theme=dark] .hl .fm { color: #d2a8ff; font-weight: bold } /* Name.Function.Magic */
+:root[data-theme=dark] .hl .vc { color: #79c0ff } /* Name.Variable.Class */
+:root[data-theme=dark] .hl .vg { color: #79c0ff } /* Name.Variable.Global */
+:root[data-theme=dark] .hl .vi { color: #79c0ff } /* Name.Variable.Instance */
+:root[data-theme=dark] .hl .vm { color: #79c0ff } /* Name.Variable.Magic */
+:root[data-theme=dark] .hl .il { color: #a5d6ff } /* Literal.Number.Integer.Long */
 
 /* 本篇小节（宽屏右栏） */
 @media (min-width:1280px){
@@ -235,14 +469,14 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <p>约 5.3 万汉字，23 篇，79 张图。</p>
 <p>本书只读不练，没有需要动手的实验；文中的代码和命令都是帮助理解的示例片段，不逐函数讲源码。快照回滚详见《E2B 沙箱快照回滚从零讲透》；部署、网络、存储的细节详见《E2B 部署从零讲透》《E2B 沙箱网络从零讲透》《E2B 沙箱存储从零讲透》；逐包读上游源码见《E2B Infra 源码导读》。</p>
 <h2 id="dp0-目录">目录</h2>
-<h3 id="dp0-第一部分-先打底沙箱是什么快照是什么">第一部分　先打底：沙箱是什么，快照是什么</h3>
+<h3 id="dp0-第一部分先打底沙箱是什么快照是什么">第一部分　先打底：沙箱是什么，快照是什么</h3>
 <ul>
 <li><a href="#d01">第 1 篇　一个沙箱的一生：构建、启动、暂停、恢复</a></li>
 <li><a href="#d02">第 2 篇　一台沙箱由什么组成：从 SDK 到 Firecracker</a></li>
 <li><a href="#d03">第 3 篇　必备底子：内存页、缺页、块设备与命名空间</a></li>
 <li><a href="#d04">第 4 篇　快照是什么：三件套与映射表</a></li>
 </ul>
-<h3 id="dp0-第二部分-构建模板从-dockerfile-到可恢复的快照">第二部分　构建模板：从 Dockerfile 到可恢复的快照</h3>
+<h3 id="dp0-第二部分构建模板从-dockerfile-到可恢复的快照">第二部分　构建模板：从 Dockerfile 到可恢复的快照</h3>
 <ul>
 <li><a href="#d05">第 5 篇　构建总览：为什么镜像不够，要的是一张快照</a></li>
 <li><a href="#d06">第 6 篇　base 阶段：把镜像变成一块能开机的磁盘</a></li>
@@ -250,7 +484,7 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <li><a href="#d08">第 8 篇　finalize 与 optimize：拍下最终那张快照</a></li>
 <li><a href="#d09">第 9 篇　把构建搬到 ARM 上：我们改了什么</a></li>
 </ul>
-<h3 id="dp0-第三部分-启动沙箱从模板快照恢复出一台新机器">第三部分　启动沙箱：从模板快照恢复出一台新机器</h3>
+<h3 id="dp0-第三部分启动沙箱从模板快照恢复出一台新机器">第三部分　启动沙箱：从模板快照恢复出一台新机器</h3>
 <ul>
 <li><a href="#d10">第 10 篇　启动就是恢复：一次 Sandbox.create 的全景</a></li>
 <li><a href="#d11">第 11 篇　拉起 Firecracker：启动脚本与加载快照</a></li>
@@ -259,7 +493,7 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <li><a href="#d14">第 14 篇　启动有多慢、慢在哪：埋点与测量</a></li>
 <li><a href="#d15">第 15 篇　启动优化：把“拉起 Firecracker”压下来</a></li>
 </ul>
-<h3 id="dp0-第四部分-暂停与恢复存盘离场读盘重建">第四部分　暂停与恢复：存盘离场，读盘重建</h3>
+<h3 id="dp0-第四部分暂停与恢复存盘离场读盘重建">第四部分　暂停与恢复：存盘离场，读盘重建</h3>
 <ul>
 <li><a href="#d16">第 16 篇　暂停走一遍：存盘，然后离场</a></li>
 <li><a href="#d17">第 17 篇　增量怎么算出来：脏页、导出与映射表</a></li>
@@ -267,7 +501,7 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <li><a href="#d19">第 19 篇　ARM 上的退化：读过就算脏</a></li>
 <li><a href="#d20">第 20 篇　精确增量：判、存、填三层一起改</a></li>
 </ul>
-<h3 id="dp0-第五部分-和快照回滚共存哪些地方被撞到怎么修好">第五部分　和快照回滚共存：哪些地方被撞到，怎么修好</h3>
+<h3 id="dp0-第五部分和快照回滚共存哪些地方被撞到怎么修好">第五部分　和快照回滚共存：哪些地方被撞到，怎么修好</h3>
 <ul>
 <li><a href="#d21">第 21 篇　快照回滚动了哪些共用部件</a></li>
 <li><a href="#d22">第 22 篇　三处被撞坏的地方和修法</a></li>
@@ -388,26 +622,27 @@ dd{margin:0 0 .6em 1.5em;color:var(--ink-2)}
 <p>第二样是本书的主角。</p>
 <h2 id="d01-二用几行代码走一遍一生">二、用几行代码走一遍一生</h2>
 <p>下面是用 E2B 的 Python SDK 写的一段示意代码，覆盖了一个沙箱从生到死的全部环节：</p>
-<pre><code class="language-python">from e2b import Template, Sandbox
+<div class="hl"><pre><span></span><code><span class="kn">from</span> <span class="nn">e2b</span> <span class="kn">import</span> <span class="n">Template</span><span class="p">,</span> <span class="n">Sandbox</span>
 
-# 1. 构建模板：把一个运行环境做成“模具”（只需做一次）
-Template.build(template, alias=&quot;my-python&quot;)
+<span class="c1"># 1. 构建模板：把一个运行环境做成“模具”（只需做一次）</span>
+<span class="n">Template</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="n">template</span><span class="p">,</span> <span class="n">alias</span><span class="o">=</span><span class="s2">&quot;my-python&quot;</span><span class="p">)</span>
 
-# 2. 启动沙箱：用模具“铸”出一台新沙箱
-sbx = Sandbox.create(&quot;my-python&quot;)
+<span class="c1"># 2. 启动沙箱：用模具“铸”出一台新沙箱</span>
+<span class="n">sbx</span> <span class="o">=</span> <span class="n">Sandbox</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="s2">&quot;my-python&quot;</span><span class="p">)</span>
 
-# 3. 运行：在沙箱里跑命令、读写文件
-sbx.commands.run(&quot;python3 analyze.py&quot;)
+<span class="c1"># 3. 运行：在沙箱里跑命令、读写文件</span>
+<span class="n">sbx</span><span class="o">.</span><span class="n">commands</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;python3 analyze.py&quot;</span><span class="p">)</span>
 
-# 4. 暂停：把沙箱存盘，然后让它离场
-sbx.pause()
+<span class="c1"># 4. 暂停：把沙箱存盘，然后让它离场</span>
+<span class="n">sbx</span><span class="o">.</span><span class="n">pause</span><span class="p">()</span>
 
-# 5. 恢复：过一会儿（可能是几天后），把它读盘拉回来
-sbx = Sandbox.connect(sbx.sandbox_id)
+<span class="c1"># 5. 恢复：过一会儿（可能是几天后），把它读盘拉回来</span>
+<span class="n">sbx</span> <span class="o">=</span> <span class="n">Sandbox</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">sbx</span><span class="o">.</span><span class="n">sandbox_id</span><span class="p">)</span>
 
-# 6. 销毁：用完扔掉
-sbx.kill()
-</code></pre>
+<span class="c1"># 6. 销毁：用完扔掉</span>
+<span class="n">sbx</span><span class="o">.</span><span class="n">kill</span><span class="p">()</span>
+</code></pre></div>
+
 <p>六步里，本书详细讲第 1、2、4、5 步，也就是三个操作：</p>
 <div class="tw"><table>
 <thead>
@@ -806,12 +1041,14 @@ sbx.kill()
 <h2 id="d02-五两条路控制面和数据面">五、两条路：控制面和数据面</h2>
 <p>请求从 SDK 出发，有两条完全不同的路。</p>
 <p><strong>控制面</strong>：创建、暂停、恢复、销毁这类“管理”操作。</p>
-<pre><code>SDK ──HTTPS──▶ api ──gRPC──▶ orchestrator ──HTTP（Unix 套接字）──▶ Firecracker
-</code></pre>
+<div class="hl"><pre><span></span><code>SDK ──HTTPS──▶ api ──gRPC──▶ orchestrator ──HTTP（Unix 套接字）──▶ Firecracker
+</code></pre></div>
+
 <p>api 收到 <code>Sandbox.create</code> 后，查数据库确定模板的最新版本，挑一个节点，用 gRPC 调用该节点 orchestrator 的 <code>Create</code> 接口。orchestrator 准备好家当，再通过 Firecracker 的 HTTP 接口加载快照。</p>
 <p><strong>数据面</strong>：沙箱活着时，跑命令、读写文件、访问沙箱里开的网页服务。</p>
-<pre><code>SDK ──HTTPS──▶ client-proxy ──▶ orchestrator 的代理 ──▶ 沙箱网络 ──▶ envd（49983）
-</code></pre>
+<div class="hl"><pre><span></span><code>SDK ──HTTPS──▶ client-proxy ──▶ orchestrator 的代理 ──▶ 沙箱网络 ──▶ envd（49983）
+</code></pre></div>
+
 <p>请求的地址里带着沙箱 ID（形如 <code>49983-&lt;沙箱ID&gt;.&lt;域名&gt;</code>），client-proxy 按它查路由表，找到沙箱所在节点，交给那个节点上 orchestrator 内置的代理，代理再把它送进沙箱的网络，最后到达 envd。</p>
 <p>两条路分开，是因为它们的性质不同：控制面请求少、每个都很重要，要认证、要记账；数据面请求多、要求延迟低，只做转发。</p>
 <figure class="paper"><img loading="lazy" alt="控制面与数据面" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjU5MiIgdmlld0JveD0iMCAwIDE2MDAgNTkyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjU5MiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5o6n5Yi26Z2i5LiO5pWw5o2u6Z2i77ya5Lik5p2h5LiN5ZCM55qE6LevPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSI5Mi4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWIm+W7uuOAgeaaguWBnOOAgeaBouWkjeOAgemUgOavgei1sOaOp+WItumdou+8jOimgeiupOivgeOAgeimgeiusOi0pu+8m+i3keWRveS7pOOAgeivu+WGmeaWh+S7tui1sOaVsOaNrumdou+8jOWPquWBmui9rOWPke+8jOimgeaxguW7tui/n+S9juOAguacrOS5pueahOS4ieS4quaTjeS9nOmDvei1sOaOp+WItumdouOAgjwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iMTY2LjAiIGZvbnQtc2l6ZT0iMTgiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5o6n5Yi26Z2iPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSIxODYuMCIgd2lkdGg9IjMzMS4wIiBoZWlnaHQ9IjkwLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIyMTMuNSIgeT0iMjIyLjkiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNESzwvdGV4dD4KPHRleHQgeD0iMjEzLjUiIHk9IjI0Ni4yIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPlNhbmRib3guY3JlYXRlIC8gcGF1c2UgLyBjb25uZWN0PC90ZXh0Pgo8cGF0aCBkPSJNMzgzLjAgMjMxLjAgTDQzNS4wIDIzMS4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHRleHQgeD0iNDA5LjAiIHk9IjIyMy4wIiBmb250LXNpemU9IjExLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkhUVFBTPC90ZXh0Pgo8cmVjdCB4PSI0MzkuMCIgeT0iMTg2LjAiIHdpZHRoPSIzMzEuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNjA0LjUiIHk9IjIyMi45IiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5hcGk8L3RleHQ+Cjx0ZXh0IHg9IjYwNC41IiB5PSIyNDYuMiIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7orqTor4Egwrcg6K6w6LSmIMK3IOmAieiKgueCuTwvdGV4dD4KPHBhdGggZD0iTTc3NC4wIDIzMS4wIEw4MjYuMCAyMzEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIyMjMuMCIgZm9udC1zaXplPSIxMS41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5nUlBDPC90ZXh0Pgo8cmVjdCB4PSI4MzAuMCIgeT0iMTg2LjAiIHdpZHRoPSIzMzEuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iOTk1LjUiIHk9IjIyMi45IiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5vcmNoZXN0cmF0b3I8L3RleHQ+Cjx0ZXh0IHg9Ijk5NS41IiB5PSIyNDYuMiIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5DcmVhdGUgLyBQYXVzZSBSUEM8L3RleHQ+CjxwYXRoIGQ9Ik0xMTY1LjAgMjMxLjAgTDEyMTcuMCAyMzEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+Cjx0ZXh0IHg9IjExOTEuMCIgeT0iMjIzLjAiIGZvbnQtc2l6ZT0iMTEuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUDwvdGV4dD4KPHJlY3QgeD0iMTIyMS4wIiB5PSIxODYuMCIgd2lkdGg9IjMzMS4wIiBoZWlnaHQ9IjkwLjAiIHJ4PSIxMCIgZmlsbD0iI0ZERjBEOSIgc3Ryb2tlPSIjRDk5MjJCIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzg2LjUiIHk9IjIyMi45IiBmb250LXNpemU9IjE1IiBmaWxsPSIjOEE1MzAwIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5GaXJlY3JhY2tlcjwvdGV4dD4KPHRleHQgeD0iMTM4Ni41IiB5PSIyNDYuMiIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5IVFRQIOaOpeWPo++8iFVuaXgg5aWX5o6l5a2X77yJPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSIzNDYuMCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzBFNkI0RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mlbDmja7pnaI8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjM2Ni4wIiB3aWR0aD0iMzMxLjAiIGhlaWdodD0iOTAuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjIxMy41IiB5PSI0MDIuOSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+U0RLPC90ZXh0Pgo8dGV4dCB4PSIyMTMuNSIgeT0iNDI2LjIiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Y29tbWFuZHMucnVuIC8gZmlsZXMucmVhZDwvdGV4dD4KPHBhdGggZD0iTTM4My4wIDQxMS4wIEw0MzUuMCA0MTEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+Cjx0ZXh0IHg9IjQwOS4wIiB5PSI0MDMuMCIgZm9udC1zaXplPSIxMS41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5IVFRQUzwvdGV4dD4KPHJlY3QgeD0iNDM5LjAiIHk9IjM2Ni4wIiB3aWR0aD0iMzMxLjAiIGhlaWdodD0iOTAuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYwNC41IiB5PSI0MDIuOSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Y2xpZW50LXByb3h5PC90ZXh0Pgo8dGV4dCB4PSI2MDQuNSIgeT0iNDI2LjIiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5oyJ5Zyw5Z2A6YeM55qE5rKZ566xIElEIOafpei3r+eUsTwvdGV4dD4KPHBhdGggZD0iTTc3NC4wIDQxMS4wIEw4MjYuMCA0MTEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9IjgzMC4wIiB5PSIzNjYuMCIgd2lkdGg9IjMzMS4wIiBoZWlnaHQ9IjkwLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI5OTUuNSIgeT0iNDAyLjkiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPm9yY2hlc3RyYXRvciDku6PnkIY8L3RleHQ+Cjx0ZXh0IHg9Ijk5NS41IiB5PSI0MjYuMiIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7pgIHov5vmspnnrrHnvZHnu5w8L3RleHQ+CjxwYXRoIGQ9Ik0xMTY1LjAgNDExLjAgTDEyMTcuMCA0MTEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9IjEyMjEuMCIgeT0iMzY2LjAiIHdpZHRoPSIzMzEuMCIgaGVpZ2h0PSI5MC4wIiByeD0iMTAiIGZpbGw9IiNGM0YwRkYiIHN0cm9rZT0iIzhCN0ZFMCIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTM4Ni41IiB5PSI0MDIuOSIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzRCM0ZBOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+ZW52ZDwvdGV4dD4KPHRleHQgeD0iMTM4Ni41IiB5PSI0MjYuMiIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj40OTk4MyDnq6/lj6M8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjQ5Ni4wIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+5Zyw5Z2A5b2i5aaCIDQ5OTgzLSZsdDvmspnnrrFJRCZndDsuJmx0O+Wfn+WQjSZndDvvvJrmspnnrrEgSUQg5bCx5Zyo5Zyw5Z2A6YeM77yM5LiN6ZyA6KaB6aKd5aSW55qE6K+35rGC5aS044CCPC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjUyNi4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNTI2LjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iNTUyLjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+5Lik5aSE5Lqk5Y+J77ya5ZCv5Yqo55qE5pyA5ZCO6KaB56Gu6K6kIGVudmQg6IO95bqU562U77yb5oGi5aSN5ZCO55qE5rKZ566x5bCR5bim5Lik5Liq6Lev55Sx5aS077yM5pWw5o2u6Z2i5LiK5oyJ6K+35rGC5aS06Lev55Sx55qE5pyN5Yqh5LiN6YCa77yI56ysIDE4IOevh++8ieOAgjwvdGV4dD48L3N2Zz4="><figcaption><b>图 2-3</b>控制面与数据面</figcaption></figure>
@@ -1272,11 +1509,12 @@ sbx.kill()
 <hr />
 <h2 id="d05-一镜像只是一堆文件">一、镜像只是一堆文件</h2>
 <p>用户写模板，最常见的起点是一个 Docker 镜像，比如 <code>ubuntu:22.04</code>，再加几行指令：</p>
-<pre><code class="language-dockerfile">FROM ubuntu:22.04
-RUN apt-get install -y python3 python3-pip
-RUN pip install pandas
-WORKDIR /home/user
-</code></pre>
+<div class="hl"><pre><span></span><code><span class="k">FROM</span><span class="w"> </span><span class="s">ubuntu:22.04</span>
+<span class="k">RUN</span><span class="w"> </span>apt-get<span class="w"> </span>install<span class="w"> </span>-y<span class="w"> </span>python3<span class="w"> </span>python3-pip
+<span class="k">RUN</span><span class="w"> </span>pip<span class="w"> </span>install<span class="w"> </span>pandas
+<span class="k">WORKDIR</span><span class="w"> </span><span class="s">/home/user</span>
+</code></pre></div>
+
 <p>在 Docker 里，镜像就是一叠文件层，容器启动时把它们叠起来当作根目录，然后直接运行一个进程。容器和宿主共用内核，所以“启动”只是创建一个进程，很快。</p>
 <p>可 E2B 的沙箱是虚拟机。虚拟机要的不是“一叠文件”，而是：</p>
 <ul>
@@ -1365,11 +1603,12 @@ WORKDIR /home/user
 <p>每个阶段在开始前都会算一个 <strong>hash</strong>：本阶段的 hash 由上一阶段的 hash 和本阶段的内容（比如这条指令的文本）共同决定。拿这个 hash 去“层缓存索引”里查，查到了说明以前构建过一模一样的东西，直接复用那一层，跳过整个阶段。第 7 篇细讲。</p>
 <h2 id="d05-四构建就是反复启动干活暂停">四、构建就是反复“启动—干活—暂停”</h2>
 <p>仔细看每个阶段在做什么，会发现它们几乎是同一个动作的重复：</p>
-<pre><code>拿到上一层的快照
+<div class="hl"><pre><span></span><code>拿到上一层的快照
  → 从它启动（恢复）一台虚拟机
  → 在里面干活（执行一条指令、跑一个脚本）
  → 暂停，存成新的一层快照
-</code></pre>
+</code></pre></div>
+
 <figure class="paper"><img loading="lazy" alt="构建就是反复启动和暂停" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9Ijc1MiIgdmlld0JveD0iMCAwIDE2MDAgNzUyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im04Qzk1OUYiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM5NTlGIiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9Ijc1MiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5p6E5bu65bCx5piv5Y+N5aSN4oCc5ZCv5Yqo4oCU5bmy5rS74oCU5pqC5YGc4oCdPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSI5Mi4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuavj+S4gOWxgumDveaYr+WQjOS4gOS4quWKqOS9nO+8muS7juS4iuS4gOWxguW/q+eFp+aBouWkjeS4gOWPsOiZmuaLn+acuu+8jOWcqOmHjOmdouW5sua0u++8jOWGjeaaguWBnOaIkOaWsOS4gOWxguOAgueUqOeahOaYr+WSjOeUqOaIt+aymeeuseWQjOS4gOWllyBSZXN1bWVTYW5kYm94IOWSjCBQYXVzZeOAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTU2LjAiIHdpZHRoPSIyODEuNiIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGNkY2RjMiIHN0cm9rZT0iI0I3QjVBQyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTg4LjgiIHk9IjE5MC42IiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuW/q+eFp++8mmJhc2U8L3RleHQ+CjxyZWN0IHg9IjE5OC44IiB5PSIyNDYuMCIgd2lkdGg9IjI4NS42IiBoZWlnaHQ9IjQ2LjAiIHJ4PSIxMCIgZmlsbD0iI0UzRjVFRSIgc3Ryb2tlPSIjMUY5RTc3IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIzNDEuNiIgeT0iMjczLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzBFNkI0RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5oGi5aSNPC90ZXh0Pgo8cmVjdCB4PSIxOTguOCIgeT0iMzAyLjAiIHdpZHRoPSIyODUuNiIgaGVpZ2h0PSI0Ni4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMzQxLjYiIHk9IjMyOS4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaJp+ihjOaMh+S7pDwvdGV4dD4KPHJlY3QgeD0iMTk4LjgiIHk9IjM1OC4wIiB3aWR0aD0iMjg1LjYiIGhlaWdodD0iNDYuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjM0MS42IiB5PSIzODUuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mmoLlgZw8L3RleHQ+CjxwYXRoIGQ9Ik0xODguOCAyMjAuMCBMMTg4LjggMjY5LjAgTDE5NC44IDI2OS4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM4Qzk1OUYiIHN0cm9rZS13aWR0aD0iMS4zIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbThDOTU5RikiLz4KPHBhdGggZD0iTTQ4OC40IDM4MS4wIEw0OTQuNCAzODEuMCBMNDk0LjQgMjIwLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDOTU5RiIgc3Ryb2tlLXdpZHRoPSIxLjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtOEM5NTlGKSIvPgo8cmVjdCB4PSIzNTMuNiIgeT0iMTU2LjAiIHdpZHRoPSIyODEuNiIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGNkY2RjMiIHN0cm9rZT0iI0I3QjVBQyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNDk0LjQiIHk9IjE5MC42IiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuW/q+eFp++8muaMh+S7pCAxPC90ZXh0Pgo8cmVjdCB4PSI1MDQuNCIgeT0iMjQ2LjAiIHdpZHRoPSIyODUuNiIgaGVpZ2h0PSI0Ni4wIiByeD0iMTAiIGZpbGw9IiNFM0Y1RUUiIHN0cm9rZT0iIzFGOUU3NyIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNjQ3LjIiIHk9IjI3My4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMwRTZCNEYiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaBouWkjTwvdGV4dD4KPHJlY3QgeD0iNTA0LjQiIHk9IjMwMi4wIiB3aWR0aD0iMjg1LjYiIGhlaWdodD0iNDYuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjY0Ny4yIiB5PSIzMjkuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7miafooYzmjIfku6Q8L3RleHQ+CjxyZWN0IHg9IjUwNC40IiB5PSIzNTguMCIgd2lkdGg9IjI4NS42IiBoZWlnaHQ9IjQ2LjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2NDcuMiIgeT0iMzg1LjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5pqC5YGcPC90ZXh0Pgo8cGF0aCBkPSJNNDk0LjQgMjIwLjAgTDQ5NC40IDI2OS4wIEw1MDAuNCAyNjkuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM5NTlGIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI204Qzk1OUYpIi8+CjxwYXRoIGQ9Ik03OTQuMCAzODEuMCBMODAwLjAgMzgxLjAgTDgwMC4wIDIyMC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM4Qzk1OUYiIHN0cm9rZS13aWR0aD0iMS4zIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbThDOTU5RikiLz4KPHJlY3QgeD0iNjU5LjIiIHk9IjE1Ni4wIiB3aWR0aD0iMjgxLjYiIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIxOTAuNiIgZm9udC1zaXplPSIxNC41IiBmaWxsPSIjM0QzQzM4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lv6vnhafvvJrmjIfku6QgMjwvdGV4dD4KPHJlY3QgeD0iODEwLjAiIHk9IjI0Ni4wIiB3aWR0aD0iMjg1LjYiIGhlaWdodD0iNDYuMCIgcng9IjEwIiBmaWxsPSIjRTNGNUVFIiBzdHJva2U9IiMxRjlFNzciIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9Ijk1Mi44IiB5PSIyNzMuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMEU2QjRGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7mgaLlpI08L3RleHQ+CjxyZWN0IHg9IjgxMC4wIiB5PSIzMDIuMCIgd2lkdGg9IjI4NS42IiBoZWlnaHQ9IjQ2LjAiIHJ4PSIxMCIgZmlsbD0iI0ZGRkZGRiIgc3Ryb2tlPSIjQUVCNkJFIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI5NTIuOCIgeT0iMzI5LjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5omn6KGM5oyH5LukPC90ZXh0Pgo8cmVjdCB4PSI4MTAuMCIgeT0iMzU4LjAiIHdpZHRoPSIyODUuNiIgaGVpZ2h0PSI0Ni4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iOTUyLjgiIHk9IjM4NS4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaaguWBnDwvdGV4dD4KPHBhdGggZD0iTTgwMC4wIDIyMC4wIEw4MDAuMCAyNjkuMCBMODA2LjAgMjY5LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzhDOTU5RiIgc3Ryb2tlLXdpZHRoPSIxLjMiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtOEM5NTlGKSIvPgo8cGF0aCBkPSJNMTA5OS42IDM4MS4wIEwxMTA1LjYgMzgxLjAgTDExMDUuNiAyMjAuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM5NTlGIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI204Qzk1OUYpIi8+CjxyZWN0IHg9Ijk2NC44IiB5PSIxNTYuMCIgd2lkdGg9IjI4MS42IiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0Y2RjZGMyIgc3Ryb2tlPSIjQjdCNUFDIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMTA1LjYiIHk9IjE5MC42IiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuW/q+eFp++8muaMh+S7pCAzPC90ZXh0Pgo8cmVjdCB4PSIxMTE1LjYiIHk9IjI0Ni4wIiB3aWR0aD0iMjg1LjYiIGhlaWdodD0iNDYuMCIgcng9IjEwIiBmaWxsPSIjRTNGNUVFIiBzdHJva2U9IiMxRjlFNzciIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEyNTguNCIgeT0iMjczLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzBFNkI0RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5oGi5aSNPC90ZXh0Pgo8cmVjdCB4PSIxMTE1LjYiIHk9IjMwMi4wIiB3aWR0aD0iMjg1LjYiIGhlaWdodD0iNDYuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEyNTguNCIgeT0iMzI5LjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5omn6KGM5oyH5LukPC90ZXh0Pgo8cmVjdCB4PSIxMTE1LjYiIHk9IjM1OC4wIiB3aWR0aD0iMjg1LjYiIGhlaWdodD0iNDYuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjEyNTguNCIgeT0iMzg1LjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5pqC5YGcPC90ZXh0Pgo8cGF0aCBkPSJNMTEwNS42IDIyMC4wIEwxMTA1LjYgMjY5LjAgTDExMTEuNiAyNjkuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOEM5NTlGIiBzdHJva2Utd2lkdGg9IjEuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI204Qzk1OUYpIi8+CjxwYXRoIGQ9Ik0xNDA1LjIgMzgxLjAgTDE0MTEuMiAzODEuMCBMMTQxMS4yIDIyMC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiM4Qzk1OUYiIHN0cm9rZS13aWR0aD0iMS4zIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbThDOTU5RikiLz4KPHJlY3QgeD0iMTI3MC40IiB5PSIxNTYuMCIgd2lkdGg9IjI4MS42IiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0Y2RjZGMyIgc3Ryb2tlPSIjQjdCNUFDIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNDExLjIiIHk9IjE5MC42IiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuW/q+eFp++8mmZpbmFsaXplPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSI0NDYuMCIgd2lkdGg9IjE1MDAuMCIgaGVpZ2h0PSIzOC4yIiByeD0iNiIgZmlsbD0iI0Y0RjVGNyIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMSIvPgo8dGV4dCB4PSI0MTguMCIgeT0iNDY4LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mnoTlu7rml7Y8L3RleHQ+Cjx0ZXh0IHg9Ijk3OC4wIiB5PSI0NjguOCIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPueUqOaIt+S9v+eUqOaXtjwvdGV4dD4KPGxpbmUgeDE9IjQ4LjAiIHkxPSI1MjguNSIgeDI9IjE1NDguMCIgeTI9IjUyOC41IiBzdHJva2U9IiNEOERFRTQiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjx0ZXh0IHg9IjU4LjAiIHk9IjUxMS4xIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6LCB5Y+R6LW3PC90ZXh0Pgo8dGV4dCB4PSI0MTguMCIgeT0iNTExLjEiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij50ZW1wbGF0ZS1tYW5hZ2VyPC90ZXh0Pgo8dGV4dCB4PSI5NzguMCIgeT0iNTExLjEiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nlKjmiLfnmoQgU0RLPC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjU3MC44IiB4Mj0iMTU0OC4wIiB5Mj0iNTcwLjgiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNTguMCIgeT0iNTUzLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7og73kuI3og73kuIrnvZE8L3RleHQ+Cjx0ZXh0IHg9IjQxOC4wIiB5PSI1NTMuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmJhc2Ug6KOF5YyF5pe25Y+v5LulPC90ZXh0Pgo8dGV4dCB4PSI5NzguMCIgeT0iNTUzLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mjInnlKjmiLfphY3nva48L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNjEzLjAiIHgyPSIxNTQ4LjAiIHkyPSI2MTMuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI1OTUuNiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaaguWBnOS5i+WQjjwvdGV4dD4KPHRleHQgeD0iNDE4LjAiIHk9IjU5NS42IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+56uL5Yi75ou/5paw5LiA5bGC5o6l552A5p6E5bu6PC90ZXh0Pgo8dGV4dCB4PSI5NzguMCIgeT0iNTk1LjYiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mspnnrrHnprvlnLrvvIznrYnnlKjmiLfmgaLlpI08L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNjU1LjIiIHgyPSIxNTQ4LjAiIHkyPSI2NTUuMiIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI2MzcuOCIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPui9rOWHoOWciDwvdGV4dD4KPHRleHQgeD0iNDE4LjAiIHk9IjYzNy44IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+5oyH5Luk5pyJ5Yeg5p2h6L2s5Yeg5ZyI77yM5aSW5YqgIGJhc2XjgIFmaW5hbGl6ZTwvdGV4dD4KPHRleHQgeD0iOTc4LjAiIHk9IjYzNy44IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiA5ZyIPC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjY4Ni4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNjg2LjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iNzEyLjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+5o6o6K6677ya5pqC5YGc55qE5omA5pyJ54m55oCn5ZKM6Zeu6aKY6YO95Lya5Zyo5p6E5bu655qE5q+P5LiA5bGC6YeN5ryU77yM5L6L5aaCIEFSTSDkuIrnmoTigJzor7vljbPohI/igJ3vvIjnrKwgMTkg56+H77yJ44CCPC90ZXh0Pjwvc3ZnPg=="><figcaption><b>图 5-3</b>构建就是反复启动和暂停</figcaption></figure>
 
 <p>这里的“启动”和“暂停”，用的正是第三、四部分要讲的同一套代码：同一个 <code>ResumeSandbox</code> 把快照加载进 Firecracker，同一个 <code>Pause</code> 把内存和磁盘的改动导出成新的一代。区别只在于：</p>
@@ -1581,13 +1820,14 @@ WORKDIR /home/user
 <h2 id="d06-三第一次开机用-busybox-当临时的-1-号进程">三、第一次开机：用 busybox 当临时的 1 号进程</h2>
 <p>现在磁盘有了，但里面多半<strong>没有 systemd</strong>。很多基础镜像是为容器设计的，容器不需要 init 系统。要装 systemd，就得运行 <code>apt-get</code>（或 <code>dnf</code>）；要运行包管理器，就得有一个在运行的系统。这是一个循环依赖。</p>
 <p>E2B 的解法是<strong>开两次机</strong>。第一次开机，用磁盘里塞进去的 busybox 当 1 号进程。busybox 很小，一个二进制里包含了 <code>sh</code>、<code>mount</code>、<code>sync</code> 等上百个常用命令，自己就能当一个最简单的 init。它照着 <code>/etc/inittab</code> 这份剧本依次执行：</p>
-<pre><code>1. 挂载 /proc、/sys、/dev、/tmp、/run（容器里这些是运行时给的，裸机得自己挂）
+<div class="hl"><pre><span></span><code>1. 挂载 /proc、/sys、/dev、/tmp、/run（容器里这些是运行时给的，裸机得自己挂）
 2. 运行 provision.sh，输出加上 [external] 前缀
 3. sync，把缓存刷到磁盘
 4. 冻结根文件系统（fsfreeze），保证没有在途的写
 5. 打印一行 &quot;E2B_PROVISIONING_EXIT:&lt;退出码&gt;&quot;
 6. sleep infinity，等宿主来关机
-</code></pre>
+</code></pre></div>
+
 <p>这里面有两个巧妙的地方：</p>
 <ul>
 <li><strong>日志靠前缀过滤</strong>。这台虚拟机里没有 envd，没有任何 RPC 通道。它的输出只能走串口，变成 Firecracker 进程的标准输出。宿主按 <code>[external]</code> 前缀把装机日志挑出来，转成用户在 SDK 里能看到的构建日志。</li>
@@ -1681,10 +1921,11 @@ WORKDIR /home/user
 <hr />
 <h2 id="d07-一一条指令一层">一、一条指令一层</h2>
 <p>steps 阶段把用户的指令逐条展开，每条指令就是一个小阶段，做的事情都一样：</p>
-<pre><code>从上一层的快照恢复一台虚拟机
+<div class="hl"><pre><span></span><code>从上一层的快照恢复一台虚拟机
  → 通过 envd 在里面执行这条指令
  → 暂停，存成新的一层
-</code></pre>
+</code></pre></div>
+
 <figure class="paper"><img loading="lazy" alt="一条指令一层" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjUzNiIgdmlld0JveD0iMCAwIDE2MDAgNTM2IiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjUzNiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiA5p2h5oyH5Luk5LiA5bGC77ya5oGi5aSNIOKGkiDmiafooYwg4oaSIOaaguWBnDwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lsYLmmK/nvJPlrZjnmoTljZXkvY3jgILmr4/kuIDlsYLpg73mmK/kuIDkuKogYnVpbGQgSUTvvIzlj6rlrZjov5nmnaHmjIfku6TmlLnliqjnmoTlhoXlrZjpobXlkozno4Hnm5jlnZfjgII8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjE5MC4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJywnU0YgTW9ubycsTWVubG8sQ29uc29sYXMsJ05vdG8gU2FucyBNb25vIENKSyBTQycsJ0RlamFWdSBTYW5zIE1vbm8nLG1vbm9zcGFjZSIgdGV4dC1hbmNob3I9InN0YXJ0Ij5GUk9NIHVidW50dToyMi4wNDwvdGV4dD4KPHJlY3QgeD0iNTE4LjAiIHk9IjE1Ni4wIiB3aWR0aD0iNzAwLjAiIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRjRGNUY3IiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9Ijg2OC4wIiB5PSIxODUuOSIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+56ysIDYg56+H77ya5Lik5qyh5byA5py65ZCO5pqC5YGcPC90ZXh0Pgo8cmVjdCB4PSIxMjY4LjAiIHk9IjE1Ni4wIiB3aWR0aD0iMjg0LjAiIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE0MTAuMCIgeT0iMTg2LjYiIGZvbnQtc2l6ZT0iMTQuNSIgZmlsbD0iIzNEM0MzOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+YmFzZSDlsYI8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjI2Ni4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJywnU0YgTW9ubycsTWVubG8sQ29uc29sYXMsJ05vdG8gU2FucyBNb25vIENKSyBTQycsJ0RlamFWdSBTYW5zIE1vbm8nLG1vbm9zcGFjZSIgdGV4dC1hbmNob3I9InN0YXJ0Ij5SVU4gYXB0LWdldCBpbnN0YWxsIHB5dGhvbjM8L3RleHQ+CjxyZWN0IHg9IjUxOC4wIiB5PSIyMzIuMCIgd2lkdGg9IjIwNi43IiBoZWlnaHQ9IjUyLjAiIHJ4PSIxMCIgZmlsbD0iI0UzRjVFRSIgc3Ryb2tlPSIjMUY5RTc3IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjEuMyIgeT0iMjYyLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzBFNkI0RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5LuO5LiK5LiA5bGC5oGi5aSNPC90ZXh0Pgo8cGF0aCBkPSJNNzI4LjcgMjU4LjAgTDc2MC43IDI1OC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iNzY0LjciIHk9IjIzMi4wIiB3aWR0aD0iMjA2LjciIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9Ijg2OC4wIiB5PSIyNjIuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7pgJrov4cgZW52ZCDmiafooYw8L3RleHQ+CjxwYXRoIGQ9Ik05NzUuMyAyNTguMCBMMTAwNy4zIDI1OC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iMTAxMS4zIiB5PSIyMzIuMCIgd2lkdGg9IjIwNi43IiBoZWlnaHQ9IjUyLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMTE0LjciIHk9IjI2Mi4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaaguWBnDwvdGV4dD4KPHJlY3QgeD0iMTI2OC4wIiB5PSIyMzIuMCIgd2lkdGg9IjI4NC4wIiBoZWlnaHQ9IjUyLjAiIHJ4PSIxMCIgZmlsbD0iI0Y2RjZGMyIgc3Ryb2tlPSIjQjdCNUFDIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNDEwLjAiIHk9IjI2Mi42IiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWxgiAxPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSIzNDIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsJ1NGIE1vbm8nLE1lbmxvLENvbnNvbGFzLCdOb3RvIFNhbnMgTW9ubyBDSksgU0MnLCdEZWphVnUgU2FucyBNb25vJyxtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJzdGFydCI+UlVOIHBpcCBpbnN0YWxsIHBhbmRhczwvdGV4dD4KPHJlY3QgeD0iNTE4LjAiIHk9IjMwOC4wIiB3aWR0aD0iMjA2LjciIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRTNGNUVFIiBzdHJva2U9IiMxRjlFNzciIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjYyMS4zIiB5PSIzMzguMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMEU2QjRGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7ku47kuIrkuIDlsYLmgaLlpI08L3RleHQ+CjxwYXRoIGQ9Ik03MjguNyAzMzQuMCBMNzYwLjcgMzM0LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cmVjdCB4PSI3NjQuNyIgeT0iMzA4LjAiIHdpZHRoPSIyMDYuNyIgaGVpZ2h0PSI1Mi4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iODY4LjAiIHk9IjMzOC4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPumAmui/hyBlbnZkIOaJp+ihjDwvdGV4dD4KPHBhdGggZD0iTTk3NS4zIDMzNC4wIEwxMDA3LjMgMzM0LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cmVjdCB4PSIxMDExLjMiIHk9IjMwOC4wIiB3aWR0aD0iMjA2LjciIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjExMTQuNyIgeT0iMzM4LjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5pqC5YGcPC90ZXh0Pgo8cmVjdCB4PSIxMjY4LjAiIHk9IjMwOC4wIiB3aWR0aD0iMjg0LjAiIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE0MTAuMCIgeT0iMzM4LjYiIGZvbnQtc2l6ZT0iMTQuNSIgZmlsbD0iIzNEM0MzOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5bGCIDI8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjQxOC4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiBmb250LWZhbWlseT0iJ0pldEJyYWlucyBNb25vJywnU0YgTW9ubycsTWVubG8sQ29uc29sYXMsJ05vdG8gU2FucyBNb25vIENKSyBTQycsJ0RlamFWdSBTYW5zIE1vbm8nLG1vbm9zcGFjZSIgdGV4dC1hbmNob3I9InN0YXJ0Ij5XT1JLRElSIC9ob21lL3VzZXI8L3RleHQ+CjxyZWN0IHg9IjUxOC4wIiB5PSIzODQuMCIgd2lkdGg9IjIwNi43IiBoZWlnaHQ9IjUyLjAiIHJ4PSIxMCIgZmlsbD0iI0UzRjVFRSIgc3Ryb2tlPSIjMUY5RTc3IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSI2MjEuMyIgeT0iNDE0LjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzBFNkI0RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5LuO5LiK5LiA5bGC5oGi5aSNPC90ZXh0Pgo8cGF0aCBkPSJNNzI4LjcgNDEwLjAgTDc2MC43IDQxMC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iNzY0LjciIHk9IjM4NC4wIiB3aWR0aD0iMjA2LjciIGhlaWdodD0iNTIuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9Ijg2OC4wIiB5PSI0MTQuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7pgJrov4cgZW52ZCDmiafooYw8L3RleHQ+CjxwYXRoIGQ9Ik05NzUuMyA0MTAuMCBMMTAwNy4zIDQxMC4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iMTAxMS4zIiB5PSIzODQuMCIgd2lkdGg9IjIwNi43IiBoZWlnaHQ9IjUyLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMTE0LjciIHk9IjQxNC4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRDRGOTEiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuaaguWBnDwvdGV4dD4KPHJlY3QgeD0iMTI2OC4wIiB5PSIzODQuMCIgd2lkdGg9IjI4NC4wIiBoZWlnaHQ9IjUyLjAiIHJ4PSIxMCIgZmlsbD0iI0Y2RjZGMyIgc3Ryb2tlPSIjQjdCNUFDIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNDEwLjAiIHk9IjQxNC42IiBmb250LXNpemU9IjE0LjUiIGZpbGw9IiMzRDNDMzgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWxgiAzPC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjQ3MC4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNDcwLjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iNDk2LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiA5p2h5LiA5bGC55qE5aW95aSE77ya5pS55LqG5pyA5ZCO5LiA5p2h77yM5Y+q5LuO5YCS5pWw56ys5LqM5bGC5o6l552A5YGa77yM5LiN55So5oqK6KOFIFB5dGhvbuOAgeijhSBwYW5kYXMg6YeN5p2l5LiA6YGN44CCPC90ZXh0Pjwvc3ZnPg=="><figcaption><b>图 7-1</b>一条指令一层</figcaption></figure>
 
 <p>为什么要一条一层，而不是全部执行完再存一次？因为层是<strong>缓存的单位</strong>。如果十条指令只存一层，改了第十条就得把前九条全部重做；一条一层，就只需要从第九层接着做第十条。装 Python、装 pandas 这种动辄几分钟的指令，能省下大量时间。</p>
@@ -1749,8 +1990,9 @@ WORKDIR /home/user
 <h2 id="d07-四层缓存改了最后一行前面不用重做">四、层缓存：改了最后一行，前面不用重做</h2>
 <h3 id="d07-1-层-hash">1. 层 hash</h3>
 <p>每个阶段在执行前都先算一个 hash：</p>
-<pre><code>本层 hash = SHA-256( 上一层 hash ; 指令类型 ; 指令参数 ; 上传文件的 hash )
-</code></pre>
+<div class="hl"><pre><span></span><code>本层 hash = SHA-256( 上一层 hash ; 指令类型 ; 指令参数 ; 上传文件的 hash )
+</code></pre></div>
+
 <p>base 阶段没有“上一层”，它的输入是镜像名、磁盘大小、provision 脚本的版本和一个缓存格式版本号。</p>
 <p>由于每一层都把上一层的 hash 当作输入，整条链就是一条 <strong>hash 链</strong>：任何一环变了，它之后所有层的 hash 都会变。</p>
 <h3 id="d07-2-查缓存">2. 查缓存</h3>
@@ -2174,7 +2416,7 @@ WORKDIR /home/user
 <p>orchestrator 会上报本机的 CPU 信息（家族、型号），供调度时参考。上游用的库在 ARM 上读不到这两个字段，返回空值，上游代码见到空值就报错。改法是在 ARM 上给出兜底值（家族 <code>arm64</code>、型号 <code>0</code>）。</p>
 <h2 id="d09-五故障一firecracker-的版本目录">五、故障一：Firecracker 的版本目录</h2>
 <p>宿主上的 Firecracker 按版本号放在 <code>/fc-versions/&lt;版本&gt;/firecracker</code>。模板构建时记下用的是哪个版本，以后启动这个模板的沙箱也用同一个版本。</p>
-<p>我们在 ARM 上用的是<strong>自己编译的</strong> Firecracker，它基于上游的 v1.12.1 版本，但部署时放在 <code>v1.13.1</code> 这个目录下，因为代码里查找版本时用的键是 v1.13.1。曾经有一次试图把一切改成名副其实的 v1.12.1，结果版本号的来源不止一处：环境变量里残留的旧值优先于代码里的常量，构建登记的版本指向了一个根本不存在的目录，报 <code>stat /fc-versions/v1.13.1/firecracker: no such file or directory</code>。实地测试又发现改名后运行时仍然按 v1.13.1 去找。最后的决定是<strong>不再和查找键较劲</strong>：目录就叫 v1.13.1，文档里说清楚“里面是基于 v1.12.1 自己编译的版本”。</p>
+<p>我们在 ARM 上用的是<strong>自己编译的</strong> Firecracker。它不是直接从上游改的，而是在 E2B 自己的 Firecracker 分支 <code>firecracker-v1.12-direct-mem</code> 上加了快照回滚和 HDBSS 的改动，Cargo 里的版本号是 1.12.1，<code>firecracker --version</code> 报的也是它。部署时它放在 <code>v1.13.1</code> 这个目录下，因为代码里查找版本时用的键是 v1.13.1。曾经有一次试图把一切改成名副其实的 v1.12.1，结果版本号的来源不止一处：环境变量里残留的旧值优先于代码里的常量，构建登记的版本指向了一个根本不存在的目录，报 <code>stat /fc-versions/v1.13.1/firecracker: no such file or directory</code>。实地测试又发现改名后运行时仍然按 v1.13.1 去找。最后的决定是<strong>不再和查找键较劲</strong>：目录就叫 v1.13.1，文档里说清楚“里面是基于 1.12.1 自己编译的版本”。也正因为目录名和版本号都只是标签，要确认跑的是哪个二进制，得看进程实际运行的文件和它的 sha256。</p>
 <p>这个故障的教训是：版本号这类“标签”往往有多个来源（常量、环境变量、配置文件、数据库），改一处之前要先把所有来源找全。</p>
 <h2 id="d09-六故障二一次远离病因的内存故障">六、故障二：一次远离病因的内存故障</h2>
 <p>这是构建路径上最有代表性的一次故障。</p>
@@ -2319,10 +2561,11 @@ WORKDIR /home/user
 </table></div>
 <p>省掉的是 guest 内部的所有初始化；省不掉的是<strong>宿主侧的准备</strong>。后面会看到，启动的时间几乎全花在宿主侧。</p>
 <h2 id="d10-二请求链">二、请求链</h2>
-<pre><code>SDK ── Sandbox.create(&quot;my-python&quot;) ──▶ api
+<div class="hl"><pre><span></span><code>SDK ── Sandbox.create(&quot;my-python&quot;) ──▶ api
 api ── 认证、查模板最新 build ID、挑节点 ──▶ orchestrator 的 Create（gRPC）
 orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
-</code></pre>
+</code></pre></div>
+
 <figure class="paper"><img loading="lazy" alt="一次 create 的请求链" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjY4MiIgdmlld0JveD0iMCAwIDE2MDAgNjgyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjY4MiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiA5qyhIFNhbmRib3guY3JlYXRlIOeahOivt+axgumTvjwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij5hcGkg6K6k6K+B44CB5oqK5qih5p2/5ZCN57+76K+R5oiQ5b2T5YmNIGJ1aWxkIElE44CB6YCJ6IqC54K577ybb3JjaGVzdHJhdG9yIOWFiOi/h+WHhuWFpemXuOmXqO+8jOWGjei/m+WFpSBSZXN1bWVTYW5kYm9477yb5pyA5ZCOIGVudmQg5pS25YiwIC9pbml077yM5rKZ566x5Y+v55So44CCPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSIxNTYuMCIgd2lkdGg9IjI2NC4wIiBoZWlnaHQ9IjE0MC4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTgwLjAiIHk9IjIxOC4yIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TREs8L3RleHQ+Cjx0ZXh0IHg9IjE4MC4wIiB5PSIyNDEuNSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5TYW5kYm94LmNyZWF0ZSgibXktcHl0aG9uIik8L3RleHQ+CjxwYXRoIGQ9Ik0zMTYuMCAyMjYuMCBMMzU0LjAgMjI2LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8dGV4dCB4PSIzMzUuMCIgeT0iMjE4LjAiIGZvbnQtc2l6ZT0iMTEuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SFRUUFM8L3RleHQ+CjxyZWN0IHg9IjM1OC4wIiB5PSIxNTYuMCIgd2lkdGg9IjI2NC4wIiBoZWlnaHQ9IjE0MC4wIiByeD0iMTAiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNDkwLjAiIHk9IjE5OS41IiBmb250LXNpemU9IjE2IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5hcGk8L3RleHQ+Cjx0ZXh0IHg9IjQ5MC4wIiB5PSIyMjIuNyIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7orqTor4Egwrcg6YWN6aKdPC90ZXh0Pgo8dGV4dCB4PSI0OTAuMCIgeT0iMjQxLjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5qih5p2/5ZCNIOKGkiBidWlsZCBJRDwvdGV4dD4KPHRleHQgeD0iNDkwLjAiIHk9IjI2MC4yIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPumAieiKgueCuTwvdGV4dD4KPHBhdGggZD0iTTYyNi4wIDIyNi4wIEw2NjQuMCAyMjYuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+Cjx0ZXh0IHg9IjY0NS4wIiB5PSIyMTguMCIgZm9udC1zaXplPSIxMS41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5nUlBDPC90ZXh0Pgo8cmVjdCB4PSI2NjguMCIgeT0iMTU2LjAiIHdpZHRoPSIyNjQuMCIgaGVpZ2h0PSIxNDAuMCIgcng9IjEwIiBmaWxsPSIjRURGNEZEIiBzdHJva2U9IiM1QjlCRTYiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIyMDguOSIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5YeG5YWl6Ze46ZeoPC90ZXh0Pgo8dGV4dCB4PSI4MDAuMCIgeT0iMjMyLjEiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6IqC54K55rKZ566x5oC75pWwPC90ZXh0Pgo8dGV4dCB4PSI4MDAuMCIgeT0iMjUwLjkiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5ZCM5pe25ZCv5Yqo5L+h5Y+36YePPC90ZXh0Pgo8cGF0aCBkPSJNOTM2LjAgMjI2LjAgTDk3NC4wIDIyNi4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iOTc4LjAiIHk9IjE1Ni4wIiB3aWR0aD0iMjY0LjAiIGhlaWdodD0iMTQwLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMTEwLjAiIHk9IjIwOC45IiBmb250LXNpemU9IjE2IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5SZXN1bWVTYW5kYm94PC90ZXh0Pgo8dGV4dCB4PSIxMTEwLjAiIHk9IjIzMi4xIiBmb250LXNpemU9IjEyLjUiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWHhuWkh+S6lOagt+S4nOilvzwvdGV4dD4KPHRleHQgeD0iMTExMC4wIiB5PSIyNTAuOSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7liqDovb3lv6vnhac8L3RleHQ+CjxwYXRoIGQ9Ik0xMjQ2LjAgMjI2LjAgTDEyODQuMCAyMjYuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9IjEyODguMCIgeT0iMTU2LjAiIHdpZHRoPSIyNjQuMCIgaGVpZ2h0PSIxNDAuMCIgcng9IjEwIiBmaWxsPSIjRjNGMEZGIiBzdHJva2U9IiM4QjdGRTAiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjE0MjAuMCIgeT0iMjE4LjIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM0QjNGQTgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmVudmQ8L3RleHQ+Cjx0ZXh0IHg9IjE0MjAuMCIgeT0iMjQxLjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+L2luaXTvvJrouqvku73jgIHku6TniYzjgIHnjq/looPlj5jph488L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjM0Ni4wIiB3aWR0aD0iMTUwMC4wIiBoZWlnaHQ9IjM4LjIiIHJ4PSI2IiBmaWxsPSIjRjRGNUY3IiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4xIi8+Cjx0ZXh0IHg9IjU4LjAiIHk9IjM2OC44IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5YeG5YWl5Y+C5pWwPC90ZXh0Pgo8dGV4dCB4PSI0OTguMCIgeT0iMzY4LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuIrmuLg8L3RleHQ+Cjx0ZXh0IHg9IjEwMTguMCIgeT0iMzY4LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7miJHku6w8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNDI4LjUiIHgyPSIxNTQ4LjAiIHkyPSI0MjguNSIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI0MTEuMSIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWQjOaXtuWQr+WKqOS4iumZkDwvdGV4dD4KPHRleHQgeD0iNDk4LjAiIHk9IjQxMS4xIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+MzwvdGV4dD4KPHRleHQgeD0iMTAxOC4wIiB5PSI0MTEuMSIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS7o+eggem7mOiupCA1MDDvvIzpg6jnvbIgMzDvvIzlj6/osIM8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjQzMC41IiB3aWR0aD0iMTUwMC4wIiBoZWlnaHQ9IjM4LjIiIHJ4PSI2IiBmaWxsPSIjRTNGNUVFIiBzdHJva2U9IiMxRjlFNzciIHN0cm9rZS13aWR0aD0iMSIvPgo8dGV4dCB4PSI1OC4wIiB5PSI0NTMuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMEU2QjRGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS7juaooeadv+WIm+W7uuOAgeaLv+S4jeWIsOWQjeminTwvdGV4dD4KPHRleHQgeD0iNDk4LjAiIHk9IjQ1My4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMwRTZCNEYiIHRleHQtYW5jaG9yPSJzdGFydCI+56uL5Y2z5ouS57ud77yM6K6pIGFwaSDmjaLoioLngrk8L3RleHQ+Cjx0ZXh0IHg9IjEwMTguMCIgeT0iNDUzLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzBFNkI0RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mjpLpmJ/nrYnlvoU8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNTEzLjAiIHgyPSIxNTQ4LjAiIHkyPSI1MTMuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI0OTUuNiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuS7juaaguWBnOW/q+eFp+aBouWkjeOAgeaLv+S4jeWIsOWQjeminTwvdGV4dD4KPHRleHQgeD0iNDk4LjAiIHk9IjQ5NS42IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+5o6S6Zif77yM5pyA5aSaIDE1IOenkjwvdGV4dD4KPHRleHQgeD0iMTAxOC4wIiB5PSI0OTUuNiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaOkumYn++8jOacgOWkmiAzMDAg56eSPC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjU1NS4yIiB4Mj0iMTU0OC4wIiB5Mj0iNTU1LjIiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNTguMCIgeT0iNTM3LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mlbTkuKror7fmsYLotoXml7Y8L3RleHQ+Cjx0ZXh0IHg9IjQ5OC4wIiB5PSI1MzcuOCIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjYwIOenkjwvdGV4dD4KPHRleHQgeD0iMTAxOC4wIiB5PSI1MzcuOCIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjMwMCDnp5I8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNTk3LjUiIHgyPSIxNTQ4LjAiIHkyPSI1OTcuNSIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI1ODAuMSIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuiKgueCueaymeeuseaAu+aVsOS4iumZkDwvdGV4dD4KPHRleHQgeD0iNDk4LjAiIHk9IjU4MC4xIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+MjAwPC90ZXh0Pgo8dGV4dCB4PSIxMDE4LjAiIHk9IjU4MC4xIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+MTAwMDA8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNjE2LjAiIHgyPSIxNTUyLjAiIHkyPSI2MTYuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI0OC4wIiB5PSI2NDIuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzhDOTU5RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kuIrmuLjnmoTorr7orqHpgILlkIjlpJroioLngrnvvJrkuIDkuKroioLngrnlv5nlsLHmjaLkuIDkuKrjgILljZXoioLngrnpg6jnvbLml6DlpITlj6/mjaLvvIzmiYDku6XkuIDlvovmjpLpmJ/jgII8L3RleHQ+PC9zdmc+"><figcaption><b>图 10-1</b>一次 create 的请求链</figcaption></figure>
 
 <p>api 做三件事：</p>
@@ -2537,15 +2780,16 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 <p>这就像一栋楼里每户人家都有一个“101 号信箱”，但每户的“101 号信箱”是自己家门口那个。</p>
 <h2 id="d11-三启动脚本">三、启动脚本</h2>
 <p>orchestrator 为每个 Firecracker 生成一段启动脚本，执行方式大致是：</p>
-<pre><code class="language-bash">unshare -m -- bash -c &quot;
-  mount --make-rprivate / &amp;&amp;
-  mount -t tmpfs tmpfs &lt;沙箱目录&gt; -o X-mount.mkdir &amp;&amp;
-  ln -s &lt;本沙箱的磁盘设备&gt; &lt;快照记录的磁盘路径&gt; &amp;&amp;
-  mkdir -p &lt;内核目录&gt; &amp;&amp;
-  ln -s &lt;宿主上的内核文件&gt; &lt;快照记录的内核路径&gt; &amp;&amp;
-  ip netns exec &lt;网络命名空间&gt; &lt;firecracker&gt; --api-sock &lt;套接字路径&gt;
-&quot;
-</code></pre>
+<div class="hl"><pre><span></span><code>unshare<span class="w"> </span>-m<span class="w"> </span>--<span class="w"> </span>bash<span class="w"> </span>-c<span class="w"> </span><span class="s2">&quot;</span>
+<span class="s2">  mount --make-rprivate / &amp;&amp;</span>
+<span class="s2">  mount -t tmpfs tmpfs &lt;沙箱目录&gt; -o X-mount.mkdir &amp;&amp;</span>
+<span class="s2">  ln -s &lt;本沙箱的磁盘设备&gt; &lt;快照记录的磁盘路径&gt; &amp;&amp;</span>
+<span class="s2">  mkdir -p &lt;内核目录&gt; &amp;&amp;</span>
+<span class="s2">  ln -s &lt;宿主上的内核文件&gt; &lt;快照记录的内核路径&gt; &amp;&amp;</span>
+<span class="s2">  ip netns exec &lt;网络命名空间&gt; &lt;firecracker&gt; --api-sock &lt;套接字路径&gt;</span>
+<span class="s2">&quot;</span>
+</code></pre></div>
+
 <p>逐段看：</p>
 <div class="tw"><table>
 <thead>
@@ -2674,7 +2918,7 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 </tr>
 </tbody>
 </table></div>
-<p>第二个开关在加载快照时也要同样设置：从快照恢复的虚拟机不会经过开机流程，所以要在 <code>PUT /snapshot/load</code> 的请求里一并打开。这是快照回滚加进来以后启动路径上多出来的一件事，第 21 篇会讲它对普通沙箱有什么影响。</p>
+<p>第二个开关在加载快照时也要同样设置：从快照恢复的虚拟机不会经过开机流程，所以要在 <code>PUT /snapshot/load</code> 的请求里一并打开。Firecracker 收到后，在建好虚拟机、注册完内存之后决定用什么方式记脏页：鲲鹏 950 上打开 HDBSS 让硬件记，打不开就退回 KVM 写保护（源码 <code>src/vmm/src/vstate/vm.rs</code> 的 <code>setup_dirty_tracking</code>，冷启动和加载快照两条路径各调一次）。这是快照回滚加进来以后启动路径上多出来的一件事，第 21 篇会讲它对普通沙箱有什么影响。</p>
 <p>还有一处更深的修改不在这条管线上：上游会把 Firecracker 进程在创建的那一刻直接放进它自己的 cgroup，ARM 移植时这段被注释掉了，Firecracker 进程于是留在 orchestrator 所在的 cgroup 里。这会影响内存记账和绑核，第 12、15 篇讲。</p>
 <hr />
 <h2 id="d11-本篇小结">本篇小结</h2>
@@ -3191,15 +3435,17 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 <figure class="paper"><img loading="lazy" alt="三个口径" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjU0MiIgdmlld0JveD0iMCAwIDE2MDAgNTQyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjU0MiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5LiJ5Liq5Y+j5b6E77yM5Yir5re3PC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSI5Mi4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWuouaIt+err+WimemSnyDiioMg6Lev55Sx5LiOIGFwaSArIOWHhuWFpeaOkumYnyArIFJlc3VtZVNhbmRib3gg5oC76ICX5pe2ICsg5ZaE5ZCO44CCMTAwIOW5tuWPkeS4i+WuouaIt+err+e6piA2MDAgbXPvvIxSZXN1bWVTYW5kYm94IOe6piAyOTQgbXPjgII8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjIwNi4wIiB3aWR0aD0iMTAyLjMiIGhlaWdodD0iNTYuMCIgcng9IjYiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMTAwLjYiIHk9IjI0MC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7ot6/nlLEgwrcgYXBpPC90ZXh0Pgo8cmVjdCB4PSIxNTMuMyIgeT0iMjA2LjAiIHdpZHRoPSI1MzguNCIgaGVpZ2h0PSI1Ni4wIiByeD0iNiIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8dGV4dCB4PSI0MjQuMCIgeT0iMjQwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM5QTMyMTUiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWHhuWFpeaOkumYnzwvdGV4dD4KPHJlY3QgeD0iNjk0LjciIHk9IjIwNi4wIiB3aWR0aD0iNzM0LjAiIGhlaWdodD0iNTYuMCIgcng9IjYiIGZpbGw9IiNFREY0RkQiIHN0cm9rZT0iIzVCOUJFNiIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMTA2My4yIiB5PSIyNDAuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFENEY5MSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+UmVzdW1lU2FuZGJveCDmgLvogJfml7Yg4omIIDI5NCBtczwvdGV4dD4KPHJlY3QgeD0iMTQzMS43IiB5PSIyMDYuMCIgd2lkdGg9IjExNy4zIiBoZWlnaHQ9IjU2LjAiIHJ4PSI2IiBmaWxsPSIjRjRGNUY3IiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4yIi8+Cjx0ZXh0IHg9IjE0OTEuOCIgeT0iMjQwLjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPuWWhOWQjjwvdGV4dD4KPGxpbmUgeDE9IjQ4LjAiIHkxPSIxODYuMCIgeDI9IjE1NTIuMCIgeTI9IjE4Ni4wIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS41IiBzdHJva2UtbGluZWNhcD0icm91bmQiIG1hcmtlci1zdGFydD0idXJsKCNtMUYyMzI4KSIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8dGV4dCB4PSI4MDAuMCIgeT0iMTc2LjAiIGZvbnQtc2l6ZT0iMTQuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5a6i5oi356uv5aKZ6ZKfIOKJiCA2MDAgbXPvvIhTYW5kYm94LmNyZWF0ZSDku47osIPnlKjliLDov5Tlm57vvIk8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjMwNi4wIiB3aWR0aD0iMTUwMC4wIiBoZWlnaHQ9IjM4LjIiIHJ4PSI2IiBmaWxsPSIjRjRGNUY3IiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4xIi8+Cjx0ZXh0IHg9IjU4LjAiIHk9IjMyOC44IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Y+j5b6EPC90ZXh0Pgo8dGV4dCB4PSI0NzguMCIgeT0iMzI4LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ph4/nmoTmmK/ku4DkuYg8L3RleHQ+Cjx0ZXh0IHg9IjEwNzguMCIgeT0iMzI4LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lnKjlk6rmtYs8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iMzg4LjUiIHgyPSIxNTQ4LjAiIHkyPSIzODguNSIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSIzNzEuMSIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWuouaIt+err+WimemSnzwvdGV4dD4KPHRleHQgeD0iNDc4LjAiIHk9IjM3MS4xIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+U2FuZGJveC5jcmVhdGUg5LuO6LCD55So5Yiw6L+U5ZuePC90ZXh0Pgo8dGV4dCB4PSIxMDc4LjAiIHk9IjM3MS4xIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+5Y6L5rWL6ISa5pysPC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjQzMC44IiB4Mj0iMTU0OC4wIiB5Mj0iNDMwLjgiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNTguMCIgeT0iNDEzLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lh4blhaXmjpLpmJ88L3RleHQ+Cjx0ZXh0IHg9IjQ3OC4wIiB5PSI0MTMuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuetieKAnOWQjOaXtuWQr+WKqOKAneS/oeWPt+mHjzwvdGV4dD4KPHRleHQgeD0iMTA3OC4wIiB5PSI0MTMuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPm9yY2hlc3RyYXRvciDml6Xlv5fvvJphY3F1aXJlIHdhaXQ8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNDczLjAiIHgyPSIxNTQ4LjAiIHkyPSI0NzMuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI0NTUuNiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPlJlc3VtZVNhbmRib3gg5oC76ICX5pe2PC90ZXh0Pgo8dGV4dCB4PSI0NzguMCIgeT0iNDU1LjYiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ov5vlhaXlh73mlbDliLDov5Tlm57vvIzlkKsgZW52ZCAvaW5pdDwvdGV4dD4KPHRleHQgeD0iMTA3OC4wIiB5PSI0NTUuNiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiB0ZXh0LWFuY2hvcj0ic3RhcnQiPm9yY2hlc3RyYXRvciDml6Xlv5fvvJp0b3RhbDwvdGV4dD4KPGxpbmUgeDE9IjQ4LjAiIHkxPSI0NzYuMCIgeDI9IjE1NTIuMCIgeTI9IjQ3Ni4wIiBzdHJva2U9IiNEOERFRTQiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjUwMi4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjOEM5NTlGIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuekuuaEj+Wbvu+8jOWQhOauteavlOS+i+WPquihqOekuumHj+e6p++8m+WHhuWFpeaOkumYn+eahOWkp+Wwj+WPluWGs+S6juW5tuWPkeaVsOWSjOS/oeWPt+mHj+S4iumZkOOAgjwvdGV4dD48L3N2Zz4="><figcaption><b>图 14-1</b>三个口径</figcaption></figure>
 
 <p>三者的关系是：</p>
-<pre><code>客户端墙钟 = 路由与网络往返 + api 处理 + 准入排队 + ResumeSandbox 总耗时 + 善后
-</code></pre>
+<div class="hl"><pre><span></span><code>客户端墙钟 = 路由与网络往返 + api 处理 + 准入排队 + ResumeSandbox 总耗时 + 善后
+</code></pre></div>
+
 <p>在 100 路并发下，客户端墙钟约 600 ms，<code>ResumeSandbox</code> 总耗时约 294 ms。如果只看一个数字，就会得出完全不同的结论。</p>
 <h2 id="d14-二怎么打点">二、怎么打点</h2>
 <p>上游代码有分布式追踪（trace），但在单节点部署里不方便汇总成统计。我们在关键阶段的前后加了计时，统一打成这种格式的日志：</p>
-<pre><code>[ResumeSandbox] configured fc cost: 241.614 ms, traceID=...
+<div class="hl"><pre><span></span><code>[ResumeSandbox] configured fc cost: 241.614 ms, traceID=...
 [ResumeSandbox] load snapshot cost: 29.148 ms, traceID=...
 [ResumeSandbox] total cost: 294.690 ms, traceID=...
-</code></pre>
+</code></pre></div>
+
 <p>同一次启动的所有日志带同一个 traceID，压测结束后用一个解析脚本按 traceID 归并，就能得到每台沙箱每个阶段的耗时，再算平均值和各个百分位。</p>
 <p>一共打了十几个点：</p>
 <div class="tw"><table>
@@ -3280,7 +3526,7 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 <li>“等 Firecracker 启动”被分在“创建 Firecracker 进程”组，可它和“创建进程对象”根本不在一段里，一个在串行准备、一个在并行段。</li>
 </ul>
 <p>并行的阶段不能简单相加。要读懂数字，必须先按代码把真实的结构还原出来：</p>
-<pre><code>总耗时
+<div class="hl"><pre><span></span><code>总耗时
 ├─ 获取网络槽位 ........................... 串行
 ├─ 获取模板元数据 ......................... 串行
 ├─ 创建 Firecracker 进程对象 .............. 串行
@@ -3293,7 +3539,8 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 │   ├─ 恢复 vCPU .......................... 串行
 │   └─ 写 MMDS ............................ 串行
 └─ 初始化 envd ............................ 串行
-</code></pre>
+</code></pre></div>
+
 <h2 id="d14-四100-路并发的结果">四、100 路并发的结果</h2>
 <p>压测时我们<strong>刻意</strong>用 100 路并发，目的就是把高并发下的瓶颈暴露出来，而不是追求一个好看的单沙箱数字。100 台沙箱的平均值：</p>
 <div class="tw"><table>
@@ -3370,9 +3617,10 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 </table></div>
 <p>（网络槽位的 p99 比平均值还小，是因为平均值被极个别池子没命中的长尾拉高了。）</p>
 <p>可以对一下账：</p>
-<pre><code>恢复虚拟机 ≈ max(241.6, 13.2, 0.2) + 29.1 + 0.6 + 0.4 = 271.8 ms
+<div class="hl"><pre><span></span><code>恢复虚拟机 ≈ max(241.6, 13.2, 0.2) + 29.1 + 0.6 + 0.4 = 271.8 ms
 总耗时   ≈ 0.7 + 0.1 + 15.5 + 271.7 + 约 6.8（envd /init 与零碎开销）= 294.7 ms
-</code></pre>
+</code></pre></div>
+
 <figure class="paper"><img loading="lazy" alt="100 并发的关键路径" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjY2MiIgdmlld0JveD0iMCAwIDE2MDAgNjYyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjwvZGVmcz48cmVjdCB3aWR0aD0iMTYwMCIgaGVpZ2h0PSI2NjIiIGZpbGw9IiNGRkZGRkYiLz48dGV4dCB4PSI0OC4wIiB5PSI1OC4wIiBmb250LXNpemU9IjI4IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjEwMCDot6/lubblj5HnmoTlhbPplK7ot6/lvoTvvJrmi4notbcgRmlyZWNyYWNrZXIg5Y2gIDgyJTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lubbooYzmrrXlj6rnrpfmnIDplb/kuIDot6/jgILnrYkgdWZmZO+8iDEzLjIgbXPvvInlkozlh4blpIfmoLnnm5jvvIgwLjIgbXPvvInooqvmi4notbcgRmlyZWNyYWNrZXIg55qEIDI0MS42IG1zIOebluS9j+S6huOAgjwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iMTc2LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+6I635Y+W572R57uc5qe95L2NPC90ZXh0Pgo8cmVjdCB4PSIzMDguMCIgeT0iMTYwLjAiIHdpZHRoPSIzLjEiIGhlaWdodD0iMjQuMCIgcng9IjQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMzIxLjEiIHk9IjE3Ny4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjAuNjggbXM8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjIxNC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuiOt+WPluaooeadv+WFg+aVsOaNrjwvdGV4dD4KPHJlY3QgeD0iMzA4LjAiIHk9IjE5OC4wIiB3aWR0aD0iMy4wIiBoZWlnaHQ9IjI0LjAiIHJ4PSI0IiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4yIi8+Cjx0ZXh0IHg9IjMyMS4wIiB5PSIyMTUuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4wLjA5IG1zPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSIyNTIuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7liJvlu7rov5vnqIvlr7nosaE8L3RleHQ+CjxyZWN0IHg9IjMwOC4wIiB5PSIyMzYuMCIgd2lkdGg9IjY5LjYiIGhlaWdodD0iMjQuMCIgcng9IjQiIGZpbGw9IiNGREYwRDkiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMzg3LjYiIHk9IjI1My4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjE1LjQ1IG1zPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSIyOTAuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nrYnlvoUgRmlyZWNyYWNrZXIg5ZCv5YqoPC90ZXh0Pgo8cmVjdCB4PSIzMDguMCIgeT0iMjc0LjAiIHdpZHRoPSIxMDg4LjciIGhlaWdodD0iMjQuMCIgcng9IjQiIGZpbGw9IiNGQ0VERTgiIHN0cm9rZT0iI0Q2NjAzRCIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMTQwNi43IiB5PSIyOTEuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4yNDEuNjEgbXM8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjMyOC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjOEM5NTlGIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuetieW+hSB1ZmZkIOWll+aOpeWtlzwvdGV4dD4KPHJlY3QgeD0iMzA4LjAiIHk9IjMxMi4wIiB3aWR0aD0iNTkuNCIgaGVpZ2h0PSIyNC4wIiByeD0iNCIgZmlsbD0iI0Y0RjVGNyIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMiIgc3Ryb2tlLWRhc2hhcnJheT0iNCAzIi8+Cjx0ZXh0IHg9IjM3Ny40IiB5PSIzMjkuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzhDOTU5RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij4xMy4xOCBtc++8iOiiq+ebluS9j++8iTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iMzY2LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+5YeG5aSH5qC555uYPC90ZXh0Pgo8cmVjdCB4PSIzMDguMCIgeT0iMzUwLjAiIHdpZHRoPSIzLjAiIGhlaWdodD0iMjQuMCIgcng9IjQiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1kYXNoYXJyYXk9IjQgMyIvPgo8dGV4dCB4PSIzMjEuMCIgeT0iMzY3LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+MC4xOSBtc++8iOiiq+ebluS9j++8iTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iNDA0LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Yqg6L295b+r54WnPC90ZXh0Pgo8cmVjdCB4PSIzMDguMCIgeT0iMzg4LjAiIHdpZHRoPSIxMzEuNCIgaGVpZ2h0PSIyNC4wIiByeD0iNCIgZmlsbD0iI0ZERjBEOSIgc3Ryb2tlPSIjRDk5MjJCIiBzdHJva2Utd2lkdGg9IjEuMiIvPgo8dGV4dCB4PSI0NDkuNCIgeT0iNDA1LjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+MjkuMTUgbXM8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjQ0Mi4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaBouWkjSB2Q1BVPC90ZXh0Pgo8cmVjdCB4PSIzMDguMCIgeT0iNDI2LjAiIHdpZHRoPSIzLjAiIGhlaWdodD0iMjQuMCIgcng9IjQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMzIxLjAiIHk9IjQ0My4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjAuNTggbXM8L3RleHQ+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjQ4MC4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWGmSBNTURTPC90ZXh0Pgo8cmVjdCB4PSIzMDguMCIgeT0iNDY0LjAiIHdpZHRoPSIzLjAiIGhlaWdodD0iMjQuMCIgcng9IjQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMzIxLjAiIHk9IjQ4MS4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjAuNCBtczwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iNTE4LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+ZW52ZCAvaW5pdCDkuI7pm7bnoo48L3RleHQ+CjxyZWN0IHg9IjMwOC4wIiB5PSI1MDIuMCIgd2lkdGg9IjMwLjYiIGhlaWdodD0iMjQuMCIgcng9IjQiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjIiLz4KPHRleHQgeD0iMzQ4LjYiIHk9IjUxOS4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPjYuOCBtczwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iNTY2LjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5oC76ICX5pe2IDI5NC42OSBtcyDiiYggMC43ICsgMC4xICsgMTUuNSArIG1heCgyNDEuNiwgMTMuMiwgMC4yKSArIDI5LjEgKyAwLjYgKyAwLjQgKyDnuqYgNi44PC90ZXh0Pgo8bGluZSB4MT0iNDguMCIgeTE9IjU5Ni4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNTk2LjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iNjIyLjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+cDk577ya562J5b6FIEZpcmVjcmFja2VyIOWQr+WKqCAzMjkgbXPvvIzov5zlpKfkuo7lubPlnYcgMjQyIG1z77yM5piv6LWE5rqQ5LqJ55So55qE5YW45Z6L54m55b6B44CC5LyY5YyW5Y+q5pyJ6L+Z5LiA5Liq5Li75oiY5Zy644CCPC90ZXh0Pjwvc3ZnPg=="><figcaption><b>图 14-2</b>100 并发的关键路径</figcaption></figure>
 
 <p>结论一目了然：<strong>82%（241.6 ms）卡在“等待 Firecracker 启动”</strong>，其次是加载快照（29.1 ms，10%）和创建进程对象（15.5 ms，5%）。其余所有阶段加起来不到 9 ms。</p>
@@ -3477,8 +3725,9 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 <hr />
 <h2 id="d15-一病因ip-netns-exec-做了什么">一、病因：<code>ip netns exec</code> 做了什么</h2>
 <p>第 11 篇的启动脚本最后一步是：</p>
-<pre><code class="language-bash">ip netns exec &lt;网络命名空间&gt; firecracker --api-sock &lt;套接字&gt;
-</code></pre>
+<div class="hl"><pre><span></span><code>ip<span class="w"> </span>netns<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>&lt;网络命名空间&gt;<span class="w"> </span>firecracker<span class="w"> </span>--api-sock<span class="w"> </span>&lt;套接字&gt;
+</code></pre></div>
+
 <p>直觉上这只是“进入那个网络命名空间，然后运行 firecracker”。可 <code>ip</code> 这个工具（属于 iproute2）的 <code>netns exec</code> 子命令，每次实际上做了六件事：</p>
 <div class="tw"><table>
 <thead>
@@ -3536,11 +3785,12 @@ orchestrator ── 准入 → ResumeSandbox ──▶ Firecracker + envd
 <p>这正是“等待 Firecracker 启动”从单沙箱几十毫秒放大到 100 并发下 240 ms 的串行化来源之一；p99 远大于平均值的长尾形态，也是锁争用的典型特征。</p>
 <h2 id="d15-二解法只保留第-1-件">二、解法：只保留第 1 件</h2>
 <p>我们用一个约 70 行的小程序 <code>fc-netns-exec</code> 替换 <code>ip netns exec</code>。它只做三步：</p>
-<pre><code class="language-go">runtime.LockOSThread()                        // 把当前 goroutine 钉在一个系统线程上
-fd := open(&quot;/run/netns/&lt;ns&gt;&quot;)                 // 打开网络命名空间
-setns(fd, CLONE_NEWNET)                       // 进入它
-execve(firecracker, args, env)                // 原地变成 firecracker 进程
-</code></pre>
+<div class="hl"><pre><span></span><code><span class="nx">runtime</span><span class="p">.</span><span class="nx">LockOSThread</span><span class="p">()</span><span class="w">                        </span><span class="c1">// 把当前 goroutine 钉在一个系统线程上</span>
+<span class="nx">fd</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">open</span><span class="p">(</span><span class="s">&quot;/run/netns/&lt;ns&gt;&quot;</span><span class="p">)</span><span class="w">                 </span><span class="c1">// 打开网络命名空间</span>
+<span class="nx">setns</span><span class="p">(</span><span class="nx">fd</span><span class="p">,</span><span class="w"> </span><span class="nx">CLONE_NEWNET</span><span class="p">)</span><span class="w">                       </span><span class="c1">// 进入它</span>
+<span class="nx">execve</span><span class="p">(</span><span class="nx">firecracker</span><span class="p">,</span><span class="w"> </span><span class="nx">args</span><span class="p">,</span><span class="w"> </span><span class="nx">env</span><span class="p">)</span><span class="w">                </span><span class="c1">// 原地变成 firecracker 进程</span>
+</code></pre></div>
+
 <p>没有第二个挂载命名空间，没有挂载树遍历，没有重挂 <code>/sys</code>，没有绑定 <code>/etc</code>。而且它是<strong>静态编译</strong>的，启动时不需要动态链接任何库。</p>
 <p>第一行有讲究：<code>setns</code> 只改变<strong>调用它的那个系统线程</strong>所在的命名空间，可 Go 的运行时会把 goroutine 在不同线程之间搬来搬去。如果 <code>setns</code> 在线程 A 上执行，<code>execve</code> 却被调度到了线程 B 上，Firecracker 就会运行在错误的网络命名空间里。所以先把 goroutine 钉在一个线程上，保证这两步在同一个线程上发生。<code>execve</code> 会把整个进程收拢到这一个线程，Firecracker 从而完整继承目标命名空间。</p>
 <p>启动管线的其余部分（<code>unshare</code>、<code>mount</code>、<code>ln</code>……）<strong>原封不动</strong>。和原来相比只有一个变量，效果好坏一目了然。</p>
@@ -3997,11 +4247,15 @@ execve(firecracker, args, env)                // 原地变成 firecracker 进程
 </tbody>
 </table></div>
 <p>于是，一页内存只要被写过，它的写保护标记就一定被清掉了；只被读过的页，标记还在。Linux 在每个进程的 <code>/proc/&lt;pid&gt;/pagemap</code> 里为每一页记了若干状态位，其中第 63 位表示“这一页在内存里”，第 57 位表示“这一页被 uffd 写保护着”。所以：</p>
-<pre><code>脏页 ⟺ 在内存里（第 63 位 = 1）且 没有写保护（第 57 位 = 0）
-</code></pre>
+<div class="hl"><pre><span></span><code>脏页 ⟺ 在内存里（第 63 位 = 1）且 没有写保护（第 57 位 = 0）
+</code></pre></div>
+
 <figure class="paper"><img loading="lazy" alt="脏页判据" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjYyMiIgdmlld0JveD0iMCAwIDE2MDAgNjIyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjYyMiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+eDg2IOS4iueahOiEj+mhteWIpOaNru+8muivu+i/m+adpeeahOmhteS/neaMgeWGmeS/neaKpO+8jOWGmei/h+eahOmhteS/neaKpOiiq+a4hTwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij51ZmZkIOWkhOeQhuWZqOWhq+mhteaXtueci+e8uumhteWOn+WboO+8muivu+e8uumhteW4puWGmeS/neaKpOWhq+WFpe+8m+WGmee8uumhteS4jeW4puOAguivu+i/m+adpeeahOmhteS5i+WQjuiiq+WGme+8jOS8muWGjeinpuWPkeS4gOasoeWGmeS/neaKpOe8uumhte+8jOWkhOeQhuWZqOino+mZpOS/neaKpOOAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTU2LjAiIHdpZHRoPSI0NzQuNyIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMjg1LjMiIHk9IjE5MS4xIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lj6ror7vov4fnmoTpobU8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjIzNi4wIiB3aWR0aD0iNDc0LjciIGhlaWdodD0iNzAuMCIgcng9IjEwIiBmaWxsPSIjRkZGRkZGIiBzdHJva2U9IiNBRUI2QkUiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjI4NS4zIiB5PSIyNzQuOSIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6K+757y66aG1IOKGkiDluKblhpnkv53miqTloavlhaU8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjMyNi4wIiB3aWR0aD0iNDc0LjciIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjI4NS4zIiB5PSIzNTkuOSIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5Zyo5YaF5a2Y6YeMIMK3IOacieWGmeS/neaKpDwvdGV4dD4KPHJlY3QgeD0iMjUxLjgiIHk9IjQwNy4wIiB3aWR0aD0iNjcuMCIgaGVpZ2h0PSIyOC4wIiByeD0iMTQuMCIgZmlsbD0iI0UzRjVFRSIgc3Ryb2tlPSIjMUY5RTc3IiBzdHJva2Utd2lkdGg9IjEiLz4KPHRleHQgeD0iMjg1LjMiIHk9IjQyNi40IiBmb250LXNpemU9IjE1IiBmaWxsPSIjMEU2QjRGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7kuI3nrpfohI88L3RleHQ+CjxwYXRoIGQ9Ik0yODUuMyAyMjAuMCBMMjg1LjMgMjMyLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cGF0aCBkPSJNMjg1LjMgMzEwLjAgTDI4NS4zIDMyMi4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iNTYyLjciIHk9IjE1Ni4wIiB3aWR0aD0iNDc0LjciIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRjRGNUY3IiBzdHJva2U9IiM1NzYwNkEiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIxOTEuMSIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+55u05o6l5YaZ55qE6aG1PC90ZXh0Pgo8cmVjdCB4PSI1NjIuNyIgeT0iMjM2LjAiIHdpZHRoPSI0NzQuNyIgaGVpZ2h0PSI3MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iODAwLjAiIHk9IjI3NC45IiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lhpnnvLrpobUg4oaSIOS4jeW4puWGmeS/neaKpDwvdGV4dD4KPHJlY3QgeD0iNTYyLjciIHk9IjMyNi4wIiB3aWR0aD0iNDc0LjciIGhlaWdodD0iNjAuMCIgcng9IjEwIiBmaWxsPSIjRjZGNkYzIiBzdHJva2U9IiNCN0I1QUMiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIzNTkuOSIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5Zyo5YaF5a2Y6YeMIMK3IOaXoOWGmeS/neaKpDwvdGV4dD4KPHJlY3QgeD0iNzgxLjUiIHk9IjQwNy4wIiB3aWR0aD0iMzcuMCIgaGVpZ2h0PSIyOC4wIiByeD0iMTQuMCIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEiLz4KPHRleHQgeD0iODAwLjAiIHk9IjQyNi40IiBmb250LXNpemU9IjE1IiBmaWxsPSIjOUEzMjE1IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7ohI88L3RleHQ+CjxwYXRoIGQ9Ik04MDAuMCAyMjAuMCBMODAwLjAgMjMyLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cGF0aCBkPSJNODAwLjAgMzEwLjAgTDgwMC4wIDMyMi4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS4yIiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iMTA3Ny4zIiB5PSIxNTYuMCIgd2lkdGg9IjQ3NC43IiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0Y0RjVGNyIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzE0LjciIHk9IjE5MS4xIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lhYjor7vlkI7lhpnnmoTpobU8L3RleHQ+CjxyZWN0IHg9IjEwNzcuMyIgeT0iMjM2LjAiIHdpZHRoPSI0NzQuNyIgaGVpZ2h0PSI3MC4wIiByeD0iMTAiIGZpbGw9IiNGRkZGRkYiIHN0cm9rZT0iI0FFQjZCRSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iMTMxNC43IiB5PSIyNzQuOSIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6K+757y66aG15bim5YaZ5L+d5oqkIOKGkiDlhpnml7blho3nvLrpobUg4oaSIOino+mZpOS/neaKpDwvdGV4dD4KPHJlY3QgeD0iMTA3Ny4zIiB5PSIzMjYuMCIgd2lkdGg9IjQ3NC43IiBoZWlnaHQ9IjYwLjAiIHJ4PSIxMCIgZmlsbD0iI0Y2RjZGMyIgc3Ryb2tlPSIjQjdCNUFDIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMzE0LjciIHk9IjM1OS45IiBmb250LXNpemU9IjEzIiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lnKjlhoXlrZjph4wgwrcg5peg5YaZ5L+d5oqkPC90ZXh0Pgo8cmVjdCB4PSIxMjk2LjIiIHk9IjQwNy4wIiB3aWR0aD0iMzcuMCIgaGVpZ2h0PSIyOC4wIiByeD0iMTQuMCIgZmlsbD0iI0ZDRURFOCIgc3Ryb2tlPSIjRDY2MDNEIiBzdHJva2Utd2lkdGg9IjEiLz4KPHRleHQgeD0iMTMxNC43IiB5PSI0MjYuNCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzlBMzIxNSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+6ISPPC90ZXh0Pgo8cGF0aCBkPSJNMTMxNC43IDIyMC4wIEwxMzE0LjcgMjMyLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cGF0aCBkPSJNMTMxNC43IDMxMC4wIEwxMzE0LjcgMzIyLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjIiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cmVjdCB4PSI0OC4wIiB5PSI0NjYuMCIgd2lkdGg9IjE1MDQuMCIgaGVpZ2h0PSI2MC4wIiByeD0iMTAiIGZpbGw9IiNGNEY1RjciIHN0cm9rZT0iIzU3NjA2QSIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iODAwLjAiIHk9IjUwMC4yIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7ohI8g4p+6IOWcqOWGheWtmOmHjO+8iHBhZ2VtYXAg56ysIDYzIOS9jSA9IDHvvInkuJQg5rKh5pyJ5YaZ5L+d5oqk77yI56ysIDU3IOS9jSA9IDDvvInjgIDCt+OAgEZpcmVjcmFja2VyIOeahCBHRVQgL21lbW9yeS9kaXJ0eSDmjInmraTnu5nkvY3lm748L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNTU2LjAiIHgyPSIxNTUyLjAiIHkyPSI1NTYuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI0OC4wIiB5PSI1ODIuMCIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzhDOTU5RiIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ku6Pku7fvvJrlhYjor7vlkI7lhpnnmoTpobXlpJrkuIDmrKHnvLrpobXjgILmlLbnm4rvvJrliKTmja7nsr7noa7vvIzlj6ror7vkuI3lhpnnmoTpobXkuI3lr7zlh7rjgILnrKwgMTkg56+H77yaQVJNIOS4iui/meadoeWIpOaNruWkseeBteS6huOAgjwvdGV4dD48L3N2Zz4="><figcaption><b>图 17-1</b>脏页判据</figcaption></figure>
 
-<p>Firecracker 提供了一个接口 <code>GET /memory/dirty</code>，就是按这条判据给出位图的：先找出在内存里的页，再对这些页查写保护位。</p>
+<p>Firecracker 提供了一个接口 <code>GET /memory/dirty</code>，就是按这条判据给出位图的：先找出在内存里的页，再对这些页查写保护位。这个接口不是上游 Firecracker 的，是 E2B 自己的 Firecracker 分支加的。源码（路径以 Firecracker 源码目录为根）在 <code>src/vmm/src/lib.rs</code> 的 <code>get_dirty_memory</code>：先用 <code>mincore</code> 找出常驻的页，再对每一页读一次 <code>/proc/self/pagemap</code>，由 <code>src/vmm/src/utils/pagemap.rs</code> 的 <code>is_page_dirty</code> 判断，核心只有一行：</p>
+<div class="hl"><pre><span></span><code><span class="nb">Ok</span><span class="p">(</span><span class="n">entry</span><span class="p">.</span><span class="n">is_present</span><span class="p">()</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="o">!</span><span class="n">entry</span><span class="p">.</span><span class="n">is_write_protected</span><span class="p">())</span><span class="w">   </span><span class="c1">// 第 63 位为 1，且第 57 位为 0</span>
+</code></pre></div>
+
 <p>代价是：一页如果先被读、后被写，要多经历一次写保护缺页。收益是判据<strong>精确</strong>：只读不写的页不算脏，不会被导出。</p>
 <p>记住这条判据。第 19 篇会看到，它在 ARM 上失灵了。</p>
 <h2 id="d17-二内存怎么搬出来">二、内存：怎么搬出来</h2>
@@ -4012,10 +4266,11 @@ execve(firecracker, args, env)                // 原地变成 firecracker 进程
 
 <h2 id="d17-三新一代的映射表">三、新一代的映射表</h2>
 <p>数据文件只是一串紧挨着的块，要靠映射表才知道每一块原来在哪（第 4 篇）。新一代的映射表这样生成：</p>
-<pre><code>新一代的映射表
+<div class="hl"><pre><span></span><code>新一代的映射表
   ├── 本代写过的块  →  指向本代的差分文件
   └── 没写过的块    →  沿用上一代映射表里的指向（可能指向更早的某一代）
-</code></pre>
+</code></pre></div>
+
 <p>相邻的、指向同一代且连续的区间会合并成一行，所以映射表通常不大。</p>
 <h2 id="d17-四磁盘导出写层">四、磁盘：导出写层</h2>
 <p>磁盘的判断简单得多：<strong>写层里有的块，就是这一代写过的块。</strong> 写层只记录写进来的东西，读不会在写层里留下任何痕迹。所以磁盘增量天然是精确的，在 ARM 上也一样。</p>
@@ -4053,8 +4308,9 @@ execve(firecracker, args, env)                // 原地变成 firecracker 进程
 </tbody>
 </table></div>
 <p>按六个档位拟合，暂停大约是：</p>
-<pre><code>暂停耗时 ≈ 246 ms（固定开销） + 每 MiB 导出量 × 0.52 ms
-</code></pre>
+<div class="hl"><pre><span></span><code>暂停耗时 ≈ 246 ms（固定开销） + 每 MiB 导出量 × 0.52 ms
+</code></pre></div>
+
 <p><strong>改动量为 0 时也要约 250 ms。</strong> 这 250 ms 花在哪了？</p>
 <h2 id="d17-六拆开那-250-ms">六、拆开那 250 ms</h2>
 <p>在 920B 上，我们对一次改动量为 0 的暂停（总耗时 234.9 ms）做了逐段跟踪，从开始暂停算起：</p>
@@ -4273,7 +4529,7 @@ execve(firecracker, args, env)                // 原地变成 firecracker 进程
 <p>因为是同一条路，第三部分讲的所有内容（启动脚本、懒加载、预取、根盘、网络、envd 醒来）在恢复时全部原样发生。第 15 篇的启动优化，对恢复同样有效。</p>
 <h2 id="d18-二一切都要重建">二、一切都要重建</h2>
 <p>恢复时，宿主上为这台沙箱准备的五样东西<strong>全部从零开始</strong>：</p>
-<pre><code>新建 Firecracker 进程
+<div class="hl"><pre><span></span><code>新建 Firecracker 进程
   ├── 建 KVM 虚拟机、vCPU、中断控制器、virtio 设备
   ├── 领一个网络槽位（可能和暂停前不是同一个）
   ├── 起一个新的 uffd 处理器，接管 guest 内存
@@ -4282,7 +4538,8 @@ execve(firecracker, args, env)                // 原地变成 firecracker 进程
 跑起来
   └── guest 访问一页还没有内容的内存 → 缺页 → uffd 处理器
        → 查映射表 → 读本地缓存（没有就从存储拉）→ 填进去
-</code></pre>
+</code></pre></div>
+
 <p>这就是第 16 篇说的“每一次都是销毁加重建”。暂停时拆掉的，恢复时一样一样再建起来。</p>
 <h2 id="d18-三实测100-ms-出头和改动量无关">三、实测：100 ms 出头，和改动量无关</h2>
 <p>鲲鹏 950 上，每一档一台新沙箱，客户端测得的恢复中位数：</p>
@@ -4435,26 +4692,30 @@ execve(firecracker, args, env)                // 原地变成 firecracker 进程
 <hr />
 <h2 id="d19-一一处注释掉的代码">一、一处注释掉的代码</h2>
 <p>第 17 篇讲过，x86 上 uffd 处理器填页时，读缺页会带上“写保护”标记：</p>
-<pre><code class="language-go">// 读缺页：带写保护填入，之后被写会再通知一次
-if accessType != block.Write {
-    copyMode |= UFFDIO_COPY_MODE_WP
-}
-</code></pre>
+<div class="hl"><pre><span></span><code><span class="c1">// 读缺页：带写保护填入，之后被写会再通知一次</span>
+<span class="k">if</span><span class="w"> </span><span class="nx">accessType</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">Write</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nx">copyMode</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="nx">UFFDIO_COPY_MODE_WP</span>
+<span class="p">}</span>
+</code></pre></div>
+
 <p>我们 ARM 服务器上用的 6.6 内核，在 arm64 上<strong>不支持 uffd 写保护</strong>。带着这个标记去填页，内核直接报错，沙箱起不来。</p>
 <p>ARM 移植时的做法是把这三行<strong>注释掉</strong>：</p>
-<pre><code class="language-go">//if accessType != block.Write {
-//    copyMode |= UFFDIO_COPY_MODE_WP
-//}
-</code></pre>
+<div class="hl"><pre><span></span><code><span class="c1">//if accessType != block.Write {</span>
+<span class="c1">//    copyMode |= UFFDIO_COPY_MODE_WP</span>
+<span class="c1">//}</span>
+</code></pre></div>
+
 <p>沙箱能正常启动、正常运行了。可这三行注释掉之后，每一次填页都不带写保护，不管这次缺页是读引起的还是写引起的。</p>
 <p>这个改动在当时是必要的，ARM 上没有更好的办法。它对运行没有任何影响，但对暂停有影响，而当时没有人注意到。</p>
 <h2 id="d19-二判据塌缩">二、判据塌缩</h2>
 <p>回想判据：</p>
-<pre><code>脏页 ⟺ 在内存里 且 没有写保护
-</code></pre>
+<div class="hl"><pre><span></span><code>脏页 ⟺ 在内存里 且 没有写保护
+</code></pre></div>
+
 <p>现在<strong>没有任何一页带写保护</strong>，判据的第二项永远为真，整个判据塌缩成了第一项：</p>
-<pre><code>脏页 ⟺ 在内存里
-</code></pre>
+<div class="hl"><pre><span></span><code>脏页 ⟺ 在内存里
+</code></pre></div>
+
 <p>也就是说：<strong>凡是被换进过内存的页，都算脏。</strong> 被读过的页，因为读的时候要缺页把它换进来，所以也算脏。</p>
 <figure class="paper"><img loading="lazy" alt="判据塌缩" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjUzMiIgdmlld0JveD0iMCAwIDE2MDAgNTMyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjUzMiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5Yik5o2u5aGM57yp77ya5rKh5pyJ5Lu75L2V6aG15bim5YaZ5L+d5oqk77yM4oCc6ISP4oCd5Y+Y5oiQ5LqG4oCc5Zyo5YaF5a2Y6YeM4oCdPC90ZXh0Pgo8dGV4dCB4PSI0OC4wIiB5PSI5Mi4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmFybTY0IOeahCA2LjYg5YaF5qC45rKh5pyJIHVmZmQg5YaZ5L+d5oqk77ybQVJNIOenu+akjeaXtuaKiuWhq+mhteaXtuW4puWGmeS/neaKpOeahOS4ieihjOazqOmHiuaOieOAguS7juatpOavj+asoeWhq+mhtemDveS4jeW4puWGmeS/neaKpO+8jOWIpOaNruesrOS6jOmhueaBkuecn+OAgjwvdGV4dD4KPHJlY3QgeD0iNDguMCIgeT0iMTU2LjAiIHdpZHRoPSI3MTIuMCIgaGVpZ2h0PSIyODAuMCIgcng9IjE0IiBmaWxsPSIjRTNGNUVFIiBzdHJva2U9IiMxRjlFNzciIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjY4LjAiIHk9IjE4Ni4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjMEU2QjRGIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPng4Nu+8iOS4iua4uO+8iTwvdGV4dD4KPHRleHQgeD0iNzIuMCIgeT0iMjM2LjAiIGZvbnQtc2l6ZT0iMTUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIGZvbnQtZmFtaWx5PSInSmV0QnJhaW5zIE1vbm8nLCdTRiBNb25vJyxNZW5sbyxDb25zb2xhcywnTm90byBTYW5zIE1vbm8gQ0pLIFNDJywnRGVqYVZ1IFNhbnMgTW9ubycsbW9ub3NwYWNlIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPmlmIOivu+e8uumhtSB7IOW4puWGmeS/neaKpOWhq+WFpSB9PC90ZXh0Pgo8dGV4dCB4PSI3Mi4wIiB5PSIyODYuMCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzBFNkI0RiIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ohI8g4p+6IOWcqOWGheWtmOmHjCDkuJQg5rKh5pyJ5YaZ5L+d5oqkPC90ZXh0Pgo8dGV4dCB4PSI3Mi4wIiB5PSIzMjYuMCIgZm9udC1zaXplPSIxNCIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7lj6ror7vov4fnmoTpobXvvJrmnInlhpnkv53miqQg4oaSIOS4jeeul+iEjzwvdGV4dD4KPHRleHQgeD0iNzIuMCIgeT0iMzU2LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+5YaZ6L+H55qE6aG177ya5peg5YaZ5L+d5oqkIOKGkiDohI88L3RleHQ+CjxyZWN0IHg9Ijg0MC4wIiB5PSIxNTYuMCIgd2lkdGg9IjcxMi4wIiBoZWlnaHQ9IjI4MC4wIiByeD0iMTQiIGZpbGw9IiNGQ0VERTgiIHN0cm9rZT0iI0Q2NjAzRCIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iODYwLjAiIHk9IjE4Ni4wIiBmb250LXNpemU9IjE1IiBmaWxsPSIjOUEzMjE1IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPkFSTSDpgILphY3niYjvvIjkv67lpI3liY3vvIk8L3RleHQ+Cjx0ZXh0IHg9Ijg2NC4wIiB5PSIyMzYuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzhDOTU5RiIgZm9udC13ZWlnaHQ9IjYwMCIgZm9udC1mYW1pbHk9IidKZXRCcmFpbnMgTW9ubycsJ1NGIE1vbm8nLE1lbmxvLENvbnNvbGFzLCdOb3RvIFNhbnMgTW9ubyBDSksgU0MnLCdEZWphVnUgU2FucyBNb25vJyxtb25vc3BhY2UiIHRleHQtYW5jaG9yPSJzdGFydCI+Ly8gaWYg6K+757y66aG1IHsg5bim5YaZ5L+d5oqk5aGr5YWlIH08L3RleHQ+Cjx0ZXh0IHg9Ijg2NC4wIiB5PSIyODYuMCIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzlBMzIxNSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7ohI8g4p+6IOWcqOWGheWtmOmHjDwvdGV4dD4KPHRleHQgeD0iODY0LjAiIHk9IjMyNi4wIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWPquivu+i/h+eahOmhte+8muiiq+aNouWFpei/hyDihpIg5Lmf566X6ISPPC90ZXh0Pgo8dGV4dCB4PSI4NjQuMCIgeT0iMzU2LjAiIGZvbnQtc2l6ZT0iMTQiIGZpbGw9IiM1NzYwNkEiIHRleHQtYW5jaG9yPSJzdGFydCI+6aKE5Y+W5aGr6L+b5p2l55qE6aG1IOKGkiDkuZ/nrpfohI88L3RleHQ+CjxwYXRoIGQ9Ik03NjYuMCAyOTYuMCBMODM0LjAgMjk2LjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjgiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8bGluZSB4MT0iNDguMCIgeTE9IjQ2Ni4wIiB4Mj0iMTU1Mi4wIiB5Mj0iNDY2LjAiIHN0cm9rZT0iI0Q4REVFNCIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHRleHQgeD0iNDguMCIgeT0iNDkyLjAiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM4Qzk1OUYiIHRleHQtYW5jaG9yPSJzdGFydCI+6L+Z5Liq5pS55Yqo5Zyo5b2T5pe25piv5b+F6KaB55qE77yM5a+56L+Q6KGM5rKh5pyJ5b2x5ZON77yb5a6D5Y+q5b2x5ZON5pqC5YGc77yM6ICM5b2T5pe25rKh5Lq65rOo5oSP5Yiw44CCPC90ZXh0Pjwvc3ZnPg=="><figcaption><b>图 19-1</b>判据塌缩</figcaption></figure>
 
@@ -4507,7 +4768,7 @@ if accessType != block.Write {
 <p>在鲲鹏 950 上，我们用一个探针脚本把三样东西并排量出来。每一步之间沙箱都经历一次暂停加恢复，也就是每一步都是一个新进程：</p>
 <ul>
 <li><strong>左列</strong>：原生暂停用的判据，Firecracker 的 <code>GET /memory/dirty</code>；</li>
-<li><strong>中列</strong>：Firecracker 的“写跟踪位图”（我们为快照回滚给 Firecracker 加的一个接口，它记录的是真正被写过的页）；</li>
+<li><strong>中列</strong>：Firecracker 的“写跟踪位图”，它记录的是真正被写过的页。用的是我们为快照回滚给 Firecracker 加的接口 <code>PUT /snapshot/save-dirty-bitmap</code>，暂停时把这张位图写成文件、不清零；</li>
 <li><strong>右列</strong>：实际导出的内存差分大小。</li>
 </ul>
 <div class="tw"><table>
@@ -4570,7 +4831,7 @@ if accessType != block.Write {
 <li>为什么原生路径不用那份位图？</li>
 <li>用了它，就够了吗？</li>
 </ol>
-<p>第一个问题的答案很简单：那份位图是我们为快照回滚加进 Firecracker 的，原生路径写在它之前。第二个问题的答案是“不够”，原因藏在 2 MiB 大页里。下一篇讲。</p>
+<p>第一个问题的答案很简单：写跟踪本身是上游 Firecracker 就有的能力（背后是 KVM 的脏页日志），但原来只在写差分快照时被内部用到，没有单独导出的接口；导出它的 <code>save-dirty-bitmap</code> 是为快照回滚加的，原生路径写在它之前。而且写跟踪要 orchestrator 在启动虚拟机时打开，没有 HDBSS 的机器上默认是关的。第二个问题的答案是“不够”，原因藏在 2 MiB 大页里。下一篇讲。</p>
 <hr />
 <h2 id="d19-本篇小结">本篇小结</h2>
 <div class="tw"><table>
@@ -4657,12 +4918,13 @@ if accessType != block.Write {
 </tbody>
 </table></div>
 <p>三层的粒度被一根链锁在一起：</p>
-<pre><code>guest 页 = 2 MiB（大页）
+<div class="hl"><pre><span></span><code>guest 页 = 2 MiB（大页）
  → 填：一次缺页只能填一整页 2 MiB
  → 填的硬检查：guest 页大小必须等于映射表块大小
  → 存：映射表块大小 = 2 MiB，写在映射表里逐代继承
  → 判：位图再精细，最后也要归并到 2 MiB 块导出
-</code></pre>
+</code></pre></div>
+
 <figure class="paper"><img loading="lazy" alt="三层与 2 MiB 锁链" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjU2MiIgdmlld0JveD0iMCAwIDE2MDAgNTYyIiBmb250LWZhbWlseT0iJ1BpbmdGYW5nIFNDJywnSGlyYWdpbm8gU2FucyBHQicsJ01pY3Jvc29mdCBZYUhlaScsJ05vdG8gU2FucyBDSksgU0MnLCdOb3RvIFNhbnMgU0MnLCdTb3VyY2UgSGFuIFNhbnMgU0MnLHNhbnMtc2VyaWYiPjxkZWZzPjxtYXJrZXIgaWQ9Im0xRjIzMjgiIHZpZXdCb3g9IjAgMCAxMCAxMCIgcmVmWD0iOCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjciIG1hcmtlckhlaWdodD0iNyIgb3JpZW50PSJhdXRvLXN0YXJ0LXJldmVyc2UiPjxwYXRoIGQ9Ik0xIDEuMkw4LjYgNUwxIDguOCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuOCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIi8+PC9tYXJrZXI+PC9kZWZzPjxyZWN0IHdpZHRoPSIxNjAwIiBoZWlnaHQ9IjU2MiIgZmlsbD0iI0ZGRkZGRiIvPjx0ZXh0IHg9IjQ4LjAiIHk9IjU4LjAiIGZvbnQtc2l6ZT0iMjgiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5YaF5a2Y5aKe6YeP55qE5LiJ5bGC77yM6KKrIDIgTWlCIOWkp+mhtemUgeaIkOS4gOaguemTvjwvdGV4dD4KPHRleHQgeD0iNDguMCIgeT0iOTIuMCIgZm9udC1zaXplPSIxNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9InN0YXJ0Ij7liKTlhrPlrprigJzor7vnrpfkuI3nrpfohI/igJ3vvJvlrZjlkozloavlhrPlrprigJzmnIDlsI/og73lrZjlpJrnu4bigJ3jgILlj6rmjaLliKTvvIzlrZjlkozloavku43miorkuIDliIflvZLlubbliLAgMiBNaULjgII8L3RleHQ+CjxyZWN0IHg9IjQ4LjAiIHk9IjE1Ni4wIiB3aWR0aD0iMjY4LjgiIGhlaWdodD0iMTEwLjAiIHJ4PSIxMCIgZmlsbD0iI0YzRjBGRiIgc3Ryb2tlPSIjOEI3RkUwIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxODIuNCIgeT0iMjAzLjIiIGZvbnQtc2l6ZT0iMTYiIGZpbGw9IiM0QjNGQTgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiPmd1ZXN0IOmhtSA9IDIgTWlCPC90ZXh0Pgo8dGV4dCB4PSIxODIuNCIgeT0iMjI2LjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+aHVnZXRsYmZzIOWkp+mhtTwvdGV4dD4KPHBhdGggZD0iTTMyMC44IDIxMS4wIEwzNTIuOCAyMTEuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjMUYyMzI4IiBzdHJva2Utd2lkdGg9IjEuNiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBtYXJrZXItZW5kPSJ1cmwoI20xRjIzMjgpIi8+CjxyZWN0IHg9IjM1Ni44IiB5PSIxNTYuMCIgd2lkdGg9IjI2OC44IiBoZWlnaHQ9IjExMC4wIiByeD0iMTAiIGZpbGw9IiNGREYwRDkiIHN0cm9rZT0iI0Q5OTIyQiIgc3Ryb2tlLXdpZHRoPSIxLjMiLz4KPHRleHQgeD0iNDkxLjIiIHk9IjIwMy4yIiBmb250LXNpemU9IjE2IiBmaWxsPSIjOEE1MzAwIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7loas8L3RleHQ+Cjx0ZXh0IHg9IjQ5MS4yIiB5PSIyMjYuNSIgZm9udC1zaXplPSIxMi41IiBmaWxsPSIjNTc2MDZBIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7kuIDmrKHnvLrpobXlj6rog73loavkuIDmlbTpobU8L3RleHQ+CjxwYXRoIGQ9Ik02MjkuNiAyMTEuMCBMNjYxLjYgMjExLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cmVjdCB4PSI2NjUuNiIgeT0iMTU2LjAiIHdpZHRoPSIyNjguOCIgaGVpZ2h0PSIxMTAuMCIgcng9IjEwIiBmaWxsPSIjRkNFREU4IiBzdHJva2U9IiNENjYwM0QiIHN0cm9rZS13aWR0aD0iMS4zIi8+Cjx0ZXh0IHg9IjgwMC4wIiB5PSIyMDMuMiIgZm9udC1zaXplPSIxNiIgZmlsbD0iIzlBMzIxNSIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5aGr55qE56Gs5qOA5p+lPC90ZXh0Pgo8dGV4dCB4PSI4MDAuMCIgeT0iMjI2LjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+Z3Vlc3Qg6aG15aSn5bCPID0g5pig5bCE5Z2X5aSn5bCPPC90ZXh0Pgo8cGF0aCBkPSJNOTM4LjQgMjExLjAgTDk3MC40IDIxMS4wIiBmaWxsPSJub25lIiBzdHJva2U9IiMxRjIzMjgiIHN0cm9rZS13aWR0aD0iMS42IiBzdHJva2UtbGluZWNhcD0icm91bmQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIG1hcmtlci1lbmQ9InVybCgjbTFGMjMyOCkiLz4KPHJlY3QgeD0iOTc0LjQiIHk9IjE1Ni4wIiB3aWR0aD0iMjY4LjgiIGhlaWdodD0iMTEwLjAiIHJ4PSIxMCIgZmlsbD0iI0Y2RjZGMyIgc3Ryb2tlPSIjQjdCNUFDIiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxMTA4LjgiIHk9IjIwMy4yIiBmb250LXNpemU9IjE2IiBmaWxsPSIjM0QzQzM4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7lrZg8L3RleHQ+Cjx0ZXh0IHg9IjExMDguOCIgeT0iMjI2LjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5pig5bCE5Z2XIDIgTWlC77yM6YCQ5Luj57un5om/PC90ZXh0Pgo8cGF0aCBkPSJNMTI0Ny4yIDIxMS4wIEwxMjc5LjIgMjExLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iIzFGMjMyOCIgc3Ryb2tlLXdpZHRoPSIxLjYiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgbWFya2VyLWVuZD0idXJsKCNtMUYyMzI4KSIvPgo8cmVjdCB4PSIxMjgzLjIiIHk9IjE1Ni4wIiB3aWR0aD0iMjY4LjgiIGhlaWdodD0iMTEwLjAiIHJ4PSIxMCIgZmlsbD0iI0VERjRGRCIgc3Ryb2tlPSIjNUI5QkU2IiBzdHJva2Utd2lkdGg9IjEuMyIvPgo8dGV4dCB4PSIxNDE3LjYiIHk9IjIwMy4yIiBmb250LXNpemU9IjE2IiBmaWxsPSIjMUQ0RjkxIiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj7liKQ8L3RleHQ+Cjx0ZXh0IHg9IjE0MTcuNiIgeT0iMjI2LjUiIGZvbnQtc2l6ZT0iMTIuNSIgZmlsbD0iIzU3NjA2QSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+5L2N5Zu+5YaN57uG5Lmf6KaB5b2S5bm25YiwIDIgTWlCPC90ZXh0Pgo8cmVjdCB4PSI0OC4wIiB5PSIzMDYuMCIgd2lkdGg9IjE1MDAuMCIgaGVpZ2h0PSIzOC4yIiByeD0iNiIgZmlsbD0iI0Y0RjVGNyIgc3Ryb2tlPSIjNTc2MDZBIiBzdHJva2Utd2lkdGg9IjEuMSIvPgo8dGV4dCB4PSI1OC4wIiB5PSIzMjguOCIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWxgjwvdGV4dD4KPHRleHQgeD0iMjU4LjAiIHk9IjMyOC44IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIGZvbnQtd2VpZ2h0PSI2MDAiIHRleHQtYW5jaG9yPSJzdGFydCI+5YGa5LuA5LmIPC90ZXh0Pgo8dGV4dCB4PSI3MzguMCIgeT0iMzI4LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7nspLluqbnlLHosIHlhrPlrpo8L3RleHQ+Cjx0ZXh0IHg9IjExMTguMCIgeT0iMzI4LjgiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgZm9udC13ZWlnaHQ9IjYwMCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7kv67lpI3liY08L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iMzg4LjUiIHgyPSIxNTQ4LjAiIHkyPSIzODguNSIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSIzNzEuMSIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWIpDwvdGV4dD4KPHRleHQgeD0iMjU4LjAiIHk9IjM3MS4xIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+566X5Ye66L+Z5LiA5Luj5ZOq5Lqb6aG16KaB5a+85Ye6PC90ZXh0Pgo8dGV4dCB4PSI3MzguMCIgeT0iMzcxLjEiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7liKTmja7nu5nlh7rnmoTkvY3lm748L3RleHQ+Cjx0ZXh0IHg9IjExMTguMCIgeT0iMzcxLjEiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mjIkgMiBNaUIg57uZ5Ye677yIR0VUIC9tZW1vcnkvZGlydHnvvIk8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNDMwLjgiIHgyPSIxNTQ4LjAiIHkyPSI0MzAuOCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI0MTMuMyIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWtmDwvdGV4dD4KPHRleHQgeD0iMjU4LjAiIHk9IjQxMy4zIiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+5Z2X5ou36L+b5beu5YiG5paH5Lu277yM5pig5bCE6KGo6K6w5LiL5L2N572uPC90ZXh0Pgo8dGV4dCB4PSI3MzguMCIgeT0iNDEzLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mmKDlsITooajnmoTlnZflpKflsI88L3RleHQ+Cjx0ZXh0IHg9IjExMTguMCIgeT0iNDEzLjMiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij7mqKHmnb8gMiBNaULvvIzkuYvlkI7mr4/ku6MgMiBNaUI8L3RleHQ+CjxsaW5lIHgxPSI0OC4wIiB5MT0iNDczLjAiIHgyPSIxNTQ4LjAiIHkyPSI0NzMuMCIgc3Ryb2tlPSIjRDhERUU0IiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8dGV4dCB4PSI1OC4wIiB5PSI0NTUuNiIgZm9udC1zaXplPSIxMy41IiBmaWxsPSIjMUYyMzI4IiBmb250LXdlaWdodD0iNjAwIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuWhqzwvdGV4dD4KPHRleHQgeD0iMjU4LjAiIHk9IjQ1NS42IiBmb250LXNpemU9IjEzLjUiIGZpbGw9IiMxRjIzMjgiIHRleHQtYW5jaG9yPSJzdGFydCI+5oGi5aSN5pe257y66aG177yM5LuO5pig5bCE6ZO+5Y+W5YaF5a655aGr5YWlPC90ZXh0Pgo8dGV4dCB4PSI3MzguMCIgeT0iNDU1LjYiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij5ndWVzdCDpobXlpKflsI88L3RleHQ+Cjx0ZXh0IHg9IjExMTguMCIgeT0iNDU1LjYiIGZvbnQtc2l6ZT0iMTMuNSIgZmlsbD0iIzFGMjMyOCIgdGV4dC1hbmNob3I9InN0YXJ0Ij4yIE1pQu+8jOS4lOimgeaxguetieS6juaYoOWwhOWdl+Wkp+WwjzwvdGV4dD4KPGxpbmUgeDE9IjQ4LjAiIHkxPSI0OTYuMCIgeDI9IjE1NTIuMCIgeTI9IjQ5Ni4wIiBzdHJva2U9IiNEOERFRTQiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+Cjx0ZXh0IHg9IjQ4LjAiIHk9IjUyMi4wIiBmb250LXNpemU9IjEzIiBmaWxsPSIjOEM5NTlGIiB0ZXh0LWFuY2hvcj0ic3RhcnQiPuaJgOS7peimgeWIhuS4pOWNiuayu++8muWIpOaNouaIkOWGmei3n+i4quS9jeWbvu+8m+WtmOWSjOWhq+mZjeWIsCA0IEtpQiDlrZjjgIEyIE1pQiDmi7zjgII8L3RleHQ+PC9zdmc+"><figcaption><b>图 20-1</b>三层与 2 MiB 锁链</figcaption></figure>
 
 <p>所以这件事要分两半治：<strong>“判”决定读算不算脏；“存”和“填”决定最小能存多细。</strong></p>
@@ -4768,14 +5030,14 @@ if accessType != block.Write {
 <h3 id="d20-1-判换成写跟踪位图">1. 判：换成写跟踪位图</h3>
 <p>暂停取脏页时，不再调 <code>GET /memory/dirty</code>，而是：</p>
 <ol>
-<li>让 Firecracker 把当前的写跟踪位图写进一个临时文件（这是我们给 Firecracker 加的接口）；</li>
+<li>让 Firecracker 把当前的写跟踪位图写进一个临时文件。这是我们给 Firecracker 加的接口 <code>PUT /snapshot/save-dirty-bitmap</code>，实现在 Firecracker 源码的 <code>src/vmm/src/rollback.rs</code> 的 <code>save_dirty_bitmap</code>：从 KVM 取出位图后先并进 Firecracker 自己的备份位图，再把备份位图写成 FCDB 格式的文件，所以取完不清零；</li>
 <li>读取并解析这个文件，得到一个按 4 KiB 页的位集合；</li>
 <li>以 4 KiB 为块大小返回。</li>
 </ol>
 <p>这一步要成立有三个前提，都满足：</p>
 <ul>
 <li>这个接口要求虚拟机已暂停：暂停流程里取脏页时虚拟机确实已暂停；</li>
-<li>暂停流程先写了 snapfile，这次写<strong>不会清空</strong>位图（Firecracker 只在连内存一起导出时才清，原生暂停不让它导内存）；</li>
+<li>暂停流程先写了 snapfile，这次写<strong>不会清空</strong>位图（Firecracker 只在连内存一起导出时才清：<code>create_snapshot</code> 只有带 <code>mem_file_path</code> 时才进 <code>snapshot_memory_to_file</code>，取 KVM 位图和清零都在那里面；原生暂停不让它导内存）；</li>
 <li>位图的起点就是这一代的起点：每一代都是新进程，从快照加载时位图为空，之前的写已经在上一代的差分里。（这一条在沙箱做过快照回滚之后<strong>不再成立</strong>，第 22 篇专门讲。）</li>
 </ul>
 <p>位图覆盖了哪些写？它是两份位图的并集：KVM 记录的 guest 的每一次写（920B 上靠写保护陷出，950 上靠硬件 HDBSS），以及 Firecracker 自己写 guest 内存的地方（网卡收包缓冲、virtio 队列）。<strong>orchestrator 经 uffd 填进去的页不在位图里</strong>，也不该在：它们是“换入”，内容等于映射链里已有的内容。这恰恰是“换入即脏”的反面。</p>
@@ -4783,10 +5045,11 @@ if accessType != block.Write {
 <p>生成新一代映射表时加一条规则：差分的块比上一代细、并且能整除上一代的块，就把新映射表的块大小改成差分的块大小。</p>
 <p><strong>上一代的映射一行都不用重写。</strong> 映射表里记的是字节区间，2 MiB 对齐的区间必然也是 4 KiB 对齐的；查找时只要求每段的起点落在块边界上，不要求每段长度等于块大小。所以一张 4 KiB 的映射表里，可以同时有 2 MiB 长的老映射和 4 KiB 长的新映射。</p>
 <p>例如上一代把 <code>[0, 2 MiB)</code> 整块映射到第 1 代，本代只写了其中偏移 8 KiB 那一页，合并后：</p>
-<pre><code>[0,      8 KiB)  → 第 1 代，偏移 0
+<div class="hl"><pre><span></span><code>[0,      8 KiB)  → 第 1 代，偏移 0
 [8 KiB, 12 KiB)  → 本代，偏移 0        ← 本代唯一的一页
 [12 KiB,  2 MiB) → 第 1 代，偏移 12 KiB
-</code></pre>
+</code></pre></div>
+
 <p>原来那条 2 MiB 的映射被切成三段，前后两段仍指向第 1 代，差分文件一个字节都不用动。</p>
 <p>模板的映射表仍是 2 MiB；沙箱<strong>第一次</strong>原生暂停时切到 4 KiB，之后每一代继承 4 KiB。</p>
 <h3 id="d20-3-填一次-2-mib-缺页三级取源">3. 填：一次 2 MiB 缺页，三级取源</h3>
@@ -5036,8 +5299,8 @@ if accessType != block.Write {
 <tbody>
 <tr>
 <td><strong>Firecracker</strong></td>
-<td>上游版本</td>
-<td>三处扩展：快照时可导出脏页位图、随时导出当前写跟踪位图、原地回滚</td>
+<td>E2B 的 Firecracker 分支</td>
+<td>三处扩展：快照时可导出脏页位图、随时导出当前写跟踪位图、原地回滚；另外加了 HDBSS 硬件记脏（改动清单见《E2B 沙箱快照回滚从零讲透》附录 A）</td>
 </tr>
 <tr>
 <td><strong>虚拟机启动配置</strong></td>
@@ -6105,7 +6368,7 @@ if accessType != block.Write {
 <li>每个空闲沙箱在宿主上约占 350 MiB（大页 157 MiB + 普通内存 194 MiB），<code>memory_mb</code> 是上限而不是占用</li>
 </ul>
 <hr />
-<h2 id="dp24-第一部分-先打底沙箱是什么快照是什么">第一部分　先打底：沙箱是什么，快照是什么</h2>
+<h2 id="dp24-第一部分先打底沙箱是什么快照是什么">第一部分　先打底：沙箱是什么，快照是什么</h2>
 <h3 id="dp24-第-1-篇一个沙箱的一生构建启动暂停恢复">第 1 篇｜一个沙箱的一生：构建、启动、暂停、恢复</h3>
 <p><strong>要回答的问题</strong>：E2B 是干什么的？这本书讲的三个操作分别是什么，它们在一个沙箱的一生里处在什么位置？</p>
 <ul>
@@ -6174,7 +6437,7 @@ if accessType != block.Write {
 <li>4-4 产物落在哪：节点本地缓存、本地存储、对象存储三层目录</li>
 </ul>
 <hr />
-<h2 id="dp24-第二部分-构建模板从-dockerfile-到可恢复的快照">第二部分　构建模板：从 Dockerfile 到可恢复的快照</h2>
+<h2 id="dp24-第二部分构建模板从-dockerfile-到可恢复的快照">第二部分　构建模板：从 Dockerfile 到可恢复的快照</h2>
 <h3 id="dp24-第-5-篇构建总览为什么镜像不够要的是一张快照">第 5 篇｜构建总览：为什么镜像不够，要的是一张快照</h3>
 <p><strong>要回答的问题</strong>：有了 Docker 镜像为什么还要“构建模板”？构建的输入、输出和主流程是什么？</p>
 <ul>
@@ -6252,7 +6515,7 @@ if accessType != block.Write {
 <li>9-3 一次远离病因的故障链：构建 OOM → 任务反复重启 → api 503 → 部署超时</li>
 </ul>
 <hr />
-<h2 id="dp24-第三部分-启动沙箱从模板快照恢复出一台新机器">第三部分　启动沙箱：从模板快照恢复出一台新机器</h2>
+<h2 id="dp24-第三部分启动沙箱从模板快照恢复出一台新机器">第三部分　启动沙箱：从模板快照恢复出一台新机器</h2>
 <h3 id="dp24-第-10-篇启动就是恢复一次-sandboxcreate-的全景">第 10 篇｜启动就是恢复：一次 <code>Sandbox.create</code> 的全景</h3>
 <p><strong>要回答的问题</strong>：<code>Sandbox.create</code> 之后，请求经过了哪些环节？orchestrator 里的 <code>ResumeSandbox</code> 分几段？</p>
 <ul>
@@ -6353,7 +6616,7 @@ if accessType != block.Write {
 <li>15-5 启动相关参数的修改总表：原值、新值、原因</li>
 </ul>
 <hr />
-<h2 id="dp24-第四部分-暂停与恢复存盘离场读盘重建">第四部分　暂停与恢复：存盘离场，读盘重建</h2>
+<h2 id="dp24-第四部分暂停与恢复存盘离场读盘重建">第四部分　暂停与恢复：存盘离场，读盘重建</h2>
 <h3 id="dp24-第-16-篇暂停走一遍存盘然后离场">第 16 篇｜暂停走一遍：存盘，然后离场</h3>
 <p><strong>要回答的问题</strong>：<code>sandbox.pause()</code> 之后宿主上依次发生了什么？为什么暂停一定会停掉沙箱？</p>
 <ul>
@@ -6441,7 +6704,7 @@ if accessType != block.Write {
 <li>20-5 恢复开销的来回：修复前、第一版、零拷贝、最终</li>
 </ul>
 <hr />
-<h2 id="dp24-第五部分-和快照回滚共存哪些地方被撞到怎么修好">第五部分　和快照回滚共存：哪些地方被撞到，怎么修好</h2>
+<h2 id="dp24-第五部分和快照回滚共存哪些地方被撞到怎么修好">第五部分　和快照回滚共存：哪些地方被撞到，怎么修好</h2>
 <h3 id="dp24-第-21-篇快照回滚动了哪些共用部件">第 21 篇｜快照回滚动了哪些共用部件</h3>
 <p><strong>要回答的问题</strong>：我们新增的快照回滚和暂停恢复是两套机制，为什么还会互相影响？加了回滚之后，普通的启动和暂停多付了什么？</p>
 <ul>

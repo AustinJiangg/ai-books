@@ -22,7 +22,7 @@
 
 第 4 篇讲过 UFFD 的写保护“封条”。上游在 x86 上是这样用的：
 
-1. UFFD 只登记“缺页”事件，不登记“写保护”事件；
+1. UFFD 只登记“缺页”事件，不登记“写保护”事件。登记这一步是 Firecracker 做的：加载快照时，`src/vmm/src/persist.rs` 的 `guest_memory_from_uffd` 对每段客户机内存调用 `uffd.register(...)`，这个函数默认的模式就是只登记缺页（`RegisterMode::MISSING`）；
 2. **读**引起的缺页：`UFFDIO_COPY` 填页时带上 `UFFDIO_COPY_MODE_WP`，页填进去了，但贴着封条；
 3. **写**引起的缺页：填页时不带这个选项，页直接可写，本来就是脏的；
 4. 之前只读过的页，后来被写了：硬件发现封条，内核撕掉封条，让写继续（因为没登记写保护事件，不通知 orchestrator），这一页就变成了“没封条”；
@@ -32,16 +32,21 @@
 
 ### 2.2 证据
 
-定制版 Firecracker 的源码不在本书依据的仓库里，但 RPM 里带的 `firecracker.arm` 没去掉调试符号，能看到这些函数名：
+第 5 步的判据在 Firecracker 源码里（路径以 Firecracker 源码目录为根；它属于 E2B 自己的 Firecracker 分支，不是这套环境加的）。`GET /memory/dirty` 由 `src/vmm/src/lib.rs` 的 `get_dirty_memory` 实现：先用 `mincore` 找出常驻的页，再对每个常驻页读一次 `/proc/self/pagemap`：
 
-```
-vmm::Vmm::get_dirty_memory                          # GET /memory/dirty 的实现
-vmm::utils::pagemap::PagemapReader                  # 读 /proc/<pid>/pagemap
-vmm::utils::pagemap::PagemapEntry::is_present       # 存在位
-vmm::utils::pagemap::PagemapEntry::is_write_protected   # uffd-wp 封条位
+```rust
+// src/vmm/src/utils/pagemap.rs（节选）
+pub fn is_write_protected(&self) -> bool { (self.raw & (1u64 << 57)) != 0 } // 第 57 位：uffd-wp 封条
+pub fn is_present(&self) -> bool         { (self.raw & (1u64 << 63)) != 0 } // 第 63 位：在内存里
+
+/// 页在内存里、且写保护位已清（说明被写过），就算脏
+pub fn is_page_dirty(&self, virt_addr: usize) -> Result<bool, PagemapError> {
+    // …… 按宿主 4 KiB 页算出偏移，pread 读出 8 字节的表项
+    Ok(entry.is_present() && !entry.is_write_protected())
+}
 ```
 
-接口定义文件里对 `/memory/dirty` 的描述是：“返回脏页位图（自开启写保护以来被写过的页）”。
+接口定义文件里对 `/memory/dirty` 的描述是：“返回脏页位图（自开启写保护以来被写过的页）”。注意判据本身只看“在不在内存里”和“有没有封条”两位，它并不知道哪一页真的被写过。封条贴没贴对，全靠 orchestrator 填页时的做法。
 
 ---
 
@@ -135,7 +140,9 @@ copyErr := u.fd.copy(addr, pagesize, b, copyMode)
 
 本书依据的这一版 ARM 补丁里，还为暂停加了一个更好的脏页来源：**Firecracker 的写跟踪位图**。它是随检查点回滚功能（第 16 篇）一起加进来的。
 
-写跟踪（track dirty pages）是 Firecracker 原生就有的功能，背后是 KVM 的脏页日志（第 4 篇第七节）：KVM 记录客户机写过的每一页。它只记**写**，不记读，也不记 orchestrator 通过 UFFD 填进去的页（那些是宿主写的，不是客户机写的）。所以用它做判据，天然就是精确的。
+写跟踪（track dirty pages）是 Firecracker 原生就有的功能，背后是 KVM 的脏页日志（第 4 篇第七节）：KVM 记录客户机写过的每一页。它只记**写**，不记读，也不记 orchestrator 通过 UFFD 填进去的页（那些是宿主写的，不是客户机写的）。Firecracker 自己往客户机内存里写的页（比如网卡收到的包），KVM 看不见，由 Firecracker 记在自己的一份备份位图里，导出时两份取并集。所以用它做判据，天然就是精确的。
+
+这套环境给 Firecracker 加了一个接口 `PUT /snapshot/save-dirty-bitmap`，在虚机暂停时把这份并集写成文件，而且不清零（源码在 `src/vmm/src/rollback.rs` 的 `save_dirty_bitmap`）。暂停流程就是靠它拿到写跟踪位图的。
 
 暂停时，orchestrator 按这个顺序选判据（第 14 篇第 3.3 节）：
 
@@ -145,7 +152,7 @@ if 写跟踪没开 {
 } else if 之前检查点攒下的位图不可信 {
     用常驻页判据
 } else {
-    让 Firecracker 把写跟踪位图写成一个文件（FCDB 格式），读进来
+    调 save-dirty-bitmap，让 Firecracker 把写跟踪位图写成一个文件（FCDB 格式），读进来
     再并上之前每次检查点清零前攒下的部分（第 16 篇）
     用这个                                 // 精确
 }
@@ -182,7 +189,7 @@ orchestrator 的日志会写明这一次用的是哪一种：`source=resident`�
 
 1. **在有 HDBSS 的机器上运行**：什么都不用改，写跟踪自动打开。
 2. **在没有 HDBSS 的机器上手动打开写跟踪**：设 `FC_TRACK_DIRTY_PAGES=true`（加在 `dep/template-manager.hcl` 的 `env` 里）。代价是每个沙箱第一次写每一页时有一次陷入，需要实测权衡。
-3. **恢复 UFFD 写保护**：确认这台机器的内核和 Firecracker 支持 arm64 上的 `UFFDIO_REGISTER_MODE_WP` 和 `UFFDIO_COPY_MODE_WP`，再把那三行放开、重新出包。用上面 #2 的方法回归：#2 的 memfile 应该降到 MiB 级。
+3. **恢复 UFFD 写保护**：确认这台机器的内核支持 arm64 上的 UFFD 写保护（`UFFDIO_COPY_MODE_WP` 等），再把那三行放开、重新出包。Firecracker 登记内存时只用了缺页模式（第 2.1 节第 1 步），这条路如果走不通，登记方式也要一起看。用上面 #2 的方法回归：#2 的 memfile 应该降到 MiB 级。
 4. **收敛预取**：在超集模式下，预取的页直接进增量，预取带来的启动收益要和存储放大一起算账。
 5. **减小模板内存和工作集**：工作集越小，每次的下限越小。
 6. **定期重建模板**：链太长时，基于当前状态重新构建一个完整的模板，避免文件数和映射条数无限增长。

@@ -135,11 +135,16 @@ Firecracker 那一侧是一个分叉版本，功能上是上游的超集，只�
 | `PUT /snapshot/save-dirty-bitmap` | 新接口 | 虚机暂停时，导出“自上次清零以来”的脏页位图 |
 | `PUT /snapshot/rollback` | 新接口 | 原地回滚：把指定的页写回内存，恢复 CPU、中断控制器和设备状态 |
 
-外加硬件脏页跟踪（HDBSS）的启用与上报，以及回滚需要的几条系统调用白名单。**没有改动任何已有的行为**：一个不用这三处的调用者，看到的和上游完全一样。
+外加硬件脏页跟踪（HDBSS）的启用与上报，以及回滚需要的几条系统调用白名单。主体代码集中在 Firecracker 源码的一个新文件 `src/vmm/src/rollback.rs` 里（第 11 篇、附录 A）。
+
+**已有的行为基本没动。** 一个不用这三处的调用者，只会碰到两处和上游不同的地方，而且都是有意的：
+
+- 暂停时，vCPU 停下之前先把 KVM 里挂着的半步设备访问收尾（第 11 篇阶段 5），快照里的 vCPU 状态因此是自洽的；
+- 带内存文件的“打快照”请求不再 fsync（第 11 篇扩展一）。E2B 原生 pause 不带内存文件，仍和上游一样落盘。
 
 这种克制是有意的。改得越少，以后跟上游同步越容易；出了问题，也越容易判断是不是自己引入的。
 
-**版本必须成对。** 如果 orchestrator 碰上一个没打补丁的 Firecracker，`/snapshot/rollback` 会返回 404。orchestrator 会把它翻译成一句明确的话：“这个 firecracker 不支持原地回滚”，而不是一个含糊的 HTTP 错误。
+**版本必须成对。** 如果 orchestrator 碰上一个没打补丁的 Firecracker，`/snapshot/rollback` 是一个它不认识的路径，会返回 400 `Invalid request method and/or path`（中间若有代理，也可能是 404）。orchestrator 把这两种都翻译成一句明确的话：“这个 firecracker 不支持原地回滚”，而不是一个含糊的 HTTP 错误。
 
 ## 七、存档文件放在哪
 

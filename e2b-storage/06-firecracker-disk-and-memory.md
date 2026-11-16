@@ -85,7 +85,7 @@ Firecracker 的可执行文件也按版本放：
 /fc-versions/<版本>/firecracker
 ```
 
-这套环境用的是 RPM 自带的**定制版** Firecracker（`bin/firecracker`，只在 aarch64 包里有），部署时放到 `/fc-versions/v1.13.1/firecracker`。它和官方版的区别见本篇第五节。
+这套环境用的是 RPM 自带的**定制版** Firecracker（`bin/firecracker`，只在 aarch64 包里有），部署时放到 `/fc-versions/v1.13.1/firecracker`。目录名 `v1.13.1` 只是 orchestrator 查找用的键，二进制自报的版本是 1.12.1。它和官方版的区别见本篇第五节。
 
 ---
 
@@ -192,11 +192,26 @@ E2B 用的是 **Uffd** 后端。外部程序就是 orchestrator。
 
 ## 五、定制版 Firecracker 多做的几件事
 
-E2B 用的不是官方 Firecracker，而是一个定制版本。这套环境 RPM 里带的那个二进制，又在 E2B 定制版的基础上加了回滚功能。和存储有关的改动有这几处：
+E2B 用的不是官方 Firecracker，而是 E2B 自己维护的一个分支（`firecracker-v1.12-direct-mem`，版本号 1.12.1）。这套环境 RPM 里带的那个二进制，又在 E2B 分支的基础上加了回滚功能。所以改动分两层：
+
+| 层 | 和存储有关的改动 | 本篇 |
+|---|---|---|
+| E2B 分支 | 打快照可以不导出内存；三个查询内存的接口 | 5.1、5.2 |
+| 本环境加的 | 打快照顺带写脏页位图；导出位图的接口；原地回滚；HDBSS 硬件记脏 | 5.3 |
+
+下面引用的源码路径以 Firecracker 源码目录为根。
 
 ### 5.1 打快照时可以不导出内存
 
-`mem_file_path` 变成**可选的**。不传它，Firecracker 只写 snapfile，并把磁盘缓冲刷下去，**不导出内存**。
+`mem_file_path` 变成**可选的**（`src/vmm/src/vmm_config/snapshot.rs` 里它的类型是 `Option<PathBuf>`）。不传它，Firecracker 只写 snapfile，并把磁盘缓冲刷下去，**不导出内存**：
+
+```rust
+// src/vmm/src/persist.rs，create_snapshot（节选）
+// 只有指定了 mem_file_path 才把内存写进文件
+if let Some(ref mem_file_path) = params.mem_file_path {
+    vmm.vm.snapshot_memory_to_file(mem_file_path, params.snapshot_type, /* …… */)?;
+}
+```
 
 为什么？因为 E2B 想自己导出内存，而且只导出脏页（第 14 篇）。
 
@@ -205,21 +220,40 @@ E2B 用的不是官方 Firecracker，而是一个定制版本。这套环境 RPM
 | 接口 | 返回什么 | 用途 |
 |---|---|---|
 | `GET /memory/mappings` | 客户机内存的每一段，对应 Firecracker 进程里的哪个虚拟地址、多大、页多大 | orchestrator 据此用 `process_vm_readv` 去拷内存 |
-| `GET /memory/dirty` | 一张位图：哪些页自开启写保护以来被写过 | 暂停时只导出脏页 |
+| `GET /memory/dirty` | 一张位图：哪些页“在内存里、且没有 UFFD 写保护” | 暂停时只导出脏页 |
 | `GET /memory` | 两张位图：哪些页在内存里（常驻），哪些页全是零 | 第一次快照时剔除全零页 |
 
 前两个配合起来，orchestrator 就能做到：“问 Firecracker 哪些页脏了，再问这些页在你进程的哪个地址，然后我自己把它们拷出来。”Firecracker 只负责“停下来、报告情况”，数据搬运由 orchestrator 完成。
 
-### 5.3 回滚
+`GET /memory/dirty` 的判据值得记住，第 15 篇会反复用到。它在 `src/vmm/src/lib.rs` 的 `get_dirty_memory` 里：先用 `mincore` 找出常驻的页，再对每个常驻页读一次 `/proc/self/pagemap` 的那一项，看两位：
 
-这套环境的定制版还多了**原地回滚**的能力：不新开进程，直接把客户机内存和 vCPU 状态倒回到某个检查点。配套的，打快照时可以额外写出一个**脏页位图文件**（FCDB 格式），交给 orchestrator 做检查点的增量。第 16 篇讲。
+```rust
+// src/vmm/src/utils/pagemap.rs（节选）
+pub fn is_write_protected(&self) -> bool { (self.raw & (1u64 << 57)) != 0 } // 第 57 位：UFFD 写保护
+pub fn is_present(&self) -> bool         { (self.raw & (1u64 << 63)) != 0 } // 第 63 位：在内存里
+
+// is_page_dirty：在内存里，且没有写保护，就算脏
+Ok(entry.is_present() && !entry.is_write_protected())
+```
+
+也就是说，它并不直接知道“哪些页被写过”，而是靠 UFFD 写保护这个标记间接推断。标记靠不住时，判据就会出偏差。
+
+### 5.3 本环境加的：位图、回滚与硬件记脏
+
+这套环境的 Firecracker 还多了几样东西，都是为检查点回滚（第 16 篇）加的：
+
+| 改动 | 做什么 | 源码 |
+|---|---|---|
+| 打快照时写脏页位图 | `PUT /snapshot/create` 多一个可选字段 `dirty_bitmap_path`，写差分内存的同时把“这次写了哪些页”写成一个 FCDB 格式的位图文件 | `src/vmm/src/vstate/vm.rs` 的 `snapshot_memory_to_file` |
+| 导出位图 | `PUT /snapshot/save-dirty-bitmap`：虚机暂停时，把写跟踪位图写到文件，不清零 | `src/vmm/src/rollback.rs` 的 `save_dirty_bitmap` |
+| 原地回滚 | `PUT /snapshot/rollback`：不新开进程，直接把客户机内存、vCPU、中断控制器和设备倒回某个检查点 | `src/vmm/src/rollback.rs` |
+| HDBSS | 鲲鹏 950 上让 CPU 硬件记录写过的页，没有就退回 KVM 写保护 | `src/vmm/src/vstate/vm.rs` 的 `setup_dirty_tracking` |
+
+这里的写跟踪位图来自 KVM 的脏页日志，只记**写**，不看 UFFD 的标记，和上面 `GET /memory/dirty` 是两套判据。第 15 篇讲 ARM 上暂停为什么要从前者换到后者。
 
 ### 5.4 这些改动在哪看得到
 
-定制版 Firecracker 的源码不在本书依据的两个仓库里。本书对它的描述来自两处：
-
-- orchestrator 里调用它的代码，以及接口定义文件 `firecracker.yml`；
-- RPM 里带的 `firecracker.arm` 二进制没有去掉调试符号，能看到像 `get_dirty_memory`、`PagemapReader`、`is_write_protected` 这样的函数名。
+e2b-infra 仓库里只有编译好的 `firecracker.arm`，Firecracker 的源码没有随它发布。本书对 Firecracker 的描述以编出这个二进制的源码为准，正文只给源码目录内的路径和函数名。orchestrator 一侧调用它的代码和接口定义文件 `firecracker.yml` 在 orchestrator 源码里，可以对照着看。回滚相关改动的完整清单，见《E2B 沙箱快照回滚从零讲透》附录 A。
 
 ---
 
